@@ -1,25 +1,45 @@
-require('Common')
-function AfterObjectLoopEvent(myHer0)
-    myHero = myHer0
-    myHeroPos = GetOrigin(myHero)
-		DrawText("D3ftsu Fizz Loaded.",24,0,0,0xffff0000);
-	
-	local target = GetCurrentTarget()
-	if KeyIsDown(0x20) then 
-	    if ValidTarget(target, 1275) then
-		    local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1875,250,1275,55,true,true)
-            if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 then
-            CastSkillShot(_R,RPred.PredPos.x,Rred.PredPos.y,RPred.PredPos.z)
-            end
-			if CanUseSpell(myHero, _W) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 200*200 then
-				CastTargetSpell(myHero, _W)
-			end
-			if CanUseSpell(myHero, _Q) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 550*550 then
-				CastTargetSpell(target, _Q)
-			end
-			if CanUseSpell(myHero, _E) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 900*900 then
-				CastTargetSpell(target, _E)
-			end
-	  	end
-	end	
-end
+require("Inspired")
+require("IWalk")
+
+AddInfo("Fizz", "Fizz")
+AddButton("Q", "Use Q", true)
+AddButton("W", "Use W", true)
+AddButton("E", "Use E", true)
+AddButton("R", "Use R", true)
+
+AddAfterObjectLoopEvent(function(myHero)
+        IWalk()
+        DrawMenu()
+	AutoIgnite()
+		
+		if GetKeyValue("Combo") then
+		local target = GetCurrentTarget()
+		        if ValidTarget(target, 1275) then
+			       local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1350,250,1275,120,false,true)
+		               if GetButtonValue("R") then
+                                if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 then
+                                CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
+	                        end
+                               end
+				
+				if GetButtonValue("W") then
+				 if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 275) then
+				 CastTargetSpell(myHero, _W)
+				 end
+				end
+				
+				if GetButtonValue("Q") then
+				 if CanUseSpell(myHero, _Q) == READY and IsInDistance(target, 550) then
+				 CastTargetSpell(target, _Q)
+			         end
+				end
+				 
+				if GetButtonValue("E") then
+			         if CanUseSpell(myHero, _E) == READY and IsInDistance(target, 800) then
+				 CastTargetSpell(target, _E)
+			         end
+				end
+				
+                        end
+                end
+end)
