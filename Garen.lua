@@ -14,16 +14,16 @@ function AfterObjectLoopEvent(myHero)
     myHeroPos = GetOrigin(myHero)
 		IWalk()
 		DrawMenu()
-	    AutoIgnite()
+	        AutoIgnite()
         if GetKeyValue("Combo") then return end
         local unit = GetTarget(1000)
 		if ValidTarget(unit, 1000) then
 				
 	        if GetButtonValue("E") then
-			 if CanUseSpell(myHero, _E) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 300*300 then
-				CastTargetSpell(myHero, _E)
-			 end
-			end
+	         if CanUseSpell(myHero, _E) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 300*300 then
+		 CastTargetSpell(myHero, _E)
+		 end
+		end
 			
 		    if GetButtonValue("R") then
 			 if CalcDamage(myHero, unit, 0, 175*GetCastLevel(myHero,_R)+(GetMaxHP(unit)-GetCurrentHP(unit))/(4-GetCastLevel(myHero,_R)*0.5)) > GetCurrentHP(unit) then
