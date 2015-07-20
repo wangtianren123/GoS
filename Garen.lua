@@ -21,7 +21,7 @@ function AfterObjectLoopEvent(myHero)
 				
 	        if GetButtonValue("E") then
 			 if CanUseSpell(myHero, _E) == READY and GetDistance(GetOrigin(target), GetOrigin(myHero)) < 300*300 then
-				CastTargetSpell(target, _E)
+				CastTargetSpell(myHero, _E)
 			 end
 			end
 			
