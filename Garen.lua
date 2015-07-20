@@ -25,10 +25,10 @@ function AfterObjectLoopEvent(myHero)
 		 end
 		end
 			
-		    if GetButtonValue("R") then
-			 if CalcDamage(myHero, unit, 0, 175*GetCastLevel(myHero,_R)+(GetMaxHP(unit)-GetCurrentHP(unit))/(4-GetCastLevel(myHero,_R)*0.5)) > GetCurrentHP(unit) then
-             CastTargetSpell(unit, _R)
-             end
-			end
+		if GetButtonValue("R") then
+	         if CalcDamage(myHero, unit, 0, 175*GetCastLevel(myHero,_R)+(GetMaxHP(unit)-GetCurrentHP(unit))/(4-GetCastLevel(myHero,_R)*0.5)) > GetCurrentHP(unit) then
+                 CastTargetSpell(unit, _R)
+                 end
 		end
+	end
 end    
