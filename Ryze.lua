@@ -21,7 +21,7 @@ function AfterObjectLoopEvent(myHer0)
 	if GetKeyValue("Combo") then
 	local target = GetCurrentTarget()
 	    if ValidTarget(target, 900) then
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1875,250,900,55,true,true)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,true,true)
 		if GetButtonValue("Q") then
                  if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 then
                  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
