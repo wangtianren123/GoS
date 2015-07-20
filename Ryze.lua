@@ -15,9 +15,7 @@ function AfterObjectLoopEvent(myHer0)
         IWalk()
         DrawMenu()
 	AutoIgnite()
-        myHero = myHer0
-        myHeroPos = GetOrigin(myHero)
-        DrawText("D3ftland Ryze Loaded.",24,0,0,0xffff0000);
+
 	if GetKeyValue("Combo") then
 	local target = GetCurrentTarget()
 	    if ValidTarget(target, 900) then
