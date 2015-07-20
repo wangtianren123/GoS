@@ -2,7 +2,7 @@ require('Common')
 function AfterObjectLoopEvent(myHer0)
     myHero = myHer0
     myHeroPos = GetOrigin(myHero)
-		DrawText("Remember that this is still in alpha version.",24,0,0,0xffff0000);
+		DrawText("D3ftsu Fizz Loaded.",24,0,0,0xffff0000);
 	
 	local target = GetCurrentTarget()
 	if KeyIsDown(0x20) then 
