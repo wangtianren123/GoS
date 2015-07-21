@@ -1,5 +1,4 @@
 require('Inspired')
-require('IMenu')
 require('IWalk')
 
 
@@ -13,8 +12,7 @@ function AfterObjectLoopEvent(myHero)
     myHero = myHer0
     myHeroPos = GetOrigin(myHero)
 		IWalk()
-		DrawMenu()
-	        AutoIgnite()
+
         if GetKeyValue("Combo") then
           local target = GetCurrentTarget()
           if ValidTarget(target, 1000) then
