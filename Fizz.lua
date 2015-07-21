@@ -7,7 +7,7 @@ AddButton("W", "Use W", true)
 AddButton("E", "Use E", true)
 AddButton("R", "Use R", true)
 
-AddAfterObjectLoopEvent(function(myHero)
+OnLoop(function(myHero)
         IWalk()
 		
 		if GetKeyValue("Combo") then
