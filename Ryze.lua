@@ -11,7 +11,7 @@ AddButton("W", "Use W", true)
 AddButton("E", "Use E", true)
 AddButton("R", "Use R", true)
 
-function AfterObjectLoopEvent(myHer0)
+AddAfterObjectLoopEvent(function(myHero)
         IWalk()
         DrawMenu()
 	AutoIgnite()
@@ -45,4 +45,4 @@ function AfterObjectLoopEvent(myHer0)
                 end
 	    end
 	end	
-end
+end)
