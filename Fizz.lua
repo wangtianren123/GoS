@@ -9,8 +9,6 @@ AddButton("R", "Use R", true)
 
 AddAfterObjectLoopEvent(function(myHero)
         IWalk()
-        DrawMenu()
-	AutoIgnite()
 		
 		if GetKeyValue("Combo") then
 		local target = GetCurrentTarget()
@@ -23,7 +21,7 @@ AddAfterObjectLoopEvent(function(myHero)
                                end
 				
 				if GetButtonValue("W") then
-				 if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 275) then
+				 if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 300) then
 				 CastTargetSpell(myHero, _W)
 				 end
 				end
