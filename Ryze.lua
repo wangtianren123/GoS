@@ -1,5 +1,4 @@
 require("Inspired")
-require("IMenu")
 require("IWalk")
 
 local ARCANE_MASTERY = "ryzepassivestack"
@@ -13,8 +12,6 @@ AddButton("R", "Use R", true)
 
 AddAfterObjectLoopEvent(function(myHero)
         IWalk()
-        DrawMenu()
-	AutoIgnite()
 
 	if GetKeyValue("Combo") then
 	local target = GetCurrentTarget()
