@@ -11,8 +11,8 @@ OnLoop(function(myHero)
         IWalk()
 		
 		if GetKeyValue("Combo") then
-		local target = GetCurrentTarget()
-		        if ValidTarget(target, 1275) then
+		 local target = GetTarget(1275, DAMAGE_MAGIC)
+	                if target then
 			       local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1350,250,1275,120,false,true)
 		               if GetButtonValue("R") then
                                 if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 then
