@@ -15,7 +15,7 @@ OnLoop(function(myHero)
 
 	if GetKeyValue("Combo") then
 	local target = GetTarget(1000, DAMAGE_MAGIC)
-	    if target then
+	    if ValidTarget(target, 1000) then
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,true,true)
 		
 		if GetButtonValue("Q") then
