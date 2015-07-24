@@ -1,6 +1,3 @@
-require("Inspired")
-require("IWalk")
-
 AddInfo("Fizz", "Fizz")
 AddButton("Q", "Use Q", true)
 AddButton("W", "Use W", true)
