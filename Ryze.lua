@@ -1,6 +1,3 @@
-require("Inspired")
-require("IWalk")
-
 local ARCANE_MASTERY = "ryzepassivestack"
 local SUPERCHARGED = "ryzepassivecharged"
 
