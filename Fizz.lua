@@ -5,7 +5,6 @@ AddButton("E", "Use E", true)
 AddButton("R", "Use R", true)
 
 OnLoop(function(myHero)
-        IWalk()
 		
 		if GetKeyValue("Combo") then
 		 local target = GetTarget(1275, DAMAGE_MAGIC)
