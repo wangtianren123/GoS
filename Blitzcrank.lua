@@ -28,7 +28,7 @@ OnLoop(function(myHero)
                  CastTargetSpell(myHero, _E)
 		         end
                 end
-		  local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),0,250,0,600,true,true)	
+		  local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),0,250,0,550,true,true)	
 		          if GetButtonValue("R") then
 	             if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 then
                CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
