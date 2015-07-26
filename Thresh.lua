@@ -37,4 +37,4 @@ OnLoop(function(myHero)
             end
      end
 end)
-AddGapcloseEvent(_E, 450, true)
+AddGapcloseEvent(_E, 450, false)
