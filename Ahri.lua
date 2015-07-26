@@ -1,4 +1,3 @@
-AddKey("Harrass", "Harrass", string.byte("C"))
 AddInfo("Ahri", "Ahri:")
 AddButton("Q", "Use Q", true)
 AddButton("W", "Use W", true)
