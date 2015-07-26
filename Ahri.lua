@@ -60,4 +60,4 @@ function DamageCalc()
 	  end
 	end
 end
-AddGapcloseEvent(_E, 975, true)
+AddGapcloseEvent(_E, 975, false)
