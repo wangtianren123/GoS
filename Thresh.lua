@@ -16,18 +16,6 @@ OnLoop(function(myHero)
                      end
                     end
 					
-				   --local Obj_Type = GetObjectType(Object);
-                  -- if Obj_Type == Obj_AI_Hero then
-	               --if IsObjectAlive(Object) then
-                    --local WPred = GetPredictionForPlayer(GetMyHeroPos(),ally,GetMoveSpeed(ally),1900,500,950,70,false,true)
-                    --if GetButtonValue("W") then
-                    -- if CanUseSpell(myHero, _W) == READY and IsInDistance(ally, 950) and WPred.HitChance == 1 then
-                    -- CastSkillShot(--do what ever you want here, i'm noob)
-                   --  end
-                   -- end
-				 --  end
-				  --end
-					
                     if GetButtonValue("E") then
                      local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,125,400,110,false,true)
                      if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ((GetCurrentHP(myHero)/(GetMaxHP(myHero)/100))) > 26 then
@@ -49,17 +37,4 @@ OnLoop(function(myHero)
             end
      end
 end)
-
-function Closestally(pos)
-    local ally = nil
-    for k,v in pairs(GetAllyHeroes()) do 
-        if not ally and v then ally = v end
-        if ally and v and GetDistanceSqr(GetOrigin(ally),pos) > GetDistanceSqr(GetOrigin(v),pos) then
-            ally = v
-        end
-    end
-    a = GetOrigin(ally)
-    return a
-end
-
 AddGapcloseEvent(_E, 450, true)
