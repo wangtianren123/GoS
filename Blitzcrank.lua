@@ -3,10 +3,11 @@ Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Combo", "Combo", SCRIPT_PARAM_KEYDOWN, string.byte(" "))
 
 OnLoop(function(myHero)
 	
-       if IWalkConfig.Combo then
+       if Config.Combo then
 	      local target = GetTarget(1000, DAMAGE_MAGIC)
 	               if ValidTarget(target, 1000) then
 	              	
