@@ -1,8 +1,8 @@
-AddInfo("Ahri", "Ahri:")
-AddButton("Q", "Use Q", true)
-AddButton("W", "Use W", true)
-AddButton("E", "Use E", true)
-AddButton("R", "Use R", true)
+Config = scriptConfig("Ahri", "Ahri:")
+Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 
 spellData = 
 	{
@@ -14,36 +14,31 @@ spellData =
 
 OnLoop(function(myHero)
         DamageCalc()
-        if GetKeyValue("Combo") then
+        if IWalkConfig.Combo then
 		local target = GetTarget(1000, DAMAGE_MAGIC)
 		        if ValidTarget(target, 1000) then
 				
-				    local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,975,60,true,true)
-                    if GetButtonValue("E") then
-                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 then
-                     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                     end
-                    end
+			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,975,60,true,true)
+                                 if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
+                                 CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                                 end
+                                end
+				
+				local mousePos = GetMousePos()
+			         if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target) and Config.R then
+			         CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)	
+				end
 					
-					if GetButtonValue("R") then
-			         local mousePos = GetMousePos()
-			         if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target)then
-			         CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-					     end
-					end
+				local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,880,100,false,true)
+                                  if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
+                                  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                                  end
+                                end
 					
-					local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,880,100,false,true)
-            if GetButtonValue("Q") then
-               if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 then
-               CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-               end
-            end
-					
-					 if GetButtonValue("W") then
-				       if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 500) then
-				       CastTargetSpell(myHero, _W)
+			         if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 500) and Config.W then
+			         CastTargetSpell(myHero, _W)
 			         end
-				  end
+			        end
 					
 					
 				end
@@ -51,7 +46,6 @@ OnLoop(function(myHero)
 	
 end)
 								
-		
 function DamageCalc()
 	for i,enemy in pairs(GetEnemyHeroes()) do
 		if ValidTarget(enemy, 1000) then
