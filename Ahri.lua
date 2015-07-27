@@ -19,31 +19,26 @@ OnLoop(function(myHero)
 		        if ValidTarget(target, 1000) then
 				
 			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,975,60,true,true)
-                                 if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
-                                 CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                                 end
+                                if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
+                                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                                 end
 				
 				local mousePos = GetMousePos()
-			         if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target) and Config.R then
-			         CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)	
+			        if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target) and Config.R then
+			        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)	
 				end
 					
 				local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,880,100,false,true)
-                                  if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-                                  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                                  end
+                                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
+                                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                                 end
 					
-			         if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 500) and Config.W then
-			         CastTargetSpell(myHero, _W)
-			         end
+			        if CanUseSpell(myHero, _W) == READY and IsInDistance(target, 500) and Config.W then
+			        CastTargetSpell(myHero, _W)
 			        end
 					
-					
-				end
-	    end
-	
+			end
+        end
 end)
 								
 function DamageCalc()
