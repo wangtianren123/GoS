@@ -15,7 +15,7 @@ spellData =
 	
 
 OnLoop(function(myHero)
-        if GetKeyValue("Combo") then
+        if IWalkConfig.Combo then
 		local target = GetTarget(1600, DAMAGE_MAGIC)
 		        if ValidTarget(target, 1600) then
 				     
