@@ -6,7 +6,7 @@ Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 
 OnLoop(function(myHero)
 	
-       if Config.Combo then
+        if IWalkConfig.Combo then
 	      local target = GetTarget(1000, DAMAGE_MAGIC)
 	               if ValidTarget(target, 1000) then
 	              	
