@@ -19,31 +19,27 @@ OnLoop(function(myHero)
 		local target = GetTarget(1600, DAMAGE_MAGIC)
 		        if ValidTarget(target, 1600) then
 				     
-					local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,200,1150,60,true,true)
-                    if GetButtonValue("E") then
-                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 then
+		     local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,200,1150,60,true,true)
+                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
                      CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                      end
-                    end
+                    
 					
-					local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,700,1000,200,true,true)
-                    if GetButtonValue("W") then
-                     if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 then
+		     local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,700,1000,200,true,true)
+                     if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 Config.W then
                      CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
                      end
-                    end
+             
 					
-					local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,1600,100,false,true)
-                    if GetButtonValue("Q") then
-                     if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 then
-                     CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                     end
+                    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,1600,100,false,true)
+                    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
+                    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                     end
-					if GetButtonValue("Q") then
-					if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 then
+
+		    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
                     CastSkillShot2(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-					end
-					end
-				end
+	            end
+					
+			end
 		end
 end)
