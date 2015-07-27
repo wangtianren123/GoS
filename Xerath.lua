@@ -31,14 +31,17 @@ OnLoop(function(myHero)
                      end
              
 					
-                    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,1600,100,false,true)
+                    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,1550,100,false,true)
                     if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
                     CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+					end
+					if GotBuff(myHero, "XerathArcanopulseChargeUp") then
+					CastSkillShot2(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                     end
 
-		    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-                    CastSkillShot2(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-	            end
+		        --if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q and GotBuff(myHero, "XerathArcanopulseChargeUp") then
+                   -- CastSkillShot2(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+	           -- end
 					
 			end
 		end
