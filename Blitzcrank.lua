@@ -1,4 +1,4 @@
-Config = scriptConfig("Blitzcrank", "Blitzcrank:")
+Config = scriptConfig("Blitzcrank", "Blitzcrank.lua")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
