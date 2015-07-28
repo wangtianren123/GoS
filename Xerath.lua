@@ -54,7 +54,7 @@ OnLoop(function(myHero)
 				--end
 		end
 end)
-
+AddGapcloseEvent(_E, 975, false)
 --function DamageCalc()
 --	for i,enemy in pairs(GetEnemyHeroes()) do
 		--if ValidTarget(enemy,5600) then
