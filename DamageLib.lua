@@ -26,9 +26,9 @@
 			W
 			E
 			R
-			"QM"			-Q in melee form (Jayce, Nidalee and Elise only)
-			"WM"			-W in melee form (Jayce, Nidalee and Elise only)
-			"EM"			-E in melee form (Jayce, Nidalee and Elise only)
+			QM			-Q in melee form (Jayce, Nidalee and Elise only)
+			WM			-W in melee form (Jayce, Nidalee and Elise only)
+			EM			-E in melee form (Jayce, Nidalee and Elise only)
 			"AD"			-Attack damage
 			"IGNITE"		-Ignite
 			"HXG"			-Hextech Gunblade
@@ -71,9 +71,9 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 	elseif stagedmg == 3 then stagedmg1,stagedmg2,stagedmg3 = 0,0,1 end
 	local TrueDmg = 0
 	local TypeDmg = 1 --1 ability/normal--2 bonus to attack
-	if ((spellname == Q or spellname == "QM") and GetCastLevel(myHero,_Q) == 0) or ((spellname == W or spellname == "WM") and GetCastLevel(myHero,_W) == 0) or ((spellname == E or spellname == "EM") and GetCastLevel(myHero,_E) == 0) or (spellname == R and GetCastLevel(myHero,_R) == 0) then
+	if ((spellname == Q or spellname == QM) and GetCastLevel(myHero,_Q) == 0) or ((spellname == W or spellname == WM) and GetCastLevel(myHero,_W) == 0) or ((spellname == E or spellname == EM) and GetCastLevel(myHero,_E) == 0) or (spellname == R and GetCastLevel(myHero,_R) == 0) then
 		TrueDmg = 0
-	elseif spellname == Q or spellname == W or spellname == E or spellname == R or spellname == "P" or spellname == "QM" or spellname == "WM" or spellname == "EM" then
+	elseif spellname == Q or spellname == W or spellname == E or spellname == R or spellname == "P" or spellname == QM or spellname == WM or spellname == EM then
 		local DmgM = 0
 		local DmgP = 0
 		local DmgT = 0
@@ -187,7 +187,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			end
 		elseif GetObjectName(myHero) == "Elise" then
 			if spellname == Q then DmgM = 35*GetCastLevel(myHero,_Q)+5+(8+.03*GetBonusAP(myHero))*GetCurrentHP(target)/100
-			elseif spellname == "QM" then DmgM = 40*GetCastLevel(myHero,_Q)+20+(8+.03*GetBonusAP(myHero))*(GetMaxHP(target)-GetCurrentHP(target))/100
+			elseif spellname == QM then DmgM = 40*GetCastLevel(myHero,_Q)+20+(8+.03*GetBonusAP(myHero))*(GetMaxHP(target)-GetCurrentHP(target))/100
 			elseif spellname == W then DmgM = 50*GetCastLevel(myHero,_W)+25+.8*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = 10*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) TypeDmg = 2 --xhit (bonus)
 			end
@@ -234,11 +234,11 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			end
 		elseif GetObjectName(myHero) == "Gnar" then
 			if spellname == Q then DmgP = 30*GetCastLevel(myHero,_Q)-25+1.15*GetBaseDamage(myHero) -- 50% damage beyond the first
-			elseif spellname == "QM" then DmgP = 40*GetCastLevel(myHero,_Q)-35+1.2*GetBaseDamage(myHero)
+			elseif spellname == QM then DmgP = 40*GetCastLevel(myHero,_Q)-35+1.2*GetBaseDamage(myHero)
 			elseif spellname == W then DmgM = 10*GetCastLevel(myHero,_W)+GetBonusAP(myHero)+(2*GetCastLevel(myHero,_W)+4)*GetMaxHP(target)/100
-			elseif spellname == "WM" then DmgP = 20*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero)
+			elseif spellname == WM then DmgP = 20*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero)
 			elseif spellname == E then DmgP = 40*GetCastLevel(myHero,_E)-20+6*GetMaxHP(myHero)/100
-			elseif spellname == "EM" then DmgP = 40*GetCastLevel(myHero,_E)-20+6*GetMaxHP(myHero)/100
+			elseif spellname == EM then DmgP = 40*GetCastLevel(myHero,_E)-20+6*GetMaxHP(myHero)/100
 			elseif spellname == R then DmgP = math.max(100*GetCastLevel(myHero,_R)+100+.2*GetBonusDmg(myHero)+.5*GetBonusAP(myHero),(100*GetCastLevel(myHero,_R)+100+.2*GetBonusDmg(myHero)+.5*GetBonusAP(myHero))*1.5*stagedmg3) --x1.5 If collide with terrain. stage3: Max damage
 			end
 		elseif GetObjectName(myHero) == "Gragas" then
@@ -287,10 +287,10 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			end
 		elseif GetObjectName(myHero) == "Jayce" then
 			if spellname == Q then DmgP = math.max(55*GetCastLevel(myHero,_Q)+5+1.2*GetBonusDmg(myHero),(55*GetCastLevel(myHero,_Q)+5+1.2*GetBonusDmg(myHero))*1.4*stagedmg3) --If its fired through an Acceleration Gate damage will increase by 40%. stage3: Max damage
-			elseif spellname == "QM" then DmgP = 45*GetCastLevel(myHero,_Q)-25+GetBonusDmg(myHero)
+			elseif spellname == QM then DmgP = 45*GetCastLevel(myHero,_Q)-25+GetBonusDmg(myHero)
 			elseif spellname == W then DmgT = 15*GetCastLevel(myHero,_W)+55 --% damage
-			elseif spellname == "WM" then DmgM = math.max(17.5*GetCastLevel(myHero,_W)+7.5+.25*GetBonusAP(myHero),(17.5*GetCastLevel(myHero,_W)+7.5+.25*GetBonusAP(myHero))*4*stagedmg3) --xsec (4 sec). stage3: Max damage
-			elseif spellname == "EM" then DmgM = GetBonusDmg(myHero)+((3*GetCastLevel(myHero,_E)+5)*GetMaxHP(target)/100)
+			elseif spellname == WM then DmgM = math.max(17.5*GetCastLevel(myHero,_W)+7.5+.25*GetBonusAP(myHero),(17.5*GetCastLevel(myHero,_W)+7.5+.25*GetBonusAP(myHero))*4*stagedmg3) --xsec (4 sec). stage3: Max damage
+			elseif spellname == EM then DmgM = GetBonusDmg(myHero)+((3*GetCastLevel(myHero,_E)+5)*GetMaxHP(target)/100)
 			elseif spellname == R then DmgM = 40*GetCastLevel(myHero,_R)-20 TypeDmg = 2
 			end
 		elseif GetObjectName(myHero) == "Jinx" then
@@ -441,10 +441,10 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			end
 		elseif GetObjectName(myHero) == "Nidalee" then
 			if spellname == Q then DmgM = 25*GetCastLevel(myHero,_Q)+25+.4*GetBonusAP(myHero) --deals 300% damage the further away the target is, gains damage from 525 units until 1300 units
-			elseif spellname == "QM" then DmgM = (math.max(4,30*GetCastLevel(myHero,_R)-40,40*GetCastLevel(myHero,_R)-70)+.75*GetBaseDamage(myHero)+.36*GetBonusAP(myHero))*(1+1.5*(GetMaxHP(target)-GetCurrentHP(target))/GetMaxHP(target)) --Deals 33% increased damage against Hunted
+			elseif spellname == QM then DmgM = (math.max(4,30*GetCastLevel(myHero,_R)-40,40*GetCastLevel(myHero,_R)-70)+.75*GetBaseDamage(myHero)+.36*GetBonusAP(myHero))*(1+1.5*(GetMaxHP(target)-GetCurrentHP(target))/GetMaxHP(target)) --Deals 33% increased damage against Hunted
 			elseif spellname == W then DmgM = 20*GetCastLevel(myHero,_W)+(2*GetCastLevel(myHero,_W)+8+.02*GetBonusAP(myHero))*GetCurrentHP(target)/100 -- over 4 sec
-			elseif spellname == "WM" then DmgM = 50*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero)
-			elseif spellname == "EM" then DmgM = 60*GetCastLevel(myHero,_R)+10+.45*GetBonusAP(myHero)
+			elseif spellname == WM then DmgM = 50*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero)
+			elseif spellname == EM then DmgM = 60*GetCastLevel(myHero,_R)+10+.45*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Nocturne" then
 			if spellname == Q then DmgP = 45*GetCastLevel(myHero,_Q)+15+.75*GetBonusDmg(myHero)
@@ -490,8 +490,8 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			end
 		elseif GetObjectName(myHero) == "RekSai" then
 			if spellname == Q then DmgP = 20*GetCastLevel(myHero,_Q)-5+.4*GetBonusDmg(myHero) TypeDmg = 2 --(bonus)
-			elseif spellname == "QM" then DmgM = 30*GetCastLevel(myHero,_Q)+30+GetBonusAP(myHero)
-			elseif spellname == "WM" then DmgP = 50*GetCastLevel(myHero,_W)+10+.5*GetBonusDmg(myHero)
+			elseif spellname == QM then DmgM = 30*GetCastLevel(myHero,_Q)+30+GetBonusAP(myHero)
+			elseif spellname == WM then DmgP = 50*GetCastLevel(myHero,_W)+10+.5*GetBonusDmg(myHero)
 			elseif spellname == E then DmgP = (.1*GetCastLevel(myHero,_E)+.7)*GetBaseDamage(myHero)*(1+GetCurrentMana(myHero)/GetMaxMana(myHero))*(1-math.floor(GetCurrentMana(myHero)/GetMaxMana(myHero))) DmgT = (.1*GetCastLevel(myHero,_E)+.7)*GetBaseDamage(myHero)*2*math.floor(GetCurrentMana(myHero)/GetMaxMana(myHero))
 			end
 		elseif GetObjectName(myHero) == "Renekton" then
