@@ -34,7 +34,7 @@ OnLoop(function(myHero)
                     CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		    end
 					
-	            if GotBuff(myHero, "XerathArcanopulseChargeUp") then
+	            if GotBuff(myHero, "XerathArcanopulseChargeUp") > 0 then
 		    CastSkillShot2(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                     end
 					
