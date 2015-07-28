@@ -4,7 +4,7 @@ Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 
-Spells = 
+spellData =  
 	{
 	[_Q] = {dmg = function () return 40 + 40*GetCastLevel(myHero,_Q) + 0.75*GetBonusAP(myHero) end, },
 	[_W] = {dmg = function () return 30 + 30*GetCastLevel(myHero,_W) + 0.6*GetBonusAP(myHero) end, },
