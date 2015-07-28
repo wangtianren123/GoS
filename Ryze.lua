@@ -20,7 +20,7 @@ OnLoop(function(myHero)
 	                        end
 			
                                 if CanUseSpell(myHero, _R) == READY and (GotBuff(myHero, SUPERCHARGED) > 0 or GotBuff(myHero, ARCANE_MASTERY) > 3) and Config.R then
-                                CastTargetSpell(myHero, _R)
+                                CastSpell(_R)
 		                end
 			
                                 if CanUseSpell(myHero, _W) == READY and Config.W then
