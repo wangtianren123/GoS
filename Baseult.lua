@@ -24,7 +24,7 @@ if GetObjectName(myHero) == "Ashe" then
   elseif GetObjectName(myHero) == "Draven" then
     delay = 400
     missileSpeed = 2000
-    local damage = CalcDamage(myHero, target, 75, 0 + 100*GetCastLevel(myHero,_R) + 1.1*GetBonusDmg(myHero))
+    local damage = CalcDamage(myHero, target, 75 + 100*GetCastLevel(myHero,_R) + 1.1*GetBonusDmg(myHero), 0)
   elseif GetObjectName(myHero) == "Ezreal" then
     delay = 1000
     missileSpeed = 2000
@@ -32,7 +32,7 @@ if GetObjectName(myHero) == "Ashe" then
   elseif GetObjectName(myHero) == "Jinx" then
     delay = 600
     missileSpeed = 1700
-    local damage = CalcDamage(myHero, target, 150, 0 + 100*GetCastLevel(myHero,_R) + 0.5*GetBonusDmg(myHero))
+    local damage = CalcDamage(myHero, target, 150 + 100*GetCastLevel(myHero,_R) + 0.5*GetBonusDmg(myHero), 0 )
 end
 
 Config = scriptConfig("BaseUlt", "baseUlt")
