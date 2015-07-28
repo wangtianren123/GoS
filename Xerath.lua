@@ -2,7 +2,7 @@ Config = scriptConfig("Xerath", "Xerath:")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+--Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 
 spellData =  
 	{
