@@ -478,8 +478,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgT = 10*GetCastLevel(myHero,_R)+10 --% Increased Damage
 			end
 		elseif GetObjectName(myHero) == "Quinn" then
-			if spellname == "P" then DmgP = math.max(10*GetLevel(myHero)+15,15*GetLevel(myHero)-55)+.5*GetBonusDmg(myHero) TypeDmg = 2 --(bonus)
-			elseif spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)+30+.65*GetBonusDmg(myHero)+.5*GetBonusAP(myHero)
+			if spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)+30+.65*GetBonusDmg(myHero)+.5*GetBonusAP(myHero)
 			elseif spellname == E then DmgP = 30*GetCastLevel(myHero,_E)+10+.2*GetBonusDmg(myHero)
 			elseif spellname == R then DmgP = (50*GetCastLevel(myHero,_R)+70+.5*GetBonusDmg(myHero))*(2-GetCurrentHP(target)/GetMaxHP(target))
 			end
@@ -506,14 +505,12 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == E then DmgP = math.max((50*GetCastLevel(myHero,_E)+.7*GetBonusDmg(myHero))*stagedmg1,(math.min(25*GetLevel(myHero)+25,10*GetLevel(myHero)+160)+.7*GetBonusDmg(myHero))*(stagedmg2+stagedmg3))
 			end
 		elseif GetObjectName(myHero) == "Riven" then
-			if spellname == "P" then DmgP = 5+math.max(5*math.floor((GetLevel(myHero)+2)/3)+10,10*math.floor((GetLevel(myHero)+2)/3)-15)*GetBaseDamage(myHero)/100 --xchGetArmor(myHero)ge
-			elseif spellname == Q then DmgP = 20*GetCastLevel(myHero,_Q)-10+(.05*GetCastLevel(myHero,_Q)+.35)*GetBaseDamage(myHero) --xstrike (3 strikes)
+			if spellname == Q then DmgP = 20*GetCastLevel(myHero,_Q)-10+(.05*GetCastLevel(myHero,_Q)+.35)*GetBaseDamage(myHero) --xstrike (3 strikes)
 			elseif spellname == W then DmgP = 30*GetCastLevel(myHero,_W)+20+GetBonusDmg(myHero)
 			elseif spellname == R then DmgP = math.min((40*GetCastLevel(myHero,_R)+40+.6*GetBonusDmg(myHero))*(1+(100-25)/100*8/3),120*GetCastLevel(myHero,_R)+120+1.8*GetBonusDmg(myHero))
 			end
 		elseif GetObjectName(myHero) == "Rumble" then
-			if spellname == "P" then DmgM = 20+5*GetLevel(myHero)+.25*GetBonusAP(myHero) TypeDmg = 2 --xhit
-			elseif spellname == Q then DmgM = math.max(20*GetCastLevel(myHero,_Q)+5+.33*GetBonusAP(myHero),(20*GetCastLevel(myHero,_Q)+5+.33*GetBonusAP(myHero))*3*stagedmg3) --xsec (3 sec) , with 50 heat deals 150% damage. stage3: Max damage , with 50 heat deals 150% damage
+			if spellname == Q then DmgM = math.max(20*GetCastLevel(myHero,_Q)+5+.33*GetBonusAP(myHero),(20*GetCastLevel(myHero,_Q)+5+.33*GetBonusAP(myHero))*3*stagedmg3) --xsec (3 sec) , with 50 heat deals 150% damage. stage3: Max damage , with 50 heat deals 150% damage
 			elseif spellname == E then DmgM = 25*GetCastLevel(myHero,_E)+20+.4*GetBonusAP(myHero) --xshoot (2 shoots) , with 50 heat deals 150% damage
 			elseif spellname == R then DmgM = math.max(55*GetCastLevel(myHero,_R)+75+.3*GetBonusAP(myHero),(55*GetCastLevel(myHero,_R)+75+.3*GetBonusAP(myHero))*5*stagedmg3) --stage1: xsec (5 sec). stage3: Max damage
 			end
@@ -550,8 +547,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == E then DmgM = 45*GetCastLevel(myHero,_E)+35+.75*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Sion" then
-			if spellname == "P" then DmgP = 10*GetMaxHP(target)/100 TypeDmg = 2
-			elseif spellname == Q then DmgP = 20*GetCastLevel(myHero,_Q)+.6*GetBaseDamage(myHero) --Minimum, x3 over 2 sec
+			if spellname == Q then DmgP = 20*GetCastLevel(myHero,_Q)+.6*GetBaseDamage(myHero) --Minimum, x3 over 2 sec
 			elseif spellname == W then DmgM = 25*GetCastLevel(myHero,_W)+15+.4*GetBonusAP(myHero)+(GetCastLevel(myHero,_W)+9)*GetMaxHP(target)/100
 			elseif spellname == E then DmgM = math.max(35*GetCastLevel(myHero,_W)+35+.4*GetBonusAP(myHero),(35*GetCastLevel(myHero,_W)+35+.4*GetBonusAP(myHero))*1.5*stagedmg3) --Minimum. stage3: x1.5 if hits a minion
 			elseif spellname == R then DmgP = 150*GetCastLevel(myHero,_Q)+.4*GetBonusDmg(myHero) --Minimum, x2 over 1.75 sec
@@ -561,14 +557,12 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == W then DmgP = (.05*GetCastLevel(myHero,_W)+.45)*GetBaseDamage(myHero)*stagedmg2 TypeDmg = 2 --stage1:bonus to attack target. stage2: Bounce Damage
 			end
 		elseif GetObjectName(myHero) == "Skarner" then
-			if spellname == "P" then DmgM = 5*GetLevel(myHero)+15 TypeDmg = 2
-			elseif spellname == Q then DmgP = (10*GetCastLevel(myHero,_Q)+8+.4*GetBonusDmg(myHero))*(stagedmg1+stagedmg3) QDmgM = (10*GetCastLevel(myHero,_Q)+8+.2*GetBonusAP(myHero))*(stagedmg2+stagedmg3) --stage1:basic. stage2: chGetArmor(myHero)ge bonus. stage2: total
+			if spellname == Q then DmgP = (10*GetCastLevel(myHero,_Q)+8+.4*GetBonusDmg(myHero))*(stagedmg1+stagedmg3) QDmgM = (10*GetCastLevel(myHero,_Q)+8+.2*GetBonusAP(myHero))*(stagedmg2+stagedmg3) --stage1:basic. stage2: chGetArmor(myHero)ge bonus. stage2: total
 			elseif spellname == E then DmgM = 20*GetCastLevel(myHero,_E)+20+.4*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = math.max((100*GetCastLevel(myHero,_R)+100+GetBonusAP(myHero))*(stagedmg1+stagedmg3),(25*GetCastLevel(myHero,_R)+25)*stagedmg2)--stage1-3:basic. stage2: per stacks of Crystal Venom.
 			end
 		elseif GetObjectName(myHero) == "Sona" then
-			if spellname == "P" then DmgM = (math.max(7*GetLevel(myHero)+6,8*GetLevel(myHero)+3,9*GetLevel(myHero)-2,10*GetLevel(myHero)-8,15*GetLevel(myHero)-78)+.2*GetBonusAP(myHero))*(1+stagedmg1) TypeDmg = 2 --stage1: Staccato. stage2:Diminuendo or Tempo
-			elseif spellname == Q then DmgM = math.max((40*GetCastLevel(myHero,_Q)+.5*GetBonusAP(myHero))*(stagedmg1+stagedmg3),(10*GetCastLevel(myHero,_Q)+30+.2*GetBonusAP(myHero)+10*GetCastLevel(myHero,_R))*stagedmg2) TypeDmg = 1+stagedmg2 --stage1-3: Active. stage2:On-hit
+			if spellname == Q then DmgM = math.max((40*GetCastLevel(myHero,_Q)+.5*GetBonusAP(myHero))*(stagedmg1+stagedmg3),(10*GetCastLevel(myHero,_Q)+30+.2*GetBonusAP(myHero)+10*GetCastLevel(myHero,_R))*stagedmg2) TypeDmg = 1+stagedmg2 --stage1-3: Active. stage2:On-hit
 			elseif spellname == R then DmgM = 100*GetCastLevel(myHero,_R)+50+.5*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Soraka" then
@@ -594,8 +588,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgP = math.max(50*GetCastLevel(myHero,_R)+70+.75*GetBonusDmg(myHero),(50*GetCastLevel(myHero,_R)+70+.75*GetBonusDmg(myHero))*2*stagedmg3) --x2 if the target is hit twice. stage3: Max damage
 			end
 		elseif GetObjectName(myHero) == "Taric" then
-			if spellname == "P" then DmgM = .2*GetArmor(myHero) TypeDmg = 2 --(bonus)
-			elseif spellname == W then DmgM = 40*GetCastLevel(myHero,_W)+.2*GetArmor(myHero)
+			if spellname == W then DmgM = 40*GetCastLevel(myHero,_W)+.2*GetArmor(myHero)
 			elseif spellname == E then DmgM = math.max(30*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero),(30*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero))*2*stagedmg3) --min (lower damage the fGetArmor(myHero)ther the target is) up to 200%. stage3: Max damage
 			elseif spellname == R then DmgM = 100*GetCastLevel(myHero,_R)+50+.5*GetBonusAP(myHero)
 			end
@@ -715,8 +708,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgP = 100*GetCastLevel(myHero,_R)+100+1.5*GetBonusDmg(myHero)
 			end
 		elseif GetObjectName(myHero) == "Yorick" then
-			if spellname == "P" then DmgP = .35*GetBaseDamage(myHero) --xhit of ghouls
-			elseif spellname == Q then DmgP = 30*GetCastLevel(myHero,_Q)+.2*GetBaseDamage(myHero) TypeDmg = 2 --(bonus)
+			if spellname == Q then DmgP = 30*GetCastLevel(myHero,_Q)+.2*GetBaseDamage(myHero) TypeDmg = 2 --(bonus)
 			elseif spellname == W then DmgM = 35*GetCastLevel(myHero,_W)+25+GetBonusAP(myHero)
 			elseif spellname == E then DmgM = 30*GetCastLevel(myHero,_E)+25+GetBonusDmg(myHero)
 			end
@@ -727,14 +719,12 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgM = math.max(70*GetCastLevel(myHero,_R)+70+.4*GetBonusAP(myHero),(70*GetCastLevel(myHero,_R)+70+.4*GetBonusAP(myHero))*2.5*stagedmg3) 
 			end
 		elseif GetObjectName(myHero) == "Zed" then
-			if spellname == "P" then DmgM = (6+2*(math.floor((GetLevel(myHero)-1)/6)))*GetMaxHP(target)/100 TypeDmg = 2
-			elseif spellname == Q then DmgP = math.max((40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*stagedmg1,(40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*.6*stagedmg2,(40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*1.5*stagedmg3)  
+			if spellname == Q then DmgP = math.max((40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*stagedmg1,(40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*.6*stagedmg2,(40*GetCastLevel(myHero,_Q)+35+GetBonusDmg(myHero))*1.5*stagedmg3)  
 			elseif spellname == E then DmgP = 30*GetCastLevel(myHero,_E)+30+.8*GetBonusDmg(myHero)
 			elseif spellname == R then DmgP = GetBaseDamage(myHero)*(stagedmg1+stagedmg3) DmgT = (15*GetCastLevel(myHero,_R)+5)*stagedmg2 
 			end
 		elseif GetObjectName(myHero) == "Ziggs" then
-			if spellname == "P" then DmgM = math.max(4*GetLevel(myHero)+16,8*GetLevel(myHero)-8,12*GetLevel(myHero)-56)+(.2+.05*math.floor((GetLevel(myHero)+5)/6))*GetBonusAP(myHero) TypeDmg = 2
-			elseif spellname == Q then DmgM = 37.5*GetCastLevel(myHero,_Q)+45+.65*GetBonusAP(myHero)
+			if spellname == Q then DmgM = 37.5*GetCastLevel(myHero,_Q)+45+.65*GetBonusAP(myHero)
 			elseif spellname == W then DmgM = 35*GetCastLevel(myHero,_W)+35+.35*GetBonusAP(myHero)
 			elseif spellname == E then DmgM = 20*GetCastLevel(myHero,_E)+25+.3*GetBonusAP(myHero) 
 			elseif spellname == R then DmgM = 125*GetCastLevel(myHero,_R)+125+.9*GetBonusAP(myHero) 
@@ -743,8 +733,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			if spellname == Q then DmgM = 37.5*GetCastLevel(myHero,_Q)+40+.9*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Zyra" then
-			if spellname == "P" then DmgT = 80+20*GetLevel(myHero)
-			elseif spellname == Q then DmgM = 35*GetCastLevel(myHero,_Q)+35+.65*GetBonusAP(myHero)
+			if spellname == Q then DmgM = 35*GetCastLevel(myHero,_Q)+35+.65*GetBonusAP(myHero)
 			elseif spellname == W then DmgM = 29.5+6.5*GetLevel(myHero)+.2*GetBonusAP(myHero)
 			elseif spellname == E then DmgM = 30*GetCastLevel(myHero,_E)+35+.5*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = 90*GetCastLevel(myHero,_R)+85+.7*GetBonusAP(myHero)
