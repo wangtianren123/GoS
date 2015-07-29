@@ -62,7 +62,7 @@
 ]]--
 
 function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
-    local Q=GetCastName(myHero_Q)
+        local Q=GetCastName(myHero_Q)
 	local W=GetCastName(myHero_W)
 	local E=GetCastName(myHero_E)
 	local R=GetCastName(myHero_R)
