@@ -30,9 +30,6 @@ OnLoop(function(myHero)
  end
 end)
 
-OnProcessRecall(function(Object,recallProc)
-end)
-
 if CanUseSpell(_R) == READY then
    if damage > GetCurrentHP(target) then
         local timeToRecall = recallProc.totalTime
@@ -43,4 +40,6 @@ if CanUseSpell(_R) == READY then
         end
     end
  end
+
+ OnProcessRecall(function(Object,recallProc)
 end)
