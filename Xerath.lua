@@ -17,7 +17,7 @@ OnLoop(function(myHero)
 		local target = GetTarget(5600, DAMAGE_MAGIC)
 		if ValidTarget(target, 1550) then
 				     
-		    local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,1150,60,true,true)
+		    local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,1000,60,true,true)
                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
                     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                     end
@@ -54,7 +54,7 @@ OnLoop(function(myHero)
 				--end
 		end
 end)
-AddGapcloseEvent(_E, 1150, false)
+AddGapcloseEvent(_E, 1000, false)
 --function DamageCalc()
 --	for i,enemy in pairs(GetEnemyHeroes()) do
 		--if ValidTarget(enemy,5600) then
