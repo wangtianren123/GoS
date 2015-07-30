@@ -1,17 +1,8 @@
-spawnTable = {
-[100] = Vector(redTeam),
-[200] = Vector(blueTeam)
-}
-
-local recalling = {}
-local leftTime = recallProc.totalTime - recallProc.passedTime
-
-function enemyBasePos
+function enemyBasePos()
  if GetTeam(myHero) == 100 then enemyBasePos = Vector(14340, 171, 14390)
  elseif GetTeam(myHero) == 200 then enemyBasePos = Vector(529, -36, 4169)
  end
 end
-
 
 
 OnLoop(function(myHero)
@@ -45,10 +36,11 @@ end)
 if CanUseSpell(_R) == READY then
    if damage > GetCurrentHP(target) then
         local timeToRecall = recallProc.totalTime
-        local distance = GetDistance(enemyBasePos)
-        local TimeToHit = delay + (distance / missileSpeed)
-        if timeToRecall < TimeToHit and damage > GetCurrentHP(target) then
-        CastSkillShot(_R, enemyBasePos.x, enemyBasePos.y, enemyBasePos.z)
+        local timeToHit = delay + (distance / missileSpeed)
+		local distance = GetDistance(enemyBasePos)
+        if timeToRecall > TimeToHit then
+        DelayAction(function() CastSkillShot(_R, enemyBasePos.x, enemyBasePos.y, enemyBasePos.z) end, (timeToRecall-timeToHit) * 1000)
         end
-   end
-end
+    end
+ end
+end)
