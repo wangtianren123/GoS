@@ -1,3 +1,5 @@
+printChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for this awesome tool #MissLaihaSenpai")
+
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
 BaseUltConfig = scriptConfig("BaseUlt", "BaseUlt")
 BaseUltConfig.addParam("doIt", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
@@ -35,6 +37,7 @@ OnProcessRecall(function(Object,recallProc)
 			local timeToHit = delay + (distance * 1000 / missileSpeed)
 			if timeToRecall > timeToHit then
 				recallPos = Vector(Object)
+				print("BaseUlt on "..GetObjectName(Object), 2, 0xffff0000)
 				DelayAction(
 					function() 
 						if recallPos == Vector(Object) then
