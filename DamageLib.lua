@@ -62,7 +62,7 @@
 ]]--
 
 function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
-        local Q=GetCastName(myHero_Q)
+    local Q=GetCastName(myHero_Q)
 	local W=GetCastName(myHero_W)
 	local E=GetCastName(myHero_E)
 	local R=GetCastName(myHero_R)
@@ -73,7 +73,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 	local TypeDmg = 1 --1 ability/normal--2 bonus to attack
 	if ((spellname == Q or spellname == QM) and GetCastLevel(myHero,_Q) == 0) or ((spellname == W or spellname == WM) and GetCastLevel(myHero,_W) == 0) or ((spellname == E or spellname == EM) and GetCastLevel(myHero,_E) == 0) or (spellname == R and GetCastLevel(myHero,_R) == 0) then
 		TrueDmg = 0
-	elseif spellname == Q or spellname == W or spellname == E or spellname == R or spellname == "P" or spellname == QM or spellname == WM or spellname == EM then
+	elseif spellname == Q or spellname == W or spellname == E or spellname == R or spellname == QM or spellname == WM or spellname == EM then
 		local DmgM = 0
 		local DmgP = 0
 		local DmgT = 0
@@ -126,6 +126,9 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == E then DmgM = 30*GetCastLevel(myHero,_Q)+30+.4*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = 75*GetCastLevel(myHero,_R)+75+.6*GetBonusAP(myHero)
 			end
+		elseif GetObjectName(myHero) == "Bard" then
+		    if spellname == Q then DmgM = 45*GetCastLevel(myHero,_Q)+35+.65*GetBonusAP(myHero)
+			end
 		elseif GetObjectName(myHero) == "Blitzcrank" then
 			if spellname == Q then DmgM = 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero)
 			elseif spellname == E then DmgP = GetBaseDamage(myHero) TypeDmg = 2
@@ -142,8 +145,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgM = 100*GetCastLevel(myHero,_R)+50+.6*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Caitlyn" then
-			if spellname == "P" then DmgP = .5*GetBaseDamage(myHero) TypeDmg = 2 --xheGetBaseDamage(myHero)shot (bonus)
-			elseif spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)-20+1.3*GetBaseDamage(myHero) --deal 10% less damage for each subsequent target hit, down to a minimum of 50%
+			if spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)-20+1.3*GetBaseDamage(myHero) --deal 10% less damage for each subsequent target hit, down to a minimum of 50%
 			elseif spellname == W then DmgM = 50*GetCastLevel(myHero,_W)+30+.6*GetBonusAP(myHero)
 			elseif spellname == E then DmgM = 50*GetCastLevel(myHero,_E)+30+.8*GetBonusAP(myHero)
 			elseif spellname == R then DmgP = 225*GetCastLevel(myHero,_R)+25+2*GetBonusDmg(myHero)
@@ -184,6 +186,10 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			if spellname == Q then DmgP = (.1*GetCastLevel(myHero,_Q)+.35)*GetBaseDamage(myHero) TypeDmg = 2 --xhit (bonus)
 			elseif spellname == E then DmgP = 35*GetCastLevel(myHero,_E)+35+.5*GetBonusDmg(myHero)
 			elseif spellname == R then DmgP = 100*GetCastLevel(myHero,_R)+75+1.1*GetBonusDmg(myHero) --xhit (max 2 hits), deals 8% less damage for each unit hit, down to a minimum of 40%
+			end
+		elseif GetObjectName(myHero) == "Ekko" then
+			if spellname == Q then DmgM = (15*GetCastLevel(myHero,_Q)+45+.1*GetBonusAP(myHero)) + (25*GetCastLevel(myHero,_Q)+35+.6*GetBonusAP(myHero))
+			elseif spellname == E then DmgM = 30*GetCastLevel(myHero,_E)+20+.2*GetBonusAP(myHero) TypeDmg = 2 -- xhit (bonus)
 			end
 		elseif GetObjectName(myHero) == "Elise" then
 			if spellname == Q then DmgM = 35*GetCastLevel(myHero,_Q)+5+(8+.03*GetBonusAP(myHero))*GetCurrentHP(target)/100
@@ -478,7 +484,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgT = 10*GetCastLevel(myHero,_R)+10 --% Increased Damage
 			end
 		elseif GetObjectName(myHero) == "Quinn" then
-			if spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)+30+.65*GetBonusDmg(myHero)+.5*GetBonusAP(myHero)
+            if spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)+30+.65*GetBonusDmg(myHero)+.5*GetBonusAP(myHero)
 			elseif spellname == E then DmgP = 30*GetCastLevel(myHero,_E)+10+.2*GetBonusDmg(myHero)
 			elseif spellname == R then DmgP = (50*GetCastLevel(myHero,_R)+70+.5*GetBonusDmg(myHero))*(2-GetCurrentHP(target)/GetMaxHP(target))
 			end
@@ -532,8 +538,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgM = 150*GetCastLevel(myHero,_R)+150+GetBonusAP(myHero) --The clone deals 75% of Shaco's damage
 			end
 		elseif GetObjectName(myHero) == "Shen" then
-			if spellname == "P" then DmgM = 4+4*GetLevel(myHero)+(GetMaxHP(myHero)-(428+85*GetLevel(myHero)))*.1 TypeDmg = 2 --(bonus)
-			elseif spellname == Q then DmgM = 40*GetCastLevel(myHero,_Q)+20+.6*GetBonusAP(myHero)
+			if spellname == Q then DmgM = 40*GetCastLevel(myHero,_Q)+20+.6*GetBonusAP(myHero)
 			elseif spellname == E then DmgM = 35*GetCastLevel(myHero,_E)+15+.5*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Shyvana" then
@@ -581,10 +586,12 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == E then DmgM = 45*GetCastLevel(myHero,_E)+25+.4*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = math.max(45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero),(45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*7*stagedmg3) --stage1:xSphere (Minimum 3). stage3:7 Spheres
 			end
+		elseif GetObjectName(myHero) == "Tahm Kench" then
+			if spellname == Q then DmgM = 45*GetCastLevel(myHero,_Q)+35+.7*GetBonusAP(myHero)
+			if spellname == W then DmgM = 50*GetCastLevel(myHero,_W)+50+.6*GetBonusAP(myHero)
 		elseif GetObjectName(myHero) == "Talon" then
 			if spellname == Q then DmgP = 40*GetCastLevel(myHero,_Q)+1.3*GetBonusDmg(myHero) TypeDmg = 2 --(bonus)
 			elseif spellname == W then DmgP = math.max(25*GetCastLevel(myHero,_W)+5+.6*GetBonusDmg(myHero),(25*GetCastLevel(myHero,_W)+5+.6*GetBonusDmg(myHero))*2*stagedmg3) --x2 if the target is hit twice. stage3: Max damage
-			elseif spellname == E then DmgT = 3*GetCastLevel(myHero,_E) --% Damage Amplification
 			elseif spellname == R then DmgP = math.max(50*GetCastLevel(myHero,_R)+70+.75*GetBonusDmg(myHero),(50*GetCastLevel(myHero,_R)+70+.75*GetBonusDmg(myHero))*2*stagedmg3) --x2 if the target is hit twice. stage3: Max damage
 			end
 		elseif GetObjectName(myHero) == "Taric" then
@@ -620,8 +627,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == E then DmgM = 25*GetCastLevel(myHero,_E)+30+.5*GetBonusAP(myHero)
 			end
 		elseif GetObjectName(myHero) == "Twitch" then
-			if spellname == "P" then DmgT = math.floor((GetLevel(myHero)+2)/3) --xstack xsec (6 stack 6 sec)
-			elseif spellname == E then DmgP = math.max((5*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero)+.25*GetBonusDmg(myHero))*stagedmg1,(15*GetCastLevel(myHero,_E)+5)*stagedmg2,((5*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero)+.25*GetBonusDmg(myHero))*6+15*GetCastLevel(myHero,_E)+5)*stagedmg3) --stage1:xstack (6 stack). stage2:Base. stage3: Max damage
+			if spellname == E then DmgP = math.max((5*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero)+.25*GetBonusDmg(myHero))*stagedmg1,(15*GetCastLevel(myHero,_E)+5)*stagedmg2,((5*GetCastLevel(myHero,_E)+10+.2*GetBonusAP(myHero)+.25*GetBonusDmg(myHero))*6+15*GetCastLevel(myHero,_E)+5)*stagedmg3) --stage1:xstack (6 stack). stage2:Base. stage3: Max damage
 			end
 		elseif GetObjectName(myHero) == "Udyr" then
 			if spellname == Q then DmgP = math.max((50*GetCastLevel(myHero,_Q)-20+(.1*GetCastLevel(myHero,_Q)+1.1)*GetBaseDamage(myHero))*(stagedmg2+stagedmg3),(.15*GetBaseDamage(myHero))*stagedmg1) TypeDmg = 2 --stage1:persistent effect. stage2:(bonus). stage3:stage2
@@ -651,8 +657,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgM = 125*GetCastLevel(myHero,_R)+125+1.2*GetBonusAP(myHero)+.8*GetBonusAP(target)
 			end
 		elseif GetObjectName(myHero) == "Velkoz" then
-			if spellname == "P" then DmgT = 10*GetLevel(myHero)+25
-			elseif spellname == Q then DmgM = 40*GetCastLevel(myHero,_Q)+40+.6*GetBonusAP(myHero)
+			if spellname == Q then DmgM = 40*GetCastLevel(myHero,_Q)+40+.6*GetBonusAP(myHero)
 			elseif spellname == W then DmgM = math.max(20*GetCastLevel(myHero,_W)+10+.25*GetBonusAP(myHero),(20*GetCastLevel(myHero,_W)+10+.25*GetBonusAP(myHero))*1.5*stagedmg2) --stage1-3:Initial. stage2:Detonation.
 			elseif spellname == E then DmgM = 30*GetCastLevel(myHero,_E)+40+.5*GetBonusAP(myHero)
 			elseif spellname == R then DmgM = 20*GetCastLevel(myHero,_R)+30+.6*GetBonusAP(myHero) --every 0.25 sec (2.5 sec), Organic Deconstruction every 0.5 sec
@@ -681,8 +686,7 @@ function getDmg(spellname,target,myHero,stagedmg,spellGetLevel(myHero))
 			elseif spellname == R then DmgM = 80*GetCastLevel(myHero,_R)-5+.3*GetBonusAP(myHero) TypeDmg = 2 --xhit
 			end
 		elseif GetObjectName(myHero) == "Warwick" then
-			if spellname == "P" then DmgM = math.max(.5*GetLevel(myHero)+2.5,(.5*GetLevel(myHero)+2.5)*3*stagedmg3) --xstack (3 stacks). stage3: Max damage
-			elseif spellname == Q then DmgM = 50*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero)+((2*GetCastLevel(myHero,_Q)+6)*GetMaxHP(target)/100)
+			if spellname == Q then DmgM = 50*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero)+((2*GetCastLevel(myHero,_Q)+6)*GetMaxHP(target)/100)
 			elseif spellname == R then DmgM = math.max((100*GetCastLevel(myHero,_R)+50+2*GetBonusDmg(myHero))/5,(100*GetCastLevel(myHero,_R)+50+2*GetBonusDmg(myHero))*stagedmg3) --xstrike (5 strikes) , without counting on-hit effects. stage3: Max damage
 			end
 		elseif GetObjectName(myHero) == "MonkeyKing" then
