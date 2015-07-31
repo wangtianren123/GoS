@@ -16,7 +16,7 @@ OnLoop(function(myHero)
 			     
 				    local target = GetTarget(400, DAMAGE_MAGIC)
 					if CanUseSpell(myHero, _R) == READY and IsInDistance(target, 400) and Config.R and CalcDamage(myHero, target, 0, 175*GetCastLevel(myHero,_R)+(GetMaxHP(target)-GetCurrentHP(target))/((8-GetCastLevel(myHero,_R))/2) > GetCurrentHP(target) then
-					CastTargetSpell(target, _E)
+					CastTargetSpell(target, _R)
 					end
 				end
 		    end
