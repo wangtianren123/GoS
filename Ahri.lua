@@ -24,9 +24,9 @@ Killsteal()
 		if ValidTarget(target, 1000) then
 				
 			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,GetCastRange(myHero,_E),60,true,true)
-                    if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
-                    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                    end
+                                if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
+                                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                                end
 				
 				local mousePos = GetMousePos()
 				local ComboDmg = CalcDamage(myHero, target, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero)+ 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 25 + 35*GetCastLevel(myHero,_E) + 0.5*GetBonusAP(myHero)))
