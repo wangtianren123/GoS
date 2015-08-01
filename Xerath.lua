@@ -12,7 +12,7 @@ OnLoop(function(myHero)
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
       for i=250, 1500, 250 do
         DelayAction(function()
-            local _Qrange = 770 + math.min(770, i/2)
+            local _Qrange = 730 + math.min(770, i/2)
               local Pred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,_Qrange,100,false,true)
               if Pred.HitChance >= 1 then
                 CastSkillShot2(_Q, Pred.PredPos.x, Pred.PredPos.y, Pred.PredPos.z)
