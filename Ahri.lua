@@ -23,18 +23,18 @@ Killsteal()
         local target = GetTarget(1000, DAMAGE_MAGIC)
 		if ValidTarget(target, 1000) then
 				
-			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,975,60,true,true)
+			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,GetCastRange(myHero,_E),60,true,true)
                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
                     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                     end
 				
 				local mousePos = GetMousePos()
-				local ComboDmg = CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero)+ 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 25 + 35*GetCastLevel(myHero,_E) + 0.5*GetBonusAP(myHero))
+				local ComboDmg = CalcDamage(myHero, target, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero)+ 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 25 + 35*GetCastLevel(myHero,_E) + 0.5*GetBonusAP(myHero)))
 			        if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target) and Config.R then
 			        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)	
 				end
 					
-			        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,880,100,false,true)
+			        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,GetCastRange(myHero,_Q),100,false,true)
                                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
                                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                                 end
@@ -44,7 +44,15 @@ Killsteal()
 			        end
 	        end
 	end
+end)
+OnLoop(function(myHero)
+
 	if IWalkConfig.Harass then
+	    local target = GetTarget(1000, DAMAGE_MAGIC)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,880,100,false,true)
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,975,60,true,true)
+		if ValidTarget(target, 1000) then
+		            
                     if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_E)) and Config.HarassE then
                     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                     elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_Q)) and Config.HarassQ then 
@@ -53,17 +61,17 @@ Killsteal()
                     CastSpell(_W)
                     end
 		end
-        end
+	end
 end)
 
 function Killsteal()
 	for i,enemy in pairs(GetEnemyHeroes()) do
-	local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2500,250,GetCastRange(myHero,_Q),100,false,true)
-                local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,GetCastRange(myHero,_E),60,true,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2500,250,GetCastRange(myHero,_Q),100,false,true)
 		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and Config.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero))) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif CanUseSpell(myHero, _W) and ValidTarget(enemy,GetCastRange(myHero,_W)) and Config.KSW and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero))) then
 		CastSpell(_W)
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,GetCastRange(myHero,_E),60,true,true)
 		elseif CanUseSpell(myHero, _E) and ValidTarget(enemy,GetCastRange(myHero,_E)) and Config.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero))) then
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		end
