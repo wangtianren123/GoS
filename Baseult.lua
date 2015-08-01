@@ -1,17 +1,17 @@
+if not GetObjectName(myHero) == "Ashe" or "Draven" or "Ezreal" or "Jinx" then return end
 PrintChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for this awesome tool #MissLaihaSenpai")
-
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
 BaseUltConfig = scriptConfig("BaseUlt", "BaseUlt")
-BaseUltConfig.addParam("Just Do IT", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
+BaseUltConfig.addParam("doIt", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
 myHero = GetMyHero()
 
 if GetTeam(myHero) == 100 then 
-enemyBasePos = Vector(14340, 171, 14390)
+	enemyBasePos = Vector(14340, 171, 14390)
 elseif GetTeam(myHero) == 200 then 
-enemyBasePos = Vector(400, 200, 400)
+	enemyBasePos = Vector(400, 200, 400)
 end
 
-if GetObjectName(myHero) == "Ashe" then
+if GetObjectName(myHero) == "Ashe" then 
 	delay = 250
 	missileSpeed = 1600
 	damage = function(target) return CalcDamage(myHero, target, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
@@ -27,7 +27,7 @@ elseif GetObjectName(myHero) == "Jinx" then
 	delay = 600
 	missileSpeed = 2300
 	damage = function(target) return CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
-end
+else return end
 
 OnProcessRecall(function(Object,recallProc)
 	if CanUseSpell(myHero, _R) == READY and BaseUltConfig.doIt and GetTeam(Object) ~= GetTeam(myHero) then
@@ -58,7 +58,7 @@ local y = 500
 local barWidth = 250
 local rowHeight = 18
 local onlyEnemies = true
-local onlyFOW = false
+local onlyFOW = true
 
 OnLoop(function()
 	
