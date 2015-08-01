@@ -2,13 +2,13 @@ PrintChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for 
 
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
 BaseUltConfig = scriptConfig("BaseUlt", "BaseUlt")
-BaseUltConfig.addParam("doIt", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
+BaseUltConfig.addParam("Just Do IT", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
 myHero = GetMyHero()
 
 if GetTeam(myHero) == 100 then 
-	enemyBasePos = Vector(14340, 171, 14390)
+enemyBasePos = Vector(14340, 171, 14390)
 elseif GetTeam(myHero) == 200 then 
-	enemyBasePos = Vector(400, 200, 400)
+enemyBasePos = Vector(400, 200, 400)
 end
 
 if GetObjectName(myHero) == "Ashe" then
@@ -27,6 +27,7 @@ elseif GetObjectName(myHero) == "Jinx" then
 	delay = 600
 	missileSpeed = 2300
 	damage = function(target) return CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
+else return
 end
 
 OnProcessRecall(function(Object,recallProc)
@@ -58,7 +59,7 @@ local y = 500
 local barWidth = 250
 local rowHeight = 18
 local onlyEnemies = true
-local onlyFOW = true
+local onlyFOW = false
 
 OnLoop(function()
 	
