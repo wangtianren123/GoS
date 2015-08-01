@@ -1,10 +1,10 @@
-if not GetObjectName(myHero) == "Ashe" or "Draven" or "Ezreal" or "Jinx" then return end
+if GetObjectName(myHero) == "Ashe" or "Draven" or "Jinx" or "Ezreal" then 
 PrintChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for this awesome tool #MissLaihaSenpai")
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
 BaseUltConfig = scriptConfig("BaseUlt", "BaseUlt")
 BaseUltConfig.addParam("doIt", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true) 
 myHero = GetMyHero()
-
+end
 if GetTeam(myHero) == 100 then 
 	enemyBasePos = Vector(14340, 171, 14390)
 elseif GetTeam(myHero) == 200 then 
@@ -127,6 +127,6 @@ OnProcessRecall(function(Object,recallProc)
 	rec.killtime = nil
 	rec.result = nil
 	recalling[GetObjectName(Object)] = rec
-
+	
 end)
 PrintChat("Recall tracker by Krystian loaded.")
