@@ -27,7 +27,6 @@ elseif GetObjectName(myHero) == "Jinx" then
 	delay = 600
 	missileSpeed = 2300
 	damage = function(target) return CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
-else return
 end
 
 OnProcessRecall(function(Object,recallProc)
