@@ -72,9 +72,9 @@ function Killsteal()
 		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and Config.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (25*GetCastLevel(myHero,_Q)+35+.55*GetBonusAP(myHero)+0.015*GetMaxMana(myHero)+0.005*GetCastLevel(myHero,_Q)*GetMaxMana(myHero))) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif CanUseSpell(myHero, _W) and ValidTarget(enemy,GetCastRange(myHero,_W)) and Config.KSW and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (60+20*GetCastLevel(myHero,_W)+0.4*GetBonusAP(myHero)+0.025*GetMaxMana(myHero))) then
-		CastTargeSpell(enemy, _W)
+		CastTargetSpell(enemy, _W)
 		elseif CanUseSpell(myHero, _E) and ValidTarget(enemy,GetCastRange(myHero,_E)) and Config.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (20+16*GetCastLevel(myHero,_E)+0.2*GetBonusAP(myHero)+0.02*GetMaxMana(myHero))) then
-		CastTargeSpell(enemy, _E)
+		CastTargetSpell(enemy, _E)
 		end
 	end
 end
