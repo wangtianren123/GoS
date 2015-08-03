@@ -43,10 +43,7 @@ Killsteal()
 	                      
                 end
 	end	
-end)
-
-OnLoop(function(myHero)
-
+	
 	if IWalkConfig.Harass then
 	     local target = GetTarget(1000, DAMAGE_MAGIC)
 		              
@@ -62,6 +59,11 @@ OnLoop(function(myHero)
                         end
 		end
 	end
+end)
+
+OnLoop(function(myHero)
+
+	
 end)
 
 function Killsteal()
