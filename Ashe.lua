@@ -44,7 +44,7 @@ end)
 OnLoop(function(myHero)
 
 	if IWalkConfig.Harass then
-	      local target = 1280, DAMAGE_PHYSICAL)
+	      local target = GetTarget(1280, DAMAGE_PHYSICAL)
 		              
 		    if ValidTarget(target, 1280) then
 		
