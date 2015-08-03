@@ -1,3 +1,4 @@
+PrintChat("D3ftland Ashe By Deftsu Loaded, Have A Good Game!")
 Config = scriptConfig("Ashe", "Ashe")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
