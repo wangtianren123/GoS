@@ -29,7 +29,7 @@ Killsteal()
                         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	                end
                           
-                        if CanUseSpell(myHero, _W) == READY and not IsInDistance(target, 150) and IsInDistance(target, 400) and Config.W then
+                        if CanUseSpell(myHero, _W) == READY and not IsInDistance(target, 150) and IsInDistance(target, 700) and Config.W then
                         CastSpell(_W)
 		        end
 			
