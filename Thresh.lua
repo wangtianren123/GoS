@@ -9,7 +9,7 @@ OnLoop(function(myHero)
 	       local target = GetTarget(1100, DAMAGE_MAGIC)
 	                if ValidTarget(target, 1100) then
                         
-                                local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
+                                local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1900,500,GetCastRange(myHero,_Q),60,true,true)
                                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
                                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                                 end
