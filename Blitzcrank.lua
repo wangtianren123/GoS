@@ -24,7 +24,7 @@ Killsteal()
 	        if ValidTarget(target, 1000) then
 	              	
 	              	
-		        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),80,true,true)
+		        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),70,true,true)
                         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_Q)) and Config.Q then
                         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	                end
@@ -50,7 +50,7 @@ Killsteal()
 		if ValidTarget(target, 1000) then
 		
 		        if (GetCurrentMana(myHero)/GetMaxMana(myHero)) > 0.4 then
-			        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),80,true,true)
+			        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),70,true,true)
                                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_Q)) and HarassConfig.HarassQ then 
                                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 				elseif CanUseSpell(myHero, _E) == READY and ValidTarget(target, 250) and IsInDistance(target, 250) and HarassConfig.HarassE then
@@ -68,7 +68,7 @@ end)
 
 function Killsteal()
         for i,enemy in pairs(GetEnemyHeroes()) do
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),80,true,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),70,true,true)
   	    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero))) then 
             CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
             elseif CanUseSpell(myHero, _R) == READY and ValidTarget(enemy,GetCastRange(myHero,_R)) and KSConfig.KSR and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero))) then
