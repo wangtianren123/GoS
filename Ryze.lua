@@ -20,10 +20,10 @@ OnLoop(function(myHero)
 Drawings()
 Killsteal()
 
-	if IWalkConfig.Combo then
+	
 	       local target = GetTarget(1000, DAMAGE_MAGIC)
 	                if ValidTarget(target, 1000) then
-		
+if IWalkConfig.Combo then	
 		
 		                local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
 				local Q2Pred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,false,true)
@@ -50,11 +50,11 @@ end)
 
 OnLoop(function(myHero)
 
-	if IWalkConfig.Harass then
+	
 	    local target = GetTarget(1000, DAMAGE_MAGIC)
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
                                 if ValidTarget(target, 1000) then
-							   
+if IWalkConfig.Harass then							   
 					if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_Q)) and Config.HarassQ then 
                                         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 					elseif CanUseSpell(myHero, _W) == READY and ValidTarget(target,GetCastRange(myHero,_W)) and Config.HarassW then
