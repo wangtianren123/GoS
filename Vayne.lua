@@ -31,7 +31,7 @@ if IWalkConfig.Combo then
                        if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                        CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
                        end
-                       if GetDistance(Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                       if GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
                       CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                       end 
                 end
