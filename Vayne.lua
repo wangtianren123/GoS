@@ -14,6 +14,8 @@ myIAC = IAC()
 OnLoop(function(myHero)
 Drawings()
 Walltumble()
+
+
 if Config.AutoE then
 AutoE()
 end
@@ -21,9 +23,9 @@ end
 if IWalkConfig.Combo then
         
                 local target = GetTarget(550,DAMAGE_PHYSICAL)
-		if ValidTarget(target, 550) then
-               Tumble()
-               end
+		if ValidTarget(target, 550) and Config.Q then
+                Tumble()
+                end
 end)
 
 function Tumble()
