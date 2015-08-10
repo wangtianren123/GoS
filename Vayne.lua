@@ -26,6 +26,7 @@ if IWalkConfig.Combo then
 		if ValidTarget(target, 550) and Config.Q then
                 Tumble()
                 end
+end
 end)
 
 function Tumble()
