@@ -14,8 +14,6 @@ myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
-Walltumble()
-
 
 if Config.AutoE then
 AutoE()
@@ -38,6 +36,20 @@ if IWalkConfig.Combo then
                       end 
                 end
 end
+
+   if CanUseSpell(myHero, _Q) == READY then
+        if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
+            CastSkillShot(_Q,6667.3271484375, 0, 8794.64453125)
+        else
+            MoveToXYZ(6962, 0, 8952)
+        end
+    
+        if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
+            CastSkillShot(_Q,11745.198242188, 0, 4625.4379882813)
+        else
+            MoveToXYZ(12060, 0, 4806)
+        end
+    end
 end)
 
 OnProcessSpell(function(unit, spell)
@@ -108,25 +120,6 @@ function AutoE()
 	end
 end
 
-function WallTumble()
-local HeroPos = GetOrigin(myHero)
-
-    if CanUseSpell(myHero, _Q) == READY then
-        if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
-            CastSkillShot(_Q,6667.3271484375, 0, 8794.64453125)
-        else
-            MoveToXYZ(6962, 0, 8952)
-        end
-    
-        if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
-            CastSkillShot(_Q,11745.198242188, 0, 4625.4379882813)
-        else
-            MoveToXYZ(12060, 0, 4806)
-        end
-    end
-end
-
-            
 function Drawings()
 myHeroPos = GetOrigin(myHero)
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
