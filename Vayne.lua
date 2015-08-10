@@ -40,13 +40,13 @@ end
    if CanUseSpell(myHero, _Q) == READY then
         if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
             CastSkillShot(_Q,6667.3271484375, 0, 8794.64453125)
-        else
+        elseif Config.Walltumble1 then
             MoveToXYZ(6962, 0, 8952)
         end
     
         if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
             CastSkillShot(_Q,11745.198242188, 0, 4625.4379882813)
-        else
+        elseif Config.Walltumble2
             MoveToXYZ(12060, 0, 4806)
         end
     end
