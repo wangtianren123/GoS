@@ -29,7 +29,7 @@ if IWalkConfig.Combo then
                 local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
 		if ValidTarget(target, 550) and Config.Q then
                 
-                       if  DistanceAfterTumble < 630*630 and                                    DistanceAfterTumble > 300*300 then
+                       if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                        CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
                        end
                        if GetDistance(Target) > 630*630 and DistanceAfterTumble < 630*630 then
