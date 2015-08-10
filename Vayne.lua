@@ -46,7 +46,7 @@ end
     
         if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
             CastSkillShot(_Q,11745.198242188, 0, 4625.4379882813)
-        elseif Config.Walltumble2
+        elseif Config.Walltumble2 then
             MoveToXYZ(12060, 0, 4806)
         end
     end
