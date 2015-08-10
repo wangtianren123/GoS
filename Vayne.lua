@@ -41,7 +41,7 @@ end)
 
 OnProcessSpell(function(unit, spell)
 if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") then
-DelayAction(function() Tumble() end, spell.windUpTime)
+DelayAction(function() CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z) end, spell.windUpTime)
 end)
 
 function AutoE()
