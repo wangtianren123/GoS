@@ -1,5 +1,6 @@
 require 'MapPositionGOS'
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
+-- exopidion is dumb
 Config = scriptConfig("Vayne", "Vayne")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
