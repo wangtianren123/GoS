@@ -20,10 +20,10 @@ end
 
 if IWalkConfig.Combo then
         
-                local target = GetTarget(550, DAMAGE_PHYSICAL)
+                local target = GetTarget(550,DAMAGE_PHYSICAL)
 		if ValidTarget(target, 550) then
-Tumble()
-end
+               Tumble()
+               end
 end)
 
 function Tumble()
