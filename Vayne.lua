@@ -44,7 +44,7 @@ end
 
 OnProcessSpell(function(unit, spell)
 if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") then
-DelayAction(function() Tumble() end, spell.windUpTime + GetLatency()/2000
+DelayAction(function() Tumble() end, spell.windUpTime + GetLatency()/2000)
 end)
 
 function AutoE()
