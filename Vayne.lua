@@ -22,7 +22,7 @@ end
 
 if IWalkConfig.Combo then
         
-                local target = GetTarget(550,DAMAGE_PHYSICAL)
+                local target = GetTarget(550, DAMAGE_PHYSICAL)
 		if ValidTarget(target, 550) and Config.Q then
                 Tumble()
                 end
