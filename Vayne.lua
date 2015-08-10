@@ -23,25 +23,21 @@ end
 if IWalkConfig.Combo then
         
                 local target = GetTarget(550, DAMAGE_PHYSICAL)
+                local HeroPos = GetOrigin(myHero)
+                local mousePos = GetMousePos()
+                local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
+                local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
 		if ValidTarget(target, 550) and Config.Q then
-                Tumble()
+                
+                       if  DistanceAfterTumble < 630*630 and                                    DistanceAfterTumble > 300*300 then
+                       CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
+                       end
+                       if GetDistance(Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                      CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                      end 
                 end
 end
 end)
-
-function Tumble()
-local HeroPos = GetOrigin(myHero)
-local mousePos = GetMousePos()
-local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)
-if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
-CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-end
-if GetDistance(Target) > 630*630 and DistanceAfterTumble < 630*630 then
-CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-end 
-
-end
 
 OnProcessSpell(function(unit, spell)
 if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") then
