@@ -54,7 +54,7 @@ end)
 
 OnProcessSpell(function(unit, spell)
 local mousePos = GetMousePos()
-if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") then
+if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") and IWalkConfig.Combo then
 DelayAction(function() CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z) end, spell.windUpTime)
 end
 end)
