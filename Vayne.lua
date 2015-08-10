@@ -36,7 +36,7 @@ if IWalkConfig.Combo then
                       end 
                 end
 end
-
+   local HeroPos = GetOrigin(myHero)
    if CanUseSpell(myHero, _Q) == READY then
         if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
             CastSkillShot(_Q,6667.3271484375, 0, 8794.64453125)
@@ -53,6 +53,7 @@ end
 end)
 
 OnProcessSpell(function(unit, spell)
+local HeroPos = GetOrigin(myHero)
 if unit and unit == myHero and spell and spell.name and spell.name:lower():find("attack") then
 DelayAction(function() CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z) end, spell.windUpTime)
 end
