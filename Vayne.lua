@@ -137,7 +137,7 @@ end
 function LevelUp()
 
     if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
-if AutolvlConfig.to3Level = { 'Q-W-E' } then
+if AutolvlConfig.to3Level == { 'Q-W-E' } then
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
 end
@@ -148,7 +148,7 @@ if GetLevel(myHero) == 3 then
 	LevelSpell(_E)
 end        
 
-elseif AutolvlConfig.to3Level = { 'Q-E-W' } then
+elseif AutolvlConfig.to3Level == { 'Q-E-W' } then
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
 end
@@ -160,7 +160,7 @@ if GetLevel(myHero) == 3 then
 end
 
 
-elseif AutolvlConfig.to3Level = { 'W-Q-E' } then
+elseif AutolvlConfig.to3Level == { 'W-Q-E' } then
 if GetLevel(myHero) == 1 then
 	LevelSpell(_W)
 end
