@@ -39,15 +39,15 @@ end
    local HeroPos = GetOrigin(myHero)
    if CanUseSpell(myHero, _Q) == READY then
         if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
-            CastSkillShot(_Q,6667.3271484375, 0, 8794.64453125)
+            CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
         elseif Config.Walltumble1 then
-            MoveToXYZ(6962, 0, 8952)
+            MoveToXYZ(6962, 51, 8952)
         end
     
         if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
-            CastSkillShot(_Q,11745.198242188, 0, 4625.4379882813)
+            CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
         elseif Config.Walltumble2 then
-            MoveToXYZ(12060, 0, 4806)
+            MoveToXYZ(12060, 51, 4806)
         end
     end
 end)
