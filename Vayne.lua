@@ -135,7 +135,7 @@ local LastLevelCheck = 0
     if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
         LastLevelCheck = GetTickCount()
         if GetLevel(myHero) ~= LastHeroLevel then
-            DelayAction(function() LevelUp() end, 0,25)
+            DelayAction(function() LevelUp() end, 250)
             LastHeroLevel = GetLevel(myHero)
         end
     end
@@ -144,7 +144,7 @@ end
 function LevelUp()
 
     if AutolvlConfig.Level1to18 and GetLevel(myHero) > 0 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]][GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]])
     end
 end
 
