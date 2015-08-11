@@ -134,13 +134,7 @@ AutoLevelSpellTable = {
 
 function CheckLevel()
 local LastLevelCheck = 0
-if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
-        if GetLevel(myHero) < 4 and AutolvlConfig.Level1to3 then
-            LevelSpell(_Q)
-            LevelSpell(_W)
-            LevelSpell(_E)
-        end
-
+    if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
         LastLevelCheck = GetTickCount()
         if GetLevel(myHero) ~= LastHeroLevel then
             DelayAction(function() LevelUp() end, 250)
@@ -151,11 +145,11 @@ end
 
 function LevelUp()
     if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
-        LevelSpell(AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to3Level][GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to3Level]][GetLevel(myHero)])
     end
 
     if AutolvlConfig.Level4to18 and GetLevel(myHero) > 3 then
-        LevelSpell(AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level][GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]][GetLevel(myHero)])
     end
 end
 
