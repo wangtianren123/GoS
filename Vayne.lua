@@ -11,8 +11,10 @@ DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
 AutolvlConfig = scriptConfig("Autolvl","Autolvl")
-AutolvlConfig.addParam("Level1to18", "Use AutoLevelSpells Level 1-18", SCRIPT_PARAM_ONOFF, false)
-AutolvlConfig.addParam('to18Level', 'Level 1-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
+AutolvlConfig.addParam("Level1to3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
+AutolvlConfig.addParam('to3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
+--AutolvlConfig.addParam("Level4to18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
+--AutolvlConfig.addParam('to18Level', 'Level 1-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
 
 
 myIAC = IAC()
@@ -120,15 +122,6 @@ function AutoE()
 	end
 end
 
-AutoLevelSpellTable = {
-        ['SpellOrder']	= {'QWE', 'QEW', 'WQE'},
-
-        ['QWE']	= {_Q,_W,_E,_Q,_Q,_R,_Q,_W,_Q,_W,_R,_W,_W,_E,_E,_R,_E,_E},
-     
-        ['QEW']	=    {_Q,_E,_W,_Q,_Q,_R,_Q,_E,_Q,_E,_R,_E,_E,_W,_W,_R,_W,_W},
-    
-        ['WQE']    =      {_W,_Q,_E,_W,_W,_R,_W,_Q,_W,_Q,_R,_Q,_Q,_E,_E,_R,_E,_E}
-    }
 
 function CheckLevel()
 local LastLevelCheck = 0
@@ -143,9 +136,41 @@ end
 
 function LevelUp()
 
-    if AutolvlConfig.Level1to18 and GetLevel(myHero) > 0 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]])
-    end
+    if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
+if AutolvlConfig.to3Level = { 'Q-W-E' } then
+if GetLevel(myHero) == 1 then
+	LevelSpell(_Q)
+end
+if GetLevel(myHero) == 2 then
+	LevelSpell(_W)
+end
+if GetLevel(myHero) == 3 then
+	LevelSpell(_E)
+end        
+
+elseif AutolvlConfig.to3Level = { 'Q-E-W' } then
+if GetLevel(myHero) == 1 then
+	LevelSpell(_Q)
+end
+if GetLevel(myHero) == 2 then
+	LevelSpell(_E)
+end
+if GetLevel(myHero) == 3 then
+	LevelSpell(_W)
+end
+
+
+elseif AutolvlConfig.to3Level = { 'W-Q-E' } then
+if GetLevel(myHero) == 1 then
+	LevelSpell(_W)
+end
+if GetLevel(myHero) == 2 then
+	LevelSpell(_Q)
+end
+if GetLevel(myHero) == 3 then
+	LevelSpell(_E)
+end
+
 end
 
 
