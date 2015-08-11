@@ -17,8 +17,25 @@ ItemsConfig.addParam("Item1","Use BotRk",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item2","Use Bilgewatmter Cutlass",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
-
 myIAC = IAC()
+
+local CHANELLING_SPELLS = {
+    ["Caitlyn"]                     = _R,
+    ["Katarina"]                    = _R,
+    ["MasterYi"]                    = _W,
+    ["Fiddlesticks"]                = _R,
+    ["Galio"]                       = _R,
+    ["Lucian"]                      = _R,
+    ["MissFortune"]                 = _R,
+    ["VelKoz"]                      = _R,
+    ["Nunu"]                        = _R,
+    ["Shen"]                        = _R,
+    ["Karthus"]                     = _R,
+    ["Malzahar"]                    = _R,
+    ["Pantheon"]                    = _R,
+    ["Warwick"]                     = _R,
+    ["Xerath"]                      = _R,
+}
 
 OnLoop(function(myHero)
 Drawings()
@@ -181,6 +198,19 @@ elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
 end
+
+OnProcessSpell(function(unit, spell)
+    if not unit or GetTeam(unit) == GetTeam(GetMyHero()) or not CHANELLING_SPELLS[GetObjectName(unit)] ) then
+        if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero, _E) == READY then
+                CastTargetSpell(unit, _E)
+        end
+   end
+        if (spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)])) and (spell.target == GetMyHero() or GetDistance(spell.endPos) < 2000) then
+       if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY then
+          CastTargetSpell(unit, _E)
+        end
+        end
+end)
 
 function Drawings()
 -- Thanks Laiha senpai for this ♥
