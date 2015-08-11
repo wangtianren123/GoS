@@ -17,7 +17,7 @@ OnLoop(function(myHero)
 					
                                 local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,125,400,110,false,true)
                                 if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E and ((GetCurrentHP(myHero)/(GetMaxHP(myHero)/100))) > 26 then
-                                CastSkillShot(_E,EPred.PredPos.x-400,EPred.PredPos.y-400,EPred.PredPos.z-400)
+                                CastSkillShot(_E,EPred.PredPos.x-400,EPred.PredPos.y, EPred.PredPos.z-400)
 		                else if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E and ((GetCurrentHP(myHero)/(GetMaxHP(myHero)/100))) < 26 then
                                 CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		                end
