@@ -11,8 +11,8 @@ DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
 AutolvlConfig = scriptConfig("Autolvl","Autolvl")
-AutolvlConfig.addParam("1to3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
-AutolvlConfig.addParam("4to18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
+AutolvlConfig.addParam("Level1to3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
+AutolvlConfig.addParam("Level4to18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
 AutolvlConfig.addParam('1to3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E'})
 AutolvlConfig.addParam('4to18Level', 'Level 4-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
 
@@ -149,11 +149,11 @@ if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
 end
 
 function LevelUp()
-    if AutolvlConfig.1to3 and GetLevel(myHero) < 4 then
+    if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
         LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.1to3Level]]GetLevel(myHero)])
     end
 
-    if AutolvlConfig.4to18 and GetLevel(myHero) > 3 then
+    if AutolvlConfig.Level4to18 and GetLevel(myHero) > 3 then
         LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.4to18Level]]GetLevel(myHero)])
     end
 end
