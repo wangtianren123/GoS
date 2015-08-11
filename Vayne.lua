@@ -1,14 +1,14 @@
 require 'MapPositionGOS'
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
--- exopidion is dumb
 Config = scriptConfig("Vayne", "Vayne")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
 Config.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
---Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("R", "Use R (Soon)", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig = scriptConfig("Drawings", "Drawings:")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
+DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
 
 myIAC = IAC()
 
@@ -115,7 +115,20 @@ function AutoE()
 end
 
 function Drawings()
-myHeroPos = GetOrigin(myHero)
+-- Thanks Laiha senpai for this ♥
+  for _, unit in pairs(GetEnemyHeroes()) do
+if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
+local unitPos=GetOrigin(unit)
+local vectorx = unitPos.x-GetOrigin(myHero).x
+local vectory = unitPos.y-GetOrigin(myHero).y
+local vectorz = unitPos.z-GetOrigin(myHero).z
+local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
+                ourcoord={x = unitPos.x + 450 * vectorx / dist ,y = unitPos.y + 450 * vectory / dist, z = unitPos.z + 450 * vectorz / dist}
+                DrawCircle(ourcoord.x,ourcoord.y,ourcoord.z,25,1,1,0xffffffff)myHeroPos = GetOrigin(myHero)
+  end
+end
+
+
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
-AddGapcloseEvent(_E, 475, true)
+AddGapcloseEvent(_E, 450, true)
