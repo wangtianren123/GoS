@@ -172,7 +172,8 @@ if GetLevel(myHero) == 3 then
 end
 
 end
-
+end
+end
 
 function Drawings()
 -- Thanks Laiha senpai for this ♥
