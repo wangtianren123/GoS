@@ -7,7 +7,7 @@ OnLoop(function(myHero)
 local HeroPos = GetOrigin(myHero)
 local mousePos = GetMousePos()
 local Pos = Vector(HeroPos) + 400 * (Vector(mousePos) - Vector(HeroPos)):normalized()
-if Config.R anf GotBuff(myHero, "SionR") > 0 then
+if Config.R and GotBuff(myHero, "SionR") > 0 then
 MoveToXYZ(Pos.x, Pos.y, Pos.z)
 end
 end)
