@@ -150,11 +150,11 @@ end
 
 function LevelUp()
     if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to3Level]]GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to3Level]][GetLevel(myHero)])
     end
 
     if AutolvlConfig.Level4to18 and GetLevel(myHero) > 3 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]]GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]][GetLevel(myHero)])
     end
 end
 
