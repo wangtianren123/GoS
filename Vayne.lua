@@ -7,21 +7,20 @@ Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
 Config.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
 Config.addParam("R", "Use R (Soon)", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
-AutolvlConfig = scriptConfig("Autolvl","Autolvl")
-AutolvlConfig.addParam("Level1to3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
-AutolvlConfig.addParam('to3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
---AutolvlConfig.addParam("Level4to18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
---AutolvlConfig.addParam('to18Level', 'Level 1-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
-
 
 myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
 CheckLevel()
+
+if Config.Autolvl then
+LevelUp()
+end
 
 if Config.AutoE then
 AutoE()
@@ -122,57 +121,44 @@ function AutoE()
 	end
 end
 
+function LevelUp()     
 
-function CheckLevel()
-local LastLevelCheck = 0
-    if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
-        LastLevelCheck = GetTickCount()
-        if GetLevel(myHero) ~= LastHeroLevel then
-            DelayAction(function() LevelUp() end, 250)
-            LastHeroLevel = GetLevel(myHero)
-        end
-    end
-end
-
-function LevelUp()
-
-    if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
-if AutolvlConfig.to3Level == { 'Q-W-E' } then
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
-end
-if GetLevel(myHero) == 2 then
+elseif GetLevel(myHero) == 2 then
 	LevelSpell(_W)
-end
-if GetLevel(myHero) == 3 then
+elseif GetLevel(myHero) == 3 then
 	LevelSpell(_E)
-end        
-
-elseif AutolvlConfig.to3Level == { 'Q-E-W' } then
-if GetLevel(myHero) == 1 then
-	LevelSpell(_Q)
-end
-if GetLevel(myHero) == 2 then
-	LevelSpell(_E)
-end
-if GetLevel(myHero) == 3 then
+elseif GetLevel(myHero) == 4 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 5 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 6 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) == 7 then
 	LevelSpell(_W)
-end
-
-
-elseif AutolvlConfig.to3Level == { 'W-Q-E' } then
-if GetLevel(myHero) == 1 then
-	LevelSpell(_W)
-end
-if GetLevel(myHero) == 2 then
-	LevelSpell(_Q)
-end
-if GetLevel(myHero) == 3 then
-	LevelSpell(_E)
-end
-
-end
-end
+elseif GetLevel(myHero) == 8 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 9 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 10 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 11 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) == 12 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 14 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 15 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 16 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) == 17 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_E)
 end
 
 function Drawings()
