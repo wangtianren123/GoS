@@ -144,7 +144,7 @@ if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
         LastLevelCheck = GetTickCount()
         if GetLevel(myHero) ~= LastHeroLevel then
             DelayAction(function() LevelUp() end, 0.25)
-            LastHeroLevel = GetLevel(myHero)-1
+            LastHeroLevel = GetLevel(myHero)
         end
     end
 end
