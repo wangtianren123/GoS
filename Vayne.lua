@@ -21,6 +21,7 @@ myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
+CheckLevel()
 
 if Config.AutoE then
 AutoE()
