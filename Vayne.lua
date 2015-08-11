@@ -16,7 +16,6 @@ myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
-CheckLevel()
 
 if Config.Autolvl then
 LevelUp()
@@ -160,7 +159,7 @@ elseif GetLevel(myHero) == 17 then
 elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
-
+end
 function Drawings()
 -- Thanks Laiha senpai for this ♥
   for _, unit in pairs(GetEnemyHeroes()) do
