@@ -160,6 +160,7 @@ elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
 end
+
 function Drawings()
 -- Thanks Laiha senpai for this ♥
   for _, unit in pairs(GetEnemyHeroes()) do
