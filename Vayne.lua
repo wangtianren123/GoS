@@ -1,5 +1,6 @@
 require 'MapPositionGOS'
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
+PrintChat("Please don't forget to turn off F7 orbwalker!")
 Config = scriptConfig("Vayne", "Vayne")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
