@@ -1,8 +1,5 @@
 Config = scriptConfig("Sion", "Sion")
-Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("R", "Use R (Exploit)", SCRIPT_PARAM_KEYDOWN, string.byte("R")
+Config.addParam("R", "Use R (Exploit)", SCRIPT_PARAM_KEYDOWN, string.byte("R"))
 
 myIAC = IAC()
 
