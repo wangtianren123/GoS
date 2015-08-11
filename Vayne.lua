@@ -6,9 +6,15 @@ Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
 Config.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
 Config.addParam("R", "Use R (Soon)", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig = scriptConfig("Drawings", "Drawings:")
+DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
+AutolvlConfig = scriptConfig("Autolvl","Autolvl")
+AutolvlConfig.addParam("1-3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
+AutolvlConfig.addParam("4-18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
+AutolvlConfig.addParam('1-3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E'})
+AutolvlConfig.addParam('4-18Level', 'Level 4-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
+
 
 myIAC = IAC()
 
@@ -113,6 +119,44 @@ function AutoE()
 		end
 	end
 end
+
+AutoLevelSpellTable = {
+        ['SpellOrder']	= {'QWE', 'QEW', 'WQE'},
+
+        ['QWE']	= {_Q,_W,_E,_Q,_Q,_R,_Q,_W,_Q,_W,_R,_W,_W,_E,_E,_R,_E,_E},
+     
+        ['QEW']	=    {_Q,_E,_W,_Q,_Q,_R,_Q,_E,_Q,_E,_R,_E,_E,_W,_W,_R,_W,_W},
+    
+        ['WQE']    =      {_W,_Q,_E,_W,_W,_R,_W,_Q,_W,_Q,_R,_Q,_Q,_E,_E,_R,_E,_E}
+    }
+
+function CheckLevel()
+local LastLevelCheck = 0
+if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
+        if GetLevel(myHero) < 4 and AutolvlConfig.1-3 then
+            LevelSpell(_Q)
+            LevelSpell(_W)
+            LevelSpell(_E)
+        end
+
+        LastLevelCheck = GetTickCount()
+        if GetLevel(myHero) ~= LastHeroLevel then
+            DelayAction(function() LevelUp() end, 0.25)
+            LastHeroLevel = GetLevel(myHero)
+        end
+    end
+end
+
+function LevelUp()
+    if AutolvlConfig.1-3 and GetLevel(myHero) < 4 then
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.1-3Level]]GetLevel(myHero)])
+    end
+
+    if AutolvlConfig.4-18 and GetLevel(myHero) > 3 then
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.4-18Level]]GetLevel(myHero)])
+    end
+end
+
 
 function Drawings()
 -- Thanks Laiha senpai for this ♥
