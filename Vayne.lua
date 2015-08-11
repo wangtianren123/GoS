@@ -13,8 +13,8 @@ DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, tru
 AutolvlConfig = scriptConfig("Autolvl","Autolvl")
 AutolvlConfig.addParam("Level1to3", "Use AutoLevelSpells Level 1-3", SCRIPT_PARAM_ONOFF, false)
 AutolvlConfig.addParam("Level4to18", "Use AutoLevelSpells Level 4-18", SCRIPT_PARAM_ONOFF, false)
-AutolvlConfig.addParam('1to3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E'})
-AutolvlConfig.addParam('4to18Level', 'Level 4-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
+AutolvlConfig.addParam('to3Level', 'Level 1-3:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E'})
+AutolvlConfig.addParam('to18Level', 'Level 4-18:', SCRIPT_PARAM_LIST, 1, { 'Q-W-E', 'Q-E-W', 'W-Q-E' })
 
 
 myIAC = IAC()
@@ -134,7 +134,7 @@ AutoLevelSpellTable = {
 function CheckLevel()
 local LastLevelCheck = 0
 if LastLevelCheck + 250 < GetTickCount() and GetLevel(myHero) < 19 then
-        if GetLevel(myHero) < 4 and AutolvlConfig.1to3 then
+        if GetLevel(myHero) < 4 and AutolvlConfig.Level1to3 then
             LevelSpell(_Q)
             LevelSpell(_W)
             LevelSpell(_E)
@@ -150,11 +150,11 @@ end
 
 function LevelUp()
     if AutolvlConfig.Level1to3 and GetLevel(myHero) < 4 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.1to3Level]]GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to3Level]]GetLevel(myHero)])
     end
 
     if AutolvlConfig.Level4to18 and GetLevel(myHero) > 3 then
-        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.4to18Level]]GetLevel(myHero)])
+        LevelSpell(AutoLevelSpellTable[AutoLevelSpellTable['SpellOrder'][AutolvlConfig.to18Level]]GetLevel(myHero)])
     end
 end
 
