@@ -13,5 +13,4 @@ local Pos = Vector(HeroPos) + 400 * (Vector(mousePos) - Vector(HeroPos)):normali
 if Config.R anf GotBuff(myHero, "SionR") > 0 then
 MoveToXYZ(Pos.x, Pos.y, Pos.z)
 end
-end
 end)
