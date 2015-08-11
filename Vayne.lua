@@ -11,7 +11,11 @@ Config.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig.addParam("DrawWT","WT Positions",SCRIPT_PARAM_ONOFF,true)
+DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
+ItemsConfig = scriptConfig("Items", "Items")
+ItemsConfig.addParam("Item1","Use BotRk",SCRIPT_PARAM_ONOFF,true)
+ItemsConfig.addParam("Item2","Use Bilgewatmter Cutlass",SCRIPT_PARAM_ONOFF,true)
+ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
 
 myIAC = IAC()
@@ -44,15 +48,15 @@ if IWalkConfig.Combo then
                       end 
 
    
-if GetItemSlot(myHero,3153) > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3153))
 end
 
-if GetItemSlot(myHero,3144) > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+if GetItemSlot(myHero,3144) > 0 and ItemsConfig.Item2 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3144))
 end
 
-if GetItemSlot(myHero,3142) > 0 then
+if GetItemSlot(myHero,3142) > 0 and ItemsConfig.Item3 then
 CastTargetSpell(target, GetItemSlot(myHero,3142))
 end
 
