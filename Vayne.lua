@@ -11,6 +11,8 @@ Config.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
+DrawingsConfig.addParam("DrawWT","WT Positions",SCRIPT_PARAM_ONOFF,true)
+
 
 myIAC = IAC()
 
@@ -27,12 +29,12 @@ end
 
 if IWalkConfig.Combo then
         
-                local target = GetTarget(550, DAMAGE_PHYSICAL)
+                local target = GetTarget(600, DAMAGE_PHYSICAL)
                 local HeroPos = GetOrigin(myHero)
                 local mousePos = GetMousePos()
                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
                 local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
-		if ValidTarget(target, 550) and Config.Q then
+		if ValidTarget(target, 600) and Config.Q then
                 
                        if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                        CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
@@ -40,6 +42,21 @@ if IWalkConfig.Combo then
                        if GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
                       CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                       end 
+
+   
+if GetItemSlot(myHero,3153) > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+CastTargetSpell(target, GetItemSlot(myHero,3153))
+end
+
+if GetItemSlot(myHero,3144) > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+CastTargetSpell(target, GetItemSlot(myHero,3144))
+end
+
+if GetItemSlot(myHero,3142) > 0 then
+CastTargetSpell(target, GetItemSlot(myHero,3142))
+end
+
+
                 end
 end
    local HeroPos = GetOrigin(myHero)
@@ -175,6 +192,10 @@ local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
   end
 end
 
+if DrawingsConfig.DrawWT then
+DrawCircle(6962, 51, 8952,80, ARGB(0xFF,0,0xFF,0))
+DrawCircle(12060, 51, 4806,80, ARGB(0xFF,0,0xFF,0))
+end
 
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
