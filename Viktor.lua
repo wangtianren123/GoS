@@ -50,9 +50,9 @@ Killsteal()
 					 local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,250,700,450,false,true)
 					 if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and Config.R and damage > GetCurrentHP(target) then
 					 CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-         elseif GetCastName(myHero, _R) == "viktorchaosstormguide" then
-    CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
-         end
+                                         elseif GetCastName(myHero, _R) == "viktorchaosstormguide" then
+                                         CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
+                                          end
 				end
 				
 				 if IWalkConfig.Harass then	
