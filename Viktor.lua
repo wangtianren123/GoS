@@ -23,7 +23,7 @@ myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
-Killsteal()
+--Killsteal()
         local target = GetTarget(1000, DAMAGE_MAGIC)
         local damage = CalcDamage(myHero, target, 0, (25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero)
         local targetpos=GetOrigin(target)
@@ -73,8 +73,8 @@ Killsteal()
 					 end
 					 
 					 if GetCastName(myHero, _R) == "viktorchaosstormguide" then
-    CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
-         end
+                                         CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
+                                         end
 				
 		end
 end)
