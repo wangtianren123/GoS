@@ -60,13 +60,9 @@ if IWalkConfig.Combo then
 			if CanUseSpell(myHero, _Q) == READY and Config.Q then
 			    if GotBuff(target, WStack) > 1 then
 				CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                end
-			    
-			    
-                if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
+                elseif  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                end
-                if GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                elseif GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
 
