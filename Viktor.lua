@@ -30,7 +30,7 @@ Drawings()
 					local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,0,1000,90,false,true)
 					local myHeroPos = GetMyHeroPos()
                     local distance = GetDistance(myHero, target)
-                    local castPos = (1200*EPred.Pos+(distance - 1200)*myHeroPos)/distance
+                    local castPos = (1200*EPred+(distance - 1200)*myHeroPos)/distance
 					if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
 					CastSkillShot3(_E,castPos,EPred.PredPos)
 					end
