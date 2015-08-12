@@ -19,25 +19,6 @@ ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
 myIAC = IAC()
 
-local CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = _R,
-    ["Katarina"]                    = _R,
-    ["MasterYi"]                    = _W,
-    ["Fiddlesticks"]                = _R,
-	["Fiddlesticks"]                = _W,
-    ["Galio"]                       = _R,
-    ["Lucian"]                      = _R,
-    ["MissFortune"]                 = _R,
-    ["VelKoz"]                      = _R,
-    ["Nunu"]                        = _R,
-    ["Shen"]                        = _R,
-    ["Karthus"]                     = _R,
-    ["Malzahar"]                    = _R,
-    ["Pantheon"]                    = _R,
-    ["Warwick"]                     = _R,
-    ["Xerath"]                      = _R,
-}
-
 OnLoop(function(myHero)
 Drawings()
 
@@ -203,14 +184,6 @@ elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
 end
-
-OnProcessSpell(function(unit, spell)
-        if (spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)])) and (spell.target == GetMyHero() or GetDistance(spell.endPos) < 2000) then
-          if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY then
-          CastTargetSpell(unit, _E)
-          end
-        end
-end)
 
 function Drawings()
   for _, unit in pairs(GetEnemyHeroes()) do
