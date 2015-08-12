@@ -51,16 +51,17 @@ end
 if IWalkConfig.Combo then
         
                 local target = GetTarget(600, DAMAGE_PHYSICAL)
+                local W = GotBuff(target, "
                 local HeroPos = GetOrigin(myHero)
                 local mousePos = GetMousePos()
                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-                local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
+                local DistanceAfterTumble = GetDistanceSqr(AfterTumblePos, Target)    
 		if ValidTarget(target, 600) and Config.Q then
                 
                        if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                        CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
                        end
-                       if GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                       if GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
                       CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                       end 
 
