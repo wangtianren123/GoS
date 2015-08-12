@@ -200,7 +200,7 @@ end
 end
 
 OnProcessSpell(function(unit, spell)
-    if not unit or GetTeam(unit) == GetTeam(GetMyHero()) or not CHANELLING_SPELLS[GetObjectName(unit)] ) then
+    if not unit or GetTeam(unit) == GetTeam(GetMyHero()) or not CHANELLING_SPELLS[GetObjectName(unit)] then
         if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero, _E) == READY then
                 CastTargetSpell(unit, _E)
         end
