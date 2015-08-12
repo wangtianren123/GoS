@@ -49,22 +49,28 @@ AutoE()
 end
 
 if IWalkConfig.Combo then
-        
-                local target = GetTarget(600, DAMAGE_PHYSICAL)
-                local W = GotBuff(target, "
-                local HeroPos = GetOrigin(myHero)
-                local mousePos = GetMousePos()
-                local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-                local DistanceAfterTumble = GetDistanceSqr(AfterTumblePos, Target)    
-		if ValidTarget(target, 600) and Config.Q then
+        local WStack = "vaynesilvereddebuff"
+        local target = GetTarget(600, DAMAGE_PHYSICAL)
+        local HeroPos = GetOrigin(myHero)
+        local mousePos = GetMousePos()
+        local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
+        local DistanceAfterTumble = GetDistanceSqr(AfterTumblePos, Target)    
+		if ValidTarget(target, 600) then
                 
-                       if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
-                       CastSkillShot(_Q, mousePos.x, mousePos.y,   mousePos.z)
-                       end
-                       if GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
-                      CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                      end 
+			if CanUseSpell(myHero, _Q) == READY and Config.Q then
+			    if GotBuff(target, WStack) > 1 then
+				CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                end
+			    
+			    
+                if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
+                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                end
+                if GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                end 
 
+			end
    
 if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3153))
@@ -79,7 +85,7 @@ CastTargetSpell(target, GetItemSlot(myHero,3142))
 end
 
 
-                end
+        end
 end
    local HeroPos = GetOrigin(myHero)
    if CanUseSpell(myHero, _Q) == READY then
@@ -214,7 +220,6 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function Drawings()
--- Thanks Laiha senpai for this ♥
   for _, unit in pairs(GetEnemyHeroes()) do
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
 local unitPos=GetOrigin(unit)
