@@ -29,10 +29,9 @@ Drawings()
 				if IWalkConfig.Combo then	
 					local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,0,1000,90,false,true)
 					local myHeroPos = GetMyHeroPos()
-                    local distance = GetDistance(myHero, target)
-                    local castPos = (1200*GetOrigin(target)+(distance - 1200)*myHeroPos)/distance
+                                        local start = Vector(myHero) - 530 * (Vector(myHero) - Vector(target)):normalized()
 					if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
-					CastSkillShot3(_E,castPos,EPred.PredPos)
+					CastSkillShot3(_E,start,EPred.PredPos)
 					end
 				end
 		end
