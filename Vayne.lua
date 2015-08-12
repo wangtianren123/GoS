@@ -41,14 +41,15 @@ end
     if IWalkConfig.Combo then    
 	
 	if CanUseSpell(myHero, _Q) == READY and Config.Q then
-		if GotBuff(target, "vaynesilvereddebuff") > 1 then
-		CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                elseif  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
+                if  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                elseif GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                end
+                if GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
-
+                if GotBuff(target, "vaynesilvereddebuff") > 1 then
+		CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+		end
 	end
    
 if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
