@@ -24,6 +24,7 @@ local CHANELLING_SPELLS = {
     ["Katarina"]                    = _R,
     ["MasterYi"]                    = _W,
     ["Fiddlesticks"]                = _R,
+	["Fiddlesticks"]                = _W,
     ["Galio"]                       = _R,
     ["Lucian"]                      = _R,
     ["MissFortune"]                 = _R,
@@ -48,25 +49,26 @@ if Config.AutoE then
 AutoE()
 end
 
-if IWalkConfig.Combo then
-        local WStack = "vaynesilvereddebuff"
-        local target = GetTarget(600, DAMAGE_PHYSICAL)
+        local target = GetTarget(700, DAMAGE_PHYSICAL)
         local HeroPos = GetOrigin(myHero)
         local mousePos = GetMousePos()
         local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-        local DistanceAfterTumble = GetDistanceSqr(AfterTumblePos, Target)    
-		if ValidTarget(target, 600) then
-                
-			if CanUseSpell(myHero, _Q) == READY and Config.Q then
-			    if GotBuff(target, WStack) > 1 then
-				CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+        local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
+		if ValidTarget(target, 700) then
+		
+		
+    if IWalkConfig.Combo then    
+	
+	if CanUseSpell(myHero, _Q) == READY and Config.Q then
+		if GotBuff(target, "vaynesilvereddebuff") > 1 then
+		CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 elseif  DistanceAfterTumble < 630*630 and DistanceAfterTumble > 300*300 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                elseif GetDistanceSqr(Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                elseif GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
 
-			end
+	end
    
 if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3153))
@@ -203,15 +205,10 @@ end
 end
 
 OnProcessSpell(function(unit, spell)
-    if not unit or GetTeam(unit) == GetTeam(GetMyHero()) or not CHANELLING_SPELLS[GetObjectName(unit)] then
-        if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero, _E) == READY then
-                CastTargetSpell(unit, _E)
-        end
-   end
         if (spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)])) and (spell.target == GetMyHero() or GetDistance(spell.endPos) < 2000) then
-       if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY then
+          if IsInDistance(unit, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY then
           CastTargetSpell(unit, _E)
-        end
+          end
         end
 end)
 
@@ -229,8 +226,8 @@ local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
 end
 
 if DrawingsConfig.DrawWT then
-DrawCircle(6962, 51, 8952,80, ARGB(0xFF,0,0xFF,0))
-DrawCircle(12060, 51, 4806,80, ARGB(0xFF,0,0xFF,0))
+DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
+DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
 end
 
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
