@@ -4,6 +4,7 @@ Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Autolvl", "Autolvl", SCRIPT_PARAM_ONOFF, false)
 KSConfig = scriptConfig("KS", "Killsteal:")
 KSConfig.addParam("KSQ", "Killsteal with Q", SCRIPT_PARAM_ONOFF, true)
 KSConfig.addParam("KSE", "Killsteal with E", SCRIPT_PARAM_ONOFF, true)
@@ -23,7 +24,15 @@ myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
+
+if Config.Autolvl then
+LevelUp()
+end
+
 --Killsteal()
+
+
+
         local target = GetTarget(1000, DAMAGE_MAGIC)
         local damage = CalcDamage(myHero, target, 0, (25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero)
         local targetpos=GetOrigin(target)
@@ -83,6 +92,47 @@ end)
 	--for i,enemy in pairs(GetEnemyHeroes()) do
 	--end
 --end
+
+function LevelUp()     
+
+if GetLevel(myHero) == 1 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) == 2 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) == 3 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) == 4 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 5 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 6 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) == 7 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) == 8 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 9 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 10 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 11 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) == 12 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 14 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 15 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 16 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) == 17 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_W)
+end
+end
 
 function Drawings()
 myHeroPos = GetOrigin(myHero)
