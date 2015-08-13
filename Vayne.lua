@@ -199,6 +199,7 @@ local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
                 DrawCircle(ourcoord.x,ourcoord.y,ourcoord.z,25,1,1,0xffffffff)myHeroPos = GetOrigin(myHero)
   end
 end
+end
 
 if DrawingsConfig.DrawWT then
 DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
