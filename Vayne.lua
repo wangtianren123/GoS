@@ -188,7 +188,7 @@ end
 
 function Drawings()
   for _, unit in pairs(GetEnemyHeroes()) do
-if GetDistance(GetOrigin(myHero), unit) < 1000
+if GetDistance(GetOrigin(myHero), unit) < 1000 then
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
 local unitPos=GetOrigin(unit)
 local vectorx = unitPos.x-GetOrigin(myHero).x
