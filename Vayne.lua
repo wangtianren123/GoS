@@ -17,8 +17,6 @@ ItemsConfig.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
-myIAC = IAC()
-
 OnLoop(function(myHero)
 Drawings()
 
