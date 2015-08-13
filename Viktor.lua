@@ -84,6 +84,7 @@ end
 					 if GetCastName(myHero, _R) == "viktorchaosstormguide" then
                                          CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
                                          end
+                                  end
 				
 		end
 end)
