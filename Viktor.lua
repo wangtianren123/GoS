@@ -34,7 +34,6 @@ end
 
 
         local target = GetTarget(1000, DAMAGE_MAGIC)
-        local damage = CalcDamage(myHero, target, 0, (25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero))
         local targetpos = GetOrigin(target)
 		if ValidTarget(target, 1000) then
             
@@ -56,12 +55,15 @@ end
 					CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 					end
 					 
+			            if CanUseSpell(myHero, _R) == READY then
 					local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,250,700,450,false,true)
-					if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and Config.R then
+				        local damage = CalcDamage(myHero, target, 0, 25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero))
+					if Config.R and RPred.HitChance == 1 and damage > GetCurrentHP(target) then
 					CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
                                         elseif GetCastName(myHero, _R) == "viktorchaosstormguide" then
                                         CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
                                         end
+				    end
 				end
 				
 				 if IWalkConfig.Harass then	
@@ -82,13 +84,12 @@ end
 					 end
 					 
 					 if GetCastName(myHero, _R) == "viktorchaosstormguide" then
-                                        CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
-                                        end
+                                         CastSkillShot(_R, targetpos.x,targetpos.y, targetpos.z)
+                                         end
 					 
                                end
 				
 		end
-end
 end)
 
 --function Killsteal()
