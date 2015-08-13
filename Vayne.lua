@@ -85,7 +85,7 @@ end)
 
 function AutoE()
 	 for _,target in pairs(GetEnemyHeroes()) do
-		if ValidTarget(target,20000) then
+		if ValidTarget(target,1000) then
 			local enemyposx,enemyposy,enemypoz,selfx,selfy,selfz
 			local distance1=24
 			local distance2=118
@@ -188,6 +188,7 @@ end
 
 function Drawings()
   for _, unit in pairs(GetEnemyHeroes()) do
+if GetDistance(GetOrigin(myHero), unit) < 1000
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
 local unitPos=GetOrigin(unit)
 local vectorx = unitPos.x-GetOrigin(myHero).x
