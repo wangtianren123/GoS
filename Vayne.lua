@@ -187,6 +187,7 @@ end
 end
 
 function Drawings()
+local HeroPos = GetOrigin(myHero)
   for _, unit in pairs(GetEnemyHeroes()) do
 if GetDistance(GetOrigin(myHero), unit) < 1000 then
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
@@ -206,6 +207,6 @@ DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
 DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
 end
 
-if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
 AddGapcloseEvent(_E, 450, true)
