@@ -92,10 +92,17 @@ end
 		end
 end)
 
---function Killsteal()
-	--for i,enemy in pairs(GetEnemyHeroes()) do
-	--end
---end
+function Killsteal()
+	for i,enemy in pairs(GetEnemyHeroes()) do
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,1225,80,false,true)
+		local myHeroPos = GetMyHeroPos()
+                local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
+		if CanUseSpell(myHero, _E) and ValidTarget(enemy,1225) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero))) then
+		CastSkillShot3(_E,StartPos,EPred.PredPos)
+		elseif 
+		end
+	end
+end
 
 function LevelUp()     
 
