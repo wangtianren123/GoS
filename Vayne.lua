@@ -61,7 +61,7 @@ CastTargetSpell(target, GetItemSlot(myHero,3144))
 end
 
 if GetItemSlot(myHero,3142) > 0 and ItemsConfig.Item3 then
-CastTargetSpell(target, GetItemSlot(myHero,3142))
+CastTargetSpell(myHero, GetItemSlot(myHero,3142))
 end
 
 
