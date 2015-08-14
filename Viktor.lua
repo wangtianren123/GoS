@@ -96,15 +96,14 @@ function Killsteal()
 	for i,enemy in pairs(GetEnemyHeroes()) do
 		local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,1225,80,false,true)
                 local RPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,250,700,450,false,true)
-		local myHeroPos = GetMyHeroPos()
                 local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
-		if CanUseSpell(myHero, _E) and ValidTarget(enemy,1225) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero))) then
+		if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,1225) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero))) then
 		CastSkillShot3(_E,StartPos,EPred.PredPos)
 
-		elseif CanUseSpell(myHero, _R) and ValidTarget(enemy, GetCastRange(myHero, _R) and KSConfig.KSR and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero))) then  
-CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-                 elseif CanUseSpell(myHero,_Q) and ValidTarget(enemy, GetCastRange(myHero,_Q) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero))) then
-                 CastTargetSpell(enemy, _Q)
+		elseif CanUseSpell(myHero, _R) == READY and ValidTarget(enemy, GetCastRange(myHero, _R) and KSConfig.KSR and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero))) then  
+                CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
+                elseif CanUseSpell(myHero,_Q) == READY and ValidTarget(enemy, GetCastRange(myHero,_Q) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero))) then
+                CastTargetSpell(enemy, _Q)
               
 		end
 	end
