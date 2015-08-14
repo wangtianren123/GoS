@@ -12,20 +12,29 @@ HarassConfig.addParam("HarassE", "Harass E (C)", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig = scriptConfig("Drawings", "Drawings:")
 DrawingsConfig.addParam("DrawQ","Draw Q", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawR","Draw R", SCRIPT_PARAM_ONOFF, true)
+-- this is the menu you can change Config. to what you want :'), true mean ON by Default, false mean Off
 
+-- load IAC without plugins
 myIAC = IAC()
 
+-- this gets executed every frame
 OnLoop(function(myHero)
+-- this is the Drawings Function at line 77
 Drawings()
+-- this is the Killsteal Function at line 88
 Killsteal()
-
+        -- if we dont press spacebar we do nothing
         if IWalkConfig.Combo then
+              -- grab best target in 1000 range
 	      local target = GetTarget(1000, DAMAGE_MAGIC)
+	        -- if the target is valid and (still) in 1000 range
 	        if ValidTarget(target, 1000) then
 	              	
-	              	
+	              	-- GetPredictionForPlayer(startPosition, targetUnit, targetUnitMoveSpeed, spellTravelSpeed, spellDelay, spellRange, spellWidth, collision, addHitBox)
 		        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,250,GetCastRange(myHero,_Q),70,true,true)
+		        -- if Q is ready and Hitchance = 1 and target is still valid at Q range and Use Q is on in menu then
                         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_Q)) and Config.Q then
+                        -- CastSkillShot at the predicted Pos : QPred
                         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	                end
                           
@@ -43,7 +52,7 @@ Killsteal()
 	                      
                 end
 	end	
-	
+	-- if we dont press C we do nothing
 	if IWalkConfig.Harass then
 	     local target = GetTarget(1000, DAMAGE_MAGIC)
 		              
