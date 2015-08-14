@@ -167,7 +167,7 @@ local ExtraDmg = 0
 	end
 end
 
-[[function WardJump()
+function WardJump()
     if casted and jumped then casted, jumped = false, false
     elseif CanUseSpell(myHero, wjspell) == READY then
       local pos = Vector(myHero) + Vector(Vector(GetMousePos()) - Vector(myHero)):normalized() * wjrange
@@ -205,7 +205,7 @@ function GetWardSlot()
     end
     return nil
 end
-]]
+
 
 function Drawings()
 myHeroPos = GetOrigin(myHero)
