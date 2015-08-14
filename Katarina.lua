@@ -8,7 +8,7 @@ Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("AutoQ", "Use Q", SCRIPT_PARAM_ONOFF, false)
 Config.addParam("AutoW", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("KS", "Use Smart KS", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("WJ", "Ward Jump", SCRIPT_PARAM_KEYDOWN, string.byte("G"))
+Config.addParam("WJ", "Ward Jump (broken)", SCRIPT_PARAM_KEYDOWN, string.byte("G"))
 HarassConfig = scriptConfig("Harass", "Harass:")
 HarassConfig.addParam("HarassQ", "Harass Q (C)", SCRIPT_PARAM_ONOFF, true)
 HarassConfig.addParam("HarassW", "Harass W (C)", SCRIPT_PARAM_ONOFF, true)
@@ -46,9 +46,9 @@ if Config.KS then
 Killsteal()
 end
 
-if Config.WJ or casted then
-WardJump() 
-end
+--if Config.WJ or casted then
+--WardJump() 
+--end
 
 local target = GetTarget((CanUseSpell(myHero, _E) == READY and 700 or CanUseSpell(myHero, _Q) == READY and GetCastRange(myHero,_Q) or 375) , DAMAGE_MAGIC)
 if target and DrawingsConfig.DrawHP then
