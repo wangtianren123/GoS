@@ -17,7 +17,6 @@ DrawingsConfig.addParam("DrawQ","Draw Q", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawW","Draw W", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawR","Draw R", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig.addParam("DrawWJ", "Draw WJ Pos", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawHP", "Draw Damage", SCRIPT_PARAM_ONOFF, true)
 
 local myHero = GetMyHero()
@@ -35,6 +34,7 @@ OnObjectLoop(function(obj, myHero)
     if GetTeam(obj) == myTeam and (objName:lower():find("ward") or objName:lower():find("trinkettotem")) then
       wardTable[GetNetworkID(obj)] = obj
     end
+	end
 end)
 
 OnLoop(function(myHero)
@@ -46,7 +46,7 @@ Killsteal()
 end
 
 if Config.WJ or casted then
-WardJump()
+WardJump() 
 end
 
 local target = GetTarget((CanUseSpell(myHero, _E) == READY and 700 or CanUseSpell(myHero, _Q) == READY and GetCastRange(myHero,_Q) or 375) , DAMAGE_MAGIC)
@@ -79,21 +79,21 @@ end
 
 if Config.AutoQ then
 local target = GetTarget(GetCastRange(myHero,_Q), DAMAGE_MAGIC)
-   if CanUseSpell(myHero, _Q) == READY then
+   if CanUseSpell(myHero, _Q) == READY and ValidTarget(target, GetCastRange(myHero,_Q)) then
    CastTargetSpell(target, _Q)
    end
 end
 
-if Config.AutoW
+if Config.AutoW then
 local target = GetTarget(GetCastRange(myHero,_W), DAMAGE_MAGIC)
-   if CanUseSpell(myHero, _W) == READY then
+   if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) then
    CastSpell(_W)
    end
 end
 
-if IWalkConfig.Combo then
+if ValidTarget(target, 700) then
       local target = GetTarget((CanUseSpell(myHero, _E) == READY and 700 or CanUseSpell(myHero, _Q) == READY and GetCastRange(myHero,_Q) or 375) , DAMAGE_MAGIC)
- if ValidTarget(target, 700) then
+ if IWalkConfig.Combo then
      
     if CanUseSpell(myHero, _Q) == READY and Config.Q then
       CastTargetSpell(target, _Q)
@@ -109,9 +109,9 @@ if IWalkConfig.Combo then
  end
 end
 
-if IWalkConfig.Harass then
-       local target = GetTarget((CanUseSpell(myHero, _E) == READY and 700 or CanUseSpell(myHero, _Q) == READY and GetCastRange(myHero,_Q) or 375) , DAMAGE_MAGIC)
- if ValidTarget(target, 700) then
+if ValidTarget(target, 700) then
+       local target = GetTarget((CanUseSpell(myHero, _E) == READY and 700 or 550) , DAMAGE_MAGIC)
+ if IWalkConfig.Harass then
      
     if CanUseSpell(myHero, _Q) == READY and HarassConfig.HarassQ then
       CastTargetSpell(target, _Q)
@@ -135,67 +135,34 @@ end)
 
 function Killsteal()
   for i,enemy in pairs(GetEnemyHeroes()) do
-local Ignite = (GetCastName(myHero,SUMMONER_1):lower():find("summonerdot") and SUMMONER_1 or (GetCastName(GetMyHero(),SUMMONER_2):lower():find("summonerdot") and SUMMONER_2 or nil
+local Ignite = (GetCastName(myHero,SUMMONER_1):lower():find("summonerdot") and SUMMONER_1 or (GetCastName(GetMyHero(),SUMMONER_2):lower():find("summonerdot") and SUMMONER_2)) or nil
 local ExtraDmg = 0
 				if Ignite ~= nil and CanUseSpell(myHero, Ignite) == READY then
 					ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
 				end
 				
-				if CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(target,GetCastRange(myHero,_W)) then 
+				if CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_W)) then 
 				CastSpell(_W)
 				
-				elseif CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero))) and ValidTarget(target,GetCastRange(myHero,_Q)) then 
+				elseif CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_Q)) then 
 				CastTargetSpell(enemy, _Q)
 				
-				 elseif CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero))) and ValidTarget(target,GetCastRange(myHero,_E)) then 
+				elseif CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
 				CastTargetSpell(enemy, _E)
 				
-				 elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(target,GetCastRange(myHero,_W)) then 
+				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_W)) then 
 				CastSpell(_W)
 				CastTargetSpell(enemy, _Q)
 				
-				 elseif CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(target,GetCastRange(myHero,_E)) then 
+				elseif CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
 				CastTargetSpell(enemy, _E)
 				CastSpell(_W)
 				
-				 elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero))) and ValidTarget(target,GetCastRange(myHero,_E)) then 
+				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero))) and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
 				CastTargetSpell(enemy, _E)
 				CastTargetSpell(enemy, _Q)
 				CastSpell(_W)
-				end
-
-function WardJumpKS()
-				local WardPos = myHero + (Vector(enemy) - myHero):normalized()*590
-				if casted and jumped then casted, jumped = false, false
-				 if JumpKS(WardPos) then return end
-      slot = GetWardSlot()
-      if not slot or casted then return end
-      casted = true
-end
-      
-function JumpKS()
-      for i, minion in pairs(GetAllMinions(MINION_ALLY)) do
-      if GetDistanceSqr(GetOrigin(minion), WardPos) <= 250*250 then
-        CastTargetSpell(minion, _E)
-        jumped = true
-        return true
-      end
-    end
-    for i, ward in pairs(wardTable) do
-      if GetDistanceSqr(GetOrigin(ward), WardPos) <= 250*250 then
-        CastTargetSpell(ward, _E)
-        jumped = true
-        return true
-      end
-    end
-end
-				if ValidTarget(enemy, GetCastRange(myHero,_Q) + 590) and (GetDistance(myHero, enemy) > GetCastRange(myHero,_E)) and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero))) then
-				 local WardPos = myHero + (Vector(enemy) - myHero):normalized()*590
-					if WardPos then
-					CastSkillShot(slot, WardPos.x, WardPos.y, WardPos.z)
-					WardJumpKS()
-					CastTargetSpell(enemy, _Q)
-					end				
+				end			
 	end
 end
 
@@ -236,8 +203,6 @@ function GetWardSlot()
       end
     end
     return nil
-  end
-
 end
 
 function Drawings()
@@ -246,8 +211,4 @@ if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(myH
 if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawW then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z, GetCastRange(myHero,_E) ,3,100,0xff00ff00) end
 if CanUseSpell(myHero, _R) == READY and DrawingsConfig.DrawR then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
-if DrawingsConfig.DrawWJ then
-local pos = Vector(myHero) + Vector(Vector(GetMousePos()) - Vector(myHero)):normalized() * wjrange
-Circle(pos,150):draw()
-end
 end
