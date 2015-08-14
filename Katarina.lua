@@ -1,4 +1,5 @@
 PrintChat("D3ftland Katarina By Deftsu Loaded, Have A Good Game!")
+PrintChat("Please don't forget to turn off F7 orbwalker!")
 Config = scriptConfig("Katarina", "Katarina")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
