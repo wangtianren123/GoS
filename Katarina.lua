@@ -143,16 +143,16 @@ local ExtraDmg2 = 0
 				
 				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg2)) and ValidTarget(enemy,GetCastRange(myHero,_W)) then 
 				CastSpell(_W)
-				DelayAction(function() CastTargetSpell(enemy, _Q) end, 0.25)
+				DelayAction(function() CastTargetSpell(enemy, _Q) end, 0.1)
 				
 				elseif CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg2)) and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
 				CastTargetSpell(enemy, _E)
-				DelayAction(function() CastSpell(_W) end, 0.25)
+				DelayAction(function() CastSpell(_W) end, 0.1)
 				
 				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + ExtraDmg2)) and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
 				CastTargetSpell(enemy, _E)
-				DelayAction(function() CastTargetSpell(enemy, _Q) end, 0.25)
-				DelayAction(function() CastSpell(_W) end, 0.25)
+				DelayAction(function() CastTargetSpell(enemy, _Q) end, 0.1)
+				DelayAction(function() CastSpell(_W) end, 0.1)
 				end			
 	end
 end
