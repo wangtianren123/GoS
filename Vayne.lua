@@ -10,14 +10,48 @@ Config.addParam("R", "Use R (Soon)", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig.addParam("DrawE2","Draw E Push Distance", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig = scriptConfig("Items", "Items")
 ItemsConfig.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
-_G.CastOffensiveItems = function() end
+myIAC = IAC()
+
+CHANELLING_SPELLS = {
+    ["Caitlyn"]                     = {_R},
+    ["Katarina"]                    = {_R},
+    ["MasterYi"]                    = {_W},
+    ["FiddleSticks"]                = {_W, _R},
+    ["Galio"]                       = {_R},
+    ["Lucian"]                      = {_R},
+    ["MissFortune"]                 = {_R},
+    ["VelKoz"]                      = {_R},
+    ["Nunu"]                        = {_R},
+    ["Shen"]                        = {_R},
+    ["Karthus"]                     = {_R},
+    ["Malzahar"]                    = {_R},
+    ["Pantheon"]                    = {_R},
+    ["Warwick"]                     = {_R},
+    ["Xerath"]                      = {_R},
+}
+
+local callback = nil
+ 
+OnProcessSpell(function(unit, spell)    
+    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
+ 
+        if unitChanellingSpells then
+            for _, spellSlot in pairs(unitChanellingSpells) do
+                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
+            end
+		end
+end)
+ 
+function addInterrupterCallback( callback0 )
+        callback = callback0
+end
 
 OnLoop(function(myHero)
 Drawings()
@@ -34,18 +68,20 @@ end
         local HeroPos = GetOrigin(myHero)
         local mousePos = GetMousePos()
         local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-        local DistanceAfterTumble = GetDistance(AfterTumblePos, Target)    
+        local DistanceAfterTumble = GetDistance(AfterTumblePos, target)    
 		if ValidTarget(target, 700) then
 		
 		
     if IWalkConfig.Combo then    
 	
 	if CanUseSpell(myHero, _Q) == READY and Config.Q then
-               
-                if GetDistance(myHero, Target) > 630*630 and DistanceAfterTumble < 630*630 then
+                if  DistanceAfterTumble < 630 and DistanceAfterTumble > 300 then
+                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                end
+                if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
-               	end
+    end
    
 if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3153))
@@ -56,7 +92,7 @@ CastTargetSpell(target, GetItemSlot(myHero,3144))
 end
 
 if GetItemSlot(myHero,3142) > 0 and ItemsConfig.Item3 then
-CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+CastTargetSpell(GetItemSlot(myHero,3142))
 end
 
 
@@ -97,7 +133,7 @@ function AutoE()
 			local self=GetOrigin(myHero)
 			selfx = self.x
 			selfy = self.y
-    	                selfz = self.z
+    	    selfz = self.z
 			local HeroPos = Vector(selfx, selfy, selfz)
     	
 			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GetDistance(target))
@@ -183,20 +219,6 @@ end
 
 function Drawings()
 local HeroPos = GetOrigin(myHero)
-  for _, unit in pairs(GetEnemyHeroes()) do
-if GetDistance(GetOrigin(myHero), unit) < 1000 then
-if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE2 then
-local unitPos=GetOrigin(unit)
-local vectorx = unitPos.x-GetOrigin(myHero).x
-local vectory = unitPos.y-GetOrigin(myHero).y
-local vectorz = unitPos.z-GetOrigin(myHero).z
-local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
-                ourcoord={x = unitPos.x + 450 * vectorx / dist ,y = unitPos.y + 450 * vectory / dist, z = unitPos.z + 450 * vectorz / dist}
-                DrawCircle(ourcoord.x,ourcoord.y,ourcoord.z,25,1,1,0xffffffff)myHeroPos = GetOrigin(myHero)
-  end
-end
-end
-
 if DrawingsConfig.DrawWT then
 DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
 DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
@@ -204,4 +226,11 @@ end
 
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
+
+addInterrupterCallback(function(target, spellType)
+  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS then
+    CastTargetSpell(target, _E)
+  end
+end)
+
 AddGapcloseEvent(_E, 450, true)
