@@ -142,9 +142,10 @@ local HeroPos = GetOrigin(myHero)
 if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _R) == READY and DrawingsConfig.DrawR then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
-
 if CalcDamage(myHero, enemy, (GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + (GetBonusDmg(myHero)+GetBaseDamage(myHero) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0)) > 0 then 
 DrawText(math.floor( CalcDamage(myHero, enemy, (GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + (GetBonusDmg(myHero)+GetBaseDamage(myHero) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0))/ GetCurrentHP(target)*100).."%",20,drawPos.x+400,drawPos.y+ 300,0xffffffff)
+end
+ end
 end
 
 function SaveAlly()
