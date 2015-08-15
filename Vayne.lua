@@ -16,8 +16,6 @@ ItemsConfig.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
-myIAC = IAC()
-
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
     ["Katarina"]                    = {_R},
