@@ -5,6 +5,7 @@ Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E (beta)", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Qfarm", "Switch Q in X/V", SCRIPT_PARAM_ONOFF, true)
 ExtraConfig = scriptConfig("Extra", "Extra")
 ExtraConfig.addParam("Autolvl", "Autolvl Q-W-E", SCRIPT_PARAM_ONOFF, false)
 ExtraConfig.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
@@ -96,13 +97,13 @@ local target = GetTarget(1500, DAMAGE_PHYSICAL)
   end
   
   if IWalkConfig.LastHit then
-    if GotBuff(myHero, "JinxQ") > 0 then
+    if GotBuff(myHero, "JinxQ") > 0 and Config.Qfarm then
     CastSpell(_Q)
     end
   end
   
   if IWalkConfig.LaneClear then
-    if GotBuff(myHero, "JinxQ") > 0 then
+    if GotBuff(myHero, "JinxQ") > 0 and Config.Qfarm then
     CastSpell(_Q)
     end
   end
@@ -284,3 +285,4 @@ OnProcessRecall(function(Object,recallProc)
 	recalling[GetObjectName(Object)] = rec
 	
 end)
+AddGapcloseEvent(_E, 0, false)
