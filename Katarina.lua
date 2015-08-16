@@ -81,12 +81,12 @@ local target = GetTarget(700, DAMAGE_MAGIC)
 if ValidTarget(target, 700) then
       
  if IWalkConfig.Combo then
-     
-    if CanUseSpell(myHero, _Q) == READY and Config.Q then
+  if waitTickCount > GetTickCount() then return end
+    if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(myHero, "katarinarsound") < 1 then
       CastTargetSpell(target, _Q)
-    elseif CanUseSpell(myHero, _W) == READY and Config.W and IsInDistance(target, 375) then
+    elseif CanUseSpell(myHero, _W) == READY and Config.W and IsInDistance(target, 375) and GotBuff(myHero, "katarinarsound") < 1 then
       CastSpell(_W)
-    elseif CanUseSpell(myHero, _E) == READY and Config.E then
+    elseif CanUseSpell(myHero, _E) == READY and Config.E and GotBuff(myHero, "katarinarsound") < 1 then
       CastTargetSpell(target, _E)
     elseif CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and IsInDistance(target, 550) and GetCastLevel(myHero,_R) > 0 then
       HoldPosition()
@@ -129,7 +129,7 @@ local ExtraDmg2 = 0
 					ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
 				end
 				if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-				    ExtraDmg2 = ExtraDmg2 + 0.1*GetBonusAP(myHero) +100
+				    ExtraDmg2 = ExtraDmg2 + 0.1*GetBonusAP(myHero) + 100
 			    end
 				
 				if CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy) + ExtraDmg < CalcDamage(myHero, enemy, 0, (5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg2)) and ValidTarget(enemy,GetCastRange(myHero,_W)) then 
