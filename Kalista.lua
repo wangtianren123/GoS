@@ -148,8 +148,6 @@ end
 
 function Drawings()
   for _,target in pairs(GetEnemyHeroes()) do
-local targetPos = GetOrigin(target)
-local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
 local HeroPos = GetOrigin(myHero)
 if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
@@ -159,8 +157,8 @@ end
 
 function SaveAlly()
  for _, ally in pairs(GetAllyHeroes()) do
-   local soulboundhero = GotBuff(ally, "kalistacoopstrikeally")
-   if soulboundhero > 0 and GetCurrentHP(ally)/GetMaxHP(ally) < 0.05 then 
+   local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
+   if soulboundhero and GetCurrentHP(ally)/GetMaxHP(ally) < 0.05 then 
    CastSpell(_R)
    end
  end
