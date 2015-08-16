@@ -44,32 +44,38 @@ if ExtraConfig.Balista then
 Balista()
 end
 
+local target = GetTarget(1150, DAMAGE_PHYSICAL)
+if ValidTarget(target, 1150) then
  if IWalkConfig.Combo then
-   local target = GetTarget(1150, DAMAGE_PHYSICAL)
+   
    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and Config.Q then
    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
    end
    
-if GetItemSlot(myHero,3153) > 0 and Config.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
-CastTargetSpell(target, GetItemSlot(myHero,3153))
-end
+   if GetItemSlot(myHero,3153) > 0 and Config.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+   CastTargetSpell(target, GetItemSlot(myHero,3153))
+   end
 
-if GetItemSlot(myHero,3144) > 0 and Config.Item2 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
-CastTargetSpell(target, GetItemSlot(myHero,3144))
-end
+   if GetItemSlot(myHero,3144) > 0 and Config.Item2 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+   CastTargetSpell(target, GetItemSlot(myHero,3144))
+   end
 
-if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
-CastTargetSpell(GetItemSlot(myHero,3142))
-end
+   if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
+   CastTargetSpell(GetItemSlot(myHero,3142))
+   end
  end
+end
+ 
+local target = GetTarget(1150, DAMAGE_PHYSICAL) 
+if ValidTarget(target, 1150) then
  if IWalkConfig.Harass then
-   local target = GetTarget(1150, DAMAGE_PHYSICAL)
    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and HarassConfig.HarassQ then
    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
    end
  end
+end
 end)
 
 OnProcessSpell(function(unit, spell)
@@ -83,13 +89,19 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function Killsteal()
-local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
    for i,enemy in pairs(GetEnemyHeroes()) do
-       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, (GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + (GetBonusDmg(myHero)+GetBaseDamage(myHero) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0)) then
+   local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
+   local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and KSConfig.KSE and GetCurrentHP(enemy) < Damage then
 	   CastSpell(_E)
 	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and KSConfig.KSQ and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
-     CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-     end
+       CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+       end
+	local targetPos = GetOrigin(enemy)
+    local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
+	if Damage > 0 and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
+    DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",36,drawPos.x+400,drawPos.y+300,0xffffffff)
+    end
    end
 end
 
@@ -142,16 +154,13 @@ local HeroPos = GetOrigin(myHero)
 if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _R) == READY and DrawingsConfig.DrawR then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
-if CalcDamage(myHero, target, GotBuff(target,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + (GetBonusDmg(myHero)+GetBaseDamage(myHero) * 0.6)) + (GotBuff(target,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0) > 0 then 
-DrawText(math.floor(CalcDamage(myHero, target, (GotBuff(target,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + (GetBonusDmg(myHero)+GetBaseDamage(myHero) * 0.6)) + (GotBuff(target,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0))/GetCurrentHP(target)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
-end
  end
 end
 
 function SaveAlly()
  for _, ally in pairs(GetAllyHeroes()) do
    local soulboundhero = GotBuff(ally, "kalistacoopstrikeally")
-   if soulboundhero > 0 and GetCurrentHP(ally)/GetMaxHP(ally)  < 0.1 then 
+   if soulboundhero > 0 and GetCurrentHP(ally)/GetMaxHP(ally) < 0.05 then 
    CastSpell(_R)
    end
  end
@@ -172,8 +181,8 @@ function Balista()
    end
  end
 end
-  
-function kalE(x)
- if x <= 1 then return 10 else return kalE(x-1) + 2 + x
- end
+
+function kalE(x) 
+if x <= 1 then return 10 else return kalE(x-1) + 2 + x
+end 
 end -- too smart for you inspired, thanks for this anyway :3, lazycat
