@@ -6,9 +6,9 @@ BaseUltConfig.addParam("doIt", "Do BaseUlt", SCRIPT_PARAM_ONOFF, true)
 myHero = GetMyHero()
 
 if GetTeam(myHero) == 100 then 
-	enemyBasePos = Vector(14340, 171, 14390)
+enemyBasePos = Vector(14340, 171, 14390)
 elseif GetTeam(myHero) == 200 then 
-	enemyBasePos = Vector(400, 200, 400)
+enemyBasePos = Vector(400, 200, 400)
 end
 
 if GetObjectName(myHero) == "Ashe" then
@@ -80,11 +80,11 @@ OnLoop(function()
 		else
 			if recallObj.killtime == nil then
 				if recallObj.info.isFinish and not recallObj.info.isStart then
-					recallObj.result = "finished"
-					recallObj.killtime =  GetTickCount()+2000
+			        recallObj.result = "finished"
+				recallObj.killtime =  GetTickCount()+2000
 				elseif not recallObj.info.isFinish then
-					recallObj.result = "cancelled"
-					recallObj.killtime =  GetTickCount()+2000
+				recallObj.result = "cancelled"
+				recallObj.killtime =  GetTickCount()+2000
 				end
 				
 			end
