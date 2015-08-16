@@ -100,7 +100,7 @@ function Killsteal()
 	local targetPos = GetOrigin(enemy)
     local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
 	if Damage > 0 and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
-    DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",36,drawPos.x+400,drawPos.y+300,0xffffffff)
+    DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
    end
 end
