@@ -94,6 +94,18 @@ local target = GetTarget(1500, DAMAGE_PHYSICAL)
     CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
     end
   end
+  
+  if IWalkConfig.LastHit then
+    if GotBuff(myHero, "JinxQ") > 0 then
+    CastSpell(_Q)
+    end
+  end
+  
+  if IWalkConfig.LaneClear then
+    if GotBuff(myHero, "JinxQ") > 0 then
+    CastSpell(_Q)
+    end
+  end
 end)
 
 function Killsteal()
