@@ -1,5 +1,5 @@
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
-PrintChat("Please don't forget to turn off F7 orbwalker!"
+PrintChat("Please don't forget to turn off F7 orbwalker!")
 Config = scriptConfig("Kalista", "Kalista")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
