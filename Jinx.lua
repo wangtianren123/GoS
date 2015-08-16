@@ -49,7 +49,7 @@ local target = GetTarget(2500, DAMAGE_PHYSICAL)
     local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,700,20000,140,false,true)
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z+)
+    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
     end
 	
 	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
@@ -88,7 +88,7 @@ local target = GetTarget(1500, DAMAGE_PHYSICAL)
 	local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1750,1200,GetCastRange(myHero,_E),60,false,true)
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_E)) and HarassConfig.HarassE then
-    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z+)
+    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
     end
 	
 	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_W)) and HarassConfig.HarassW then
