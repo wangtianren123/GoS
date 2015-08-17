@@ -164,7 +164,7 @@ end
 
 function Drawings()
 local HeroPos = GetOrigin(myHero)
-DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero),3,100,0xff00ff00)
+if DrawingsConfig.DrawRange then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawR then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
