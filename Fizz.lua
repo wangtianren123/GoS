@@ -67,9 +67,9 @@ end)
 function Killsteal()
 	for i,enemy in pairs(GetEnemyHeroes()) do
 		if CanUseSpell(myHero, _Q) and ValidTarget(enemy,GetCastRange(myHero,_Q)) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, GetBaseDamage(myHero)+GetBonusDmg(myHero), (15*GetCastLevel(myHero,_Q) - 5 + 0.3*GetBonusAP(myHero))) then
-		CastTargetSpell(_Q)
+		CastTargetSpell(enemy, _Q)
 		elseif CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,800) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, (50*GetCastLevel(myHero,_W) + 20 + 0.75*GetBonusAP(myHero))) then
-		CastTargetSpell(target, _E)
+		CastTargetSpell(enemy, _E)
 	    end
 	end
 end
