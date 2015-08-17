@@ -86,7 +86,7 @@ end
             CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		    end				
            
-		    if CanUseSpell(myHero, _R) == READY and ValidTarget(target, GetCastRange(myHero,_R)) and Config.R then
+		    if CanUseSpell(myHero, _R) == READY and ValidTarget(target, GetCastRange(myHero,_R)) and Config.R and GetCurrentHP(target)/GetMaxHP(target) < 0.5 then
 		    CastSpell(_R)
 			end
         end
