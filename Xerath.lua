@@ -1,4 +1,4 @@
-Config = scriptConfig("Xerath", "Xerath:")
+Config = scriptConfig("Xerath", "Xerath")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
@@ -37,12 +37,15 @@ OnLoop(function(myHero)
 				local range = function () return 800 + 1050*GetCastLevel(myHero,_R) end
 				 local target = GetTarget(range(), DAMAGE_MAGIC)
 				    local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,700,range,120,false,true)
-                    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and Config.R and CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) < GetCurrentHP(target) then
-					waitTickCount = GetTickCount() + 550
-					CastSpell(_R)
+                                if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and Config.R and CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) < GetCurrentHP(target) then
+					waitTickCount = GetTickCount() + 1000
 					CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
-				    DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 250)
-					DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 300)
-		            end
+				        DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 250)
+					DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 750)
+					DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 1000)
+					DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 1250)
+					DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 1500)
+		                end
 	    end
 end)
+AddGapcloseEvent(_E, 975, false)
