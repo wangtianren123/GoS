@@ -192,7 +192,7 @@ function Junglesteal()
   local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron12.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.baron and GetCurrentHP(mob) < Damage then
 	CastSpell(_E)
-	elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon6.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.baron and GetCurrentHP(mob) < Damage then
+	elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon6.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.dragon and GetCurrentHP(mob) < Damage then
 	CastSpell(_E)
 	end
 	
