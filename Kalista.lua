@@ -24,14 +24,19 @@ JSConfig = scriptConfig("JS", "Junglesteal")
 JSConfig.addParam("baron","Baron", SCRIPT_PARAM_ONOFF, true)
 JSConfig.addParam("dragon","Dragon", SCRIPT_PARAM_ONOFF, true)
 JSConfig.addParam("red","Red", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("blue","Blue", SCRIPT_PARAM_ONOFF, true)
+JSConfig.addParam("blue","Blue", SCRIPT_PARAM_ONOFF, false)
+JSConfig.addParam("krug","Krug", SCRIPT_PARAM_ONOFF, false)
+JSConfig.addParam("wolf","Wolf", SCRIPT_PARAM_ONOFF, true)
+JSConfig.addParam("wraiths","Wraiths", SCRIPT_PARAM_ONOFF, true)
+JSConfig.addParam("gromp","Gromp", SCRIPT_PARAM_ONOFF, false)
+
 
 myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
 Killsteal()
-
+Junglesteal()
 if ExtraConfig.Autolvl then
 LevelUp()
 end
@@ -186,3 +191,35 @@ function kalE(x)
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
 end -- too smart for you inspired, thanks for this anyway :3, lazycat
+
+function Junglesteal()
+  for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+  local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+    if IsInDistance(mob, GetCastRange(myHero,_E)) then  
+	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Baron" and JSConfig.baron and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Dragon" and JSConfig.dragon and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Blue" and JSConfig.blue and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Red" and JSConfig.red and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Krug" and JSConfig.krug and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Murkwolf" and JSConfig.wolf and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Razorbeak" and JSConfig.wraiths and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Gromp" and JSConfig.gromp and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Crab" and JSConfig.Crab and GetCurrentHP(mob) < Damage then
+	  CastSpell(_E)
+	  end
+   end
+	local mobPos = GetOrigin(mob)
+    local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
+	if Damage > 0 and ValidTarget(mob, GetCastRange(myHero,_E)) then 
+    DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+    end
+  end
+end
