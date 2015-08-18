@@ -157,10 +157,12 @@ end
 
 function SaveAlly()
  for _, ally in pairs(GetAllyHeroes()) do
+ for i,enemy in pairs(GetEnemyHeroes()) do
    local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
-   if soulboundhero and GetCurrentHP(ally)/GetMaxHP(ally) < 0.05 then 
+   if soulboundhero and GetCurrentHP(ally)/GetMaxHP(ally) < 0.05 and GetDistance(ally, enemy) < 1500 then 
    CastSpell(_R)
    end
+ end
  end
 end
 
@@ -168,13 +170,13 @@ function Balista()
    for _, ally in pairs(GetAllyHeroes()) do
      if GetObjectName(ally) == "Blitzcrank" then
       for i,enemy in pairs(GetEnemyHeroes()) do
-       if ValidTarget(enemy, 2450) then
+        if ValidTarget(enemy, 2450) then
          if GetCurrentHP(enemy) > 200 and GetDistance(ally, enemy) > 450 then
            if GotBuff(enemy, "rocketgrab2") > 0 then
            CastSpell(_R)
            end
          end
-       end
+        end
      end
    end
  end
