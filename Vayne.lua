@@ -73,9 +73,6 @@ end
     if IWalkConfig.Combo then    
 	
 	if CanUseSpell(myHero, _Q) == READY and Config.Q then
-                if  DistanceAfterTumble < 630 and DistanceAfterTumble > 300 then
-                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                end
                 if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
