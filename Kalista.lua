@@ -23,26 +23,15 @@ DrawingsConfig.addParam("DrawEdmg", "Draw E Dmg %", SCRIPT_PARAM_ONOFF, true)
 JSConfig = scriptConfig("JS", "Junglesteal")
 JSConfig.addParam("baron","Baron", SCRIPT_PARAM_ONOFF, true)
 JSConfig.addParam("dragon","Dragon", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allyred","Ally Red", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemyred","Enemy Red", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allyblue","Ally Blue", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemyblue","Enemy Blue", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allykrug","Ally Krug", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemykrug","Enemy Krug", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allywolf","Ally Wolf", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemywolf","Enemy Wolf", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allywraiths","Ally Wraiths", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemywraiths","Enemy Wraiths", SCRIPT_PARAM_ONOFF, true)
-JSConfig.addParam("allygromp","Ally Gromp", SCRIPT_PARAM_ONOFF, false)
-JSConfig.addParam("enemygromp","Enemy Gromp", SCRIPT_PARAM_ONOFF, true)
-
+JSConfig.addParam("red","Red", SCRIPT_PARAM_ONOFF, true)
+JSConfig.addParam("blue","Blue", SCRIPT_PARAM_ONOFF, true)
 
 myIAC = IAC()
 
 OnLoop(function(myHero)
 Drawings()
 Killsteal()
-Junglesteal()
+
 if ExtraConfig.Autolvl then
 LevelUp()
 end
@@ -197,80 +186,3 @@ function kalE(x)
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
 end -- too smart for you inspired, thanks for this anyway :3, lazycat
-
-function Junglesteal()
-local allyTeam = GetTeam(myHero)
-local enemyTeam = 300 - GetTeam(myHero)
-local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
-  for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
-    if allyTeam = 200 then
-    
-      if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron12.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.baron and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon6.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.dragon and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue1.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allyblue and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue7.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemyblue and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red4.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allyred and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red10.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemyred and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug5.1.2" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allykrug and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug11.1.2" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemykrug and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf2.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allywolf and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf8.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemywolf and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak3.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allywraiths and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak9.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemywraiths and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp13.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allygromp and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp14.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemygromp and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  end
-	  
-	elseif allyTeam = 100 then
-	  
-      if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron12.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.baron and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon6.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.dragon and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue7.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allyblue and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue1.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemyblue and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red10.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allyred and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red4.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemyred and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug11.1.2" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allykrug and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug5.1.2" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemykrug and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf8.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allywolf and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf2.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemywolf and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak9.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allywraiths and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak3.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemywraiths and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp14.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.allygromp and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp13.1.1" and ValidTarget(mob,GetCastRange(myHero,_E)) and JSConfig.enemygromp and GetCurrentHP(mob) < Damage then
-	  CastSpell(_E)
-	  end
-	end
-	local mobPos = GetOrigin(mob)
-    local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
-	if Damage > 0 and ValidTarget(mob,GetCastRange(myHero,_E)) then 
-    DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
-    end
-  end
-end
