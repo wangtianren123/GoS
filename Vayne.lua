@@ -16,6 +16,8 @@ ItemsConfig.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
 ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
+myIAC = IAC()
+
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
     ["Katarina"]                    = {_R},
@@ -67,12 +69,15 @@ end
         local mousePos = GetMousePos()
         local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
         local DistanceAfterTumble = GetDistance(AfterTumblePos, target)    
-		if ValidTarget(target, 700) then
+if ValidTarget(target, 700) then
 		
 		
     if IWalkConfig.Combo then    
 	
 	if CanUseSpell(myHero, _Q) == READY and Config.Q then
+	            if  DistanceAfterTumble < 630 and DistanceAfterTumble > 300 then
+                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+                end
                 if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
@@ -91,10 +96,13 @@ CastTargetSpell(GetItemSlot(myHero,3142))
 end
 
 
-        end
+    end
 end
+
+
    local HeroPos = GetOrigin(myHero)
    if CanUseSpell(myHero, _Q) == READY then
+   
         if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
             CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
         elseif Config.Walltumble1 then
@@ -218,7 +226,6 @@ if DrawingsConfig.DrawWT then
 DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
 DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
 end
-
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
 
@@ -227,5 +234,4 @@ addInterrupterCallback(function(target, spellType)
     CastTargetSpell(target, _E)
   end
 end)
-
 AddGapcloseEvent(_E, 450, true)
