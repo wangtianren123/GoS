@@ -6,13 +6,12 @@ Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E (beta)", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Qfarm", "Switch Q in X/V", SCRIPT_PARAM_ONOFF, true)
-MiscConfig = scriptConfig("Misc", "Misc")
-MiscConfig.addParam("Autolvl", "Autolvl Q-W-E", SCRIPT_PARAM_ONOFF, false)
-MiscConfig.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
-MiscConfig.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
-MiscConfig.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
-MiscConfig.addParam("Item4", "Use QSS", SCRIPT_PARAM_ONOFF, true)
-MiscConfig.addParam("Item5", "Use Mercurial", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig = scriptConfig("Extra", "Extra")
+ExtraConfig.addParam("Autolvl", "Autolvl Q-W-E", SCRIPT_PARAM_ONOFF, false)
+ExtraConfig.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig.addParam("Item4", "Use QSS (broken)", SCRIPT_PARAM_ONOFF, true)
 KSConfig = scriptConfig("KS", "Killsteal")
 KSConfig.addParam("KSW", "Killsteal with W", SCRIPT_PARAM_ONOFF, true)
 KSConfig.addParam("KSR", "Killsteal with R", SCRIPT_PARAM_ONOFF, true)
@@ -31,21 +30,13 @@ OnLoop(function(myHero)
 Drawings()
 Killsteal()
 
-if MiscConfig.Autolvl then
+if ExtraConfig.Autolvl then
 LevelUp()
-end
-
-if GetItemSlot(myHero,3140) > 0 and MiscConfig.Item4 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
-CastTargetSpell(myHero, GetItemSlot(myHero,3140))
-end
-
-if GetItemSlot(myHero,3139) > 0 and MiscConfig.Item5 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
-CastTargetSpell(myHero, GetItemSlot(myHero,3139))
 end
 
 local target = GetTarget(2500, DAMAGE_PHYSICAL)
  if IWalkConfig.Combo then
-    if CanUseSpell(myHero, _Q) == READY and Config.Q then
+    if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 700)  then
         if GetDistance(myHero, target) > 525 and GotBuff(myHero, "jinxqicon") > 0 then
         CastSpell(_Q)
         elseif GetDistance(myHero, target) < 570 and GotBuff(myHero, "JinxQ") > 0 then
@@ -58,7 +49,7 @@ local target = GetTarget(2500, DAMAGE_PHYSICAL)
     local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,700,20000,140,false,true)
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z+)
     end
 	
 	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
@@ -69,15 +60,15 @@ local target = GetTarget(2500, DAMAGE_PHYSICAL)
     CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
     end
 	
-	if GetItemSlot(myHero,3153) > 0 and MiscConfig.Item1 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+	if GetItemSlot(myHero,3153) > 0 and Config.Item1 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
     CastTargetSpell(target, GetItemSlot(myHero,3153))
     end
 
-    if GetItemSlot(myHero,3144) > 0 and MiscConfig.Item2 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+    if GetItemSlot(myHero,3144) > 0 and Config.Item2 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
     CastTargetSpell(target, GetItemSlot(myHero,3144))
     end
 
-    if GetItemSlot(myHero,3142) > 0 and MiscConfig.Item3 then
+    if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
     CastTargetSpell(GetItemSlot(myHero,3142))
     end
    
@@ -97,7 +88,7 @@ local target = GetTarget(1500, DAMAGE_PHYSICAL)
 	local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1750,1200,GetCastRange(myHero,_E),60,false,true)
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_E)) and HarassConfig.HarassE then
-    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z+)
     end
 	
 	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, GetCastRange(myHero,_W)) and HarassConfig.HarassW then
@@ -173,9 +164,9 @@ end
 
 function Drawings()
 local HeroPos = GetOrigin(myHero)
-if DrawingsConfig.DrawRange then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero),3,100,0xff00ff00) end
-if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawW then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero),3,100,0xff00ff00)
+if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
+if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawR then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 end
 
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
@@ -294,4 +285,3 @@ OnProcessRecall(function(Object,recallProc)
 	recalling[GetObjectName(Object)] = rec
 	
 end)
-AddGapcloseEvent(_E, 0, false)
