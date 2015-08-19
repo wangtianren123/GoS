@@ -137,7 +137,7 @@ end
                           CastTargetSpell(target, _E)
 		                  end
 						  
-						  if CanUseSpell(myHero, _R) == READY and ValidTarget(target, 700) and Config.R then
+						  if CanUseSpell(myHero, _R) == READY and ValidTarget(target, 700) and Config.R and GotBuff(myHero, "ryzepassivestack") == 4 then
                           CastSpell(_R)
 		                  end
 						  
