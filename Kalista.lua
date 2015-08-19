@@ -6,12 +6,14 @@ Config.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item4", "Use QSS (broken)", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig = scriptConfig("Extra", "Extra")
-ExtraConfig.addParam("Autolvl", "Autolvl E-Q-W", SCRIPT_PARAM_ONOFF, false)
-ExtraConfig.addParam("AutoR", "Save Ally (R)", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Balista", "Balista Combo", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Skarlista", "Skarlista Combo", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Tahmlista", "Tahmlista Combo", SCRIPT_PARAM_ONOFF, true)
+MiscConfig = scriptConfig("Misc", "Misc")
+MiscConfig.addParam("Autolvl", "Autolvl E-Q-W", SCRIPT_PARAM_ONOFF, false)
+MiscConfig.addParam("AutoR", "Save Ally (R)", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("ELC", "Use E in LaneClear", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("ECanon", "Always E Big Minion", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Balista", "Balista Combo", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Skarlista", "Skarlista Combo", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Tahmlista", "Tahmlista Combo", SCRIPT_PARAM_ONOFF, true)
 KSConfig = scriptConfig("KS", "Killsteal")
 KSConfig.addParam("KSQ", "Killsteal with Q", SCRIPT_PARAM_ONOFF, true)
 KSConfig.addParam("KSE", "Killsteal with E", SCRIPT_PARAM_ONOFF, true)
@@ -40,23 +42,25 @@ OnLoop(function(myHero)
 Drawings()
 Killsteal()
 Junglesteal()
-if ExtraConfig.Autolvl then
+LaneClear()
+
+if MiscConfig.Autolvl then
 LevelUp()
 end
 
-if ExtraConfig.AutoR then
+if MiscConfig.AutoR then
 SaveAlly()
 end
 
-if ExtraConfig.Balista then
+if MiscConfig.Balista then
 Balista()
 end
 
-if ExtraConfig.Skarlista then
+if MiscConfig.Skarlista then
 Skarlista()
 end
 
-if ExtraConfig.Tahmlista then
+if MiscConfig.Tahmlista then
 Tahmlista()
 end
 
@@ -235,6 +239,26 @@ if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
 end -- too smart for you inspired, thanks for this anyway :3, lazycat
 
+function LaneClear()
+  local killableminions = 0
+  for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
+	local Damage = CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+   
+    if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and MiscConfig.ECanon then 
+    CastSpell(_E)
+	end
+	
+	if Damage > 0 and Damage > GetCurrentHP(minion) and ValidTarget(minion, GetCastRange(myHero,_E)) then 
+    killableminions = killableminions or 1
+    end
+	
+  end
+  
+    if IWalkConfig.LaneClear and MiscConfig.ELC and killableminions > 2 then
+    CastSpell(_E)
+	end
+end
+	
 function Junglesteal()
   for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
   local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
