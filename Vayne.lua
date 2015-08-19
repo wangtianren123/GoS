@@ -3,20 +3,21 @@ PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn off F7 orbwalker!")
 Config = scriptConfig("Vayne", "Vayne")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
-Config.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
 Config.addParam("R", "Use R (Soon)", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
+Config.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item4", "Use QSS", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Item5", "Use Mercurial", SCRIPT_PARAM_ONOFF, true)
+MiscConfig = scriptConfig("Misc", "Misc")
+MiscConfig.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
+MiscConfig.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
+MiscConfig.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
-ItemsConfig = scriptConfig("Items", "Items")
-ItemsConfig.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
-ItemsConfig.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
-ItemsConfig.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
 
-myIAC = IAC()
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -56,11 +57,11 @@ end
 OnLoop(function(myHero)
 Drawings()
 
-if Config.Autolvl then
+if MiscConfig.Autolvl then
 LevelUp()
 end
 
-if Config.AutoE then
+if MiscConfig.AutoE then
 AutoE()
 end
 
@@ -68,30 +69,36 @@ end
         local HeroPos = GetOrigin(myHero)
         local mousePos = GetMousePos()
         local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-        local DistanceAfterTumble = GetDistance(AfterTumblePos, target)    
+        local DistanceAfterTumble = GetDistance(AfterTumblePos, target) 
+        
+
 if ValidTarget(target, 700) then
-		
+
+if GetItemSlot(myHero,3140) > 0 and Config.Item4 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3140))
+end
+
+if GetItemSlot(myHero,3139) > 0 and Config.Item5 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3139))
+end		
 		
     if IWalkConfig.Combo then    
 	
 	if CanUseSpell(myHero, _Q) == READY and Config.Q then
-	            if  DistanceAfterTumble < 630 and DistanceAfterTumble > 300 then
-                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-                end
                 if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                 end 
-    end
+        end
    
-if GetItemSlot(myHero,3153) > 0 and ItemsConfig.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+if GetItemSlot(myHero,3153) > 0 and Config.Item1 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3153))
 end
 
-if GetItemSlot(myHero,3144) > 0 and ItemsConfig.Item2 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+if GetItemSlot(myHero,3144) > 0 and Config.Item2 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
 CastTargetSpell(target, GetItemSlot(myHero,3144))
 end
 
-if GetItemSlot(myHero,3142) > 0 and ItemsConfig.Item3 then
+if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
 CastTargetSpell(GetItemSlot(myHero,3142))
 end
 
@@ -103,15 +110,15 @@ end
    local HeroPos = GetOrigin(myHero)
    if CanUseSpell(myHero, _Q) == READY then
    
-        if Config.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
+        if MiscConfig.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
             CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
-        elseif Config.Walltumble1 then
+        elseif MiscConfig.Walltumble1 then
             MoveToXYZ(6962, 51, 8952)
         end
     
-        if Config.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
+        if MiscConfig.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
             CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
-        elseif Config.Walltumble2 then
+        elseif MiscConfig.Walltumble2 then
             MoveToXYZ(12060, 51, 4806)
         end
     end
