@@ -156,8 +156,8 @@ if ExtraConfig.SaveAlly then
   local WPred = GetPredictionForPlayer(GetMyHeroPos(),ally,GetMoveSpeed(ally),math.huge,250,GetCastRange(myHero,_E),90,false,true)
   local AllyPos = GetOrigin(ally)
   local mousePos = GetMousePos()
-    if CanUseSpell(myHero,_W) and GetDistance(myHero, ally) < GetCastRange(myHero,_W) then
-    CastSkillShot(_W,AllyPos.x,AllyPos.y,AllyPos.z)
+    if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GetDistance(myHero, ally) < GetCastRange(myHero,_W) then
+    CastSkillShot(_W,WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
 	else
 	MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
