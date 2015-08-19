@@ -127,11 +127,15 @@ function Killsteal()
 	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and KSConfig.KSQ and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
        end
+    if ValidTarget(enemy, GetCastRange(myHero, _E)) then
 	local targetPos = GetOrigin(enemy)
     local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
-	if Damage > 0 and ValidTarget(enemy,GetCastRange(myHero,_E)) then 
+	if Damage > GetCurrentHP(enemy) then
+	DrawText("100%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+	elseif Damage > 0 then
     DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
+	end
    end
 end
 
@@ -293,10 +297,14 @@ function Junglesteal()
 	  CastSpell(_E)
 	  end
    end
+  if ValidTarget(mob, GetCastRange(myHero,_E)) then
 	local mobPos = GetOrigin(mob)
     local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
-	if Damage > 0 and ValidTarget(mob, GetCastRange(myHero,_E)) then 
+	if Damage > GetCurrentHP(mob) then
+	DrawText("100%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+	elseif Damage > 0 then
     DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
+  end
   end
 end
