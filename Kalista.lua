@@ -10,6 +10,8 @@ ExtraConfig = scriptConfig("Extra", "Extra")
 ExtraConfig.addParam("Autolvl", "Autolvl E-Q-W", SCRIPT_PARAM_ONOFF, false)
 ExtraConfig.addParam("AutoR", "Save Ally (R)", SCRIPT_PARAM_ONOFF, true)
 ExtraConfig.addParam("Balista", "Balista Combo", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig.addParam("Skarlista", "Skarlista Combo", SCRIPT_PARAM_ONOFF, true)
+ExtraConfig.addParam("Tahmlista", "Tahmlista Combo", SCRIPT_PARAM_ONOFF, true)
 KSConfig = scriptConfig("KS", "Killsteal")
 KSConfig.addParam("KSQ", "Killsteal with Q", SCRIPT_PARAM_ONOFF, true)
 KSConfig.addParam("KSE", "Killsteal with E", SCRIPT_PARAM_ONOFF, true)
@@ -48,6 +50,14 @@ end
 
 if ExtraConfig.Balista then
 Balista()
+end
+
+if ExtraConfig.Skarlista then
+Skarlista()
+end
+
+if ExtraConfig.Tahmlista then
+Tahmlista()
 end
 
 local target = GetTarget(1150, DAMAGE_PHYSICAL)
@@ -174,11 +184,43 @@ end
 
 function Balista()
    for _, ally in pairs(GetAllyHeroes()) do
-     if GetObjectName(ally) == "Blitzcrank" then
+     if GetObjectName(ally) == "Blitzcrank" and GotBuff(ally, "kalistacoopstrikeally") > 0 then
       for i,enemy in pairs(GetEnemyHeroes()) do
         if ValidTarget(enemy, 2450) then
-         if GetCurrentHP(enemy) > 200 and GetDistance(ally, enemy) > 450 then
+         if GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GetDistance(ally, enemy) > 450 then
            if GotBuff(enemy, "rocketgrab2") > 0 then
+           CastSpell(_R)
+           end
+         end
+        end
+     end
+   end
+ end
+end
+
+function Skarlista()
+   for _, ally in pairs(GetAllyHeroes()) do
+     if GetObjectName(ally) == "Skarner" and GotBuff(ally, "kalistacoopstrikeally") > 0 then
+      for i,enemy in pairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy, 1750) then
+         if GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 then
+           if GotBuff(enemy, "skarnerimpale") > 0 then
+           CastSpell(_R)
+           end
+         end
+        end
+     end
+   end
+ end
+end
+
+function Tahmlista()
+   for _, ally in pairs(GetAllyHeroes()) do
+     if GetObjectName(ally) == "TahmKench" and GotBuff(ally, "kalistacoopstrikeally") > 0 then
+      for i,enemy in pairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy, 1400) then
+         if GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 then
+           if GotBuff(enemy, "tahmkenchwdevoured") > 0 then
            CastSpell(_R)
            end
          end
