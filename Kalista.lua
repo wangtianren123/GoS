@@ -29,6 +29,7 @@ JSConfig.addParam("krug","Krug", SCRIPT_PARAM_ONOFF, false)
 JSConfig.addParam("wolf","Wolf", SCRIPT_PARAM_ONOFF, true)
 JSConfig.addParam("wraiths","Wraiths", SCRIPT_PARAM_ONOFF, true)
 JSConfig.addParam("gromp","Gromp", SCRIPT_PARAM_ONOFF, false)
+JSConfig.addParam("crab","Crab", SCRIPT_PARAM_ONOFF, true)
 
 
 myIAC = IAC()
@@ -196,23 +197,23 @@ function Junglesteal()
   for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
   local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if IsInDistance(mob, GetCastRange(myHero,_E)) then  
-	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Baron" and JSConfig.baron and GetCurrentHP(mob) < Damage then
+	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and JSConfig.baron and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Dragon" and JSConfig.dragon and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon" and JSConfig.dragon and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Blue" and JSConfig.blue and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue" and JSConfig.blue and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Red" and JSConfig.red and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red" and JSConfig.red and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Krug" and JSConfig.krug and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug" and JSConfig.krug and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Murkwolf" and JSConfig.wolf and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf" and JSConfig.wolf and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Razorbeak" and JSConfig.wraiths and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak" and JSConfig.wraiths and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Gromp" and JSConfig.gromp and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp" and JSConfig.gromp and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Crab" and JSConfig.Crab and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Crab" and JSConfig.crab and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
 	  end
    end
