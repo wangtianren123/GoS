@@ -5,7 +5,8 @@ Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("Item4", "Use QSS (broken)", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Item4", "Use QSS", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Item5", "Use Mercurial", SCRIPT_PARAM_ONOFF, true)
 MiscConfig = scriptConfig("Misc", "Misc")
 MiscConfig.addParam("Autolvl", "Autolvl E-Q-W", SCRIPT_PARAM_ONOFF, false)
 MiscConfig.addParam("AutoR", "Save Ally (R)", SCRIPT_PARAM_ONOFF, true)
@@ -64,6 +65,14 @@ if MiscConfig.Tahmlista then
 Tahmlista()
 end
 
+if GetItemSlot(myHero,3140) > 0 and Config.Item4 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3140))
+end
+
+if GetItemSlot(myHero,3139) > 0 and Config.Item5 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3139))
+end
+
 local target = GetTarget(1150, DAMAGE_PHYSICAL)
 if ValidTarget(target, 1150) then
  if IWalkConfig.Combo then
@@ -82,8 +91,9 @@ if ValidTarget(target, 1150) then
    end
 
    if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
-   CastTargetSpell(GetItemSlot(myHero,3142))
+   CastTargetSpell(myHero, GetItemSlot(myHero,3142))
    end
+   
  end
 end
  
