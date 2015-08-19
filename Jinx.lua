@@ -6,12 +6,13 @@ Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E (beta)", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Qfarm", "Switch Q in X/V", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig = scriptConfig("Extra", "Extra")
-ExtraConfig.addParam("Autolvl", "Autolvl Q-W-E", SCRIPT_PARAM_ONOFF, false)
-ExtraConfig.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
-ExtraConfig.addParam("Item4", "Use QSS (broken)", SCRIPT_PARAM_ONOFF, true)
+MiscConfig = scriptConfig("Extra", "Extra")
+MiscConfig.addParam("Autolvl", "Autolvl Q-W-E", SCRIPT_PARAM_ONOFF, false)
+MiscConfig.addParam("Item1", "Use BotRK", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Item2", "Use Bilgewater", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Item3", "Use Youmuu", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Item4", "Use QSS", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Item5", "Use Mercurial", SCRIPT_PARAM_ONOFF, true)
 KSConfig = scriptConfig("KS", "Killsteal")
 KSConfig.addParam("KSW", "Killsteal with W", SCRIPT_PARAM_ONOFF, true)
 KSConfig.addParam("KSR", "Killsteal with R", SCRIPT_PARAM_ONOFF, true)
@@ -30,8 +31,16 @@ OnLoop(function(myHero)
 Drawings()
 Killsteal()
 
-if ExtraConfig.Autolvl then
+if MiscConfig.Autolvl then
 LevelUp()
+end
+
+if GetItemSlot(myHero,3140) > 0 and MiscConfig.Item4 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3140))
+end
+
+if GetItemSlot(myHero,3139) > 0 and MiscConfig.Item5 and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.75 then
+CastTargetSpell(myHero, GetItemSlot(myHero,3139))
 end
 
 local target = GetTarget(2500, DAMAGE_PHYSICAL)
@@ -60,15 +69,15 @@ local target = GetTarget(2500, DAMAGE_PHYSICAL)
     CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
     end
 	
-	if GetItemSlot(myHero,3153) > 0 and Config.Item1 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+	if GetItemSlot(myHero,3153) > 0 and MiscConfig.Item1 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
     CastTargetSpell(target, GetItemSlot(myHero,3153))
     end
 
-    if GetItemSlot(myHero,3144) > 0 and Config.Item2 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+    if GetItemSlot(myHero,3144) > 0 and MiscConfig.Item2 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
     CastTargetSpell(target, GetItemSlot(myHero,3144))
     end
 
-    if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
+    if GetItemSlot(myHero,3142) > 0 and MiscConfig.Item3 then
     CastTargetSpell(GetItemSlot(myHero,3142))
     end
    
