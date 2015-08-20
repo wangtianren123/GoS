@@ -215,7 +215,7 @@ function AutoRkey()
   if waitTickCount < GetTickCount() then
 	local target = GetTarget(800 + 1050*GetCastLevel(myHero,_R), DAMAGE_MAGIC)
 	local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
-    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) < GetCurrentHP(target) then
+    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
 	waitTickCount = GetTickCount() + 1400
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
@@ -231,4 +231,4 @@ addInterrupterCallback(function(target, spellType)
   end
 end)
 
-AddGapcloseEvent(_E, 975, false)
+AddGapcloseEvent(_E, 200, false)
