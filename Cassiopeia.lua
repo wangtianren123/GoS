@@ -87,11 +87,11 @@ local poisoned = false
 			CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 850) and QPred.HitChance == 1 and then
 			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and Config.W and ValidTarget(target, 850) and WPred.HitChance == 1 then
+		if CanUseSpell(myHero, _W) == READY and Config.W and ValidTarget(target, 850) and WPred.HitChance == 1 and not poisoned then
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 	  end
