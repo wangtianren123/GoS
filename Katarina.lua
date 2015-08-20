@@ -35,11 +35,11 @@ end
 
 local target = GetTarget(700, DAMAGE_MAGIC)
 
-if MiscConfig.AutoQ and ValidTarget(target, GetCastRange(myHero, _Q)) then
+if MiscConfig.AutoQ and ValidTarget(target, GetCastRange(myHero, _Q)) and GotBuff(myHero, "katarinarsound") < 1 then
 CastTargetSpell(target, _Q)
 end
 
-if MiscConfig.AutoW and ValidTarget(target, GetCastRange(myHero, _W)) then
+if MiscConfig.AutoW and ValidTarget(target, GetCastRange(myHero, _W)) and GotBuff(myHero, "katarinarsound") < 1 then
 CastSpell(_W)
 end
 
