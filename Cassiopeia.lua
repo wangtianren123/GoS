@@ -68,8 +68,8 @@ end
 
 local target = GetTarget(850, DAMAGE_MAGIC)
 local poisoned = false
-		for p=0, 63 do
-			if GetBuffCount(target,p) > 0 and GetBuffName(target,p):lower():find("poison") then
+		for i=0, 63 do
+			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
 				poisoned = true
 			end
 		end
