@@ -258,7 +258,7 @@ function LaneClear()
 	
   end
   
-    if IWalkConfig.LaneClear and MiscConfig.ELC and killableminions > 2 then
+    if IWalkConfig.LaneClear and MiscConfig.ELC and killableminions > 1 then
     CastSpell(_E)
 	end
 end
