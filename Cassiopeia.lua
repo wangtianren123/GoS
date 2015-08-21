@@ -66,13 +66,15 @@ LevelUp()
 end
 	
 local target = GetTarget(850, DAMAGE_MAGIC)	
-     if IWalkConfig.Combo then    
+    if IWalkConfig.Combo then  
+	local unit = GetTarget(700, DAMAGE_MAGIC) 
+	if unit then 	 
      	local poisoned = false
 		for i=0, 63 do
-			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
+			if GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
 				poisoned = true
 			end
-                end
+        end
         
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
@@ -96,7 +98,7 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
 				poisoned = true
 			end
-                end
+        end
         
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
@@ -113,6 +115,7 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 	  end
+	end
 	  
 	  
 
@@ -140,9 +143,9 @@ end
 function LevelUp()     
 
 if GetLevel(myHero) == 1 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) == 2 then
 	LevelSpell(_Q)
+elseif GetLevel(myHero) == 2 then
+	LevelSpell(_E)
 elseif GetLevel(myHero) == 3 then
 	LevelSpell(_W)
 elseif GetLevel(myHero) == 4 then
