@@ -66,12 +66,14 @@ LevelUp()
 end
 
 local target = GetTarget(850, DAMAGE_MAGIC)
+if target then
 local poisoned = false
 		for i=0, 63 do
 			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
 				poisoned = true
 			end
-		end
+	        end
+end
 		
      if IWalkConfig.Combo then    
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
