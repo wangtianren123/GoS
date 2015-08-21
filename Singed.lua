@@ -1,10 +1,12 @@
 PrintChat("Singed Q Exploit By Deftsu Loaded!")
 Config = scriptConfig("Singed", "Singed")
-Config.addParam("Q", "Q Exploit", SCRIPT_PARAM_ONOFF, false)
+Config.addParam("Q", "Q Exploit", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
 
 OnLoop(function(myHero)
-local target = GetTarget(550, DAMAGE_MAGIC)
-if CanUseSpell(myHero, _Q) == READY and Config.Q and IsInDistance(target, 550) then
+local mousePos = GetMousePos()
+if CanUseSpell(myHero, _Q) == READY and Config.Q then
+MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+CastSpell(_Q)
 CastSpell(_Q)
 end
 end)
