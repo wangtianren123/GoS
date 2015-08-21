@@ -1,4 +1,4 @@
-PrintChat("D3ftland Jinx By Deftsu Loaded, Have A Good Game!")
+PrintChat("D3ftland Cassiopeia By Deftsu Loaded, Have A Good Game!")
 Config = scriptConfig("Cassiopeia", "Cassiopeia")
 Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
@@ -74,11 +74,6 @@ local poisoned = false
 			end
 		end
 		
-     local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
-	 if CanUseSpell(myHero, _R) == READY and Config.R and EnemiesAround(RPred.PredPos.x, 180) >= 3 then
-	 CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-	 end
-		
      if IWalkConfig.Combo then    
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
@@ -87,7 +82,7 @@ local poisoned = false
 			CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 850) and QPred.HitChance == 1 and then
+		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 850) and QPred.HitChance == 1 then
 			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
@@ -183,7 +178,6 @@ if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(Her
 if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawW then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z, GetCastRange(myHero,_E) ,3,100,0xff00ff00) end
 if CanUseSpell(myHero, _R) == READY and DrawingsConfig.DrawR then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
-
 end
 
 if GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.25 then
