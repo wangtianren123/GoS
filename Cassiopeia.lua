@@ -76,18 +76,18 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 			end
         end
         
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,GetCastRange(myHero,_Q),100,false,true)
+		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		
 	    if CanUseSpell(myHero, _E) == READY and Config.E and ValidTarget(target, 700) and poisoned then
 			CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and Config.Q and ValidTarget(target, GetCastRange(myHero,_Q)) and QPred.HitChance == 1 then
 			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and Config.W and ValidTarget(target, 850) and WPred.HitChance == 1 and not poisoned then
+		if CanUseSpell(myHero, _W) == READY and Config.W and ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 	  end
@@ -100,18 +100,18 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 			end
         end
         
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,GetCastRange(myHero,_Q),40,false,true)
+		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		
 	    if CanUseSpell(myHero, _E) == READY and HarassConfig.HarassE and ValidTarget(target, 700) and poisoned then
 			CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and HarassConfig.HarassQ and ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and HarassConfig.HarassQ and ValidTarget(target, GetCastRange(myHero,_Q)) and QPred.HitChance == 1 then
 			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and HarassConfig.HarassW and ValidTarget(target, 850) and WPred.HitChance == 1 then
+		if CanUseSpell(myHero, _W) == READY and HarassConfig.HarassW and ValidTarget(target, 925) and WPred.HitChance == 1 then
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 	  end
@@ -127,14 +127,14 @@ for i,enemy in pairs(GetEnemyHeroes()) do
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,600,850,40,false,true)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,600,850,100,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2500,500,850,90,false,true)
 		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 40*GetCastLevel(myHero,_Q)+35+.45*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_W)) and KSConfig.KSW and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 15*GetCastLevel(myHero,_W)+15+0.3*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		elseif CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
-		CastTargeSpell(enemy, _E)
+		CastTargetSpell(enemy, _E)
 		end
 	end
 end
@@ -193,7 +193,7 @@ if GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.25 then
 local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
 addInterrupterCallback(function(target, spellType)
   if IsInDistance(target, GetCastRange(myHero,_R)) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
-    CastTargetSpell(target, _E)
+    CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
 end
