@@ -7,6 +7,5 @@ local mousePos = GetMousePos()
 if CanUseSpell(myHero, _Q) == READY and Config.Q then
 MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 CastSpell(_Q)
-CastSpell(_Q)
 end
 end)
