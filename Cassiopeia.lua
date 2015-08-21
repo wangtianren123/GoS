@@ -90,16 +90,21 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 		if CanUseSpell(myHero, _W) == READY and Config.W and ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-	  end
+	end
+	end
 	  
-	  if IWalkConfig.Harass then   
-	  	local poisoned = false
+
+	if IWalkConfig.Harass then  
+        local unit = GetTarget(700, DAMAGE_MAGIC) 
+	if unit then 	 
+     	local poisoned = false
 		for i=0, 63 do
-			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
+			if GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
 				poisoned = true
 			end
         end
         
+		
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,GetCastRange(myHero,_Q),40,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		
@@ -114,11 +119,8 @@ local target = GetTarget(850, DAMAGE_MAGIC)
 		if CanUseSpell(myHero, _W) == READY and HarassConfig.HarassW and ValidTarget(target, 925) and WPred.HitChance == 1 then
 			CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-	  end
 	end
-	  
-	  
-
+	end 
 end)
 
 function Killsteal()
