@@ -64,20 +64,16 @@ Killsteal()
 if MiscConfig.Autolvl then
 LevelUp()
 end
-
-local unit = GetTarget(700, DAMAGE_MAGIC) 
-	if unit then 
-
-		local poisoned = false
-		for i=0, 63 do
-			if GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-				poisoned = true
-			end
-	        end
-	end
 	
 local target = GetTarget(850, DAMAGE_MAGIC)	
      if IWalkConfig.Combo then    
+     	local poisoned = false
+		for i=0, 63 do
+			if GetBuffCount(target,i) > 0 and GetBuffName(target,i):lower():find("poison") then
+				poisoned = true
+			end
+                end
+        
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,40,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,850,90,false,true)
 		
