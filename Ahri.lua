@@ -34,8 +34,7 @@ Killsteal()
                                 end
 				
 				local mousePos = GetMousePos()
-				local ComboDmg = CalcDamage(myHero, target, 0, (35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero)+ 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 25 + 35*GetCastLevel(myHero,_E) + 0.5*GetBonusAP(myHero)))
-			        if CanUseSpell(myHero, _R) == READY and ComboDmg < GetCurrentHP(target) and Config.R then
+			        if CanUseSpell(myHero, _R) == READY and Config.R then
 			        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
 				end
 					
