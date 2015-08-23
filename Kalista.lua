@@ -247,14 +247,15 @@ function LaneClear()
   local killableminions = 0
   for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 	local Damage = CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+    if Damage > 0 and Damage > GetCurrentHP(minion) and ValidTarget(minion, GetCastRange(myHero,_E)) then 
+    killableminions = killableminions or 1
+    end
    
     if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and MiscConfig.ECanon then 
     CastSpell(_E)
-	end
-	
-	if Damage > 0 and Damage > GetCurrentHP(minion) and ValidTarget(minion, GetCastRange(myHero,_E)) then 
-    killableminions = killableminions or 1
     end
+	
+    
 	
   end
   
