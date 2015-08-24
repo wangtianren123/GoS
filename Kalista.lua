@@ -148,8 +148,15 @@ OnLoop(function(myHero)
 	end
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
+	local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
+       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy, GetCastRange(myHero,_E)) and KSE.getValue() and GetCurrentHP(enemy) < Damage then
+	   CastSpell(_E)
+	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and IsTargetable and KSQ.getValue() and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
+       CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+       end
+	   
 	if DrawingsEdmg.getValue() then
-	  local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
 	  local targetPos = GetOrigin(enemy)
       local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
 	  if Damage > GetCurrentHP(enemy) then
@@ -159,12 +166,6 @@ OnLoop(function(myHero)
       end
 	end
 	
-    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
-       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and IsTargetable and KSE.getValue() and GetCurrentHP(enemy) < Damage then
-	   CastSpell(_E)
-	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and IsTargetable and KSQ.getValue() and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
-       CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-       end
     end
 	
 	if MiscEnableAutolvl.getValue() then
@@ -224,7 +225,7 @@ OnLoop(function(myHero)
       if GetCurrentMana(myHero) > Farmmana.getValue() then
         if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= FarmkillsHur.getValue() then
         CastSpell(_E)
-		elseif LaneClearActive.getValue() and killableminions >= FarmkillsHur.getValue() then
+		elseif LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
 	    end
 	  end
 	 
