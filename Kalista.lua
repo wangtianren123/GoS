@@ -332,3 +332,17 @@ function CountMinions()
     end
     return m
 end
+
+function CalcDamage(source, target, addmg, apdmg)
+    local ADDmg = addmg or 0
+    local APDmg = apdmg or 0
+    local ArmorPen = math.floor(GetArmorPenFlat(source))
+    local ArmorPenPercent = math.floor(GetArmorPenPercent(source)*100)/100
+    local Armor = GetArmor(target)*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicPen = math.floor(GetMagicPenFlat(source))
+    local MagicPenPercent = math.floor(GetMagicPenPercent(source)*100)/100
+    local MagicArmor = GetMagicResist(target)*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
+    return (GotBuff(source,"exhausted")  > 0 and 0.4 or 1) * math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))
+end
