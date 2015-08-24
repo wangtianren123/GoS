@@ -1,6 +1,11 @@
+local version = 2
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
+
+up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Kalista", version)
+if up.newVersion() then 
+	up.update() end
 
 local root = menu.addItem(SubMenu.new("Kalista"))
 --ComboMenu--
@@ -84,7 +89,7 @@ do
 end
 
 OnLoop(function(myHero)
-
+	local mousePos = GetMousePos()
     if ComboActive.getValue() then
 	local target = GetCurrentTarget()
 	
@@ -122,6 +127,8 @@ OnLoop(function(myHero)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable and HUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         end
+		else 
+	    MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	  end
 	end
     
