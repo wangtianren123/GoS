@@ -1,4 +1,4 @@
-local version = 2
+local version = 1
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
