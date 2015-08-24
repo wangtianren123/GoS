@@ -1,35 +1,30 @@
-local version = 1
 require('Dlib')
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
-
-up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Kalista", version)
-if up.newVersion() then 
-	up.update() end
-
+	
 local root = menu.addItem(SubMenu.new("Kalista"))
---ComboMenu--
+
 local Combo = root.addItem(SubMenu.new("Combo"))
 local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
 local CItems = Combo.addItem(MenuBool.new("Use Items",true))
 local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
 local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
 local ComboActive = Combo.addItem(MenuKeyBind.new("Combo", 32))
---Harass menu--
+
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
 local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
 local HarassActive = Harass.addItem(MenuKeyBind.new("Harass", 67))
---Ult--
+
 local Ultmenu = root.addItem(SubMenu.new("Ult"))
 local AutoR = Ultmenu.addItem(MenuBool.new("Save Ally with R", true))
 local AutoRHP = Ultmenu.addItem(MenuSlider.new("min Ally HP %", 5, 1, 100, 1))
---Killsteal
+
 local KSmenu = root.addItem(SubMenu.new("Killsteal"))
 local KSQ = KSmenu.addItem(MenuBool.new("Killsteal with Q", true))
 local KSE = KSmenu.addItem(MenuBool.new("Killsteal with E", true))
---Misc--
+
 local Misc = root.addItem(SubMenu.new("Misc"))
 local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
 local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
@@ -37,16 +32,23 @@ local MiscuseE = Misc.addItem(MenuBool.new("Auto E if Target Will Leave Range", 
 local MiscElvl = Misc.addItem(MenuSlider.new("E Harass if my level <", 12, 1, 18, 1))
 local MiscminE = Misc.addItem(MenuSlider.new("min E Stacks", 8, 1, 63, 1))
 local MiscMmana = Misc.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
---Drawings--
+
 local Drawings = root.addItem(SubMenu.new("Drawings"))
 local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
 local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
 local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
 local DrawingsEdmg = Drawings.addItem(MenuBool.new("Draw E% Dmg", true))
---Farm--
+
 local Farm = root.addItem(SubMenu.new("Farm"))
-local junglesteal = Farm.addItem(SubMenu.new("Junglesteal (E)", true))
+local ECanon = Farm.addItem(MenuBool.new("Always E Big Minions", true))
+local Farmmana = Farm.addItem(MenuSlider.new("Don't E if Mana % <", 30, 0, 80, 5))
+local Farmkills = Farm.addItem(MenuSlider.new("E if X Can Be Killed", 2, 0, 10, 1))
+local FarmkillsHur = Farm.addItem(MenuSlider.new("E Hurricane if X Can Be Killed", 3, 0, 10, 1))
+local LaneClearActive = Farm.addItem(MenuKeyBind.new("LaneClear", 86))
+
+local JungleClear = root.addItem(SubMenu.new("Jungle Clear"))
+local junglesteal = JungleClear.addItem(SubMenu.new("Junglesteal (E)", true))
 local baron = junglesteal.addItem(MenuBool.new("Baron", true))
 local dragon = junglesteal.addItem(MenuBool.new("Dragon", true))
 local red = junglesteal.addItem(MenuBool.new("Red", true))
@@ -56,11 +58,7 @@ local wolf = junglesteal.addItem(MenuBool.new("Wolf", true))
 local wraiths = junglesteal.addItem(MenuBool.new("Wraiths", true))
 local gromp = junglesteal.addItem(MenuBool.new("Gromp", false))
 local crab = junglesteal.addItem(MenuBool.new("Crab", true))
-local ECanon = Farm.addItem(MenuBool.new("Always E Big Minions", true))
-local Farmmana = Farm.addItem(MenuSlider.new("Don't E if Mana % <", 30, 0, 80, 5))
-local Farmkills = Farm.addItem(MenuSlider.new("E if X Can Be Killed", 2, 0, 10, 1))
-local FarmkillsHur = Farm.addItem(MenuSlider.new("E Hurricane if X Can Be Killed", 3, 0, 10, 1))
-local LaneClearActive = Farm.addItem(MenuKeyBind.new("LaneClear", 86))
+local JungleClearActive = JungleClear.addItem(MenuKeyBind.new("JungleClear", 86))
 
 do
   _G.objectManager = {}
@@ -111,11 +109,11 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < QSSHP.getValue() then
+		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and GetCurrentHP(myHero)/GetMaxHP(myHero) < QSSHP.getValue() then
+        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "Stun") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "mordekaiserchildrenofthegrave") > 0 or GotBuff(myHero, "bruammark") > 0 or GotBuff(myHero, "zedulttargetmark") > 0 or GotBuff(myHero, "fizzmarinerdoombomb") > 0 or GotBuff(myHero, "soulshackles") > 0 or GotBuff(myHero, "varusrsecondary") > 0 or GotBuff(myHero, "vladimirhemoplague") > 0 or GotBuff(myHero, "urgotswap2") > 0 or GotBuff(myHero, "skarnerimpale") > 0 or GotBuff(myHero, "poppydiplomaticimmunity") > 0 or GotBuff(myHero, "leblancsoulshackle") > 0 or GotBuff(myHero, "leblancsoulshacklem") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
@@ -145,7 +143,7 @@ OnLoop(function(myHero)
 	    for _, ally in pairs(GetAllyHeroes()) do
             for i,enemy in pairs(GetEnemyHeroes()) do 
 			    local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
-				if soulboundhero and GetCurrentHP(ally) <= AutoRHP.getValue() and GetDistance(ally, enemy) < 1500 then
+				if soulboundhero and (GetCurrentHP(ally)/GetMaxHP(ally))*100 <= AutoRHP.getValue() and GetDistance(ally, enemy) < 1500 then
 				CastSpell(_R)
 				end
 			end
@@ -165,9 +163,9 @@ OnLoop(function(myHero)
 	  local targetPos = GetOrigin(enemy)
       local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
 	  if Damage > GetCurrentHP(enemy) then
-	  DrawText("100%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+	  DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
 	  elseif Damage > 0 then
-      DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+      DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
       end
 	end
 	
@@ -213,32 +211,30 @@ OnLoop(function(myHero)
     end
 	end
 	
-	local killableCount = 0
+	local killableminions = 0
     for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 	  local Damage = CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
    
-      if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and IsTargetable and ECanon.getValue() and GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then 
+      if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and ECanon.getValue() and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > Farmmana.getValue() then 
       CastSpell(_E)
 	  end
 	
 	  if Damage > 0 and Damage > GetCurrentHP(minion) and ValidTarget(minion, GetCastRange(myHero,_E)) then 
-      killableminions = killableminions or 1
+      killableminions = killableminions	+ 1
       end
 	
     end
 	
-      if GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then
+      if (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > Farmmana.getValue() then
         if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= FarmkillsHur.getValue() then
         CastSpell(_E)
 	    end
-	  end
-	  
-	  if GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then
+		
         if LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
         CastSpell(_E)
 	    end
 	  end
-	 
+	
 	for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
     local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if IsInDistance(mob, GetCastRange(myHero,_E)) then  
@@ -269,7 +265,7 @@ OnLoop(function(myHero)
 	if Damage > GetCurrentHP(mob) then
 	DrawText("100%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
 	elseif Damage > 0 then
-    DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+    DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
   end
   end
