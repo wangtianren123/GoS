@@ -18,7 +18,7 @@ local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0,
 local ComboActive = Combo.addItem(MenuKeyBind.new("Combo", 32))
 --Harass menu--
 local Harass = root.addItem(SubMenu.new("Harass"))
-local HuseQ = Harass.addItem(MenuBool.new("Use Q", true))
+local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
 local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
 local HarassActive = Harass.addItem(MenuKeyBind.new("Harass", 67))
 --Ult--
@@ -123,20 +123,18 @@ OnLoop(function(myHero)
 	
 	if HarassActive.getValue() then
 	local target = GetCurrentTarget()
-	  if GetCurrentMana(myHero)/GetMaxMana(myHero) > HMmana.getValue() then  
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
-        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable(target) and HUseQ.getValue() then
+        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable(target) and HUseQ.getValue() and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > HMmana.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-        end
 		else 
 	    MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
-	  end
+        end
 	end
     
 	if MiscuseE.getValue() then
 	    for i,enemy in pairs(GetEnemyHeroes()) do
             if GetCurrentMana(myHero)/GetMaxMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
-		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and IsTargetable(target) and GetDistance(myHero, enemy) > GetCastRange(myHero,_E)-50 then
+		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and IsTargetable and GetDistance(myHero, enemy) > GetCastRange(myHero,_E)-50 then
 			    CastSpell(_E)
 			    end
 		    end
@@ -236,7 +234,7 @@ OnLoop(function(myHero)
 	  end
 	  
 	  if GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then
-        if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
+        if LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
         CastSpell(_E)
 	    end
 	  end
@@ -265,7 +263,7 @@ OnLoop(function(myHero)
 	  end
    end
    
-  if ValidTarget(mob, GetCastRange(myHero,_E)) then
+  if ValidTarget(mob, 1200) then
 	local mobPos = GetOrigin(mob)
     local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
 	if Damage > GetCurrentHP(mob) then
