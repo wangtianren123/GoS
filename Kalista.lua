@@ -3,7 +3,7 @@ PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
 
-up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Kalista", version)
+up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Common\Kalista", version)
 if up.newVersion() then 
 	up.update() end
 
@@ -122,7 +122,7 @@ OnLoop(function(myHero)
 	
 	if HarassActive.getValue() then
 	local target = GetCurrentTarget()
-	  if GetCurrentMana(myHero)/GetMaxMana(myHero)/GetMaxMana(myHero) > HMmana.getValue() then  
+	  if GetCurrentMana(myHero)/GetMaxMana(myHero) > HMmana.getValue() then  
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable and HUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
@@ -156,7 +156,7 @@ OnLoop(function(myHero)
 	for i,enemy in pairs(GetEnemyHeroes()) do
 	local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
-       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy, GetCastRange(myHero,_E)) and KSE.getValue() and GetCurrentHP(enemy) < Damage then
+       if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy, GetCastRange(myHero,_E)) and IsTargetable and KSE.getValue() and GetCurrentHP(enemy) < Damage then
 	   CastSpell(_E)
 	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and IsTargetable and KSQ.getValue() and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
