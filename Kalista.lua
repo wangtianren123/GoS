@@ -118,7 +118,7 @@ OnLoop(function(myHero)
 	
 	if HarassActive.getValue() then
 	local target = GetCurrentTarget()
-	  if GetCurrentMana(myHero) > HMmana.getValue() then  
+	  if GetCurrentMana(myHero)/GetMaxMana(myHero)/GetMaxMana(myHero) > HMmana.getValue() then  
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable and HUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
@@ -128,7 +128,7 @@ OnLoop(function(myHero)
     
 	if MiscuseE.getValue() then
 	    for i,enemy in pairs(GetEnemyHeroes()) do
-            if GetCurrentMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
+            if GetCurrentMana(myHero)/GetMaxMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
 		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and IsTargetable and GetDistance(myHero, enemy) > GetCastRange(myHero,_E)-50 then
 			    CastSpell(_E)
 			    end
@@ -212,7 +212,7 @@ OnLoop(function(myHero)
     for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 	  local Damage = CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
    
-      if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and IsTargetable and ECanon.getValue() and GetCurrentMana(myHero) > Farmmana.getValue() then 
+      if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) or (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and IsTargetable and ECanon.getValue() and GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then 
       CastSpell(_E)
 	  end
 	
@@ -222,10 +222,15 @@ OnLoop(function(myHero)
 	
     end
 	
-      if GetCurrentMana(myHero) > Farmmana.getValue() then
+      if GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then
         if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= FarmkillsHur.getValue() then
         CastSpell(_E)
-		elseif LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
+	    end
+	  end
+	  
+	  if GetCurrentMana(myHero)/GetMaxMana(myHero) > Farmmana.getValue() then
+        if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
+        CastSpell(_E)
 	    end
 	  end
 	 
@@ -265,7 +270,7 @@ OnLoop(function(myHero)
   end
 
 local HeroPos = GetOrigin(myHero)
-if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero),3,100,0xffffffff) end
+if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero)+GetHitBox(myHero)*2,3,100,0xffffffff) end
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
