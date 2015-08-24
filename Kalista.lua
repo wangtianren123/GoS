@@ -1,29 +1,29 @@
-require('Dlib')
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
-local root = menu.addItem(SubMenu.new("Kalista"))
 
+local root = menu.addItem(SubMenu.new("Kalista"))
+--ComboMenu--
 local Combo = root.addItem(SubMenu.new("Combo"))
 local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
 local CItems = Combo.addItem(MenuBool.new("Use Items",true))
 local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
 local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
 local ComboActive = Combo.addItem(MenuKeyBind.new("Combo", 32))
-
+--Harass menu--
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HuseQ = Harass.addItem(MenuBool.new("Use Q", true))
 local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
 local HarassActive = Harass.addItem(MenuKeyBind.new("Harass", 67))
-
+--Ult--
 local Ultmenu = root.addItem(SubMenu.new("Ult"))
 local AutoR = Ultmenu.addItem(MenuBool.new("Save Ally with R", true))
 local AutoRHP = Ultmenu.addItem(MenuSlider.new("min Ally HP %", 5, 1, 100, 1))
-
+--Killsteal
 local KSmenu = root.addItem(SubMenu.new("Killsteal"))
 local KSQ = KSmenu.addItem(MenuBool.new("Killsteal with Q", true))
 local KSE = KSmenu.addItem(MenuBool.new("Killsteal with E", true))
-
+--Misc--
 local Misc = root.addItem(SubMenu.new("Misc"))
 local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
 local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
@@ -31,14 +31,14 @@ local MiscuseE = Misc.addItem(MenuBool.new("Auto E if Target Will Leave Range", 
 local MiscElvl = Misc.addItem(MenuSlider.new("E Harass if my level <", 12, 1, 18, 1))
 local MiscminE = Misc.addItem(MenuSlider.new("min E Stacks", 8, 1, 63, 1))
 local MiscMmana = Misc.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
-
+--Drawings--
 local Drawings = root.addItem(SubMenu.new("Drawings"))
 local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
 local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
 local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
 local DrawingsEdmg = Drawings.addItem(MenuBool.new("Draw E% Dmg", true))
-
+--Farm--
 local Farm = root.addItem(SubMenu.new("Farm"))
 local junglesteal = Farm.addItem(SubMenu.new("Junglesteal (E)", true))
 local baron = junglesteal.addItem(MenuBool.new("Baron", true))
@@ -270,6 +270,10 @@ if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRan
 if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 end)
 
+function GetMyHeroPos()
+    return GetOrigin(GetMyHero()) 
+end
+
 function kalE(x) 
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
@@ -289,6 +293,13 @@ function GetDistance(p1,p2)
     p1 = GetOrigin(p1) or p1
     p2 = GetOrigin(p2) or p2
     return math.sqrt(GetDistanceSqr(p1,p2))
+end
+
+function GetDistanceSqr(p1,p2)
+    p2 = p2 or GetMyHeroPos()
+    local dx = p1.x - p2.x
+    local dz = (p1.z or p1.y) - (p2.z or p2.y)
+    return dx*dx + dz*dz
 end
 
 function GetEnemyHeroes()
