@@ -259,11 +259,11 @@ OnLoop(function(myHero)
 	  end
    end
    
-  if ValidTarget(mob, 1200) then
+  if ValidTarget(mob, 1200) and DrawingsEdmg.getValue() then
 	local mobPos = GetOrigin(mob)
     local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
 	if Damage > GetCurrentHP(mob) then
-	DrawText("100%",36,drawPos.x+40,drawPos.y+30,0xffffffff)
+	DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
 	elseif Damage > 0 then
     DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
