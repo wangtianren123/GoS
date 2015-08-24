@@ -85,9 +85,8 @@ end
 
 OnLoop(function(myHero)
 
-
     if ComboActive.getValue() then
-	
+	local target = GetCurrentTarget()
 	
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and IsTargetable and CUseQ.getValue() then
