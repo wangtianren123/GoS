@@ -4,7 +4,7 @@ PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn on F7 orbwalker!")
 MINION_ALLY, MINION_ENEMY, MINION_JUNGLE = GetTeam(GetMyHero()), GetTeam(GetMyHero()) == 100 and 200 or 100, 300
 
-up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Common\Kalista", version)
+up=Updater.new("D3ftsu/GOS/master/Kalista.lua", "Kalista", version)
 if up.newVersion() then 
 	up.update() end
 
@@ -134,7 +134,7 @@ OnLoop(function(myHero)
 	if MiscuseE.getValue() then
 	    for i,enemy in pairs(GetEnemyHeroes()) do
             if GetCurrentMana(myHero)/GetMaxMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
-		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and IsTargetable and GetDistance(myHero, enemy) > GetCastRange(myHero,_E)-50 then
+		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and GetDistance(myHero, enemy) > 850 then
 			    CastSpell(_E)
 			    end
 		    end
