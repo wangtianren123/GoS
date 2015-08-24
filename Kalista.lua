@@ -128,7 +128,7 @@ OnLoop(function(myHero)
     
 	if MiscuseE.getValue() then
 	    for i,enemy in pairs(GetEnemyHeroes()) do
-            if GetCurrentMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscuseElvl.getValue() then
+            if GetCurrentMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
 		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and IsTargetable and GetDistance(myHero, enemy) > GetCastRange(myHero,_E)-50 then
 			    CastSpell(_E)
 			    end
