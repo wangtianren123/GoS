@@ -472,7 +472,7 @@ OnLoop(function(myHero)
 	    end
 	  end
 	
-	for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
     local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if IsInDistance(mob, GetCastRange(myHero,_E)) then  
 	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and baron.getValue() and GetCurrentHP(mob) < Damage then
@@ -505,6 +505,8 @@ OnLoop(function(myHero)
     DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
   end
+end
+
 
 local HeroPos = GetOrigin(myHero)
 if WallJump.getValue() then
