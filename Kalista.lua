@@ -381,7 +381,316 @@ OnLoop(function(myHero)
 	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos10) < 200 then
 	MoveToXYZ(8204, -71.240600585938, 6080)
 	end
+	--pos11
+	if HeroPos.x == 9022 and HeroPos.z == 4408 and WallJump.getValue() then
+	CastSkillShot(_Q,9314, -71.240600585938, 4518)  
+    MoveToXYZ(9314, -71.240600585938, 4518)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos11) < 200 then
+	MoveToXYZ(9022, 52.721687316895, 4408)
+	end
+	--pos11 Inverse
+	if HeroPos.x == 9314 and HeroPos.z == 4518 and WallJump.getValue() then
+	CastSkillShot(_Q,9022, 52.721687316895, 4408)  
+    MoveToXYZ(9022, 52.721687316895, 4408)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos11) < 200 then
+	MoveToXYZ(9314, -71.240600585938, 4518)
+	end
+	--pos12
+	if HeroPos.x == 9722 and HeroPos.z == 4908 and WallJump.getValue() then
+	CastSkillShot(_Q,9700, -72.525970458984, 5198)  
+    MoveToXYZ(9700, -72.525970458984, 5198)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos12) < 200 then
+	MoveToXYZ(9722, -71.240600585938, 4908)
+	end
+	--pos12 Inverse
+	if HeroPos.x == 9700 and HeroPos.z == 5198 and WallJump.getValue() then
+	CastSkillShot(_Q,9722, -71.240600585938, 4908)  
+    MoveToXYZ(9722, -71.240600585938, 4908)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos12) < 200 then
+	MoveToXYZ(9700, -72.525970458984, 5198)
+	end
+	--pos13
+	if HeroPos.x == 10462 and HeroPos.z == 4352 and WallJump.getValue() then
+	CastSkillShot(_Q,10694, -70.244300842285, 4526)  
+    MoveToXYZ(10694, -70.244300842285, 4526)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos13) < 200 then
+	MoveToXYZ(10462, -71.240600585938, 4352)
+	end
+	--pos13 Inverse
+	if HeroPos.x == 10694 and HeroPos.z == 4526 and WallJump.getValue() then
+	CastSkillShot(_Q,10462, -71.240600585938, 4352)  
+    MoveToXYZ(10462, -71.240600585938, 4352)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos13) < 200 then
+	MoveToXYZ(10694, -70.244300842285, 4526)
+	end
+	--pos14
+	if HeroPos.x == 11872 and HeroPos.z == 4358 and WallJump.getValue() then
+	CastSkillShot(_Q,12072, 51.729400634766, 4608)  
+    MoveToXYZ(12072, 51.729400634766, 4608)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos14) < 200 then
+	MoveToXYZ(11872, -71.240600585938, 4358)
+	end
+	--pos14 Inverse
+	if HeroPos.x == 12072 and HeroPos.z == 4608 and WallJump.getValue() then
+	CastSkillShot(_Q,11872, -71.240600585938, 4358)  
+    MoveToXYZ(11872, -71.240600585938, 4358)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos14) < 200 then
+	MoveToXYZ(12072, 51.729400634766, 4608)
+	end
+	--pos15
+	if HeroPos.x == 11772 and HeroPos.z == 4608 and WallJump.getValue() then
+	CastSkillShot(_Q,11922, 51.729400634766, 4758)  
+    MoveToXYZ(11922, 51.729400634766, 4758)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos15) < 200 then
+	MoveToXYZ(11772, -71.240600585938, 4608)
+	end
+	--pos15 Inverse
+	if HeroPos.x == 11922 and HeroPos.z == 4758 and WallJump.getValue() then
+	CastSkillShot(_Q,11772, -71.240600585938, 4608)  
+    MoveToXYZ(11772, -71.240600585938, 4608)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos15) < 200 then
+	MoveToXYZ(11922, 51.729400634766, 4758)
+	end
+	--pos16
+	if HeroPos.x == 11556 and HeroPos.z == 4870 and WallJump.getValue() then
+	CastSkillShot(_Q,11722, 51.783386230469, 5024)  
+    MoveToXYZ(11722, 51.783386230469, 5024)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos16) < 200 then
+	MoveToXYZ(11556, -71.240600585938, 4870)
+	end
+	--pos16 Inverse
+	if HeroPos.x == 11722 and HeroPos.z == 5024 and WallJump.getValue() then
+	CastSkillShot(_Q,11556, -71.240600585938, 4870)  
+    MoveToXYZ(11556, -71.240600585938, 4870)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos16) < 200 then
+	MoveToXYZ(11722, 51.783386230469, 5024)
+	end
+	--pos17
+	if HeroPos.x == 11342 and HeroPos.z == 5274 and WallJump.getValue() then
+	CastSkillShot(_Q,11592, 52.870578765896, 5316)  
+    MoveToXYZ(11592, 52.870578765896, 5316)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos17) < 200 then
+	MoveToXYZ(11342, -61.051364898682, 5274)
+	end
+	--pos17 Inverse
+	if HeroPos.x == 11592 and HeroPos.z == 5316 and WallJump.getValue() then
+	CastSkillShot(_Q,11342, -61.051364898682, 5274)  
+    MoveToXYZ(11342, -61.051364898682, 5274)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos17) < 200 then
+	MoveToXYZ(11592, 52.870578765896, 5316)
+	end
+	--pos18
+	if HeroPos.x == 12034 and HeroPos.z == 5420 and WallJump.getValue() then
+	CastSkillShot(_Q,12272, 51.729400634766, 5408)  
+    MoveToXYZ(12272, 51.729400634766, 5408)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos18) < 200 then
+	MoveToXYZ(12034, 54.640922546387, 5420)
+	end
+	--pos18 Inverse
+	if HeroPos.x == 12272 and HeroPos.z == 5408 and WallJump.getValue() then
+	CastSkillShot(_Q,12034, 54.640922546387, 5420)  
+    MoveToXYZ(12034, 54.640922546387, 5420)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos18) < 200 then
+	MoveToXYZ(12272, 51.729400634766, 5408)
+	end
+	--pos19
+	if HeroPos.x == 11966 and HeroPos.z == 5592 and WallJump.getValue() then
+	CastSkillShot(_Q,12272, 51.729400634766, 5408)  
+    MoveToXYZ(12272, 51.729400634766, 5408)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos19) < 200 then
+	MoveToXYZ(11966, 53.515453338623, 5592)
+	end
+	--pos19 Inverse
+	if HeroPos.x == 12272 and HeroPos.z == 5408 and WallJump.getValue() then
+	CastSkillShot(_Q,11966, 53.515453338623, 5592)  
+    MoveToXYZ(11966, 53.515453338623, 5592)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos19) < 200 then
+	MoveToXYZ(12272, 51.729400634766, 5408)
+	end
+	--pos20
+	if HeroPos.x == 11372 and HeroPos.z == 7208 and WallJump.getValue() then
+	CastSkillShot(_Q,11338, 52.204162597656, 7496)  
+    MoveToXYZ(11338, 52.204162597656, 7496)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos20) < 200 then
+	MoveToXYZ(11372, 51.72611618042, 7208)
+	end
+	--pos20 Inverse
+	if HeroPos.x == 11338 and HeroPos.z == 7496 and WallJump.getValue() then
+	CastSkillShot(_Q,11372, 51.72611618042, 7208)  
+    MoveToXYZ(11372, 51.72611618042, 7208)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos20) < 200 then
+	MoveToXYZ(11338, 52.204162597656, 7496)
+	end
 	
+--[[    --pos21
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos21) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos22
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos22) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos23
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos23) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos24
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos24) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos25
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos25) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos26
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos26) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos27
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos27) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos28
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos28) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos29
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos29) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos30
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos30) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos31
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos31) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos32
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos32) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos33
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos33) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos34
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos34) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos35
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos35) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos36
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos36) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos37
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos37) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos38
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos38) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos39
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos39) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos40
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos40) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos41
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos41) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos42
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos42) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos43
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos43) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--pos44
+	if HeroPos.x == 8260 and HeroPos.z == 2890 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
+    MoveToXYZ(2924, 53.499828338623, 4958)
+	elseif WallJump.getValue() and GetDistance(mousePos, pos44) < 200 then
+	MoveToXYZ(2894, 95.748046875, 4648)
+	end
+	--]]
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
 	local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
@@ -472,7 +781,7 @@ OnLoop(function(myHero)
 	    end
 	  end
 	
-for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+	for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
     local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if IsInDistance(mob, GetCastRange(myHero,_E)) then  
 	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and baron.getValue() and GetCurrentHP(mob) < Damage then
@@ -505,8 +814,8 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
     DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
     end
   end
-end
-
+  end
+  
 
 local HeroPos = GetOrigin(myHero)
 if WallJump.getValue() then
@@ -530,6 +839,26 @@ DrawCircle(pos9,80,1,1,0xffffffff)
 DrawCircle(zoudjpos9,80,1,1,0xffffffff)
 DrawCircle(pos10,80,1,1,0xffffffff)
 DrawCircle(zoudjpos10,80,1,1,0xffffffff)
+DrawCircle(pos11,80,1,1,0xffffffff)
+DrawCircle(zoudjpos11,80,1,1,0xffffffff)
+DrawCircle(pos12,80,1,1,0xffffffff)
+DrawCircle(zoudjpos12,80,1,1,0xffffffff)
+DrawCircle(pos13,80,1,1,0xffffffff)
+DrawCircle(zoudjpos13,80,1,1,0xffffffff)
+DrawCircle(pos14,80,1,1,0xffffffff)
+DrawCircle(zoudjpos14,80,1,1,0xffffffff)
+DrawCircle(pos15,80,1,1,0xffffffff)
+DrawCircle(zoudjpos15,80,1,1,0xffffffff)
+DrawCircle(pos16,80,1,1,0xffffffff)
+DrawCircle(zoudjpos16,80,1,1,0xffffffff)
+DrawCircle(pos17,80,1,1,0xffffffff)
+DrawCircle(zoudjpos17,80,1,1,0xffffffff)
+DrawCircle(pos18,80,1,1,0xffffffff)
+DrawCircle(zoudjpos18,80,1,1,0xffffffff)
+DrawCircle(pos19,80,1,1,0xffffffff)
+DrawCircle(zoudjpos19,80,1,1,0xffffffff)
+DrawCircle(pos20,80,1,1,0xffffffff)
+DrawCircle(zoudjpos20,80,1,1,0xffffffff)
 end
 if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero)+GetHitBox(myHero)*2,3,100,0xffffffff) end
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
