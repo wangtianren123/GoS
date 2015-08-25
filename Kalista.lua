@@ -380,7 +380,7 @@ IsFacing(target,2000,myHero) then PrintChat("Facing me") end
 	if HeroPos.x == 8204 and HeroPos.z == 6080 and WallJump.getValue() then
 	CastSkillShot(_Q,7972, 50.290023803711, 5908)  
     MoveToXYZ(7972, 50.290023803711, 5908)
-	elseif WallJump.getValue() and GetDistance(mousePos, pos10) < 200 then
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos10) < 200 then
 	MoveToXYZ(8204, -71.240600585938, 6080)
 	end
 	
