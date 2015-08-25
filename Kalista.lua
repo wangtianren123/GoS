@@ -89,8 +89,6 @@ do
 end
 
 OnLoop(function(myHero)
-local target = GetCurrentTarget()
-IsFacing(target,2000,myHero) then PrintChat("Facing me") end
 	local mousePos = GetMousePos()
     if ComboActive.getValue() then
 	local target = GetCurrentTarget()
