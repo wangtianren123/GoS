@@ -1,0 +1,137 @@
+require('MapPositionGOS')
+require('Dlib')
+PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
+PrintChat("Please don't forget to turn ON the F7 orbwalker!")
+
+local root = menu.addItem(SubMenu.new("Vayne"))
+
+local Combo = root.addItem(SubMenu.new("Combo"))
+local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
+local CUseE = Combo.addItem(MenuBool.new("Use E",true))
+local CUseR = Combo.addItem(SubMenu.new("Use R"))
+local REnabled = CUseR.addItem(MenuBool.new("Enabled",true))
+local KeepInvis = CUseR.addItem(MenuBool.new("Keep Invisibility",true))
+local Deftsukappa = CUseR.addItem(MenuSeparator.new(""))
+local Rifthp = CUseR.addItem(MenuSlider.new("if Target Health % <", 70, 1, 100, 1))
+local Rifhp = CUseR.addItem(MenuSlider.new("if Health % <", 55, 1, 100, 1))
+local Rminally = CUseR.addItem(MenuSlider.new("Minimum Allies in Range", 2, 1, 5, 1))
+local Rallyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 8000, 50))
+local Rminenemy = CUseR.addItem(MenuSlider.new("Minimum Enemies in Range", 2, 1, 5, 1))
+local Renemyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 8000, 50))
+local CItems = Combo.addItem(MenuBool.new("Use Items",true))
+local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
+local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
+local ComboActive = Combo.addItem(MenuKeyBind.new("Combo", 32))
+
+local Misc = root.addItem(SubMenu.new("Misc"))
+local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
+local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
+local MiscAutoE = Misc.addItem(MenuBool.new("Auto Wall Condemn", true))
+local MiscGap = Misc.addItem(SubMenu.new("Anti-Gap Close Settings", true))
+local MiscInterrupt = Misc.addItem(SubMenu.new("Interrupt Settings", true))
+local WallTumble1 = Misc.addItem(MenuKeyBind.new("WallTumble Mid", 84))
+local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
+
+local Drawings = root.addItem(SubMenu.new("Drawings"))
+local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
+local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
+local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
+local DrawingCircle = Drawings.addItem(MenuBool.new("Draw Circle on Target", true))
+local DrawingsTarget = Drawings.addItem(MenuBool.new("Draw Current Target", true))
+local DrawingsWT = Drawings.addItem(MenuBool.new("Draw WallTumble Positions", true))
+
+CHANELLING_SPELLS = {
+    ["Caitlyn"]                     = {_R},
+    ["Katarina"]                    = {_R},
+    ["MasterYi"]                    = {_W},
+    ["FiddleSticks"]                = {_W, _R},
+    ["Galio"]                       = {_R},
+    ["Lucian"]                      = {_R},
+    ["MissFortune"]                 = {_R},
+    ["VelKoz"]                      = {_R},
+    ["Nunu"]                        = {_R},
+    ["Shen"]                        = {_R},
+    ["Karthus"]                     = {_R},
+    ["Malzahar"]                    = {_R},
+    ["Pantheon"]                    = {_R},
+    ["Warwick"]                     = {_R},
+    ["Xerath"]                      = {_R},
+}
+ 
+GAPCLOSER_SPELLS = {
+    ["Aatrox"]                      = {_Q},
+    ["Akali"]                       = {_R},
+    ["Alistar"]                     = {_W},
+    ["Corki"]                       = {_W},
+    ["Diana"]                       = {_R},
+    ["FiddleSticks"]                = {_R},
+    ["Fiora"]                       = {_Q},
+    ["Fizz"]                        = {_Q},
+    ["Gnar"]                        = {_E},
+    ["Gragas"]                      = {_E},
+    ["Hecarim"]                     = {_R},
+    ["Irelia"]                      = {_Q},
+    ["JarvanIV"]                    = {_R},
+    ["Jax"]                         = {_Q},
+    ["Katarina"]                    = {_E},
+    ["KhaZix"]                      = {_E},
+    ["LeeSin"]                      = {_Q},
+    ["Leona"]                       = {_E},
+    ["Malphite"]                    = {_R},
+    ["MasterYi"]                    = {_Q},
+    ["MonkeyKing"]                  = {_E},
+    ["Nautilus"]                    = {_Q},
+    ["Pantheon"]                    = {_W, _R},
+    ["Poppy"]                       = {_E},
+    ["RekSai"]                      = {_E},
+    ["Renekton"]                    = {_E},
+    ["Riven"]                       = {_Q, _E},
+    ["Rengar"]                      = {_R},
+    ["Sejuani"]                     = {_Q},
+    ["Shen"]                        = {_E},
+    ["Shyvana"]                     = {_R},
+    ["Talon"]                       = {_E},
+    ["Tristana"]                    = {_W},
+    ["Tryndamere"]                  = {_E},
+    ["Udyr"]                        = {_E},
+    ["Volibear"]                    = {_Q},
+    ["Vi"]                          = {_Q},
+    ["XinZhao"]                     = {_E},
+    ["Yasuo"]                       = {_E},
+    ["Zac"]                         = {_E},
+}
+
+do
+  _G.objectManager = {}
+  objectManager.maxObjects = 0
+  objectManager.objects = {}
+  objectManager.camps = {}
+  objectManager.barracks = {}
+  objectManager.heroes = {}
+  objectManager.minions = {}
+  OnObjectLoop(function(object, myHero)
+    objectManager.objects[GetNetworkID(object)] = object
+  end)
+  OnLoop(function(myHero)
+    objectManager.maxObjects = 0
+    for _, obj in pairs(objectManager.objects) do
+      objectManager.maxObjects = objectManager.maxObjects + 1
+      local type = GetObjectType(obj)
+      if type == Obj_AI_Camp then
+        objectManager.camps[_] = obj
+      elseif type == Obj_AI_Hero then
+        objectManager.heroes[_] = obj
+      elseif type == Obj_AI_Minion then
+        objectManager.minions[_] = obj
+      end
+    end
+  end)
+end
+
+
+
+
+
+
+
+
