@@ -45,7 +45,6 @@ local Farm = root.addItem(SubMenu.new("Farm"))
 local ECanon = Farm.addItem(MenuBool.new("Always E Big Minions", true))
 local Farmmana = Farm.addItem(MenuSlider.new("Don't E if Mana % <", 30, 0, 80, 5))
 local Farmkills = Farm.addItem(MenuSlider.new("E if X Can Be Killed", 2, 0, 10, 1))
-local FarmkillsHur = Farm.addItem(MenuSlider.new("E Hurricane if X Can Be Killed", 3, 0, 10, 1))
 local LaneClearActive = Farm.addItem(MenuKeyBind.new("LaneClear", 86))
 
 local JungleClear = root.addItem(SubMenu.new("Jungle Clear"))
@@ -772,14 +771,10 @@ OnLoop(function(myHero)
     end
 	
       if (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > Farmmana.getValue() then
-        if GetItemSlot(myHero,3085) > 0 and LaneClearActive.getValue() and killableminions >= FarmkillsHur.getValue() then
-        CastSpell(_E)
-	    end
-		
         if LaneClearActive.getValue() and killableminions >= Farmkills.getValue() then
         CastSpell(_E)
-	    end
-	  end
+	end
+      end
 	
 	for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
     local Damage = CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
