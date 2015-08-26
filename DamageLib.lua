@@ -769,7 +769,7 @@ function getdmg(spellname,target,myHero,stagedmg,spelllvl)
 		end
 		if apdmg > 0 then apdmg = CalcDamage(source, target, apdmg) end
 		if addmg > 0 then addmg = CalcDamage(source, target, addmg) end
-		local dmg = 0
+		local dmg = dmg
 	end
 end
 
@@ -793,11 +793,11 @@ function CalcDamage(source, target, addmg)
 	
 	if currbuffcount > 0 then
 	   if currbufname = "exhausted" then
-       return 0.4 * math.floor(addmg*(1-ArmorPercent))
+       return 0.6 * math.floor(addmg*(1-ArmorPercent))
 	   elseif currbufname = "urgotentropypassive" then
-	   return 0.15 * math.floor(addmg*(1-ArmorPercent))
+	   return 0.85 * math.floor(addmg*(1-ArmorPercent))
 	   elseif currbufname = "sonapassivedebuff" then
-	   return 0.2 * math.floor(addmg*(1-ArmorPercent))
+	   return 0.8 * math.floor(addmg*(1-ArmorPercent))
 	   elseif targetcurrbufname = "vladimirhemoplaguedebuff" then
 	   return 1.12 * math.floor(addmg*(1-ArmorPercent))
 	   elseif targetcurrbufname = "Meditate" then
@@ -837,7 +837,7 @@ function CalcDamage(source, target, apdmg)
 	
 	if currbuffcount > 0 then
 	   if currbufname = "exhausted" then
-       return 0.4 * math.floor(apdmg*(1-MagicArmorPercent))
+       return 0.6 * math.floor(apdmg*(1-MagicArmorPercent))
 	   elseif currbufname = "urgotentropypassive" then
 	   return 0.85 * math.floor(apdmg*(1-MagicArmorPercent))
 	   elseif currbufname = "sonapassivedebuff" then
