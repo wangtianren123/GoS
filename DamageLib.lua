@@ -1,6 +1,6 @@
 --[[
-	Spell Damage Library 1.48
-		by eXtragoZ
+	Spell Damage Library
+	by eXtragoZ Ported And Updated by Deftsu
 		
 		Is designed to calculate the damage of the skills to champions, although most of the calculations
 		work for creeps
