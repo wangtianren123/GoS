@@ -1,4 +1,4 @@
-PrintChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for this awesome tool #MissLaihaSenpai")
+PrintChat("Baseult 4.0 Made By Deftsu / Credits : Inspired <3 and Feretorix for this awesome tool #RIPLaiha")
 
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
 BaseUltConfig = scriptConfig("BaseUlt", "BaseUlt")
