@@ -1,5 +1,5 @@
 -- Full Credits goes to Inspired my luv <3 Inspired Auto Carry : Reborn <3
-require('Inspired')
+require('InspiredReborn')
 
 class 'IACR' -- {
 
