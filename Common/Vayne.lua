@@ -1,5 +1,4 @@
 require('MapPositionGOS')
-require('Dlib')
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn OFF the F7 orbwalker!")
 
@@ -149,10 +148,11 @@ OnLoop(function(myHero)
 		if CUseE.getValue() then
 		AutoE()
 		end
-		
-		if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(target)/GetMaxHP(target))*100 < Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) > Rminally.getValue() then
+	  for i,enemy in pairs(GetEnemyHeroes()) do
+		if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 < Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) > Rminally.getValue() then
 		CastSpell(_R)
 		end
+	  end
 		
 		if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() then 
 		IACR():SetAA(boolean)
