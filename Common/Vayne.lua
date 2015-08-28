@@ -113,7 +113,7 @@ OnLoop(function(myHero)
         end
 		
 
-if DrawingsConfig.DrawQ. then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
+if DrawingsConfig.DrawQ then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if DrawingsConfig.DrawWT then
 DrawCircle(6962, 51, 8952,100,1,1,0xffffffff)
