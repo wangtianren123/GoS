@@ -709,7 +709,7 @@ end
 
 function Drawings()
 local HeroPos = GetOrigin(myHero)
-if WallJump.getValue() then
+if MiscConfig.WJ then
 DrawCircle(pos1,80,1,0,0xffffffff)
 DrawCircle(zoudjpos1,80,1,0,0xffffffff)
 DrawCircle(pos2,80,1,0,0xffffffff)
