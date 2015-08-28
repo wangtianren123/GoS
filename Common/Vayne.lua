@@ -15,7 +15,7 @@ MiscConfig.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, strin
 MiscConfig.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
 MiscConfig.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
 DrawingsConfig = scriptConfig("Drawings", "Drawings")
-DrawingsConfig.addParam("DrawQ","Draw E", SCRIPT_PARAM_ONOFF, true)
+DrawingsConfig.addParam("DrawQ","Draw Q", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
 
