@@ -1,42 +1,25 @@
-require('MapPositionGOS')
+require 'MapPositionGOS'
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
-PrintChat("Please don't forget to turn OFF the F7 orbwalker!")
+PrintChat("Please don't forget to turn off F7 orbwalker!")
+Config = scriptConfig("Vayne", "Vayne")
+Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("R", "Use R (logic)", SCRIPT_PARAM_ONOFF, true)
+Config.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item2","Use Bilgewatter",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item3","Use Youmuu",SCRIPT_PARAM_ONOFF,true)
+Config.addParam("Item4", "Use QSS", SCRIPT_PARAM_ONOFF, true)
+MiscConfig = scriptConfig("Misc", "Misc")
+MiscConfig.addParam("AutoE", "Auto E", SCRIPT_PARAM_ONOFF, true)
+MiscConfig.addParam("Walltumble1", "Walltumble Mid", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
+MiscConfig.addParam("Walltumble2", "Walltumble Drake", SCRIPT_PARAM_KEYDOWN, string.byte("U"))
+MiscConfig.addParam("Autolvl", "Gosu Autolvl", SCRIPT_PARAM_ONOFF, false)
+DrawingsConfig = scriptConfig("Drawings", "Drawings")
+DrawingsConfig.addParam("DrawQ","Draw E", SCRIPT_PARAM_ONOFF, true)
+DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
+DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
 
-IACR()
-
-local root = menu.addItem(SubMenu.new("Vayne"))
-
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseE = Combo.addItem(MenuBool.new("Use E",true))
-local CUseR = Combo.addItem(SubMenu.new("Use R"))
-local REnabled = CUseR.addItem(MenuBool.new("Enabled",true))
-local KeepInvis = CUseR.addItem(MenuBool.new("Keep Invisibility",true))
-local Deftsukappa = CUseR.addItem(MenuSeparator.new(""))
-local Rifthp = CUseR.addItem(MenuSlider.new("if Target Health % <", 70, 1, 100, 1))
-local Rifhp = CUseR.addItem(MenuSlider.new("if Health % <", 55, 1, 100, 1))
-local Rminally = CUseR.addItem(MenuSlider.new("Minimum Allies in Range", 2, 1, 5, 1))
-local Rallyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
-local Rminenemy = CUseR.addItem(MenuSlider.new("Minimum Enemies in Range", 2, 1, 5, 1))
-local Renemyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
-local CItems = Combo.addItem(MenuBool.new("Use Items",true))
-local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
-local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
-
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local MiscAutoE = Misc.addItem(MenuBool.new("Auto Wall Condemn", true))
-local MiscGap = Misc.addItem(MenuBool.new("Anti-Gap Close", true))
-local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
-local WallTumble1 = Misc.addItem(MenuKeyBind.new("WallTumble Mid", 84))
-local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
-local DrawingsWT = Drawings.addItem(MenuBool.new("Draw WallTumble Positions", true))
+myIAC=IAC()
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -55,64 +38,18 @@ CHANELLING_SPELLS = {
     ["Warwick"]                     = {_R},
     ["Xerath"]                      = {_R},
 }
- 
-GAPCLOSER_SPELLS = {
-    ["Aatrox"]                      = {_Q},
-    ["Akali"]                       = {_R},
-    ["Alistar"]                     = {_W},
-    ["Diana"]                       = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Fizz"]                        = {_Q},
-    ["Gnar"]                        = {_E},
-    ["Gragas"]                      = {_E},
-    ["Hecarim"]                     = {_R},
-    ["Irelia"]                      = {_Q},
-    ["JarvanIV"]                    = {_R},
-    ["Jax"]                         = {_Q},
-    ["Katarina"]                    = {_E},
-    ["KhaZix"]                      = {_E},
-    ["LeeSin"]                      = {_Q},
-    ["Leona"]                       = {_E},
-    ["Malphite"]                    = {_R},
-    ["MasterYi"]                    = {_Q},
-    ["MonkeyKing"]                  = {_E},
-    ["Nautilus"]                    = {_Q},
-    ["Pantheon"]                    = {_W, _R},
-    ["Poppy"]                       = {_E},
-    ["RekSai"]                      = {_E},
-    ["Renekton"]                    = {_E},
-    ["Riven"]                       = {_Q, _E},
-    ["Rengar"]                      = {_R},
-    ["Sejuani"]                     = {_Q},
-    ["Shen"]                        = {_E},
-    ["Shyvana"]                     = {_R},
-    ["Talon"]                       = {_E},
-    ["Tristana"]                    = {_W},
-    ["Tryndamere"]                  = {_E},
-    ["Udyr"]                        = {_E},
-    ["Volibear"]                    = {_Q},
-    ["Vi"]                          = {_Q},
-    ["XinZhao"]                     = {_E},
-    ["Yasuo"]                       = {_E},
-    ["Zac"]                         = {_E},
-}
 
 local callback = nil
  
 OnProcessSpell(function(unit, spell)    
     if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
     local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
-    local unitGapcloserSpells = GAPCLOSER_SPELLS[GetObjectName(unit)]
  
         if unitChanellingSpells then
             for _, spellSlot in pairs(unitChanellingSpells) do
                 if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
             end
-        elseif unitGapcloserSpells then
-            for _, spellSlot in pairs(unitGapcloserSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, GAPCLOSER_SPELLS) end
-            end
-        end
+		end
 end)
  
 function addInterrupterCallback( callback0 )
@@ -122,66 +59,63 @@ end
 local mousePos = GetMousePos()
 
 OnLoop(function(myHero)
-    if Combo.getValue() then
+    if IWalkConfig.Combo then
 	local target = GetTarget(700, DAMAGE_PHYSICAL)
 	
-		if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+		if GetItemSlot(myHero,3153) > 0 and Config.Item1 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+        if GetItemSlot(myHero,3144) > 0 and Config.Item2 and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
         CastTargetSpell(target, GetItemSlot(myHero,3144))
         end
 
-        if GetItemSlot(myHero,3142) > 0 and CItems.getValue() then
+        if GetItemSlot(myHero,3142) > 0 and Config.Item3 then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+		if GetItemSlot(myHero,3140) > 0 and Config.Item4 and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < 75 then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+        if GetItemSlot(myHero,3139) > 0 and Config.Item4 and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < 75 then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-		if CUseE.getValue() then
+		if Config.E then
 		AutoE()
 		end
+		
 	  for i,enemy in pairs(GetEnemyHeroes()) do
-		if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 < Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) > Rminally.getValue() then
+		if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 < 75 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < 55 and EnemiesAround(GetMyHeroPos(), 1000) >= 2 and AlliesAround(GetMyHeroPos(), 1000) > 1 then
 		CastSpell(_R)
 		end
 	  end
 		
-		if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() then 
-		IACR():SetAA(boolean)
-		end
 	end
 	
-	if MiscAutoE.getValue() then
+	if MiscConfig.AutoE then
 	AutoE()
 	end
 	
 	local HeroPos = GetOrigin(myHero)
    
-        if WallTumble1.getValue() and HeroPos.x == 6962 and HeroPos.z == 8952 then
+        if MiscConfig.Walltumble1 and HeroPos.x == 6962 and HeroPos.z == 8952 then
             CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
-        elseif WallTumble1.getValue() then
+        elseif MiscConfig.Walltumble1 then
             MoveToXYZ(6962, 51, 8952)
         end
     
-        if WallTumble2.getValue() and HeroPos.x == 12060 and HeroPos.z == 4806 then
+        if MiscConfig.Walltumble2 and HeroPos.x == 12060 and HeroPos.z == 4806 then
             CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
-        elseif WallTumble2.getValue() then
+        elseif MiscConfig.Walltumble2 then
             MoveToXYZ(12060, 51, 4806)
         end
 		
 
-if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero)+GetHitBox(myHero)*2,3,100,0xffffffff) end
-if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if DrawingsWT.getValue() then
+if DrawingsConfig.DrawQ. then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
+if DrawingsConfig.DrawE then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if DrawingsConfig.DrawWT then
 DrawCircle(6962, 51, 8952,100,1,1,0xffffffff)
 DrawCircle(12060, 51, 4806,100,1,1,0xffffffff)
 end
@@ -192,7 +126,7 @@ OnProcessSpell(function(unit, spell)
       if unit == myHero then
         if spell.name:lower():find("attack") then 
 		   DelayAction(function() 
-                              if CanUseSpell(myHero,_Q) == READY and Combo.getValue() and CUseQ.getValue() then
+                              if CanUseSpell(myHero,_Q) == READY and IWalkConfig.Combo and Config.Q then
 							  Tumble()
                               end
                        end, spell.windUpTime + GetLatency()/2000)
@@ -276,7 +210,7 @@ function AutoE()
 	end
 end
 
-if MiscEnableAutolvl.getValue() then  
+if MiscConfig.Autolvl then  
 
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
@@ -319,13 +253,7 @@ end
 end
 
 addInterrupterCallback(function(target, spellType)
-  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == GAPCLOSER_SPELLS and MiscGap.getValue() then
-    CastTargetSpell(target, _E)
-  end
-end)
-
-addInterrupterCallback(function(target, spellType)
-  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and MiscInterrupt.getValue() then
+  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS then
     CastTargetSpell(target, _E)
   end
 end)
