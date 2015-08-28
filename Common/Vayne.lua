@@ -2,7 +2,6 @@ require 'MapPositionGOS'
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn off F7 orbwalker!")
 Config = scriptConfig("Vayne", "Vayne")
-Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("R", "Use R (logic)", SCRIPT_PARAM_ONOFF, true)
 Config.addParam("Item1","Use BotRK",SCRIPT_PARAM_ONOFF,true)
@@ -18,8 +17,6 @@ DrawingsConfig = scriptConfig("Drawings", "Drawings")
 DrawingsConfig.addParam("DrawQ","Draw Q", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
 DrawingsConfig.addParam("DrawWT","Draw WT Positions",SCRIPT_PARAM_ONOFF,true)
-
-myIAC=IAC()
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -121,33 +118,6 @@ DrawCircle(12060, 51, 4806,100,1,1,0xffffffff)
 end
 end)
 
-OnProcessSpell(function(unit, spell)
-  if unit and spell and spell.name then
-      if unit == myHero then
-        if spell.name:lower():find("attack") then 
-		   DelayAction(function() 
-                              if CanUseSpell(myHero,_Q) == READY and IWalkConfig.Combo and Config.Q then
-							  Tumble()
-                              end
-                       end, spell.windUpTime + GetLatency()/2000)
-		end
-	end
-  end
-end)
-
-function Tumble()
-  local HeroPos = GetOrigin(myHero)
-  local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-  local DistanceAfterTumble = GetDistance(AfterTumblePos, unit)
-  if DistanceAfterTumble < 630 and DistanceAfterTumble > 300 then
-  CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
-  end
-  
-  if GetDistance(myHero, unit) > 630 and DistanceAfterTumble < 630 then
-  CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
-  end
-end
-
 function AutoE()
 	 for _,target in pairs(GetEnemyHeroes()) do
 		if ValidTarget(target,1000) then
@@ -211,7 +181,6 @@ function AutoE()
 end
 
 if MiscConfig.Autolvl then  
-
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
 elseif GetLevel(myHero) == 2 then
@@ -249,7 +218,6 @@ elseif GetLevel(myHero) == 17 then
 elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
-
 end
 
 addInterrupterCallback(function(target, spellType)
