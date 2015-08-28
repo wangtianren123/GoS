@@ -835,7 +835,7 @@ function LaneClear()
     CastSpell(_E)
     end
 	
-    if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Super")) ValidTarget(minion, GetCastRange(myHero,_E)) and MiscConfig.ECanon then 
+    if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Super")) and ValidTarget(minion, GetCastRange(myHero,_E)) and MiscConfig.ECanon then 
 	CastSpell(_E)
     end
   end
