@@ -1,0 +1,46 @@
+
+
+
+
+
+Checks()
+
+function Combo(unit)
+	if ValidTarget(unit) and unit ~= nil and unit.type == myHero.type then
+		if Config.combo.useItems then
+			UseItems(unit)
+		end
+		if Config.combo.r.useR and Config.combo.r.chaseR and R.ready then
+			if Config.combo.w.useW and W.ready then
+			ChaseR(unit)
+			DelayAction(function() CastSpell(_W, myHero.x, myHero.z) end, 0.5)
+		else 
+			ChaseR(unit)
+			end
+		end
+		if Config.combo.r.useR and Config.combo.w.useW and W.ready and R.ready then
+			CastR(unit)
+			DelayAction(function() CastSpell(_W, myHero.x, myHero.z) end, 0.5)
+		else 
+			CastR(unit)
+		end
+		if Config.combo.q.useQ then
+			CastQ(unit)
+			myHero:Attack(unit)
+		end
+		if Config.combo.e.useE and not Q.ready then
+			CastE(unit)
+		end
+	end
+end
+
+function Checks()
+Q.ready = CanUseSpell(myHero, _Q) == READY
+W.ready = CanUseSpell(myHero, _W) == READY
+E.ready = CanUseSpell(myHero, _E) == READY
+R.ready = CanUseSpell(myHero, _R) == READY
+Combo = IWalkConfig.Combo
+Harass = IWalkConfig.Harass
+LaneClear = IWalkConfig.LaneClear
+LastHit = IWalkConfig.LastHit
+end
