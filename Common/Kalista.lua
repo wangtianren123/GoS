@@ -24,7 +24,7 @@ DelayAction(function ()
                 end
         end
         _G.DrawMenu = function ( ... )  end
-end, 1)
+end, 1000)
 ------------------------------------------------------------------
 
 myIAC = IAC()
