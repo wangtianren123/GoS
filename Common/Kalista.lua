@@ -1,8 +1,7 @@
+require('Dlib')
 local version = 1
 local UP=Updater.new("D3ftsu/GoS/blob/master/Common/Kalista.lua", "Kalista", version)
 if UP.newVersion() then UP.update() end
-
-require('Dlib')
 
 PrintChat("D3ftland Kalista By Deftsu Loaded, Have A Good Game!")
 PrintChat("Please don't forget to turn off F7 orbwalker!")
