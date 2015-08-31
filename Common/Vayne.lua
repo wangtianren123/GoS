@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/blob/master/Common/Vayne.lua", "Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -149,7 +149,7 @@ OnLoop(function(myHero)
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
 	    
-		if myIAC:IsWindingUp() and CUseQ.getValue() then
+		if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
 	    Tumble()
         end, 250)
