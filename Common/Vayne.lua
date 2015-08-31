@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -327,6 +327,7 @@ elseif GetLevel(myHero) == 17 then
         LevelSpell(_E)
 elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
+end
 end
 
 addInterrupterCallback(function(target, spellType)
