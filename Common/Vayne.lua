@@ -1,12 +1,9 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
-
-PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
-PrintChat("Please don't forget to turn off F7 orbwalker!")
 
 --------------- Thanks ilovesona for this ------------------------
 DelayAction(function ()
@@ -218,7 +215,6 @@ end
 end)
 
 function Tumble()
-  local target = GetCurrentTarget()
   local HeroPos = GetOrigin(myHero)
   local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
   local DistanceAfterTumble = GetDistance(AfterTumblePos, target)
@@ -333,8 +329,6 @@ elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
 
-end
-
 addInterrupterCallback(function(target, spellType)
   if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == GAPCLOSER_SPELLS and MiscGap.getValue() then
     CastTargetSpell(target, _E)
@@ -348,12 +342,12 @@ addInterrupterCallback(function(target, spellType)
 end)
 
 function AlliesAround(pos, range)
-    local c = 0
+    local s = 0
     if pos == nil then return 0 end
-    for k,v in pairs(GetAllyHeroes()) do 
-        if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
-            c = c + 1
+    for sk,sv in pairs(GetAllyHeroes()) do 
+        if sv and ValidTarget(sv) and GetDistanceSqr(pos,GetOrigin(sv)) < range*range then
+            s = s + 1
         end
     end
-    return c
+    return s
 end
