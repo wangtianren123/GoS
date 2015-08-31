@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 3
+local version = 4
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -36,7 +36,7 @@ local REnabled = CUseR.addItem(MenuBool.new("Enabled",true))
 local Deftsukappa = CUseR.addItem(MenuSeparator.new(""))
 local Rifthp = CUseR.addItem(MenuSlider.new("if Target Health % <", 70, 1, 100, 1))
 local Rifhp = CUseR.addItem(MenuSlider.new("if Health % <", 55, 1, 100, 1))
-local Rminally = CUseR.addItem(MenuSlider.new("Minimum Allies in Range", 2, 1, 5, 1))
+local Rminally = CUseR.addItem(MenuSlider.new("Minimum Allies in Range", 2, 0, 4, 1))
 local Rallyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
 local Rminenemy = CUseR.addItem(MenuSlider.new("Minimum Enemies in Range", 2, 1, 5, 1))
 local Renemyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
@@ -180,7 +180,7 @@ OnLoop(function(myHero)
 		end
 		
 	    for i,enemy in pairs(GetEnemyHeroes()) do
-		  if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 < Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) > Rminally.getValue() then
+		  if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
 		  CastSpell(_R)
 		  end
 	    end
