@@ -62,6 +62,7 @@ local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
 local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
 local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
+local DrawingsEdmg = Drawings.addItem(MenuBool.new("Draw E% Dmg", true))
 
 local Farm = root.addItem(SubMenu.new("Farm"))
 local ECanon = Farm.addItem(MenuBool.new("Always E Big Minions", true))
