@@ -1,8 +1,8 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 2
-local UP=Updater.new("D3ftsu/GoS/blob/master/Common/Vayne.lua", "Vayne", version)
+local version = 1
+local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
 PrintChat("D3ftland Vayne By Deftsu Loaded, Have A Good Game!")
