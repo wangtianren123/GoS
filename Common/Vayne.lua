@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -55,8 +55,8 @@ local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
 
 local Drawings = root.addItem(SubMenu.new("Drawings"))
 local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
+local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", false))
+local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", false))
 local DrawingsWT = Drawings.addItem(MenuBool.new("Draw WallTumble Positions", true))
 
 CHANELLING_SPELLS = {
