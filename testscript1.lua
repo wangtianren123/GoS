@@ -1,4 +1,3 @@
-require('InspiredReborn')
-require('IACR')
-require('Dlib')
+require('Inspired')
+require('IAC')
 pcall( require, GetObjectName(GetMyHero()) ) 
