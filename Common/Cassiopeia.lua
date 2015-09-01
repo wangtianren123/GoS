@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 5
+local version = 6
 local UP=Updater.new("D3ftsu/GoS/master/Common/Cassiopeia.lua", "Common\\Cassiopeia", version)
 if UP.newVersion() then UP.update() end
 
@@ -48,8 +48,6 @@ local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
 local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
 local PacketCast = Misc.addItem(MenuBool.new("Packet Cast (Private :P)", true))
 local nofaceexploit = Misc.addItem(MenuBool.new("No-Face Exploit (Private :P)", true))
-local MiscAutoR = Misc.addItem(MenuBool.new("Auto R", true))
-local Rminenemy = Misc.addItem(MenuSlider.new("Minimum Enemies in Range", 3, 1, 5, 1))
 local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt Dangerous Spells", true))
 local MiscInterminHP = Misc.addItem(MenuSlider.new("Minimum Health % for Interrupt", 50, 1, 100, 1))
 
@@ -185,10 +183,6 @@ OnLoop(function(myHero)
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		elseif CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and KUseE.getValue() and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(enemy, _E)
-		end
-		
-		if MiscAutoR.getValue() and EnemiesAround(RPred.PredPos.x, 200) >= Rminenemy.getValue() then
-		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
 	end
