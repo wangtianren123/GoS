@@ -73,8 +73,6 @@ local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", false))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", false))
 local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", false))
 
-myIAC = IAC()
-
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
     ["Katarina"]                    = {_R},
