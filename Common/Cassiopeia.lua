@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 4
+local version = 5
 local UP=Updater.new("D3ftsu/GoS/master/Common/Cassiopeia.lua", "Common\\Cassiopeia", version)
 if UP.newVersion() then UP.update() end
 
@@ -155,7 +155,7 @@ OnLoop(function(myHero)
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		
-	    if CanUseSpell(myHero, _E) == READY and HUseE.getValue() and ValidTarget(target, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and HUseE.getValue() and ValidTarget(target, 700) and poisoned then
 		CastTargetSpell(target, _E)
 		end
 			
@@ -248,23 +248,23 @@ for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 
-    if IWalkConfig.LaneClear then
-		if CanUseSpell(myHero, _E) == READY and LCUseE.getValue() and ValidTarget(minion, 700) and poisoned and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= LCmin.getValue() then
+        if IWalkConfig.LaneClear then
+		if CanUseSpell(myHero, _E) == READY and LCUseE.getValue() and IsInDistance(minion, 700) and poisoned and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= LCmin.getValue() then
 		CastTargetSpell(minion, _E)
 		end
 	end
 	
 	if IWalkConfig.LastHit then 
 		
-	    if CanUseSpell(myHero, _E) == READY and EX.getValue() and EXP.getValue() and ValidTarget(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+	    if CanUseSpell(myHero, _E) == READY and EX.getValue() and EXP.getValue() and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
-		elseif CanUseSpell(myHero, _E) == READY and EX.getValue() and not EXP.getValue() and ValidTarget(minion, 700) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+		elseif CanUseSpell(myHero, _E) == READY and EX.getValue() and not EXP.getValue() and IsInDistance(minion, 700) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
 		end
 	end
 	
 	if AutoE.getValue() then
-	    if CanUseSpell(myHero, _E) == READY and ValidTarget(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+	    if CanUseSpell(myHero, _E) == READY and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
 		end
 	end
