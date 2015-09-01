@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Cassiopeia.lua", "Common\\Cassiopeia", version)
 if UP.newVersion() then UP.update() end
 
@@ -126,7 +126,7 @@ OnLoop(function(myHero)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
       
-		if IsFacing(target) and ValidTarget(target, 800) and CUseR.getValue() and (GetCurrentHP(target)/GetMaxHP(target))*100 <= 60 then
+		if IsFacing(target, 800) and ValidTarget(target, 800) and CUseR.getValue() and (GetCurrentHP(target)/GetMaxHP(target))*100 <= 60 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
@@ -310,7 +310,7 @@ end)
 if (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= MiscInterminHP.getValue() then
 addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
-  if IsInDistance(target, GetCastRange(myHero,_R)) and IsFacing(target) and MiscInterrupt.getValue() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
+  if IsInDistance(target, GetCastRange(myHero,_R)) and IsFacing(target, 800) and MiscInterrupt.getValue() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
