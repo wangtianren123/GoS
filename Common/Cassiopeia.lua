@@ -108,6 +108,8 @@ function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
+-----------------------------------------------
+
 OnLoop(function(myHero)
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
