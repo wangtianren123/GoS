@@ -322,10 +322,10 @@ end
 				CastSpell(_W)
 				end
 				
-	            if UseWards.getValue() and GetDistance(myHero, target) < 1275 and GetDistance(myHero, target) > 700  and CanUseSpell(myHero, _Q) == READY then
-			    wardJump(GetOrigin(enemy))
-		        CastTargetSpell(enemy, _Q)
-	            end
+	                        if UseWards.getValue() and GetDistance(myHero, enemy) < 1275 and GetDistance(myHero, enemy) > 700  and CanUseSpell(myHero, _Q) == READY then
+			        wardJump(GetOrigin(enemy))
+		                CastTargetSpell(enemy, _Q)
+	                        end
 				
 		end
 	end
