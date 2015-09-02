@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Baseult.lua", "Common\\Baseult", version)
 if UP.newVersion() then UP.update() end
 
@@ -29,24 +29,22 @@ local BaseUlt = root.addItem(MenuBool.new("Enabled",true))
 myHero = GetMyHero()
 mapID = GetMapID()
 
-if mapID == SUMMONERS_RIFT then
-if GetTeam(myHero) == 100 then 
+if mapID == SUMMONERS_RIFT and GetTeam(myHero) == 100 then
 enemyBasePos = Vector(14340, 171, 14390)
-elseif GetTeam(myHero) == 200 then 
+elseif mapID == SUMMONERS_RIFT and GetTeam(myHero) == 200 then 
 enemyBasePos = Vector(400, 200, 400)
 end
-elseif mapID == CRYSTAL_SCAR then
-if GetTeam(myHero) == 100 then 
+
+if mapID == CRYSTAL_SCAR and GetTeam(myHero) == 100 then
 enemyBasePos = Vector(13321, -37, 4163)
-elseif GetTeam(myHero) == 200 then 
+elseif mapID == CRYSTAL_SCAR and GetTeam(myHero) == 200 then 
 enemyBasePos = Vector(527, -35, 4163)
 end
-elseif mapID == TWISTED_TREELINE then
-if GetTeam(myHero) == 100 then 
+
+if mapID == TWISTED_TREELINE and GetTeam(myHero) == 100 then
 enemyBasePos = Vector(14320, 151, 7235)
-elseif GetTeam(myHero) == 200 then 
+elseif mapID == TWISTED_TREELINE and GetTeam(myHero) == 200 then 
 enemyBasePos = Vector(1060, 150, 7297)
-end
 end
 
 if GetObjectName(myHero) == "Ashe" then
