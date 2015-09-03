@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 3
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Baseult.lua", "Common\\Baseult", version)
 if UP.newVersion() then UP.update() end
 
@@ -70,7 +70,7 @@ OnProcessRecall(function(Object,recallProc)
 		if damage(Object) > GetCurrentHP(Object) then
 			local timeToRecall = recallProc.totalTime
 			local distance = GetDistance(enemyBasePos)
-			local timeToHit = delay + (distance * 1000 / missileSpeed) + GetLatency()
+			local timeToHit = delay + (distance * 1000 / missileSpeed)
 			if timeToRecall > timeToHit then
 				recallPos = Vector(Object)
 				PrintChat("BaseUlt on "..GetObjectName(Object), 2, 0xffff0000)
