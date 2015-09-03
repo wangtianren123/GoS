@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Katarina.lua", "Common\\Katarina", version)
 if UP.newVersion() then UP.update() end
 
@@ -283,7 +283,6 @@ OnLoop(function(myHero)
 local target = GetCurrentTarget()
 
 if HAutoQ.getValue() and ValidTarget(target, 675) and GotBuff(myHero, "katarinarsound") < 1 then
-local target = GetCurrentTarget()
 CastTargetSpell(target, _Q)
 end
 
@@ -322,7 +321,7 @@ end
 				CastSpell(_W)
 				end
 				
-	                        if UseWards.getValue() and GetDistance(myHero, enemy) < 1275 and GetDistance(myHero, enemy) > 700  and CanUseSpell(myHero, _Q) == READY then
+	                        if UseWards.getValue() and GetDistance(myHero, enemy) < 1275 and GetDistance(myHero, enemy) > 700  and CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
 			        wardJump(GetOrigin(enemy))
 		                CastTargetSpell(enemy, _Q)
 	                        end
