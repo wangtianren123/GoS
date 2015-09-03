@@ -47,19 +47,16 @@ Killsteal()
 			        CastSpell(_W)
 			        end
 	end
-end)
-
-OnLoop(function(myHero)
-
+	
 	if IWalkConfig.Harass then
 	        local target = GetTarget(1000, DAMAGE_MAGIC)
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,GetCastRange(myHero,_Q),100,false,true)
-		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,GetCastRange(myHero,_E),60,true,true)
 		
+		       local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,GetCastRange(myHero,_E),60,true,true)
                        if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_E)) and HarassConfig.HarassE then
                        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                        end
-               
+                
+                       local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,GetCastRange(myHero,_Q),100,false,true)
                        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_Q)) and HarassConfig.HarassQ then 
                        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
                        end
