@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 9
+local version = 10
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -150,7 +150,7 @@ OnLoop(function(myHero)
 	if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
 	Tumble()
-        end, GetWindUp(GetMyHero()))
+        end, GetWindUp(GetMyHero()) + GetLatency()*2)
 	DelayAction(function() 
 	AttackUnit(target)
         end, 250)
@@ -179,9 +179,10 @@ OnLoop(function(myHero)
 		if CUseE.getValue() then
 		AutoE()
 		end
-		
-	    for i,enemy in pairs(GetEnemyHeroes()) do
-		  if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
+	end
+	
+	for i,enemy in pairs(GetEnemyHeroes()) do
+		  if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
 		  CastSpell(_R)
 		  end
 		
@@ -190,7 +191,6 @@ OnLoop(function(myHero)
 		  else 
 		  myIAC:SetAA(true)
 		  end
-		end
 	end
 	
 	if MiscAutoE.getValue() then
