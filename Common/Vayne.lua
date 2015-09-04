@@ -187,7 +187,7 @@ OnLoop(function(myHero)
 		  end
 		
 		  if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) < KeepInvisdis.getValue() then 
-		  myIAC():SetAA(false)
+		  myIAC:SetAA(false)
 		  end
 		end
 	end
