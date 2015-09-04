@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 7
+local version = 8
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -56,7 +56,6 @@ local WallTumble1 = Misc.addItem(MenuKeyBind.new("WallTumble Mid", 84))
 local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
 
 local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
 local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", false))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", false))
 local DrawingsWT = Drawings.addItem(MenuBool.new("Draw WallTumble Positions", true))
@@ -148,12 +147,12 @@ OnLoop(function(myHero)
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
 	    
-		if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
+	if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
-	    Tumble()
+	Tumble()
         end, 200)
-		DelayAction(function() 
-	    AttackUnit(target)
+	DelayAction(function() 
+	AttackUnit(target)
         end, 250)
         end
 	
@@ -211,7 +210,6 @@ OnLoop(function(myHero)
         end
 		
 
-if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero)+GetHitBox(myHero)*2,3,100,0xffffffff) end
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if DrawingsWT.getValue() then
