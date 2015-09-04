@@ -71,7 +71,7 @@ OnProcessRecall(function(Object,recallProc)
 			local timeToRecall = recallProc.totalTime
 			local distance = GetDistance(enemyBasePos)
 			local timeToHit = delay + (distance * 1000 / missileSpeed)
-			if timeToRecall > timeToHit then
+			if timeToRecall > timeToHit and not (recallProc.isStart == false and recallProc.isFinish == false) then
 				recallPos = Vector(Object)
 				PrintChat("BaseUlt on "..GetObjectName(Object), 2, 0xffff0000)
 				DelayAction(
