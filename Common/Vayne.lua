@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 8
+local version = 9
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -150,7 +150,7 @@ OnLoop(function(myHero)
 	if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
 	Tumble()
-        end, 200)
+        end, GetWindUp(GetMyHero()))
 	DelayAction(function() 
 	AttackUnit(target)
         end, 250)
@@ -187,6 +187,8 @@ OnLoop(function(myHero)
 		
 		  if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) < KeepInvisdis.getValue() then 
 		  myIAC:SetAA(false)
+		  else 
+		  myIAC:SetAA(true)
 		  end
 		end
 	end
