@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Katarina.lua", "Common\\Katarina", version)
 if UP.newVersion() then UP.update() end
 
@@ -241,7 +241,13 @@ OnLoop(function(myHero)
 	jumpTarget = nil
 	spellObj = nil
 	wardpos = nil
-
+  
+  if GotBuff(myHero,"katarinarsound") > 0 then
+  myIAC:SetOrb(false)
+  else 
+  myIAC:SetOrb(true) 
+  end
+	
   if IWalkConfig.Combo then
       local target = GetCurrentTarget()
 	  
@@ -258,8 +264,6 @@ OnLoop(function(myHero)
 	  end
 	  
       if CUseR.getValue() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
-      HoldPosition()
-      myIAC:SetOrb(false)
       CastSpell(_R)
       end
   end
@@ -321,10 +325,10 @@ end
 				CastSpell(_W)
 				end
 				
-	                        if UseWards.getValue() and GetDistance(myHero, enemy) < 1275 and GetDistance(myHero, enemy) > 700  and CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
-			        wardJump(GetOrigin(enemy))
-		                CastTargetSpell(enemy, _Q)
-	                        end
+	            if UseWards.getValue() and GetDistance(enemy) < 1275 and GetDistance(enemy) > 700  and CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
+			    wardJump(GetOrigin(enemy))
+		        CastTargetSpell(enemy, _Q)
+	            end
 				
 		end
 	end
@@ -409,15 +413,15 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 		
    if IWalkConfig.LaneClear then
 		
-		if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and IsInDistance(mob, 675) then
+		if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 675) then
 		CastTargetSpell(mob, _Q)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and JUseW.getValue() and IsInDistance(mob, 375) then
+		if CanUseSpell(myHero, _W) == READY and JUseW.getValue() and ValidTarget(mob, 375) then
 		CastSpell(_W)
 		end
 		
-	    if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and IsInDistance(mob, 700) then
+	    if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and ValidTarget(mob, 700) then
 		CastTargetSpell(mob, _E)
 		end
 		
@@ -432,9 +436,10 @@ if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,550,3,100,
 if DrawingsText.getValue() then
 	for _, enemy in pairs(GetEnemyHeroes()) do
 		if ValidTarget(enemy) then
-			local pos = WorldToScreen(1, GetOrigin(enemy))
+		    local enemyPos = GetOrigin(enemy)
+			local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
 			local enemyText, color = GetDrawText(enemy)
-			DrawText(enemyText, 15, pos.x, pos.z, color)
+			DrawText(enemyText, 20, drawpos.x, drawpos.y, color)
 		end
 	end
 end
@@ -451,26 +456,26 @@ function GetDrawText(enemy)
 	ExtraDmg2 = ExtraDmg2 + 0.1*GetBonusAP(myHero) + 100
 	end
 	
-	if GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + ExtraDmg2) then
-		return 'Q = Kill!', ARGB(255, 139, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + ExtraDmg2) then
-		return 'W = Kill!', ARGB(255, 139, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
-		return 'E = Kill!', ARGB(255, 139, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + ExtraDmg2) then
-		return 'W + Q = Kill!', ARGB(255, 139, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
-		return 'E + W = Kill!', ARGB(255, 139, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
+	if CanUseSpell(myHero,_Q) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'Q = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + ExtraDmg2) then
+		return 'W = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'E = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + ExtraDmg2) then
+		return 'W + Q = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'E + W = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
 		return 'Q + W + E = Kill!', ARGB(255, 255, 0, 0)
-	elseif GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
-		return '(Q + Passive) + W +E = Kill!', ARGB(255, 255, 0, 0)
-	elseif ExtraDmg > 0 and GetCurrentHP(enemy) < ExtraDmg + CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
-		return '(Q + Passive) + W + E + Ignite = Kill!', ARGB(255, 255, 0, 0)
-	elseif CanUseSpell(myHero, _R) ~= ONCOOLDOWN and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + ExtraDmg2) then
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
+		return '(Q + Passive) + W +E = Kill!', ARGB(255, 200, 160, 0)
+	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy) < ExtraDmg + CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + ExtraDmg2) then
+		return '(Q + Passive) + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and CanUseSpell(myHero, _R) == READY and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + ExtraDmg2) then
 		return 'Q + W + E + Ult ('.. string.format('%4.1f', ((GetCurrentHP(enemy) -  CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) - CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) - CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero))) / CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)))/4) .. ' Secs) = Kill!', ARGB(255, 255, 69, 0)
 	else
-		return 'Cant Kill Yet', ARGB(255, 0, 255, 0)
+		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
 
