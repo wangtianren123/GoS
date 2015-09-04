@@ -27,11 +27,13 @@ myIAC = IAC()
 
 local root = menu.addItem(SubMenu.new("Kalista"))
 
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CItems = Combo.addItem(MenuBool.new("Use Items",true))
-local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
-local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
+local General = root.addItem(SubMenu.new("General"))
+local CUseQ = General.addItem(MenuBool.new("Use Q",true))
+local CItems = General.addItem(MenuBool.new("Use Items",true))
+local CQSS = General.addItem(MenuBool.new("Use QSS", true))
+local QSSHP = General.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
+local WallJump = General.addItem(MenuKeyBind.new("WallJump", 71))
+local SentinelBug = General.addItem(MenuKeyBind.new("Cast Sentinel Bug", 84))
 
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
@@ -48,14 +50,13 @@ local KSE = KSmenu.addItem(MenuBool.new("Killsteal with E", true))
 local Misc = root.addItem(SubMenu.new("Misc"))
 local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
 local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
+local MiscEdie = Misc.addItem(MenuBool.new("Cast E Before you Die", true))
 local MiscuseE = Misc.addItem(MenuBool.new("Auto E if Target Will Leave Range", true))
 local MiscElvl = Misc.addItem(MenuSlider.new("E Harass if my level <", 12, 1, 18, 1))
-local MiscminE = Misc.addItem(MenuSlider.new("min E Stacks", 8, 1, 20, 1))
+local MiscminE = Misc.addItem(MenuSlider.new("min E Stacks", 7, 1, 40, 1))
 local MiscMmana = Misc.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
-local WallJump = Misc.addItem(MenuKeyBind.new("WallJump", 71))
 
 local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsAA = Drawings.addItem(MenuBool.new("Draw AA", true))
 local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
 local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
 local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
@@ -92,8 +93,8 @@ OnLoop(function(myHero)
 	local mousePos = GetMousePos()
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
-	
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
+		
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,1150,50,true,true)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and CUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         end
@@ -110,11 +111,11 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
@@ -122,7 +123,7 @@ OnLoop(function(myHero)
 	
 	if IWalkConfig.Harass then
 	local target = GetCurrentTarget()
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1200,250,1150,40,true,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,1150,50,true,true)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1150) and HUseQ.getValue() and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > HMmana.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         end
@@ -130,19 +131,38 @@ OnLoop(function(myHero)
     
 	if MiscuseE.getValue() then
 	    for i,enemy in pairs(GetEnemyHeroes()) do
-            if GetCurrentMana(myHero)/GetMaxMana(myHero) > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
-		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and GetDistance(myHero, enemy) > 850 then
+            if (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 > MiscMmana.getValue() and GetLevel(myHero) < MiscElvl.getValue() then
+		        if GotBuff(enemy, "kalistaexpungemarker") >= MiscminE.getValue() and ValidTarget(target, GetCastRange(myHero,_E)) and GetDistance(enemy) > 850 then
 			    CastSpell(_E)
 			    end
 		    end
 		end
 	end
+	
+	    if MiscEdie.getValue() then 
+		  if CanUseSpell(myHero, _E) and GetLevel(myHero) < 6 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < 3 then
+		  CastSpell(_E)
+		  elseif CanUseSpell(myHero, _E) and GetLevel(myHero) > 5 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < 5 then
+		  CastSpell(_E)
+		  end
+		end
+		
+		if CanUseSpell(myHero,_W) and SentinelBug.getValue() then
+		  if GetDistance(Vector(9882.892, -71.24, 4438.446)) < GetDistance(Vector(5087.77, -71.24, 10471.3808)) then
+            if GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
+            CastSkillShot(9882.892, -71.24, 4438.446)
+			end
+          elseif GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
+          CastSkillShot(5087.77, -71.24, 10471.3808)
+          end
+		end
 			
 	if AutoR.getValue() then 
 	    for _, ally in pairs(GetAllyHeroes()) do
             for i,enemy in pairs(GetEnemyHeroes()) do 
 			    local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
 				if soulboundhero and (GetCurrentHP(ally)/GetMaxHP(ally))*100 <= AutoRHP.getValue() and GetDistance(ally, enemy) <= 600 then
+				PrintChat("Rescuing low health "..GetObjectName(ally).."")
 				CastSpell(_R)
 				end
 			end
@@ -589,42 +609,77 @@ OnLoop(function(myHero)
 	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos25) < 80 then
 	MoveToXYZ(12372, 91.429809570313, 10256)
 	end
---[[	--pos26
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	--pos26
+	if GetDistance(Vector(11860, 55.388240814209, 10032)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,11914, 91.429809570313, 10360)  
+    MoveToXYZ(11914, 91.429809570313, 10360)
 	elseif WallJump.getValue() and GetDistance(mousePos, pos26) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(11860, 55.388240814209, 10032)
+	end
+	--pos26 Inverse
+	if GetDistance(Vector(11914, 91.429809570313, 10360)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,11860, 55.388240814209, 10032)  
+    MoveToXYZ(11860, 55.388240814209, 10032)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos26) < 80 then
+	MoveToXYZ(11914, 91.429809570313, 10360)
 	end
 	--pos27
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GetDistance(Vector(3086, 57.047008514404, 6032)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3274, 52.461898803711, 6208)  
+    MoveToXYZ(3274, 52.461898803711, 6208)
 	elseif WallJump.getValue() and GetDistance(mousePos, pos27) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(3086, 57.047008514404, 6032)
+	end
+	--pos27 Inverse
+	if GetDistance(Vector(3274, 52.461898803711, 6208)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3086, 57.047008514404, 6032)  
+    MoveToXYZ(3086, 57.047008514404, 6032)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos27) < 80 then
+	MoveToXYZ(3274, 52.461898803711, 6208)
 	end
 	--pos28
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GetDistance(Vector(2924, 57.043914794922, 6208)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3108, 51.515998840332, 6428)  
+    MoveToXYZ(3108, 51.515998840332, 6428)
 	elseif WallJump.getValue() and GetDistance(mousePos, pos28) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(2924, 57.043914794922, 6208)
+	end
+	--pos28 Inverse
+	if GetDistance(Vector(3108, 51.515998840332, 6428)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,2924, 57.043914794922, 6208)  
+    MoveToXYZ(2924, 57.043914794922, 6208)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos28) < 80 then
+	MoveToXYZ(3108, 51.515998840332, 6428)
 	end
 	--pos29
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GetDistance(Vector(2824, 56.413402557373, 6708)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3074, 51.578483581543, 6758)  
+    MoveToXYZ(3074, 51.578483581543, 6758)
 	elseif WallJump.getValue() and GetDistance(mousePos, pos29) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(2824, 56.413402557373, 6708)
+	end
+	--pos29 Inverse
+	if GetDistance(Vector(3074, 51.578483581543, 6758)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,2824, 56.413402557373, 6708)  
+    MoveToXYZ(2824, 56.413402557373, 6708)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos29) < 80 then
+	MoveToXYZ(3074, 51.578483581543, 6758)
 	end
 	--pos30
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GetDistance(Vector(3666, 51.8903465271, 7430)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3672, 51.676036834717, 7686)  
+    MoveToXYZ(3672, 51.676036834717, 7686)
 	elseif WallJump.getValue() and GetDistance(mousePos, pos30) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(3666, 51.8903465271, 7430)
 	end
-	--pos31
+	--pos30 Inverse
+	if GetDistance(Vector(3672, 51.676036834717, 7686)) < 5 and WallJump.getValue() then
+	CastSkillShot(_Q,3666, 51.8903465271, 7430)  
+    MoveToXYZ(3666, 51.8903465271, 7430)
+	elseif WallJump.getValue() and GetDistance(mousePos, zoudjpos30) < 80 then
+	MoveToXYZ(3672, 51.676036834717, 7686)
+	end
+--[[	--pos31
 	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and WallJump.getValue() then
 	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
     MoveToXYZ(2924, 53.499828338623, 4958)
@@ -726,17 +781,17 @@ OnLoop(function(myHero)
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
 	local Damage = CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
-    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1200,250,1150,40,true,true)
+    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1500,250,1150,50,true,true)
        if CanUseSpell(myHero, _E) == READY and ValidTarget(enemy, GetCastRange(myHero,_E)) and KSE.getValue() and GetCurrentHP(enemy) < Damage then
 	   CastSpell(_E)
-	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, GetCastRange(myHero, _Q)) and KSQ.getValue() and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
+	   elseif CanUseSpell(myHero, _Q) == READY and ValidTarget(enemy, 1150) and KSQ.getValue() and QPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
        end
     end
 	
 	for _, ally in pairs(GetAllyHeroes()) do
         if GetObjectName(ally) == "Blitzcrank" then
-	  local Balista = Misc.addItem(MenuBool.new("Balista Combo", true))
+	  local Balista = Ultmenu.addItem(MenuBool.new("Balista Combo", true))
   	  if GotBuff(ally, "kalistacoopstrikeally") > 0 then
 	     for i,enemy in pairs(GetEnemyHeroes()) do
                if ValidTarget(enemy, 2450) then
@@ -749,7 +804,7 @@ OnLoop(function(myHero)
              end
            end
         elseif GetObjectName(ally) == "Skarner" then
-	  local Skarlista = Misc.addItem(MenuBool.new("Skarlista Combo", true))
+	  local Skarlista = Ultmenu.addItem(MenuBool.new("Skarlista Combo", true))
 	    if GotBuff(ally, "kalistacoopstrikeally") > 0 then
 	      for i,enemy in pairs(GetEnemyHeroes()) do
                 if ValidTarget(enemy, 1750) then
@@ -762,7 +817,7 @@ OnLoop(function(myHero)
               end
             end
 	elseif GetObjectName(ally) == "TahmKench" then
-	    local Tahmlista = Misc.addItem(MenuBool.new("Tahmlista Combo", true))
+	    local Tahmlista = Ultmenu.addItem(MenuBool.new("Tahmlista Combo", true))
 	    if GotBuff(ally, "kalistacoopstrikeally") > 0 then
 	      for i,enemy in pairs(GetEnemyHeroes()) do
                 if ValidTarget(enemy, 1400) then
@@ -930,8 +985,18 @@ DrawCircle(pos24,80,0,0,0xffffffff)
 DrawCircle(zoudjpos24,80,0,0,0xffffffff)
 DrawCircle(pos25,80,0,0,0xffffffff)
 DrawCircle(zoudjpos25,80,0,0,0xffffffff)
+DrawCircle(pos26,80,0,0,0xffffffff)
+DrawCircle(zoudjpos26,80,0,0,0xffffffff)
+DrawCircle(pos27,80,0,0,0xffffffff)
+DrawCircle(zoudjpos27,80,0,0,0xffffffff)
+DrawCircle(pos28,80,0,0,0xffffffff)
+DrawCircle(zoudjpos28,80,0,0,0xffffffff)
+DrawCircle(pos29,80,0,0,0xffffffff)
+DrawCircle(zoudjpos29,80,0,0,0xffffffff)
+DrawCircle(pos30,80,0,0,0xffffffff)
+DrawCircle(zoudjpos30,80,0,0,0xffffffff)
 end
-if DrawingsAA.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetRange(myHero)+GetHitBox(myHero)*2,3,100,0xffffffff) end
+
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
