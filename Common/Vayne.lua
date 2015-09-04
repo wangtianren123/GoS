@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 10
+local version = 11
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -358,3 +358,5 @@ function AlliesAround(pos, range)
     end
     return s
 end
+
+notification("Vayne by Deftsu loaded.", 10000)
