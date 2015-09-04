@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 4
+local version = 5
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -33,6 +33,8 @@ local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
 local CUseE = Combo.addItem(MenuBool.new("Use E",true))
 local CUseR = Combo.addItem(SubMenu.new("Use R"))
 local REnabled = CUseR.addItem(MenuBool.new("Enabled",true))
+local KeepInvis = CUseR.addItem(MenuBool.new("Keep Invisibility",true))
+local KeepInvisdis = CUseR.addItem(MenuSlider.new("Only if Distance <", 230, 0, 550, 1))
 local Deftsukappa = CUseR.addItem(MenuSeparator.new(""))
 local Rifthp = CUseR.addItem(MenuSlider.new("if Target Health % <", 70, 1, 100, 1))
 local Rifhp = CUseR.addItem(MenuSlider.new("if Health % <", 55, 1, 100, 1))
@@ -149,7 +151,7 @@ OnLoop(function(myHero)
 		if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
 	    Tumble()
-        end, 250)
+        end, 200)
 		DelayAction(function() 
 	    AttackUnit(target)
         end, 250)
@@ -183,7 +185,11 @@ OnLoop(function(myHero)
 		  if CanUseSpell(myHero, _R) == READY and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
 		  CastSpell(_R)
 		  end
-	    end
+		
+		  if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) > KeepInvisdis.getValue() then 
+		  myIAC():SetAA(false)
+		  end
+		end
 	end
 	
 	if MiscAutoE.getValue() then
