@@ -90,8 +90,8 @@ CHANELLING_SPELLS = {
 local callback = nil
  
 OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
+        if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+        local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
  
         if unitChanellingSpells then
             for _, spellSlot in pairs(unitChanellingSpells) do
@@ -108,14 +108,14 @@ end
 
 OnLoop(function(myHero)
     if IWalkConfig.Combo then
-	local target = GetCurrentTarget()
+    local target = GetCurrentTarget()
 
-	    local unit = GetTarget(700, DAMAGE_MAGIC) 	 
+	local unit = GetTarget(700, DAMAGE_MAGIC) 	 
      	local poisoned = false
-		for i=0, 63 do
-			if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-				poisoned = true
-			end
+	for i=0, 63 do
+	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+	   poisoned = true
+	   end
         end
 		
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
@@ -126,7 +126,7 @@ OnLoop(function(myHero)
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
-	    if CanUseSpell(myHero, _E) == READY and CUseE.getValue() and ValidTarget(target, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and CUseE.getValue() and ValidTarget(target, 700) and poisoned then
 		CastTargetSpell(target, _E)
 		end
 			
@@ -137,17 +137,17 @@ OnLoop(function(myHero)
 		if CanUseSpell(myHero, _W) == READY and CUseW.getValue() and ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-	end
+     end
 	
-	if IWalkConfig.Harass then
-	local target = GetCurrentTarget()
+     if IWalkConfig.Harass then
+     local target = GetCurrentTarget()
 
-	    local unit = GetTarget(700, DAMAGE_MAGIC) 	 
+	local unit = GetTarget(700, DAMAGE_MAGIC) 	 
      	local poisoned = false
-		for i=0, 63 do
-			if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-				poisoned = true
-			end
+	for i=0, 63 do
+	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+	   poisoned = true
+           end
         end
 		
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
@@ -164,11 +164,11 @@ OnLoop(function(myHero)
 		if CanUseSpell(myHero, _W) == READY and HUseW.getValue() and ValidTarget(target, 925) and WPred.HitChance == 1 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-	end
+     end
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
 	
-        local ExtraDmg = 0
+                local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
@@ -188,53 +188,55 @@ OnLoop(function(myHero)
 	end
 	
 if MiscEnableAutolvl.getValue() then  
-    if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_Q)
-    elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
+
+if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
 	LevelSpell(_E)
-    elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
 	LevelSpell(_W)
-    elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-    LevelSpell(_E)
-    elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-    LevelSpell(_E)
-    elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
+elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
 	LevelSpell(_R)
-    elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
+elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
 	LevelSpell(_E)
-    elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-    LevelSpell(_Q)
-    elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-    LevelSpell(_E)
-    elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-    LevelSpell(_Q)
-    elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-    LevelSpell(_R)
-    elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-    LevelSpell(_Q)
-    elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-    LevelSpell(_Q)
-    elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-    LevelSpell(_W)
-    elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-    LevelSpell(_W)
-    elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-    LevelSpell(_R)
-    elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-    LevelSpell(_W)
-    elseif GetLevel(myHero) == 18 then
-    LevelSpell(_W)
-    end
+elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_W)
+end
+
 end
 
 for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 
         local unit = minion
      	local poisoned = false
-		for i=0, 63 do
-			if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-				poisoned = true
-			end
+	for i=0, 63 do
+	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+	   poisoned = true
+	   end
         end
 		
 		local ExtraDmg = 0
@@ -245,12 +247,11 @@ for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
         if IWalkConfig.LaneClear then
 		if CanUseSpell(myHero, _E) == READY and LCUseE.getValue() and IsInDistance(minion, 700) and poisoned and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= LCmin.getValue() then
 		CastTargetSpell(minion, _E)
-		end
+	        end
 	end
 	
 	if IWalkConfig.LastHit then 
-		
-	    if CanUseSpell(myHero, _E) == READY and EX.getValue() and EXP.getValue() and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+	        if CanUseSpell(myHero, _E) == READY and EX.getValue() and EXP.getValue() and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
 		elseif CanUseSpell(myHero, _E) == READY and EX.getValue() and not EXP.getValue() and IsInDistance(minion, 700) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
@@ -258,27 +259,27 @@ for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
 	end
 	
 	if AutoE.getValue() then
-	    if CanUseSpell(myHero, _E) == READY and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
-		CastTargetSpell(minion, _E)
-		end
+	        if CanUseSpell(myHero, _E) == READY and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) and not IWalkConfig.Combo then
+	        CastTargetSpell(minion, _E)
+	        end
 	end
 end
 
 
 for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
         
-		local mobPos = GetOrigin(mob)
+	local mobPos = GetOrigin(mob)
         local unit = mob
      	local poisoned = false
-		for i=0, 63 do
-			if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-				poisoned = true
-			end
+	for i=0, 63 do
+	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+	   poisoned = true
+	   end
         end
 		
-   if IWalkConfig.LaneClear then
+        if IWalkConfig.LaneClear then
 		
-	    if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and IsInDistance(mob, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and IsInDistance(mob, 700) and poisoned then
 		CastTargetSpell(mob, _E)
 		end
 			
