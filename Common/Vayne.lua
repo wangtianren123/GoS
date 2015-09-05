@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 14
+local version = 15
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -109,7 +109,7 @@ OnLoop(function(myHero)
         end, 250)
         end
 	
-		if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+	if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
 
@@ -121,7 +121,7 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+	if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
@@ -129,24 +129,20 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-		if CUseE.getValue() then
-		AutoE()
-		end
+	if CUseE.getValue() then
+	AutoE()
+        end
+
+        if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
+        CastSpell(_R)
 	end
-	
-	for i,enemy in pairs(GetEnemyHeroes()) do
-		  local target = GetCurrentTarget()
 		  
-		  if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
-		  CastSpell(_R)
-		  end
-		  
-		  if GotBuff(myHero, "vaynetumblefade") < 1 then
-		  myIAC:SetAA(true)
-		  elseif GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(myHero, enemy) < KeepInvisdis.getValue() then 
-		  myIAC:SetAA(false)
-		  end
+	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
+	myIAC:SetAA(false)
+	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
+	myIAC:SetAA(true)
 	end
+    end
 	
 	if MiscAutoE.getValue() then
 	AutoE()
