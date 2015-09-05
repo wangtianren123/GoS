@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Thresh.lua", "Common\\Thresh", version)
 if UP.newVersion() then UP.update() end
 
@@ -158,6 +158,7 @@ local leveltable = { _Q, _E, _W, _E, _E, _R, _Q, _Q, _Q, _E, _R, _Q, _E, _W, _W,
 LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
+local HeroPos = GetOrigin(myHero)
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,1100,3,100,0xff00ff00) end
 if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,950,3,100,0xff00ff00) end
 if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,400,3,100,0xff00ff00) end
