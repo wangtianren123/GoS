@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 6
+local version = 7
 local UP=Updater.new("D3ftsu/GoS/master/Common/Cassiopeia.lua", "Common\\Cassiopeia", version)
 if UP.newVersion() then UP.update() end
 
