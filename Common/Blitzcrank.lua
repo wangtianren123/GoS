@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Blitzcrank.lua", "Common\\Blitzcrank", version)
 if UP.newVersion() then UP.update() end
 
@@ -164,11 +164,11 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 	ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 	end	
 	
-	if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 1000) and GetCurrentHP(mob) < CalcDamage(myHero, enemy, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
+	if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 1000) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
 	CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
 	end
 		
-	if CanUseSpell(myHero, _R) == READY and JUseR.getValue() and ValidTarget(mob, 600) and GetCurrentHP(mob) < CalcDamage(myHero, enemy, 0, 125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero) + ExtraDmg) then
+	if CanUseSpell(myHero, _R) == READY and JUseR.getValue() and ValidTarget(mob, 600) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero) + ExtraDmg) then
 	CastSpell(_R)
 	end
 end
