@@ -36,6 +36,7 @@ local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseQ = Harass.addItem(MenuBool.new("Use Q",true))
 local HAutoE = Harass.addItem(MenuBool.new("Auto E after Successful Grab",true))
 local HUseE = Harass.addItem(MenuBool.new("Use E",true))
+local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 1))
 
 local KSmenu = root.addItem(SubMenu.new("Killsteal"))
 local KSQ = KSmenu.addItem(MenuBool.new("Killsteal with Q", false))
@@ -116,7 +117,7 @@ OnLoop(function(myHero)
 	                      
 	end	
 	
-	if IWalkConfig.Harass then
+	if IWalkConfig.Harass and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= HMmana.getValue() then
 	local target = GetCurrentTarget()
 		
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,550,1000,80,true,true)
