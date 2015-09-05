@@ -1,5 +1,5 @@
 require('Dlib')
-local version = 4
+local version = 5
 local UP=Updater.new("D3ftsu/GoS/master/Common/Kalista.lua", "Common\\Kalista", version)
 if UP.newVersion() then UP.update() end
 
@@ -79,7 +79,7 @@ local wraiths = junglesteal.addItem(MenuBool.new("Wraiths", true))
 local gromp = junglesteal.addItem(MenuBool.new("Gromp", false))
 local crab = junglesteal.addItem(MenuBool.new("Crab", true))
 
-OnProcessSpell(function(unit, spell)
+--[[OnProcessSpell(function(unit, spell)
  for _, ally in pairs(GetAllyHeroes()) do
   if unit and unit == myHero and spell then
     if spell.name:lower():find("kalistapspellcast") then
@@ -88,6 +88,7 @@ OnProcessSpell(function(unit, spell)
   end
  end
 end)
+]]
 
 OnLoop(function(myHero)
 	local mousePos = GetMousePos()
