@@ -31,12 +31,12 @@ local CUseW = Combo.addItem(MenuBool.new("Use W",true))
 local CUseR = Combo.addItem(SubMenu.new("Use R"))
 local CItems = Combo.addItem(MenuBool.new("Use Items",true))
 local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
-local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
+local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 1))
 
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
 local HUseW = Harass.addItem(MenuBool.new("Use W", true))
-local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 5))
+local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 1))
 
 local KSmenu = root.addItem(SubMenu.new("Killsteal"))
 local KSW = KSmenu.addItem(MenuBool.new("Killsteal with W", true))
@@ -123,7 +123,7 @@ OnLoop(function(myHero)
         end
     end
 
-    if IWalkConfig.Harass then   
+    if IWalkConfig.Harass and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= HMmana.getValue() then   
     local target = GetCurrentTarget()
 
         local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)	
@@ -132,7 +132,7 @@ OnLoop(function(myHero)
         CastSpell(_Q)
         end
 						
-        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= HMmana.getValue() and HUseW.getValue() then
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and HUseW.getValue() then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	    end
 	end
@@ -151,45 +151,8 @@ OnLoop(function(myHero)
 	end
 	
 if MiscEnableAutolvl.getValue() then  
-
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) == 18 then
-        LevelSpell(_E)
-end
-
+local leveltable = { _W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E} -- Credits goes to Inferno for saving me 20 line xD
+LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
 if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
