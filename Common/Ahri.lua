@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 5
+local version = 6
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ahri.lua", "Common\\Ahri", version)
 if UP.newVersion() then UP.update() end
 
