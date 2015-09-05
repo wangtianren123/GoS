@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ashe.lua", "Common\\Ashe", version)
 if UP.newVersion() then UP.update() end
 
@@ -155,6 +155,7 @@ local leveltable = { _W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E,
 LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
+local HeroPos = GetOrigin(myHero)
 if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 end)
 
