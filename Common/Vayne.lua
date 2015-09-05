@@ -50,7 +50,6 @@ local Misc = root.addItem(SubMenu.new("Misc"))
 local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
 local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
 local MiscAutoE = Misc.addItem(MenuBool.new("Auto Wall Condemn", true))
-local MiscGap = Misc.addItem(MenuBool.new("Anti-Gap Close", true))
 local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
 local WallTumble1 = Misc.addItem(MenuKeyBind.new("WallTumble Mid", 84))
 local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
@@ -273,5 +272,7 @@ function AlliesAround(pos, range)
     end
     return s
 end
+
+AddGapcloseEvent(_E, 475, true)
 
 notification("Vayne by Deftsu loaded.", 10000)
