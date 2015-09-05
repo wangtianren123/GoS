@@ -1,93 +1,244 @@
-PrintChat("D3ftland Ahri By Deftsu Loaded, Have A Good Game!")
-Config = scriptConfig("Ahri", "Ahri")
-Config.addParam("Q", "Use Q", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("W", "Use W", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("E", "Use E", SCRIPT_PARAM_ONOFF, true)
-Config.addParam("R", "Use R", SCRIPT_PARAM_ONOFF, true)
-KSConfig = scriptConfig("KS", "Killsteal:")
-KSConfig.addParam("KSQ", "Killsteal with Q", SCRIPT_PARAM_ONOFF, true)
-KSConfig.addParam("KSW", "Killsteal with W", SCRIPT_PARAM_ONOFF, true)
-KSConfig.addParam("KSE", "Killsteal with E", SCRIPT_PARAM_ONOFF, false)
-HarassConfig = scriptConfig("Harass", "Harass:")
-HarassConfig.addParam("HarassQ", "Harass Q (C)", SCRIPT_PARAM_ONOFF, true)
-HarassConfig.addParam("HarassW", "Harass W (C)", SCRIPT_PARAM_ONOFF, true)
-HarassConfig.addParam("HarassE", "Harass E (C)", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig = scriptConfig("Drawings", "Drawings:")
-DrawingsConfig.addParam("DrawQ","Draw Q", SCRIPT_PARAM_ONOFF, false)
-DrawingsConfig.addParam("DrawW","Draw W", SCRIPT_PARAM_ONOFF, false)
-DrawingsConfig.addParam("DrawE","Draw E", SCRIPT_PARAM_ONOFF, true)
-DrawingsConfig.addParam("DrawR","Draw R", SCRIPT_PARAM_ONOFF, false)
+require('Dlib')
+
+local version = 1
+local UP=Updater.new("D3ftsu/GoS/master/Common/Ahri.lua", "Common\\Ahri", version)
+if UP.newVersion() then UP.update() end
+
+--------------- Thanks ilovesona for this ------------------------
+DelayAction(function ()
+        for _, imenu in pairs(menuTable) do
+                local submenu = menu.addItem(SubMenu.new(imenu.name))
+                for _,subImenu in pairs(imenu) do
+                        if subImenu.type == SCRIPT_PARAM_ONOFF then
+                                local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
+                                OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
+                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
+                                local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
+                                OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
+                        elseif subImenu.type == SCRIPT_PARAM_INFO then
+                                submenu.addItem(MenuSeparator.new(subImenu.t))
+                        end
+                end
+        end
+        _G.DrawMenu = function ( ... )  end
+end, 1000)
+
+local root = menu.addItem(SubMenu.new("Ahri"))
+
+local Combo = root.addItem(SubMenu.new("Combo"))
+local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
+local CUseW = Combo.addItem(MenuBool.new("Use W",true))
+local CUseE = Combo.addItem(MenuBool.new("Use E",true))
+local CUseR = Combo.addItem(MenuBool.new("Use R",true))
+
+local Harass = root.addItem(SubMenu.new("Harass"))
+local HUseQ = Harass.addItem(MenuBool.new("Use Q",true))
+local HUseW = Harass.addItem(MenuBool.new("Use W",true))
+local HUseE = Harass.addItem(MenuBool.new("Use E",true))
+
+local KSmenu = root.addItem(SubMenu.new("Killsteal"))
+local KSQ = KSmenu.addItem(MenuBool.new("Killsteal with Q", true))
+local KSW = KSmenu.addItem(MenuBool.new("Killsteal with W", true))
+local KSE = KSmenu.addItem(MenuBool.new("Killsteal with E", true))
+
+local Misc = root.addItem(SubMenu.new("Misc"))
+local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
+local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
+local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
+
+local JungleClear = root.addItem(SubMenu.new("JungleClear"))
+local JUseQ = JungleClear.addItem(MenuBool.new("Use Q",true))
+local JUseW = JungleClear.addItem(MenuBool.new("Use W",true))
+local JUseE = JungleClear.addItem(MenuBool.new("Use E",false))
+
+local Drawings = root.addItem(SubMenu.new("Drawings"))
+local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
+local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", true))
+local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
+local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
+local DrawingsText = Drawings.addItem(MenuBool.new("Draw Text", true))
 
 myIAC = IAC()
 
 OnLoop(function(myHero)
-Drawings()
-Killsteal()
-
-        if IWalkConfig.Combo then
-        
-                local target = GetTarget(1000, DAMAGE_MAGIC)
-				
-			        local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,GetCastRange(myHero,_E),60,true,true)
-                                if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Config.E then
-                                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                                end
-				
-				local mousePos = GetMousePos()
-			        if CanUseSpell(myHero, _R) == READY and Config.R then
-			        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-				end
+    if IWalkConfig.Combo then
+	local target = GetCurrentTarget()
+	    
+		local mousePos = GetMousePos()
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,880,90,false,true)
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
+		
+        if CanUseSpell(myHero, _E) == READY and ValidTarget(target, 975) and EPred.HitChance == 1 and CUseE.getValue() then
+        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        end
 					
-			        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,GetCastRange(myHero,_Q),100,false,true)
-                                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-                                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                                end
+		if CanUseSpell(myHero, _R) == READY and ValidTarget(target, 1000) and CUseR.getValue() and (GetCurrentHP(target)/GetMaxHP(target))*100 < 50 then
+		CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+		end
+				
+		if CanUseSpell(myHero, _W) == READY and ValidTarget(target, 550) and CUseW.getValue() then
+		CastSpell(_W)
+		end
+		
+	    if CanUseSpell(myHero, _Q) == READY and ValidTarget(target, 880) and QPred.HitChance == 1 and CUseQ.getValue() then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
 					
-			        if CanUseSpell(myHero, _W) == READY and ValidTarget(target,GetCastRange(myHero,_W)) and Config.W then
-			        CastSpell(_W)
-			        end
 	end
 	
 	if IWalkConfig.Harass then
-	        local target = GetTarget(1000, DAMAGE_MAGIC)
+	local target = GetCurrentTarget()
 		
-		       local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1550,250,GetCastRange(myHero,_E),60,true,true)
-                       if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_E)) and HarassConfig.HarassE then
-                       CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                       end
-                
-                       local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,250,GetCastRange(myHero,_Q),100,false,true)
-                       if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target,GetCastRange(myHero,_Q)) and HarassConfig.HarassQ then 
-                       CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                       end
-               
-                       if CanUseSpell(myHero, _W) == READY and ValidTarget(target,GetCastRange(myHero,_W)) and HarassConfig.HarassW then
-                       CastSpell(_W)
-                       end
-	end
-end)
-
-function Killsteal()
-	for i,enemy in pairs(GetEnemyHeroes()) do
-	        local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2500,250,GetCastRange(myHero,_Q),100,false,true)
-		local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,GetCastRange(myHero,_E),60,true,true)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,880,90,false,true)
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
 		
-		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and KSConfig.KSQ and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero)) then 
-		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-		elseif CanUseSpell(myHero, _W) and ValidTarget(enemy,GetCastRange(myHero,_W)) and KSConfig.KSW and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero)) then
+        if CanUseSpell(myHero, _E) == READY and ValidTarget(target, 975) and EPred.HitChance == 1 and HUseE.getValue() then
+        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        end
+				
+		if CanUseSpell(myHero, _W) == READY and ValidTarget(target, 550) and HUseW.getValue() then
 		CastSpell(_W)
+		end
 		
-		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_E)) and KSConfig.KSE and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero)) then
+	    if CanUseSpell(myHero, _Q) == READY and ValidTarget(target, 880) and QPred.HitChance == 1 and HUseQ.getValue() then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
+		
+	end
+	
+	for i,enemy in pairs(GetEnemyHeroes()) do
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,90,false,true)
+		local EPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1500,250,975,60,true,true)
+		
+		local ExtraDmg = 0
+		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
+		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
+		end
+		
+		if CanUseSpell(myHero, _W) and ValidTarget(enemy, 550) and KSW.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg) then
+		CastSpell(_W)
+		elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy, 880) and KSQ.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + ExtraDmg) then 
+		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and ValidTarget(enemy, 975) and KSE.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		end
 	end
+	
+if MiscEnableAutolvl.getValue() then  
+
+if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_W)
 end
 
-function Drawings()
-myHeroPos = GetOrigin(myHero)
-if CanUseSpell(myHero, _Q) == READY and DrawingsConfig.DrawQ then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if CanUseSpell(myHero, _W) == READY and DrawingsConfig.DrawW then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if CanUseSpell(myHero, _E) == READY and DrawingsConfig.DrawE then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if CanUseSpell(myHero, _R) == READY and DrawingsConfig.DrawR then DrawCircle(myHeroPos.x,myHeroPos.y,myHeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 end
+
+for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+		
+    if IWalkConfig.LaneClear then
+		local mobPos = GetOrigin(mob)
+		
+		if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 880) then
+		CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
+		end
+		
+		if CanUseSpell(myHero, _W) == READY and JUseW.getValue() and ValidTarget(mob, 550) then
+		CastSpell(_W)
+		end
+		
+	    if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and ValidTarget(mob, 975) then
+		CastSkillShot(_E,mobPos.x, mobPos.y, mobPos.z)
+		end
+		
+	end
+end
+
+if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,880,3,100,0xff00ff00) end
+if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,550,3,100,0xff00ff00) end
+if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,975,3,100,0xff00ff00) end
+if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,550,3,100,0xff00ff00) end
+if DrawingsText.getValue() then
+	for _, enemy in pairs(GetEnemyHeroes()) do
+		if ValidTarget(enemy) then
+		    local enemyPos = GetOrigin(enemy)
+			local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
+			local enemyText, color = GetDrawText(enemy)
+			DrawText(enemyText, 20, drawpos.x, drawpos.y, color)
+		end
+	end
+end
+end)
+
+function GetDrawText(enemy)
+	local ExtraDmg = 0
+	if Ignite and CanUseSpell(myHero, Ignite) == READY then
+	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
+	end
+	
+	local ExtraDmg2 = 0
+	if GotBuff(myHero, "itemmagicshankcharge") > 99 then
+	ExtraDmg2 = ExtraDmg2 + 0.1*GetBonusAP(myHero) + 100
+	end
+	
+	if CanUseSpell(myHero,_Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'Q = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'W = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'E = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'W + Q = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'E + W = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
+	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+		return 'Q + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
+	else
+		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
+	end
+end
+
+addInterrupterCallback(function(target, spellType)
+local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
+  if IsInDistance(target, 975) and CanUseSpell(myHero,_E) == READY and MiscInterrupt.getValue() and spellType == CHANELLING_SPELLS then
+    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+  end
+end)
+
 AddGapcloseEvent(_E, 975, false)
+
+notification("Ahri by Deftsu loaded.", 10000)
