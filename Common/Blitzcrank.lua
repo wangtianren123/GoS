@@ -98,7 +98,7 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
 		
-		if GotBuff(target, "rocketgrab2") > 0 and CAutoE.getValue() then
+		if target and GotBuff(target, "rocketgrab2") > 0 and CAutoE.getValue() then
 		CastSpell(_E)
 		AttackUnit(target)
 		end
@@ -126,7 +126,7 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
 		
-		if GotBuff(target, "rocketgrab2") > 0 and HAutoE.getValue() then
+		if target and GotBuff(target, "rocketgrab2") > 0 and HAutoE.getValue() then
 		CastSpell(_E)
 		AttackUnit(target)
 		end
