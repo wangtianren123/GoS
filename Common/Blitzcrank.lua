@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 4
+local version = 5
 local UP=Updater.new("D3ftsu/GoS/master/Common/Blitzcrank.lua", "Common\\Blitzcrank", version)
 if UP.newVersion() then UP.update() end
 
