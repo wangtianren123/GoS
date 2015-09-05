@@ -27,14 +27,12 @@ local root = menu.addItem(SubMenu.new("Blitzcrank"))
 
 local Combo = root.addItem(SubMenu.new("Combo"))
 local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CAutoE = Combo.addItem(MenuBool.new("Auto E after Successful Grab",true))
 local CUseW = Combo.addItem(MenuBool.new("Use W",true))
 local CUseE = Combo.addItem(MenuBool.new("Use E",true))
 local CUseR = Combo.addItem(MenuBool.new("Use R",true))
 
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseQ = Harass.addItem(MenuBool.new("Use Q",true))
-local HAutoE = Harass.addItem(MenuBool.new("Auto E after Successful Grab",true))
 local HUseE = Harass.addItem(MenuBool.new("Use E",true))
 local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 1))
 
@@ -97,11 +95,6 @@ OnLoop(function(myHero)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1000) and CUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
-		
-		if target and GotBuff(target, "rocketgrab2") > 0 and CAutoE.getValue() then
-		CastSpell(_E)
-		AttackUnit(target)
-		end
                           
         if CanUseSpell(myHero, _W) == READY and ValidTarget(target, 800) and GetDistance(myHero, target) > 200 and CUseW.getValue() then
         CastSpell(_W)
@@ -125,11 +118,6 @@ OnLoop(function(myHero)
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1000) and HUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
-		
-		if target and GotBuff(target, "rocketgrab2") > 0 and HAutoE.getValue() then
-		CastSpell(_E)
-		AttackUnit(target)
-		end
 		
 		if CanUseSpell(myHero, _E) == READY and ValidTarget(target, 250) and HUseE.getValue() then
         CastSpell(_E)
