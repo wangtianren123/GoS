@@ -152,13 +152,15 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 	ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 	end	
 	
-	if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 1000) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
-	CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
-	end
+	if GetObjectName(mob) == "SRU_Dragon" or GetObjectName(mob) == "SRU_Baron" then
+	  if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 1000) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
+	  CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
+	  end
 		
-	if CanUseSpell(myHero, _R) == READY and JUseR.getValue() and ValidTarget(mob, 600) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero) + ExtraDmg) then
-	CastSpell(_R)
-	end
+	  if CanUseSpell(myHero, _R) == READY and JUseR.getValue() and ValidTarget(mob, 600) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero) + ExtraDmg) then
+	  CastSpell(_R)
+          end
+        end
 end
 
 local HeroPos = GetOrigin(myHero)		
