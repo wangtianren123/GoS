@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 3
+local version = 4
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ahri.lua", "Common\\Ahri", version)
 if UP.newVersion() then UP.update() end
 
@@ -181,6 +181,7 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 	end
 end
 
+local HeroPos = GetOrigin(myHero)
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,880,3,100,0xff00ff00) end
 if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,550,3,100,0xff00ff00) end
 if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,975,3,100,0xff00ff00) end
