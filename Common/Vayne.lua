@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 16
+local version = 17
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -133,7 +133,7 @@ OnLoop(function(myHero)
 	AutoE()
         end
 
-        if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
+        if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and ValidTarget(target, Renemyrange.getValue()) and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
         CastSpell(_R)
 	end
 		  
