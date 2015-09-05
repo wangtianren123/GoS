@@ -77,62 +77,16 @@ CHANELLING_SPELLS = {
     ["Warwick"]                     = {_R},
     ["Xerath"]                      = {_R},
 }
- 
-GAPCLOSER_SPELLS = {
-    ["Aatrox"]                      = {_Q},
-    ["Akali"]                       = {_R},
-    ["Alistar"]                     = {_W},
-    ["Diana"]                       = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Fizz"]                        = {_Q},
-    ["Gnar"]                        = {_E},
-    ["Gragas"]                      = {_E},
-    ["Hecarim"]                     = {_R},
-    ["Irelia"]                      = {_Q},
-    ["JarvanIV"]                    = {_R},
-    ["Jax"]                         = {_Q},
-    ["Katarina"]                    = {_E},
-    ["KhaZix"]                      = {_E},
-    ["LeeSin"]                      = {_Q},
-    ["Leona"]                       = {_E},
-    ["Malphite"]                    = {_R},
-    ["MasterYi"]                    = {_Q},
-    ["MonkeyKing"]                  = {_E},
-    ["Nautilus"]                    = {_Q},
-    ["Pantheon"]                    = {_W, _R},
-    ["Poppy"]                       = {_E},
-    ["RekSai"]                      = {_E},
-    ["Renekton"]                    = {_E},
-    ["Riven"]                       = {_Q, _E},
-    ["Rengar"]                      = {_R},
-    ["Sejuani"]                     = {_Q},
-    ["Shen"]                        = {_E},
-    ["Shyvana"]                     = {_R},
-    ["Talon"]                       = {_E},
-    ["Tristana"]                    = {_W},
-    ["Tryndamere"]                  = {_E},
-    ["Udyr"]                        = {_E},
-    ["Volibear"]                    = {_Q},
-    ["Vi"]                          = {_Q},
-    ["XinZhao"]                     = {_E},
-    ["Yasuo"]                       = {_E},
-    ["Zac"]                         = {_E},
-}
 
 local callback = nil
  
 OnProcessSpell(function(unit, spell)    
     if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
     local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
-    local unitGapcloserSpells = GAPCLOSER_SPELLS[GetObjectName(unit)]
  
         if unitChanellingSpells then
             for _, spellSlot in pairs(unitChanellingSpells) do
                 if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
-        elseif unitGapcloserSpells then
-            for _, spellSlot in pairs(unitGapcloserSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, GAPCLOSER_SPELLS) end
             end
         end
 end)
@@ -252,7 +206,7 @@ function AutoE()
 			local self=GetOrigin(myHero)
 			selfx = self.x
 			selfy = self.y
-    	    selfz = self.z
+    	                selfz = self.z
 			local HeroPos = Vector(selfx, selfy, selfz)
     	
 			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GetDistance(target))
@@ -296,51 +250,10 @@ function AutoE()
 end
 
 if MiscEnableAutolvl.getValue() then  
-
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) == 18 then
-        LevelSpell(_E)
-end
+local leveltable = { _Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E} -- Credits goes to Inferno for saving me 20 line xD
+LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
-addInterrupterCallback(function(target, spellType)
-  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == GAPCLOSER_SPELLS and MiscGap.getValue() then
-    CastTargetSpell(target, _E)
-  end
-end)
 
 addInterrupterCallback(function(target, spellType)
   if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and MiscInterrupt.getValue() then
