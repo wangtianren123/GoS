@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ahri.lua", "Common\\Ahri", version)
 if UP.newVersion() then UP.update() end
 
@@ -60,6 +60,37 @@ local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
 local DrawingsText = Drawings.addItem(MenuBool.new("Draw Text", true))
 
 myIAC = IAC()
+
+CHANELLING_SPELLS = {
+    ["Caitlyn"]                     = {_R},
+    ["Katarina"]                    = {_R},
+    ["FiddleSticks"]                = {_R},
+    ["Galio"]                       = {_R},
+    ["Lucian"]                      = {_R},
+    ["MissFortune"]                 = {_R},
+    ["VelKoz"]                      = {_R},
+    ["Nunu"]                        = {_R},
+    ["Karthus"]                     = {_R},
+    ["Malzahar"]                    = {_R},
+    ["Xerath"]                      = {_R},
+}
+
+local callback = nil
+ 
+OnProcessSpell(function(unit, spell)    
+    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
+ 
+        if unitChanellingSpells then
+            for _, spellSlot in pairs(unitChanellingSpells) do
+                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
+            end
+		end
+end)
+ 
+function addInterrupterCallback( callback0 )
+        callback = callback0
+end
 
 OnLoop(function(myHero)
     if IWalkConfig.Combo then
