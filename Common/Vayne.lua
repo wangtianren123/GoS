@@ -136,7 +136,9 @@ OnLoop(function(myHero)
 	end
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
-		  if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
+		  local target = GetCurrentTarget()
+		  
+		  if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
 		  CastSpell(_R)
 		  end
 		  
