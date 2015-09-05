@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 2
+local version = 3
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ashe.lua", "Common\\Ashe", version)
 if UP.newVersion() then UP.update() end
 
@@ -151,8 +151,45 @@ OnLoop(function(myHero)
 	end
 	
 if MiscEnableAutolvl.getValue() then  
-local leveltable = { _W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E} -- Credits goes to Inferno for saving me 20 line xD
-LevelSpell(leveltable[GetLevel(myHero)]) 
+
+if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_E)
+end
+
 end
 
 local HeroPos = GetOrigin(myHero)
