@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 11
+local version = 12
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -150,7 +150,7 @@ OnLoop(function(myHero)
 	if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
         DelayAction(function() 
 	Tumble()
-        end, GetWindUp(GetMyHero()) + GetLatency()*2)
+        end, GetWindUp(GetMyHero()) + (GetLatency()*2))
 	DelayAction(function() 
 	AttackUnit(target)
         end, 250)
@@ -185,11 +185,11 @@ OnLoop(function(myHero)
 		  if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and (GetCurrentHP(enemy)/GetMaxHP(enemy))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
 		  CastSpell(_R)
 		  end
-		
-		  if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) < KeepInvisdis.getValue() then 
-		  myIAC:SetAA(false)
-		  else 
+		  
+		  if GotBuff(myHero, "vaynetumblefade") < 1 then
 		  myIAC:SetAA(true)
+		  elseif GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) < KeepInvisdis.getValue() then 
+		  myIAC:SetAA(false)
 		  end
 	end
 	
@@ -228,7 +228,7 @@ function Tumble()
   CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
   end
   
-  if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
+  if GetDistance(target) > 630 and DistanceAfterTumble < 630 then
   CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
   end
 end
@@ -360,3 +360,4 @@ function AlliesAround(pos, range)
 end
 
 notification("Vayne by Deftsu loaded.", 10000)
+
