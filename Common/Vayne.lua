@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 12
+local version = 13
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -142,7 +142,7 @@ OnLoop(function(myHero)
 		  
 		  if GotBuff(myHero, "vaynetumblefade") < 1 then
 		  myIAC:SetAA(true)
-		  elseif GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(enemy) < KeepInvisdis.getValue() then 
+		  elseif GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(myHero, enemy) < KeepInvisdis.getValue() then 
 		  myIAC:SetAA(false)
 		  end
 	end
@@ -182,7 +182,7 @@ function Tumble()
   CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
   end
   
-  if GetDistance(target) > 630 and DistanceAfterTumble < 630 then
+  if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
   CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
   end
 end
@@ -273,4 +273,3 @@ function AlliesAround(pos, range)
 end
 
 notification("Vayne by Deftsu loaded.", 10000)
-
