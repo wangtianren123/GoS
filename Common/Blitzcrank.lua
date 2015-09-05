@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 1
+local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Blitzcrank.lua", "Common\\Blitzcrank", version)
 if UP.newVersion() then UP.update() end
 
@@ -172,7 +172,8 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 	CastSpell(_R)
 	end
 end
-		
+
+local HeroPos = GetOrigin(myHero)		
 if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,1000,3,100,0xff00ff00) end
 if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,600,3,100,0xff00ff00) end
 end)
