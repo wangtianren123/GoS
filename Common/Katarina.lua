@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 3
+local version = 4
 local UP=Updater.new("D3ftsu/GoS/master/Common/Katarina.lua", "Common\\Katarina", version)
 if UP.newVersion() then UP.update() end
 
@@ -226,6 +226,7 @@ OnLoop(function(myHero)
 
 	if WardJumpkey.getValue() then
 		wardJump(mousePos)
+		MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
 
 	
@@ -242,9 +243,9 @@ OnLoop(function(myHero)
 	spellObj = nil
 	wardpos = nil
   
-  if GotBuff(myHero,"katarinarsound") > 0 then
+  if GotBuff(myHero, "katarinarsound") > 0 then
   myIAC:SetOrb(false)
-  else 
+  elseif GotBuff(myHero, "katarinarsound") < 1 then 
   myIAC:SetOrb(true) 
   end
 	
