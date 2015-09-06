@@ -97,11 +97,11 @@ OnLoop(function(myHero)
 	
 	    local SoldierRange = 0
 	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-		  local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
-		  local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+	    local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
+	    local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
-	       if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
+	           if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
 		   SoldierRange = GetDistance(AzirSoldiers[i], target)
 		   end
 		
@@ -116,7 +116,6 @@ OnLoop(function(myHero)
 		   if ValidTarget(target, 1500) and GetDistance(target) > 550 and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and CUseAA.getValue() then
 		   AttackUnit(target)
 		   end
-		   
 	    end
 	
 		if CanUseSpell(myHero,_W) == READY and ValidTarget(target,500) and WPred.HitChance == 1 and CUseW.getValue() then
@@ -137,7 +136,7 @@ OnLoop(function(myHero)
 		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
-	     if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
+	           if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
 		   SoldierRange = GetDistance(AzirSoldiers[i], target)
 		   end
 		   
@@ -163,7 +162,7 @@ OnLoop(function(myHero)
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
 	
-    local ExtraDmg = 0
+                local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
@@ -177,8 +176,9 @@ OnLoop(function(myHero)
 	end
 	
 	if Escape.getValue() then
-	  local mousePos = GetMousePos()
-	  if table.getn(AzirSoldiers) < 1 then CastSkillShot(_W, mousePos.x, mousePos.y, mousePos.z) end
+	local mousePos = GetMousePos()
+	
+	        if table.getn(AzirSoldiers) < 1 then CastSkillShot(_W, mousePos.x, mousePos.y, mousePos.z) end
 		if CanUseSpell(myHero,_E) == READY and CanUseSpell(myHero,_Q) == READY then
 		CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
 		CastSpell(_E)
