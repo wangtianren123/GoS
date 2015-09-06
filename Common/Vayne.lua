@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 20
+local version = 69
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -99,15 +99,6 @@ local mousePos = GetMousePos()
 OnLoop(function(myHero)
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
-	    
-	if myIAC:IsWindingUp() and CUseQ.getValue() and ValidTarget(target, 700) then
-        DelayAction(function() 
-	Tumble()
-        end, GetWindUp(GetMyHero()) + (GetLatency()*2))
-	DelayAction(function() 
-	AttackUnit(target)
-        end, 250)
-        end
 	
 	if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
@@ -121,7 +112,7 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-	if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+	    if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
@@ -129,16 +120,20 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	if CUseE.getValue() then
-	AutoE()
+	    if CUseE.getValue() then
+	    AutoE()
         end
 
         if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and ValidTarget(target, Renemyrange.getValue()) and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
         CastSpell(_R)
 	end
-		  
-	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
+		
+	local target = GetCurrentTarget()
+	
+	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis) and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
 	myIAC:SetAA(false)
+	elseif ValidTarget(target, 550) and GetDistance(myHero, target) > KeepInvisdis.getValue() then
+	myIAC:SetAA(true)
 	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
 	myIAC:SetAA(true)
 	end
@@ -157,9 +152,9 @@ OnLoop(function(myHero)
         end
     
         if WallTumble2.getValue() and HeroPos.x == 12060 and HeroPos.z == 4806 then
-            CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
+        CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
         elseif WallTumble2.getValue() then
-            MoveToXYZ(12060, 51, 4806)
+        MoveToXYZ(12060, 51, 4806)
         end
 		
 
@@ -171,18 +166,35 @@ DrawCircle(12060, 51, 4806,100,1,1,0xffffffff)
 end
 end)
 
-function Tumble()
-  local HeroPos = GetOrigin(myHero)
-  local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-  local DistanceAfterTumble = GetDistance(AfterTumblePos, target)
-  if DistanceAfterTumble < 630 and DistanceAfterTumble > 200 then
-  CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
-  end
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+      if unit == myHero then
+        if spell.name:lower():find("attack") then 
+		        DelayAction(function() 
+                            if CanUseSpell(myHero,_Q) == READY and IWalkConfig.Combo and CUseQ.getValue() then
+				local HeroPos = GetOrigin(myHero)
+                                local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
+                                local DistanceAfterTumble = GetDistance(AfterTumblePos, target)
+							  
+                                if DistanceAfterTumble < 630 and DistanceAfterTumble > 200 then
+                                CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
+                                end
   
-  if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
-  CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
+                                if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
+                                CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
+                                end
+                            end
+                        end, spell.windUpTime*1000)
+	end
+	
+	if spell.name:lower():find("vaynetumble") then 
+	DelayAction(function() 
+	AttackUnit(target)
+        end, spell.windUpTime*1000)
+        end
+      end
   end
-end
+end)
 
 function AutoE()
 	 for _,target in pairs(GetEnemyHeroes()) do
@@ -291,7 +303,7 @@ end
 
 addInterrupterCallback(function(target, spellType)
   if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and MiscInterrupt.getValue() then
-    CastTargetSpell(target, _E)
+  CastTargetSpell(target, _E)
   end
 end)
 
@@ -300,7 +312,7 @@ function AlliesAround(pos, range)
     if pos == nil then return 0 end
     for k,v in pairs(GetAllyHeroes()) do 
         if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
-            c = c + 1
+        c = c + 1
         end
     end
     return c
