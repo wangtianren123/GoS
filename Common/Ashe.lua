@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 4
+local version = 5
 local UP=Updater.new("D3ftsu/GoS/master/Common/Ashe.lua", "Common\\Ashe", version)
 if UP.newVersion() then UP.update() end
 
@@ -88,17 +88,17 @@ OnLoop(function(myHero)
     local target = GetCurrentTarget()
 	
 	        local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
-	        local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,2000,130,false,true)
+	        local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,1500,130,false,true)
 		
 	        if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and ValidTarget(target, 700) and CUseQ.getValue() then
                 CastSpell(_Q)
                 end
 						
-                if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and CUseW.getValue() then
+                if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, 1200) and CUseW.getValue() then
                 CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	        end
 						
-                if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and (GetCurrentHP(target)/GetMaxHP(target))*100 < 50 and CUseR.getValue() then
+                if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and ValidTarget(target, 1500) and (GetCurrentHP(target)/GetMaxHP(target))*100 < 50 and CUseR.getValue() then
                 CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 	        end
 		
