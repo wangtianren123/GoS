@@ -296,14 +296,14 @@ addInterrupterCallback(function(target, spellType)
 end)
 
 function AlliesAround(pos, range)
-    local s = 0
+    local c = 0
     if pos == nil then return 0 end
-    for sk,sv in pairs(GetAllyHeroes()) do 
-        if sv and ValidTarget(sv) and GetDistanceSqr(pos,GetOrigin(sv)) < range*range then
-            s = s + 1
+    for k,v in pairs(GetAllyHeroes()) do 
+        if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
+            c = c + 1
         end
     end
-    return s
+    return c
 end
 
 AddGapcloseEvent(_E, 475, true)
