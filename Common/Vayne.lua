@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 19
+local version = 20
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -246,7 +246,7 @@ function AutoE()
 	end
 end
 
-if MiscConfig.Autolvl then  
+if MiscEnableAutolvl.getValue() then  
 
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
