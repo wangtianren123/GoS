@@ -1,6 +1,6 @@
 require('Dlib')
 
-local version = 6
+local version = 7
 local UP=Updater.new("D3ftsu/GoS/master/Common/Blitzcrank.lua", "Common\\Blitzcrank", version)
 if UP.newVersion() then UP.update() end
 
@@ -90,9 +90,9 @@ OnLoop(function(myHero)
     if IWalkConfig.Combo then
 	local target = GetCurrentTarget()
 	              	
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,550,1000,80,true,true)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,550,975,80,true,true)
 		
-        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1000) and CUseQ.getValue() then
+        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 975) and CUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
                           
@@ -113,9 +113,9 @@ OnLoop(function(myHero)
 	if IWalkConfig.Harass and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= HMmana.getValue() then
 	local target = GetCurrentTarget()
 		
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,550,1000,80,true,true)
+		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1800,550,975,80,true,true)
 		
-        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1000) and HUseQ.getValue() then
+        if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 975) and HUseQ.getValue() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	    end
 		
@@ -125,14 +125,14 @@ OnLoop(function(myHero)
 	end
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1800,550,1000,80,true,true)
+	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1800,550,975,80,true,true)
 		
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-  	    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy, 1000) and KSQ.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then 
+  	    if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy, 975) and KSQ.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then 
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         elseif CanUseSpell(myHero, _R) == READY and ValidTarget(enemy, 600) and KSR.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 125*GetCastLevel(myHero,_R)+125+GetBonusAP(myHero) + ExtraDmg) then
         CastSpell(_R)
@@ -190,7 +190,7 @@ for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 	end	
 	
 	if GetObjectName(mob) == "SRU_Dragon" or GetObjectName(mob) == "SRU_Baron" then
-	  if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 1000) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
+	  if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and ValidTarget(mob, 975) and GetCurrentHP(mob) < CalcDamage(myHero, mob, 0, 55*GetCastLevel(myHero,_Q)+25+GetBonusAP(myHero) + ExtraDmg) then
 	  CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
 	  end
 		
@@ -207,13 +207,13 @@ end)
 
 addInterrupterCallback(function(target, spellType)
 local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
-  if IsInDistance(target, 1000) and CanUseSpell(myHero,_Q) == READY and MiscInterrupt.getValue() and spellType == CHANELLING_SPELLS then
+  if IsInDistance(target, 975) and CanUseSpell(myHero,_Q) == READY and MiscInterrupt.getValue() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
   elseif IsInDistance(target, 600) and CanUseSpell(myHero,_R) == READY and MiscInterrupt.getValue() and spellType == CHANELLING_SPELLS then
   CastSpell(_R)
   end
 end)
 
-AddGapcloseEvent(_Q, 1000, false)
+AddGapcloseEvent(_Q, 975, false)
 
 notification("Blitzcrank by Deftsu loaded.", 10000)
