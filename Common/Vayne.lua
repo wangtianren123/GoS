@@ -130,7 +130,7 @@ OnLoop(function(myHero)
 		
 	local target = GetCurrentTarget()
 	
-	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis) and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
+	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis.getValue()) and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
 	myIAC:SetAA(false)
 	elseif ValidTarget(target, 550) and GetDistance(myHero, target) > KeepInvisdis.getValue() then
 	myIAC:SetAA(true)
