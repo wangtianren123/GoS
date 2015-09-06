@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 17
+local version = 18
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -246,45 +246,46 @@ function AutoE()
 	end
 end
 
-if MiscEnableAutolvl.getValue() then  
+if MiscConfig.Autolvl then  
 
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
+elseif GetLevel(myHero) == 2 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) == 3 then
 	LevelSpell(_E)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
+elseif GetLevel(myHero) == 4 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 5 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 6 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) == 7 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) == 8 then
         LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
+elseif GetLevel(myHero) == 9 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 10 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 11 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) == 12 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) == 14 then
         LevelSpell(_E)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
+elseif GetLevel(myHero) == 15 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) == 16 then
         LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_W)
+elseif GetLevel(myHero) == 17 then
+        LevelSpell(_E)
 elseif GetLevel(myHero) == 18 then
-        LevelSpell(_W)
+        LevelSpell(_E)
 end
+
 end
 
 
