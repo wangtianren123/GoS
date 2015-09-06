@@ -1,7 +1,7 @@
 require('MapPositionGOS')
 require('Dlib')
 
-local version = 420
+local version = 666
 local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
 if UP.newVersion() then UP.update() end
 
@@ -130,9 +130,9 @@ OnLoop(function(myHero)
 		
 	local target = GetCurrentTarget()
 	
-	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis.getValue()) and GetDistance(myHero, target) < KeepInvisdis.getValue() then 
+	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis.getValue()) and GetDistance(target) < KeepInvisdis.getValue() then 
 	myIAC:SetAA(false)
-	elseif ValidTarget(target, 550) and GetDistance(myHero, target) > KeepInvisdis.getValue() then
+	elseif ValidTarget(target, 550) and GetDistance(target) > KeepInvisdis.getValue() then
 	myIAC:SetAA(true)
 	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
 	myIAC:SetAA(true)
