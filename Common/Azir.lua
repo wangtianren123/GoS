@@ -33,7 +33,7 @@ local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
 local CUseW = Combo.addItem(MenuBool.new("Use W",true))
 local CUseE = Combo.addItem(MenuBool.new("Use E",true))
 local CUseR = Combo.addItem(MenuBool.new("Use R",true))
-local Escape = Combo.addItem(MenuKeyBind.new("Escape", 71))
+local Escape = Combo.addItem(MenuKeyBind.new("Flee", 71))
 
 local Harass = root.addItem(SubMenu.new("Harass"))
 local HUseAA = Harass.addItem(MenuBool.new("Use AA", true))
