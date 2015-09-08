@@ -120,7 +120,7 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 	        end
 	
-		if Ignite and BlitzcrankMenu.Misc.Autoignite:Value() then
+		if Ignite and AhriMenu.Misc.Autoignite:Value() then
                   if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
                   CastTargetSpell(enemy, Ignite)
                 end
