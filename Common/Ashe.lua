@@ -107,7 +107,7 @@ OnLoop(function(myHero)
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 		
-	end
+    end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
