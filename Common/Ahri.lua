@@ -9,7 +9,7 @@ AhriMenu:SubMenu("Harass", "Harass")
 AhriMenu.Harass:Boolean("Q", "Use Q", true)
 AhriMenu.Harass:Boolean("W", "Use W", true)
 AhriMenu.Harass:Boolean("E", "Use E", true)
-AhriMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
+AhriMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AhriMenu:SubMenu("Killsteal", "Killsteal")
 AhriMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
@@ -18,7 +18,7 @@ AhriMenu.Killsteal:Boolean("E", "Killsteal with E", false)
 
 AhriMenu:SubMenu("Misc", "Misc")
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", false)
-AhriMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
+AhriMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
 AhriMenu:SubMenu("JungleClear", "JungleClear")
 AhriMenu.JungleClear:Boolean("Q", "Use Q", true)
@@ -60,7 +60,7 @@ OnProcessSpell(function(unit, spell)
 end)
  
 function addInterrupterCallback( callback0 )
-        callback = callback0
+callback = callback0
 end
 
 OnLoop(function(myHero)
@@ -68,12 +68,12 @@ OnLoop(function(myHero)
         
 		        local target = GetCurrentTarget()
 		        local mousePos = GetMousePos()
-	            local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
+	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
-                if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
-                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                end
+                        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
+                        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                        end
 					
 		        if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 900) and AhriMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
 		        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
@@ -83,34 +83,34 @@ OnLoop(function(myHero)
 		        CastSpell(_W)
 		        end
 		
-	            if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Combo.Q:Value() then
-                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                end
+	                if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Combo.Q:Value() then
+                        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                        end
 					
     end
 	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
-                local target = GetCurrentTarget()
+                        local target = GetCurrentTarget()
 		        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
-                if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Harass.E:Value() then
-                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                end
+                        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Harass.E:Value() then
+                        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                        end
 				
 		        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
 		        CastSpell(_W)
 		        end
 		
 	            if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
-                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                end
+                    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                    end
 		
     end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	    local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
+	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,1000,60,true,true)
 		
 		local ExtraDmg = 0
@@ -182,7 +182,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		CastSpell(_W)
 		end
 		
-	    if CanUseSpell(myHero, _E) == READY and AhriMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 975) then
+	        if CanUseSpell(myHero, _E) == READY and AhriMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 975) then
 		CastSkillShot(_E,mobPos.x, mobPos.y, mobPos.z)
 		end
 		
