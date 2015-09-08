@@ -1,56 +1,27 @@
-require('Dlib')
+AsheMenu = Menu("Ashe", "Ashe")
+AsheMenu:SubMenu("Combo", "Combo")
+AsheMenu.Combo:Boolean("Q", "Use Q", true)
+AsheMenu.Combo:Boolean("W", "Use W", true)
+AsheMenu.Combo:Boolean("R", "Use R", true)
+AsheMenu.Combo:Boolean("Items", "Use Items", true)
+AsheMenu.Combo:Boolean("QSS", "Use QSS", true)
+AsheMenu.Combo:Slider("QSSHP", "if HP % <", 75, 0, 100, 1)
 
-local version = 5
-local UP=Updater.new("D3ftsu/GoS/master/Common/Ashe.lua", "Common\\Ashe", version)
-if UP.newVersion() then UP.update() end
+AsheMenu:SubMenu("Harass", "Harass")
+AsheMenu.Harass:Boolean("Q", "Use Q", true)
+AsheMenu.Harass:Boolean("W", "Use W", true)
+AsheMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
 
---------------- Thanks ilovesona for this ------------------------
-DelayAction(function ()
-        for _, imenu in pairs(menuTable) do
-                local submenu = menu.addItem(SubMenu.new(imenu.name))
-                for _,subImenu in pairs(imenu) do
-                        if subImenu.type == SCRIPT_PARAM_ONOFF then
-                        local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
-                        OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
-                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
-                        local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
-                        OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
-                        elseif subImenu.type == SCRIPT_PARAM_INFO then
-                        submenu.addItem(MenuSeparator.new(subImenu.t))
-                        end
-                end
-        end
-        _G.DrawMenu = function ( ... )  end
-end, 1000)
+AsheMenu:SubMenu("Killsteal", "Killsteal")
+AsheMenu.Killsteal:Boolean("W", "Killsteal with W", true)
+AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 
-local root = menu.addItem(SubMenu.new("Ashe"))
+AsheMenu:SubMenu("Misc", "Misc")
+AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
+AsheMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
 
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseW = Combo.addItem(MenuBool.new("Use W",true))
-local CUseR = Combo.addItem(SubMenu.new("Use R"))
-local CItems = Combo.addItem(MenuBool.new("Use Items",true))
-local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
-local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 1))
-
-local Harass = root.addItem(SubMenu.new("Harass"))
-local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
-local HUseW = Harass.addItem(MenuBool.new("Use W", true))
-local HMmana = Harass.addItem(MenuSlider.new("if My Mana % is More Than", 30, 0, 80, 1))
-
-local KSmenu = root.addItem(SubMenu.new("Killsteal"))
-local KSW = KSmenu.addItem(MenuBool.new("Killsteal with W", true))
-local KSR = KSmenu.addItem(MenuBool.new("Killsteal with R", true))
-
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", true))
-
-myIAC = IAC()
+AsheMenu:SubMenu("Drawings", "Drawings")
+AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -69,8 +40,8 @@ CHANELLING_SPELLS = {
 local callback = nil
  
 OnProcessSpell(function(unit, spell)    
-        if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-        local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
+    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
  
         if unitChanellingSpells then
             for _, spellSlot in pairs(unitChanellingSpells) do
@@ -80,77 +51,80 @@ OnProcessSpell(function(unit, spell)
 end)
  
 function addInterrupterCallback( callback0 )
-        callback = callback0
+callback = callback0
 end
 
 OnLoop(function(myHero)
-    if IWalkConfig.Combo then
-    local target = GetCurrentTarget()
+    if IOW:Mode() == "Combo" then
 	
-	        local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
-	        local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,1500,130,false,true)
+	    local target = GetCurrentTarget()
+	    local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
+            local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,2000,130,false,true)
 		
-	        if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and ValidTarget(target, 700) and CUseQ.getValue() then
-                CastSpell(_Q)
-                end
+	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
+        CastSpell(_Q)
+        end
 						
-                if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(target, 1200) and CUseW.getValue() then
-                CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
-	        end
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
+        CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+        end
 						
-                if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and ValidTarget(target, 1500) and (GetCurrentHP(target)/GetMaxHP(target))*100 < 50 and CUseR.getValue() then
-                CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-	        end
+        if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
+        CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
+	end
 		
-		if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
-                CastTargetSpell(target, GetItemSlot(myHero,3153))
-                end
+	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
+        CastTargetSpell(target, GetItemSlot(myHero,3153))
+        end
 
-                if GetItemSlot(myHero,3144) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
-                CastTargetSpell(target, GetItemSlot(myHero,3144))
-                end
+        if GetItemSlot(myHero,3144) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
+        CastTargetSpell(target, GetItemSlot(myHero,3144))
+        end
 
-                if GetItemSlot(myHero,3142) > 0 and CItems.getValue() then
-                CastTargetSpell(myHero, GetItemSlot(myHero,3142))
-                end
+        if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() then
+        CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+        end
 		
-		if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
-                CastTargetSpell(myHero, GetItemSlot(myHero,3140))
-                end
+	if GetItemSlot(myHero,3140) > 0 and AsheMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+        CastTargetSpell(myHero, GetItemSlot(myHero,3140))
+        end
 
-                if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
-                CastTargetSpell(myHero, GetItemSlot(myHero,3139))
-                end
+        if GetItemSlot(myHero,3139) > 0 and AsheMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+        CastTargetSpell(myHero, GetItemSlot(myHero,3139))
+        end
     end
 
-    if IWalkConfig.Harass and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= HMmana.getValue() then   
-    local target = GetCurrentTarget()
-
-                local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)	
+    if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.Mana:Value() then 
+    
+        local target = GetCurrentTarget()
+        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)	
 		
-		if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and ValidTarget(target, 700) and HUseQ.getValue() then
-                CastSpell(_Q)
-                end
+	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
+        CastSpell(_Q)
+        end
 						
-                if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and HUseW.getValue() then
-                CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
-	        end
-    end
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
+        CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+	end
+		
+	end
 	
 	for i,enemy in pairs(GetEnemyHeroes()) do
-	        local WPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
-		local RPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
+	
+	        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
 		
-		if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(enemy, 1200) and KSW.getValue() and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
+		if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		  
-		if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and ValidTarget(enemy, 3000) and KSR.getValue() and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R) + 75 + GetBonusAP(myHero)) then
+		if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R) + 75 + GetBonusAP(myHero)) then
                 CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
+		
 	end
 	
-if MiscEnableAutolvl.getValue() then  
+if AsheMenu.Misc.Autolvl:Value() then  
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
 	LevelSpell(_W)
@@ -192,17 +166,13 @@ end
 
 end
 
-local HeroPos = GetOrigin(myHero)
-if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
+if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
+
 end)
 
 addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,250,1000,130,false,true)
-  if IsInDistance(target, 1000) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
+  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,1000,130,false,true)
+  if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
-
-AddGapcloseEvent(_R, 1000, false)
-
-notification("Ashe by Deftsu loaded.", 10000)
