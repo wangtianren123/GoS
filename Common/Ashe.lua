@@ -109,7 +109,7 @@ OnLoop(function(myHero)
 		
 	end
 	
-	for i,enemy in pairs(GetEnemyHeroes()) do
+	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
