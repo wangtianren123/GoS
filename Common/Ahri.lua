@@ -17,6 +17,7 @@ AhriMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AhriMenu.Killsteal:Boolean("E", "Killsteal with E", false)
 
 AhriMenu:SubMenu("Misc", "Misc")
+AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AhriMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
@@ -117,8 +118,13 @@ OnLoop(function(myHero)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		end
-		
+	        end
+	
+		if Ignite and BlitzcrankMenu.Misc.Autoignite:Value() then
+                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+                  CastTargetSpell(enemy, Ignite)
+                end
+                
 		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg) then
 		CastSpell(_W)
 		elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + ExtraDmg) then 
