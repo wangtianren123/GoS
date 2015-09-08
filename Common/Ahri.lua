@@ -103,13 +103,14 @@ OnLoop(function(myHero)
 		        CastSpell(_W)
 		        end
 		
-	            if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
-                    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                    end
+	                if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
+                        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                        end
 		
     end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+		
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,1000,60,true,true)
 		
@@ -124,7 +125,8 @@ OnLoop(function(myHero)
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-		end
+	end
+	
 	end
 	
 if AhriMenu.Misc.Autolvl:Value() then  
@@ -171,7 +173,7 @@ end
 
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
-    if IOW:Mode() == "LaneClear" then
+        if IOW:Mode() == "LaneClear" then
 		local mobPos = GetOrigin(mob)
 		
 		if CanUseSpell(myHero, _Q) == READY and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
@@ -186,7 +188,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		CastSkillShot(_E,mobPos.x, mobPos.y, mobPos.z)
 		end
 		
-    end
+        end
 end
 
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,3,100,0xff00ff00) end
