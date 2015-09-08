@@ -1,12 +1,6 @@
-require('Dlib')
-
-local version = 3
-local UP=Updater.new("D3ftsu/GoS/master/Common/Baseult.lua", "Common\\Baseult", version)
-if UP.newVersion() then UP.update() end
-
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
-local root = menu.addItem(SubMenu.new("Baseult"))
-local BaseUlt = root.addItem(MenuBool.new("Enabled",true))
+BaseultMenu = Menu("Baseult", "Baseult")
+BaseultMenu:Boolean("Enabled", "Enabled", true)
 myHero = GetMyHero()
 mapID = GetMapID()
 
@@ -47,7 +41,7 @@ elseif GetObjectName(myHero) == "Jinx" then
 end
 
 OnProcessRecall(function(Object,recallProc)
-	if CanUseSpell(myHero, _R) == READY and BaseUlt.getValue() and GetTeam(Object) ~= GetTeam(myHero) then
+	if CanUseSpell(myHero, _R) == READY and BaseultMenu.Enabled:Value() and GetTeam(Object) ~= GetTeam(myHero) then
 		if damage(Object) > GetCurrentHP(Object) then
 			local timeToRecall = recallProc.totalTime
 			local distance = GetDistance(enemyBasePos)
@@ -68,5 +62,3 @@ OnProcessRecall(function(Object,recallProc)
 		end
 	end
 end)
-
-notification("Baseult Reborn by Deftsu loaded.", 10000)
