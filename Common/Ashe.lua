@@ -81,7 +81,7 @@ OnLoop(function(myHero)
         CastTargetSpell(target, GetItemSlot(myHero,3144))
         end
 
-        if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() then
+        if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
