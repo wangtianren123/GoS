@@ -69,7 +69,7 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
         
-		        local target = GetCurrentTarget()
+		        local target = IOW:GetTarget()
 		        local mousePos = GetMousePos()
 	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
@@ -94,7 +94,7 @@ OnLoop(function(myHero)
 	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
-                        local target = GetCurrentTarget()
+                        local target = IOW:GetTarget()
 		        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
@@ -218,9 +218,9 @@ end)
 
 function GetDrawText(enemy)
 	local ExtraDmg = 0
-	--if Ignite and CanUseSpell(myHero, Ignite) == READY then
-	--ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
-	--end
+	if Ignite and CanUseSpell(myHero, Ignite) == READY then
+	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
+	end
 	
 	local ExtraDmg2 = 0
 	if GotBuff(myHero, "itemmagicshankcharge") > 99 then
@@ -239,7 +239,7 @@ function GetDrawText(enemy)
 	return 'E + W = Kill!', ARGB(255, 200, 160, 0)
 	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
 	return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
-	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg + ExtraDmg2) then
 	return 'Q + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
 	else
 	return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
