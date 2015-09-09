@@ -1,3 +1,5 @@
+if GetObjectName(myHero) ~= "Ahri" then return end
+
 AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
