@@ -1,75 +1,47 @@
-require('Dlib')
+if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
-local version = 8
-local UP=Updater.new("D3ftsu/GoS/master/Common/Cassiopeia.lua", "Common\\Cassiopeia", version)
-if UP.newVersion() then UP.update() end
+CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
+CassiopeiaMenu:SubMenu("Combo", "Combo")
+CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
+CassiopeiaMenu.Combo:Boolean("W", "Use W", true)
+CassiopeiaMenu.Combo:Boolean("E", "Use E", true)
+CassiopeiaMenu.Combo:Boolean("R", "Use R", true)
 
---------------- Thanks ilovesona for this ------------------------
-DelayAction(function ()
-        for _, imenu in pairs(menuTable) do
-                local submenu = menu.addItem(SubMenu.new(imenu.name))
-                for _,subImenu in pairs(imenu) do
-                        if subImenu.type == SCRIPT_PARAM_ONOFF then
-                                local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
-                                OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
-                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
-                                local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
-                                OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
-                        elseif subImenu.type == SCRIPT_PARAM_INFO then
-                                submenu.addItem(MenuSeparator.new(subImenu.t))
-                        end
-                end
-        end
-        _G.DrawMenu = function ( ... )  end
-end, 1000)
+CassiopeiaMenu:SubMenu("Harass", "Harass")
+CassiopeiaMenu.Harass:Boolean("Q", "Use Q", true)
+CassiopeiaMenu.Harass:Boolean("W", "Use W", true)
+CassiopeiaMenu.Harass:Boolean("E", "Use E", true)
 
-myIAC = IAC()
+CassiopeiaMenu:SubMenu("Killsteal", "Killsteal")
+CassiopeiaMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
+CassiopeiaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
+CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
-local root = menu.addItem(SubMenu.new("Cassiopeia"))
+CassiopeiaMenu:SubMenu("Misc", "Misc")
+CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", false)
+CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", false)
+CassiopeiaMenu.Misc:Boolean("Interrupt", "Interrupt Spells with R", true)
+CassiopeiaMenu.Misc:Slider("HP", "if HP % <", 50, 1, 100, 1)
 
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseW = Combo.addItem(MenuBool.new("Use W",true))
-local CUseE = Combo.addItem(MenuBool.new("Use E",true))
-local CUseR = Combo.addItem(MenuBool.new("Use R",true))
+CassiopeiaMenu:SubMenu("Farm", "Farm")
+CassiopeiaMenu.Misc:Boolean("AutoE", "Auto E if pois", true)
+CassiopeiaMenu.Farm:SubMenu("LastHit2", "LastHit with E")
+CassiopeiaMenu.Farm.LastHit2:Boolean("EX", "Enabled", true)
+CassiopeiaMenu.Farm.LastHit2:Boolean("EXP", "Only if pois", true)
+CassiopeiaMenu.Farm:SubMenu("LaneClear", "LaneClear")
+CassiopeiaMenu.Farm.LaneClear:Boolean("E", "Use E", true)
+CassiopeiaMenu.Farm.LaneClear:Slider("Mana", "Min Mana %", 50, 1, 100, 1)
 
-local Harass = root.addItem(SubMenu.new("Harass"))
-local HUseQ = Harass.addItem(MenuBool.new("Use Q",true))
-local HUseW = Harass.addItem(MenuBool.new("Use W",true))
-local HUseE = Harass.addItem(MenuBool.new("Use E",true))
+CassiopeiaMenu:SubMenu("JungleClear", "JungleClear")
+CassiopeiaMenu.JungleClear:Boolean("Q", "Use Q", true)
+CassiopeiaMenu.JungleClear:Boolean("W", "Use W", true)
+CassiopeiaMenu.JungleClear:Boolean("E", "Use E", true)
 
-local KillSteal = root.addItem(SubMenu.new("KillSteal"))
-local KUseQ = KillSteal.addItem(MenuBool.new("Use Q",true))
-local KUseW = KillSteal.addItem(MenuBool.new("Use W",true))
-local KUseE = KillSteal.addItem(MenuBool.new("Use E",true))
-
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local PacketCast = Misc.addItem(MenuBool.new("Packet Cast (Private :P)", true))
-local nofaceexploit = Misc.addItem(MenuBool.new("No-Face Exploit (Private :P)", true))
-local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt Dangerous Spells", true))
-local MiscInterminHP = Misc.addItem(MenuSlider.new("Minimum Health % for Interrupt", 50, 1, 100, 1))
-
-local Farm = root.addItem(SubMenu.new("Farm"))
-local AutoE = Farm.addItem(MenuBool.new("Auto LastHit With E if Poisoned",true))
-local LastHit2 = Farm.addItem(SubMenu.new("Lasthit with E"))
-local EX = LastHit2.addItem(MenuBool.new("Enabled",true))
-local EXP = LastHit2.addItem(MenuBool.new("Only if Poisoned",true))
-local LaneClear = Farm.addItem(SubMenu.new("LaneClear"))
-local LCUseE = LaneClear.addItem(MenuBool.new("Auto E",true))
-local LCmin = LaneClear.addItem(MenuSlider.new("Minimum Mana % for Laneclear", 50, 1, 100, 1))
-
-local JungleClear = root.addItem(SubMenu.new("JungleClear"))
-local JUseQ = JungleClear.addItem(MenuBool.new("Use Q",true))
-local JUseW = JungleClear.addItem(MenuBool.new("Use W",true))
-local JUseE = JungleClear.addItem(MenuBool.new("Use E",true))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
-local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", false))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", false))
-local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", false))
+CassiopeiaMenu:SubMenu("Drawings", "Drawings")
+CassiopeiaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
+CassiopeiaMenu.Drawings:Boolean("W", "Draw W Range", false)
+CassiopeiaMenu.Drawings:Boolean("E", "Draw E Range", false)
+CassiopeiaMenu.Drawings:Boolean("R", "Draw R Range", false)
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -101,93 +73,100 @@ OnProcessSpell(function(unit, spell)
 end)
  
 function addInterrupterCallback( callback0 )
-        callback = callback0
+callback = callback0
 end
 
------------------------------------------------
-
 OnLoop(function(myHero)
-    if IWalkConfig.Combo then
-    local target = GetCurrentTarget()
+    if IOW:Mode() == "Combo" then
 
-	local unit = GetTarget(700, DAMAGE_MAGIC) 	 
-     	local poisoned = false
-	for i=0, 63 do
-	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-	   poisoned = true
-	   end
-        end
+		local unit = IOW:GetTarget() 
+		local target = IOW:GetTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
+		local poisoned = false
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+		        poisoned = true
+		    end
+		end
       
-		if IsFacing(target, 800) and ValidTarget(target, 800) and CUseR.getValue() and (GetCurrentHP(target)/GetMaxHP(target))*100 <= 60 then
+		if IsFacing(target, 800) and GoS:ValidTarget(target, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 60 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
-	        if CanUseSpell(myHero, _E) == READY and CUseE.getValue() and ValidTarget(target, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
 		CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CUseQ.getValue() and ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CUseW.getValue() and ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-     end
+		
+    end
 	
-     if IWalkConfig.Harass then
-     local target = GetCurrentTarget()
-
-	local unit = GetTarget(700, DAMAGE_MAGIC) 	 
-     	local poisoned = false
-	for i=0, 63 do
-	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-	   poisoned = true
-           end
-        end
+    if IOW:Mode() == "Harass" then
+	
+                local unit = IOW:GetTarget() 
+		local target = IOW:GetTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
+		local poisoned = false
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
+		end
 		
-	        if CanUseSpell(myHero, _E) == READY and HUseE.getValue() and ValidTarget(target, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
 		CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and HUseQ.getValue() and ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and HUseW.getValue() and ValidTarget(target, 925) and WPred.HitChance == 1 then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
-     end
+		
+    end
 	
-	for i,enemy in pairs(GetEnemyHeroes()) do
+	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
                 local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,600,850,100,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),2500,500,850,90,false,true)
-		local RPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,300,800,180,false,true)
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,300,800,180,false,true)
 		
-		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_Q)) and KUseQ.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 40*GetCastLevel(myHero,_Q)+35+.45*GetBonusAP(myHero) + ExtraDmg) then 
+		if Ignite and CassiopeiaMenu.Misc.Autoignite:Value() then
+                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+                  CastTargetSpell(enemy, Ignite)
+                  end
+		end
+		
+		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 850) and CassiopeiaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 40*GetCastLevel(myHero,_Q)+35+.45*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-		elseif CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and ValidTarget(enemy,GetCastRange(myHero,_W)) and KUseW.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 15*GetCastLevel(myHero,_W)+15+0.3*GetBonusAP(myHero) + ExtraDmg) then
+		elseif CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(enemy, 850) and CassiopeiaMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 15*GetCastLevel(myHero,_W)+15+0.3*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
-		elseif CanUseSpell(myHero, _E) == READY and ValidTarget(enemy,GetCastRange(myHero,_E)) and KUseE.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+		elseif CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 700) and CassiopeiaMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(enemy, _E)
 		end
 		
 	end
 	
-if MiscEnableAutolvl.getValue() then  
+if CassiopeiaMenu.Misc.Autolvl:Value() then    
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
 	LevelSpell(_E)
@@ -229,85 +208,84 @@ end
 
 end
 
-for _,minion in pairs(GetAllMinions(MINION_ENEMY)) do
+for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
-        local unit = minion
-     	local poisoned = false
-	for i=0, 63 do
-	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-	   poisoned = true
-	   end
-        end
+                local unit = minion
+		local poisoned = false
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
+		end
 		
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 
-        if IWalkConfig.LaneClear then
-		if CanUseSpell(myHero, _E) == READY and LCUseE.getValue() and IsInDistance(minion, 700) and poisoned and (GetCurrentMana(myHero)/GetMaxMana(myHero))*100 >= LCmin.getValue() then
-		CastTargetSpell(minion, _E)
-	        end
+        if IOW:Mode() == "LaneClear" then
+		  if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Farm.LaneClear.E:Value() and GoS:IsInDistance(minion, 700) and poisoned and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= CassiopeiaMenu.Farm.LaneClear.Mana:Value() then
+		  CastTargetSpell(minion, _E)
+	          end
 	end
 	
-	if IWalkConfig.LastHit then 
-	        if CanUseSpell(myHero, _E) == READY and EX.getValue() and EXP.getValue() and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
-		CastTargetSpell(minion, _E)
-		elseif CanUseSpell(myHero, _E) == READY and EX.getValue() and not EXP.getValue() and IsInDistance(minion, 700) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
-		CastTargetSpell(minion, _E)
-		end
+	if IOW:Mode() == "LastHit" then
+	          if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Farm.LastHit2.EX:Value() and CassiopeiaMenu.Farm.LastHit2.EXP:Value() and GoS:IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+		  CastTargetSpell(minion, _E)
+		  elseif CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Farm.LastHit2.EX:Value() and not CassiopeiaMenu.Farm.LastHit2.EXP:Value() and GoS:IsInDistance(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) then
+		  CastTargetSpell(minion, _E)
+		  end
 	end
 	
-	if AutoE.getValue() then
-	        if CanUseSpell(myHero, _E) == READY and IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) and not IWalkConfig.Combo then
-	        CastTargetSpell(minion, _E)
-	        end
-	end
+	    if CassiopeiaMenu.Misc.AutoE:Value() then
+	      if CanUseSpell(myHero, _E) == READY and GoS:IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) and not IWalkConfig.Combo then
+	      CastTargetSpell(minion, _E)
+	      end
+	    end
 end
 
 
-for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
-	local mobPos = GetOrigin(mob)
-        local unit = mob
-     	local poisoned = false
-	for i=0, 63 do
-	   if unit and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-	   poisoned = true
-	   end
-        end
+	        local mobPos = GetOrigin(mob)
+                local unit = mob
+     	        local poisoned = false
+	        local poisoned = false
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
+		end
 		
-        if IWalkConfig.LaneClear then
+        if IOW:Mode() == "LaneClear" then
 		
-	        if CanUseSpell(myHero, _E) == READY and JUseE.getValue() and IsInDistance(mob, 700) and poisoned then
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.JungleClear.E:Value() and GoS:IsInDistance(mob, 700) and poisoned then
 		CastTargetSpell(mob, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and JUseQ.getValue() and IsInDistance(mob, 850) then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.JungleClear.Q:Value() and GoS:IsInDistance(mob, 850) then
 		CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and JUseW.getValue() and IsInDistance(mob, 925) then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.JungleClear.W:Value() and GoS:IsInDistance(mob, 925) then
 		CastSkillShot(_W,mobPos.x, mobPos.y, mobPos.z)
 		end
 	end
 end
 	
-local HeroPos = GetOrigin(myHero)
-if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
+if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
+if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
+if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
+ 
 end)
 
-if (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= MiscInterminHP.getValue() then
 addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
-  if IsInDistance(target, GetCastRange(myHero,_R)) and IsFacing(target, 800) and MiscInterrupt.getValue() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
+  if IsInDistance(target, 800) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
-end
 
 --------------------------------------Thanks Maxxxel For this <3--------------------------------
 local myHero = GetMyHero()
@@ -343,7 +321,7 @@ function IsFacing(targetFace,range,unit)
     	lastwalkway={x=walkway.PredPos.x,y=walkway.PredPos.y,z=walkway.PredPos.z} 
 
     	if lastwalkway.x~=nil then
-				local d1 = GetDistance2(targetFace,unit)
+		local d1 = GetDistance2(targetFace,unit)
     		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
     		return d2 < d1
     	end
