@@ -36,7 +36,7 @@ elseif GetObjectName(myHero) == "Ezreal" then
 	damage = function(target) return CalcDamage(myHero, target, 0, 200 + 150*GetCastLevel(myHero,_R) + .9*GetBonusAP(myHero)+GetBonusDmg(myHero)) end
 elseif GetObjectName(myHero) == "Jinx" then
 	delay = 600
-    missileSpeed = (GetDistance(enemyBasePos) / (1 + (GetDistance(enemyBasePos)-1500)/2500)) -- thanks Noddy
+    missileSpeed = (GoS:GetDistance(enemyBasePos) / (1 + (GoS:GetDistance(enemyBasePos)-1500)/2500)) -- thanks Noddy
 	damage = function(target) return CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
 end
 
