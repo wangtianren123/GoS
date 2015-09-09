@@ -70,7 +70,7 @@ OnLoop(function(myHero)
                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	        end
                           
-                if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 800) and GoS:GetDistance(myHero, target) > 200 and BlitzcrankMenu.Combo.W:Value()
+                if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 800) and GoS:GetDistance(myHero, target) > 200 and BlitzcrankMenu.Combo.W:Value() then
                 CastSpell(_W)
 		end
 			
