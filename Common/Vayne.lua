@@ -1,63 +1,37 @@
+if GetObjectName(myHero) ~= "Vayne" then return end
+
 require('MapPositionGOS')
-require('Dlib')
 
-local version = 666
-local UP=Updater.new("D3ftsu/GoS/master/Common/Vayne.lua", "Common\\Vayne", version)
-if UP.newVersion() then UP.update() end
+VayneMenu = Menu("Vayne", "Vayne")
+VayneMenu:SubMenu("Combo", "Combo")
+VayneMenu.Combo:Boolean("Q", "Use Q", true)
+VayneMenu.Combo:Boolean("E", "Use E", true)
+VayneMenu.Combo:SubMenu("R", "Use R")
+VayneMenu.Combo.R:Boolean("Enabled", "Enabled", true)
+VayneMenu.Combo.R:Boolean("KeepInvis", "Keep Invisibility", true)
+VayneMenu.Combo.R:Slider("KeepInvisdis", "Only if Distance <", 230, 0, 550, 1)
+VayneMenu.Combo.R:Info("Separator", "Separator")
+VayneMenu.Combo.R:Slider("Rifthp", "if Target Health % <", 70, 1, 100, 1)
+VayneMenu.Combo.R:Slider("Rifhp", "if Health % <", 55, 1, 100, 1)
+VayneMenu.Combo.R:Slider("Rminally", "Minimum Allies in Range", 2, 0, 4, 1)
+VayneMenu.Combo.R:Slider("Rallyrange", "Range", 1000, 1, 2000, 10)
+VayneMenu.Combo.R:Slider("Rminenemy", "Minimum Enemies in Range", 2, 1, 5, 1)
+VayneMenu.Combo.R:Slider("Renemyrange", "Range", 1000, 1, 2000, 10)
+VayneMenu.Combo:Boolean("Items", "Use Items", true)
+VayneMenu.Combo:Boolean("QSS", "Use QSS", true)
+VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 
---------------- Thanks ilovesona for this ------------------------
-DelayAction(function ()
-        for _, imenu in pairs(menuTable) do
-                local submenu = menu.addItem(SubMenu.new(imenu.name))
-                for _,subImenu in pairs(imenu) do
-                        if subImenu.type == SCRIPT_PARAM_ONOFF then
-                                local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
-                                OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
-                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
-                                local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
-                                OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
-                        elseif subImenu.type == SCRIPT_PARAM_INFO then
-                                submenu.addItem(MenuSeparator.new(subImenu.t))
-                        end
-                end
-        end
-        _G.DrawMenu = function ( ... )  end
-end, 1000)
+VayneMenu:SubMenu("Misc", "Misc")
+VayneMenu.Misc:Boolean("Autolvl", "Auto level", true)
+VayneMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
+VayneMenu.Misc:Boolean("AutoE", "Auto Wall Condemn", true)
+VayneMenu.Misc:Key("WallTumble1", "WallTumble Mid", string.byte("T"))
+VayneMenu.Misc:Key("WallTumble2", "WallTumble Drake", string.byte("U"))
 
-myIAC = IAC()
-
-local root = menu.addItem(SubMenu.new("Vayne"))
-
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseE = Combo.addItem(MenuBool.new("Use E",true))
-local CUseR = Combo.addItem(SubMenu.new("Use R"))
-local REnabled = CUseR.addItem(MenuBool.new("Enabled",true))
-local KeepInvis = CUseR.addItem(MenuBool.new("Keep Invisibility",true))
-local KeepInvisdis = CUseR.addItem(MenuSlider.new("Only if Distance <", 230, 0, 550, 1))
-local Deftsukappa = CUseR.addItem(MenuSeparator.new(""))
-local Rifthp = CUseR.addItem(MenuSlider.new("if Target Health % <", 70, 1, 100, 1))
-local Rifhp = CUseR.addItem(MenuSlider.new("if Health % <", 55, 1, 100, 1))
-local Rminally = CUseR.addItem(MenuSlider.new("Minimum Allies in Range", 2, 0, 4, 1))
-local Rallyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
-local Rminenemy = CUseR.addItem(MenuSlider.new("Minimum Enemies in Range", 2, 1, 5, 1))
-local Renemyrange = CUseR.addItem(MenuSlider.new("Range", 1000, 1, 3000, 50))
-local CItems = Combo.addItem(MenuBool.new("Use Items",true))
-local CQSS = Combo.addItem(MenuBool.new("Use QSS", true))
-local QSSHP = Combo.addItem(MenuSlider.new("if My Health % is Less Than", 75, 0, 100, 5))
-
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local MiscAutoE = Misc.addItem(MenuBool.new("Auto Wall Condemn", true))
-local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
-local WallTumble1 = Misc.addItem(MenuKeyBind.new("WallTumble Mid", 84))
-local WallTumble2 = Misc.addItem(MenuKeyBind.new("WallTumble Drake", 85))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", false))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", false))
-local DrawingsWT = Drawings.addItem(MenuBool.new("Draw WallTumble Positions", true))
+VayneMenu:SubMenu("Drawings", "Drawings")
+VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
+VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
+VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -94,111 +68,102 @@ function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
-local mousePos = GetMousePos()
-
 OnLoop(function(myHero)
-    if IWalkConfig.Combo then
-	local target = GetCurrentTarget()
+    if IOW:Mode() == "Combo" then
 	
-	if GetItemSlot(myHero,3153) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+	local target = IOW:GetTarget()
+	if GetItemSlot(myHero,3153) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 and CItems.getValue() and ValidTarget(target, 550) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.5 and GetCurrentHP(target)/GetMaxHP(target) > 0.2 then
+        if GetItemSlot(myHero,3144) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
         CastTargetSpell(target, GetItemSlot(myHero,3144))
         end
 
-        if GetItemSlot(myHero,3142) > 0 and CItems.getValue() then
+        if GetItemSlot(myHero,3142) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
-	    if GetItemSlot(myHero,3140) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+	if GetItemSlot(myHero,3140) > 0 and VayneMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < VayneMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and CQSS.getValue() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 < QSSHP.getValue() then
+        if GetItemSlot(myHero,3139) > 0 and VayneMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < VayneMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	    if CUseE.getValue() then
-	    AutoE()
+	if VayneMenu.Combo.E:Value() then
+	AutoE()
         end
 
-        if CanUseSpell(myHero, _R) == READY and IWalkConfig.Combo and ValidTarget(target, Renemyrange.getValue()) and (GetCurrentHP(target)/GetMaxHP(target))*100 <= Rifthp.getValue() and (GetCurrentHP(myHero)/GetMaxHP(myHero))*100 <= Rifhp.getValue() and EnemiesAround(GetMyHeroPos(), Renemyrange.getValue()) >= Rminenemy.getValue() and AlliesAround(GetMyHeroPos(), Rallyrange.getValue()) >= Rminally.getValue() then
+        if CanUseSpell(myHero, _R) == READY and IOW:Mode() == "Combo" and GoS:ValidTarget(target, VayneMenu.Combo.R.Renemyrange:Value()) and 100*GetCurrentHP(target)/GetMaxHP(target) <= VayneMenu.Combo.R.Rifthp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= VayneMenu.Combo.R.Rifhp:Value() and GoS:EnemiesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Renemyrange:Value()) >= VayneMenu.Combo.R.Rminenemy:Value() and GoS:AlliesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Rallyrange:Value()) >= VayneMenu.Combo.R.Rminally:Value() then
         CastSpell(_R)
 	end
 		
-	local target = GetCurrentTarget()
 	
-	if GotBuff(myHero, "vaynetumblefade") > 0 and KeepInvis.getValue() and ValidTarget(target, KeepInvisdis.getValue()) and GetDistance(target) < KeepInvisdis.getValue() then 
-	myIAC:SetAA(false)
-	elseif ValidTarget(target, 550) and GetDistance(target) > KeepInvisdis.getValue() then
-	myIAC:SetAA(true)
+        local target = IOW:GetTarget()
+	if GotBuff(myHero, "vaynetumblefade") > 0 and VayneMenu.Combo.R.KeepInvis:Value() and GoS:ValidTarget(target, VayneMenu.Combo.R.KeepInvisdis:Value()) and GoS:GetDistance(target) < VayneMenu.Combo.R.KeepInvisdis:Value() then 
+	IOW:DisableAutoAttacks()
+	elseif GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
+	IOW:EnableAutoAttacks()
 	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
-	myIAC:SetAA(true)
+	IOW:EnableAutoAttacks()
 	end
+	
     end
 	
-	if MiscAutoE.getValue() then
+	if VayneMenu.Misc.AutoE:Value() then
 	AutoE()
 	end
-	
-	local HeroPos = GetOrigin(myHero)
    
-        if WallTumble1.getValue() and HeroPos.x == 6962 and HeroPos.z == 8952 then
-            CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
-        elseif WallTumble1.getValue() then
-            MoveToXYZ(6962, 51, 8952)
+        if VayneMenu.Misc.WallTumble1:Value() and GetOrigin(myHero).x == 6962 and GetOrigin(myHero).z == 8952 then
+        CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
+        elseif VayneMenu.Misc.WallTumble1:Value() then
+        MoveToXYZ(6962, 51, 8952)
         end
     
-        if WallTumble2.getValue() and HeroPos.x == 12060 and HeroPos.z == 4806 then
+        if VayneMenu.Misc.WallTumble2:Value() and GetOrigin(myHero).x == 12060 and GetOrigin(myHero).z == 4806 then
         CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
-        elseif WallTumble2.getValue() then
+        elseif VayneMenu.Misc.WallTumble2:Value() then
         MoveToXYZ(12060, 51, 4806)
         end
 		
 
-if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if DrawingsWT.getValue() then
-DrawCircle(6962, 51, 8952,100,1,1,0xffffffff)
-DrawCircle(12060, 51, 4806,100,1,1,0xffffffff)
+if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
+if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if VayneMenu.Drawings.WT:Value() then
+DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
+DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
 end
 end)
 
 OnProcessSpell(function(unit, spell)
-  if unit and spell and spell.name then
+    if unit and spell and spell.name then
       if unit == myHero then
         if spell.name:lower():find("attack") then 
-		        DelayAction(function() 
-                            if CanUseSpell(myHero,_Q) == READY and IWalkConfig.Combo and CUseQ.getValue() then
+	        GoS:DelayAction(function() 
+                        if IOW:Mode() == "Combo" and VayneMenu.Combo.Q:Value() then
 				local HeroPos = GetOrigin(myHero)
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
-                                local DistanceAfterTumble = GetDistance(AfterTumblePos, target)
+                                local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 							  
                                 if DistanceAfterTumble < 630 and DistanceAfterTumble > 200 then
-                                CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
+                                CastSkillShot(_Q,GoS:GenerateMovePos().x, GoS:GenerateMovePos().y, GoS:GenerateMovePos().z)
                                 end
   
-                                if GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
-                                CastSkillShot(_Q,GenerateMovePos().x, GenerateMovePos().y, GenerateMovePos().z)
+                                if GoS:GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
+                                CastSkillShot(_Q,GoS:GenerateMovePos().x, GoS:GenerateMovePos().y, GoS:GenerateMovePos().z)
                                 end
-                            end
-                        end, spell.windUpTime*1000)
-	end
-	
-	if spell.name:lower():find("vaynetumble") then 
-	DelayAction(function() 
-	AttackUnit(target)
-        end, spell.windUpTime*1000)
-        end
+                        end
+                end, spell.windUpTime*1000 + GetLatency())
+	end			
       end
   end
 end)
 
 function AutoE()
-	 for _,target in pairs(GetEnemyHeroes()) do
-		if ValidTarget(target,1000) then
+	 for _,target in pairs(Gos:GetEnemyHeroes()) do
+		if GoS:ValidTarget(target,1000) then
 			local enemyposx,enemyposy,enemypoz,selfx,selfy,selfz
 			local distance1=24
 			local distance2=118
@@ -215,41 +180,41 @@ function AutoE()
 			local self=GetOrigin(myHero)
 			selfx = self.x
 			selfy = self.y
-    	                selfz = self.z
+    	    selfz = self.z
 			local HeroPos = Vector(selfx, selfy, selfz)
     	
-			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GetDistance(target))
-			local Pos2 = TargetPos-(TargetPos-HeroPos)*(-distance2/GetDistance(target))
-			local Pos3 = TargetPos-(TargetPos-HeroPos)*(-distance3/GetDistance(target))
-			local Pos4 = TargetPos-(TargetPos-HeroPos)*(-distance4/GetDistance(target))
-			local Pos5 = TargetPos-(TargetPos-HeroPos)*(-distance5/GetDistance(target))
+			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GoS:GetDistance(target))
+			local Pos2 = TargetPos-(TargetPos-HeroPos)*(-distance2/GoS:GetDistance(target))
+			local Pos3 = TargetPos-(TargetPos-HeroPos)*(-distance3/GoS:GetDistance(target))
+			local Pos4 = TargetPos-(TargetPos-HeroPos)*(-distance4/GoS:GetDistance(target))
+			local Pos5 = TargetPos-(TargetPos-HeroPos)*(-distance5/GoS:GetDistance(target))
  
 				if MapPosition:inWall(Pos1)==true then
-					if GetDistance(target)<=550 then
+					if GoS:GetDistance(target)<=550 then
 					CastTargetSpell(target, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos2)==true then
-					if GetDistance(target)<=550 then
+					if GoS:GetDistance(target)<=550 then
 					CastTargetSpell(target, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos3)==true then
-					if GetDistance(target)<=550 then
+					if GoS:GetDistance(target)<=550 then
 					CastTargetSpell(target, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos4)==true then
-					if GetDistance(target)<=550 then
+					if GoS:GetDistance(target)<=550 then
 					CastTargetSpell(target, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos5)==true then
-					if GetDistance(target)<=550 then
+					if GoS:GetDistance(target)<=550 then
 					CastTargetSpell(target, _E) 
 					end
 				end
@@ -258,7 +223,7 @@ function AutoE()
 	end
 end
 
-if MiscEnableAutolvl.getValue() then  
+if VayneMenu.Misc.Autolvl:Value() then  
 
 if GetLevel(myHero) == 1 then
 	LevelSpell(_Q)
@@ -302,22 +267,7 @@ end
 
 
 addInterrupterCallback(function(target, spellType)
-  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and MiscInterrupt.getValue() then
+  if GoS:IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Misc.Interrupt:Value() then
   CastTargetSpell(target, _E)
   end
 end)
-
-function AlliesAround(pos, range)
-    local c = 0
-    if pos == nil then return 0 end
-    for k,v in pairs(GetAllyHeroes()) do 
-        if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
-        c = c + 1
-        end
-    end
-    return c
-end
-
-AddGapcloseEvent(_E, 475, true)
-
-notification("Vayne by Deftsu loaded.", 10000)
