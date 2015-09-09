@@ -18,7 +18,7 @@ CassiopeiaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 CassiopeiaMenu:SubMenu("Misc", "Misc")
-CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", false)
+CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", false)
 CassiopeiaMenu.Misc:Boolean("Interrupt", "Interrupt Spells with R", true)
 CassiopeiaMenu.Misc:Slider("HP", "if HP % <", 50, 1, 100, 1)
@@ -150,7 +150,7 @@ OnLoop(function(myHero)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,300,800,180,false,true)
 		
-		if Ignite and CassiopeiaMenu.Misc.Autoignite:Value() then
+		if Ignite and CassiopeiaMenu.Misc.AutoIgnite:Value() then
                   if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
                   CastTargetSpell(enemy, Ignite)
                   end
