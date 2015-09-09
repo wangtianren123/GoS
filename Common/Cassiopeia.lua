@@ -372,7 +372,7 @@ OnProcessSpell(function(Object,spellProc)
 	local Obj_Type = GetObjectType(Object)
 	if Object~=nil and Obj_Type==Obj_AI_Hero then
 		if spellProc.name~=nil then
-			for i,enemy in pairs(GetEnemyHeroes()) do
+			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 				if ValidtargetUnit(enemy,25000) then
 					local targetFaceXYZ=GetOrigin(enemy)
 					if (spellProc.name:find("Attack") and spellProc.BaseName~=nil and spellProc.BaseName:find(GetObjectName(enemy))) then 
