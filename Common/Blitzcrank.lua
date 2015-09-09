@@ -61,7 +61,7 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
-	        local target = GetCurrentTarget() 	
+	        local target = IOW:GetTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1800,250,975,80,true,true)
 		
                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Combo.Q:Value() then
@@ -84,7 +84,7 @@ OnLoop(function(myHero)
 	
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= BlitzcrankMenu.Harass.Mana:Value() then
 	
-		local target = GetCurrentTarget()
+		local target = IOW:GetTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1800,250,975,80,true,true)
 		
                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Harass.Q:Value() then
