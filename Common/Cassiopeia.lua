@@ -238,7 +238,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	end
 	
 	    if CassiopeiaMenu.Misc.AutoE:Value() then
-	      if CanUseSpell(myHero, _E) == READY and GoS:IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) and not IWalkConfig.Combo then
+	      if CanUseSpell(myHero, _E) == READY and GoS:IsInDistance(minion, 700) and poisoned and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25*GetCastLevel(myHero,_E)+30+0.55*GetBonusAP(myHero) + ExtraDmg) and not IOW:Mode() == "Combo" then
 	      CastTargetSpell(minion, _E)
 	      end
 	    end
