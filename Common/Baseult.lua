@@ -49,7 +49,7 @@ OnProcessRecall(function(Object,recallProc)
 			if timeToRecall > timeToHit then
 				recallPos = Vector(Object)
 				PrintChat("BaseUlt on "..GetObjectName(Object), 2, 0xffff0000)
-				DelayAction(
+				GoS:DelayAction(
 					function() 
 						if recallPos == Vector(Object) then
 							CastSkillShot(_R, enemyBasePos.x, enemyBasePos.y, enemyBasePos.z)
