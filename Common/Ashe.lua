@@ -19,6 +19,7 @@ AsheMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 
 AsheMenu:SubMenu("Misc", "Misc")
+AsheMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AsheMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
 
@@ -59,7 +60,7 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
-	local target = GetCurrentTarget()
+	local target = IOW:GetTarget()
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,2000,130,false,true)
 		
@@ -98,7 +99,7 @@ OnLoop(function(myHero)
 
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.Mana:Value() then 
     
-        local target = GetCurrentTarget()
+        local target = IOW:GetTarget()
         local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)	
 		
 	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
@@ -116,6 +117,12 @@ OnLoop(function(myHero)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
 		
+	if Ignite and AsheMenu.Misc.Autoignite:Value() then
+          if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+          CastTargetSpell(enemy, Ignite)
+          end
+	end
+	
 	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
 	CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
