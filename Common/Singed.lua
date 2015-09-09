@@ -1,11 +1,10 @@
-PrintChat("Singed Q Exploit By Deftsu Loaded!")
-Config = scriptConfig("Singed", "Singed")
-Config.addParam("Q", "Q Exploit", SCRIPT_PARAM_KEYDOWN, string.byte("T"))
+SingedMenu = Menu("Singed", "Singed")
+SingedMenu:Key("Q", "Q Exploit", string.byte("T"))
 
 OnLoop(function(myHero)
 local mousePos = GetMousePos()
-if CanUseSpell(myHero, _Q) == READY and Config.Q then
-MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+if SingedMenu.Q:Value() then
 CastSpell(_Q)
+MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 end
 end)
