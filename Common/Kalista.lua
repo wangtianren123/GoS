@@ -655,105 +655,202 @@ OnLoop(function(myHero)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos30) < 80 then
 	MoveToXYZ(3672, 51.676036834717, 7686)
 	end
---[[	--pos31
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+        --pos31
+	if GoS:GetDistance(Vector(4134, 50.537956237793, 7986)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,4424, 49.118465423584, 8056)  
+    MoveToXYZ(4424, 49.118465423584, 8056)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos31) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(4134, 50.537956237793, 7986)
+	end
+	--pos31 Inverse
+	if GoS:GetDistance(Vector(4424, 49.118465423584, 8056)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,4134, 50.537956237793, 7986)  
+    MoveToXYZ(4134, 50.537956237793, 7986)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos31) < 80 then
+	MoveToXYZ(4424, 49.118465423584, 8056)
 	end
 	--pos32
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(2874, 50.703777313232, 9256)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,2596, 51.773902893066, 9228)  
+    MoveToXYZ(2596, 51.773902893066, 9228)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos32) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(2874, 50.703777313232, 9256)
+	end
+	--pos32 Inverse
+	if GoS:GetDistance(Vector(2596, 51.773902893066, 9228)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,2874, 50.703777313232, 9256)  
+    MoveToXYZ(2874, 50.703777313232, 9256)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos32) < 80 then
+	MoveToXYZ(2596, 51.773902893066, 9228)
 	end
 	--pos33
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(2832, 51.218849182129, 9480)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,2574, 53.03776550293, 9456)  
+    MoveToXYZ(2574, 53.03776550293, 9456)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos33) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(2832, 51.218849182129, 9480)
+	end
+	--pos33 Inverse
+	if GoS:GetDistance(Vector(2574, 53.03776550293, 9456)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,2832, 51.218849182129, 9480)  
+    MoveToXYZ(2832, 51.218849182129, 9480)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos33) < 80 then
+	MoveToXYZ(2574, 53.03776550293, 9456)
 	end
 	--pos34
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(3208, 51.453907012939, 9696)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,3474, -64.667640686035, 9806)  
+    MoveToXYZ(3474, -64.667640686035, 9806)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos34) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(3208, 51.453907012939, 9696)
+	end
+	--pos34 Inverse
+	if GoS:GetDistance(Vector(3474, -64.667640686035, 9806)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,3208, 51.453907012939, 9696)  
+    MoveToXYZ(3208, 51.453907012939, 9696)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos34) < 80 then
+	MoveToXYZ(3474, -64.667640686035, 9806)
 	end
 	--pos35
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(3124, 53.185127258301, 9956)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,3324, -64.717620849609, 10160)  
+    MoveToXYZ(3324, -64.717620849609, 10160)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos35) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(3124, 53.185127258301, 9956)
+	end
+	--pos35 Inverse
+	if GoS:GetDistance(Vector(3324, -64.717620849609, 10160)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,3124, 53.185127258301, 9956)  
+    MoveToXYZ(3124, 53.185127258301, 9956)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos35) < 80 then
+	MoveToXYZ(3324, -64.717620849609, 10160)
 	end
 	--pos36
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(4234, -71.240600585938, 10306)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,4474, -71.240600585938, 10456)  
+    MoveToXYZ(4474, -71.240600585938, 10456)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos36) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(4234, -71.240600585938, 10306)
+	end
+	--pos36 Inverse
+	if GoS:GetDistance(Vector(4474, -71.240600585938, 10456)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,4234, -71.240600585938, 10306)  
+    MoveToXYZ(4234, -71.240600585938, 10306)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos36) < 80 then
+	MoveToXYZ(4474, -71.240600585938, 10456)
 	end
 	--pos37
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(5018, -70.067916870117, 9734)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,4974, 56.47679901123, 12102)  
+    MoveToXYZ(4974, 56.47679901123, 12102)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos37) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(5018, -70.067916870117, 9734)
+	end
+	--pos37 Inverse
+	if GoS:GetDistance(Vector(4974, 56.47679901123, 12102)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,5018, -70.067916870117, 9734)  
+    MoveToXYZ(5018, -70.067916870117, 9734)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos37) < 80 then
+	MoveToXYZ(4974, 56.47679901123, 12102)
 	end
 	--pos38
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(5212, 56.848400115967, 11794)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,5232, 56.47679901123, 12092)  
+    MoveToXYZ(5232, 56.47679901123, 12092)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos38) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(5212, 56.848400115967, 11794)
+	end
+	--pos38 Inverse
+	if GoS:GetDistance(Vector(5232, 56.47679901123, 12092)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,5212, 56.848400115967, 11794)  
+    MoveToXYZ(5212, 56.848400115967, 11794)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos38) < 80 then
+	MoveToXYZ(5232, 56.47679901123, 12092)
 	end
 	--pos39
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(6582, 53.840835571289, 11694)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,6516, 56.47679901123, 11990)  
+    MoveToXYZ(6516, 56.47679901123, 11990)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos39) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(6582, 53.840835571289, 11694)
+	end
+	--pos39 Inverse
+	if GoS:GetDistance(Vector(6516, 56.47679901123, 11990)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,6582, 53.840835571289, 11694)  
+    MoveToXYZ(6582, 53.840835571289, 11694)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos39) < 80 then
+	MoveToXYZ(2924, 6516, 56.47679901123, 11990)
 	end
 	--pos40
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(7024, -71.240600585938, 8406)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,7224, 53.995899200439, 8556)  
+    MoveToXYZ(7224, 53.995899200439, 8556)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos40) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(7024, -71.240600585938, 8406)
+	end
+	--pos40 Inverse
+	if GoS:GetDistance(Vector(7224, 53.995899200439, 8556)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,7024, -71.240600585938, 8406)  
+    MoveToXYZ(7024, -71.240600585938, 8406)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos40) < 80 then
+	MoveToXYZ(7224, 53.995899200439, 8556)
 	end
 	--pos41
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(6824, -71.240600585938, 8606)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,6924, 52.872337341309, 8856)  
+    MoveToXYZ(6924, 52.872337341309, 8856)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos41) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(6824, -71.240600585938, 8606)
+	end
+	--pos41 Inverse
+	if GoS:GetDistance(Vector(6924, 52.872337341309, 8856)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,6824, -71.240600585938, 8606)  
+    MoveToXYZ(6824, -71.240600585938, 8606)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos41) < 80 then
+	MoveToXYZ(6924, 52.872337341309, 8856)
 	end
 	--pos42
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(8086, 51.888671875, 9684)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,8396, 50.383907318115, 9672)  
+    MoveToXYZ(8396, 50.383907318115, 9672)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos42) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(8086, 51.888671875, 9684)
+	end
+	--pos42 Inverse
+	if GoS:GetDistance(Vector(8396, 50.383907318115, 9672)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,8086, 51.888671875, 9684)  
+    MoveToXYZ(8086, 51.888671875, 9684)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos42) < 80 then
+	MoveToXYZ(8396, 50.383907318115, 9672)
 	end
 	--pos43
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(9772, 52.476619720459, 11756)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,10278, 91.429779052734, 11858)  
+    MoveToXYZ(10278, 91.429779052734, 11858)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos43) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(9772, 52.476619720459, 11756)
+	end
+	--pos43 Inverse
+	if GoS:GetDistance(Vector(10278, 91.429779052734, 11858)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,9772, 52.476619720459, 11756)  
+    MoveToXYZ(9772, 52.476619720459, 11756)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos43) < 80 then
+	MoveToXYZ(10278, 91.429779052734, 11858)
 	end
 	--pos44
-	if HeroPos.x == 8260 and HeroPos.y == and HeroPos.z == 2890 and KalistaMenu.Combo.WallJump:Value() then
-	CastSkillShot(_Q,2924, 53.499828338623, 4958)  
-    MoveToXYZ(2924, 53.499828338623, 4958)
+	if GoS:GetDistance(Vector(9822, 52.306301116943, 12306)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,10122, 91.429840087891, 12406)  
+    MoveToXYZ(10122, 91.429840087891, 12406)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, pos44) < 80 then
-	MoveToXYZ(2894, 95.748046875, 4648)
+	MoveToXYZ(9822, 52.306301116943, 12306)
 	end
-	]]
+	--pos44 Inverse
+	if GoS:GetDistance(Vector(10122, 91.429840087891, 12406)) < 5 and KalistaMenu.Combo.WallJump:Value() then
+	CastSkillShot(_Q,9822, 52.306301116943, 12306)  
+    MoveToXYZ(9822, 52.306301116943, 12306)
+	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos44) < 80 then
+	MoveToXYZ(10122, 91.429840087891, 12406)
+	end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
@@ -972,6 +1069,34 @@ DrawCircle(pos29,80,0,0,0xffffffff)
 DrawCircle(zoudjpos29,80,0,0,0xffffffff)
 DrawCircle(pos30,80,0,0,0xffffffff)
 DrawCircle(zoudjpos30,80,0,0,0xffffffff)
+DrawCircle(pos31,80,0,0,0xffffffff)
+DrawCircle(zoudjpos31,80,0,0,0xffffffff)
+DrawCircle(pos32,80,0,0,0xffffffff)
+DrawCircle(zoudjpos32,80,0,0,0xffffffff)
+DrawCircle(pos33,80,0,0,0xffffffff)
+DrawCircle(zoudjpos33,80,0,0,0xffffffff)
+DrawCircle(pos34,80,0,0,0xffffffff)
+DrawCircle(zoudjpos34,80,0,0,0xffffffff)
+DrawCircle(pos35,80,0,0,0xffffffff)
+DrawCircle(zoudjpos35,80,0,0,0xffffffff)
+DrawCircle(pos36,80,0,0,0xffffffff)
+DrawCircle(zoudjpos36,80,0,0,0xffffffff)
+DrawCircle(pos37,80,0,0,0xffffffff)
+DrawCircle(zoudjpos37,80,0,0,0xffffffff)
+DrawCircle(pos38,80,0,0,0xffffffff)
+DrawCircle(zoudjpos38,80,0,0,0xffffffff)
+DrawCircle(pos39,80,0,0,0xffffffff)
+DrawCircle(zoudjpos39,80,0,0,0xffffffff)
+DrawCircle(pos40,80,0,0,0xffffffff)
+DrawCircle(zoudjpos40,80,0,0,0xffffffff)
+DrawCircle(pos41,80,0,0,0xffffffff)
+DrawCircle(zoudjpos41,80,0,0,0xffffffff)
+DrawCircle(pos42,80,0,0,0xffffffff)
+DrawCircle(zoudjpos42,80,0,0,0xffffffff)
+DrawCircle(pos43,80,0,0,0xffffffff)
+DrawCircle(zoudjpos43,80,0,0,0xffffffff)
+DrawCircle(pos44,80,0,0,0xffffffff)
+DrawCircle(zoudjpos44,80,0,0,0xffffffff)
 end
 
 if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
@@ -979,7 +1104,7 @@ if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroP
 if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 end)
 
-function kalE(x) 
+function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
-end -- too smart for you inspired, thanks for this anyway :3, lazycat
+end 
