@@ -128,7 +128,7 @@ OnLoop(function(myHero)
 	if CanUseSpell(myHero,_W) and KalistaMenu.Combo.SentinelBug:Value() then
 		if GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) and GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
                 CastSkillShot(_W,9882.892, -71.24, 4438.446)	
-                elseif GoS:GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
+                elseif GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
                 CastSkillShot(_W,5087.77, -71.24, 10471.3808)
                 end
 	end
@@ -137,7 +137,7 @@ OnLoop(function(myHero)
 	    for _, ally in pairs(GoS:GetAllyHeroes()) do
                 for i,enemy in pairs(GoS:GetEnemyHeroes()) do 
 			local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
-			if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:GoS:GetDistance(ally, enemy) <= 600 then
+			if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:GetDistance(ally, enemy) <= 600 then
 		        PrintChat("Rescuing low health "..GetObjectName(ally).."")
 			CastSpell(_R)
 			end
