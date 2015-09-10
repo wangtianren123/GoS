@@ -44,15 +44,15 @@ KalistaMenu.Farm.LaneClear:Slider("Farmkills", "E if X Can Be Killed", 2, 0, 10,
 
 KalistaMenu:SubMenu("JungleClear", "Jungle Clear")
 KalistaMenu.JungleClear:SubMenu("Junglesteal", "Junglesteal (E)")
-KalistaMenu.Junglesteal:Boolean("baron", "Baron", true)
-KalistaMenu.Junglesteal:Boolean("dragon", "Dragon", true)
-KalistaMenu.Junglesteal:Boolean("red", "Red", true)
-KalistaMenu.Junglesteal:Boolean("blue", "Blue", true)
-KalistaMenu.Junglesteal:Boolean("krug", "Krug", true)
-KalistaMenu.Junglesteal:Boolean("wolf", "Wolf", true)
-KalistaMenu.Junglesteal:Boolean("wraiths", "Wraiths", true)
-KalistaMenu.Junglesteal:Boolean("gromp", "Gromp", true)
-KalistaMenu.Junglesteal:Boolean("crab", "Crab", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("baron", "Baron", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("dragon", "Dragon", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("red", "Red", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("blue", "Blue", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("krug", "Krug", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("wolf", "Wolf", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("wraiths", "Wraiths", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("gromp", "Gromp", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("crab", "Crab", true)
 
 OnProcessSpell(function(unit, spell)
  for _, ally in pairs(GoS:GetAllyHeroes()) do
@@ -879,23 +879,23 @@ end
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
     local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if GoS:IsInDistance(mob, GetCastRange(myHero,_E)) then  
-	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and KalistaMenu.Junglesteal.baron:Value() and GetCurrentHP(mob) < Damage then
+	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon" and KalistaMenu.Junglesteal.dragon:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon" and KalistaMenu.JungleClear.Junglesteal.dragon:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue" and KalistaMenu.Junglesteal.blue:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Blue" and KalistaMenu.JungleClear.Junglesteal.blue:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red" and KalistaMenu.Junglesteal.red:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Red" and KalistaMenu.JungleClear.Junglesteal.red:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug" and KalistaMenu.Junglesteal.krug:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Krug" and KalistaMenu.JungleClear.Junglesteal.krug:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf" and KalistaMenu.Junglesteal.wolf:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Murkwolf" and KalistaMenu.JungleClear.Junglesteal.wolf:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak" and KalistaMenu.Junglesteal.wraiths:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Razorbeak" and KalistaMenu.JungleClear.Junglesteal.wraiths:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp" and KalistaMenu.Junglesteal.gromp:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Gromp" and KalistaMenu.JungleClear.Junglesteal.gromp:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
-	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Crab" and KalistaMenu.Junglesteal.crab:Value() and GetCurrentHP(mob) < Damage then
+	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "Sru_Crab" and KalistaMenu.JungleClear.Junglesteal.crab:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
 	  end
     end
