@@ -22,6 +22,7 @@ VayneMenu.Combo:Boolean("QSS", "Use QSS", true)
 VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 
 VayneMenu:SubMenu("Misc", "Misc")
+VayneMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 VayneMenu.Misc:Boolean("Autolvl", "Auto level", true)
 VayneMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 VayneMenu.Misc:Boolean("AutoE", "Auto Wall Condemn", true)
@@ -110,8 +111,16 @@ OnLoop(function(myHero)
 	IOW:EnableAutoAttacks()
 	end
 	
-    end
-	
+   end
+
+        for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+          if Ignite and VayneMenu.Misc.AutoIgnite:Value() then
+            if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+            CastTargetSpell(enemy, Ignite)
+            end
+	  end
+	end
+        
 	if VayneMenu.Misc.AutoE:Value() then
 	AutoE()
 	end
