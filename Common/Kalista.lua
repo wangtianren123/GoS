@@ -110,7 +110,7 @@ OnLoop(function(myHero)
 	if KalistaMenu.Misc.E:Value() then
 	   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
                 if 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Misc.Mana:Value() and GetLevel(myHero) <= KalistaMenu.Misc.Elvl:Value() then
-		   if GotBuff(enemy, "kalistaexpungemarker") >= KalistaMenu.Misc.minE:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and GoS:GoS:GetDistance(enemy) > 850 then
+		   if GotBuff(enemy, "kalistaexpungemarker") >= KalistaMenu.Misc.minE:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and GoS:GetDistance(enemy) > 850 then
 		   CastSpell(_E)
 		   end
 		end
@@ -126,7 +126,7 @@ OnLoop(function(myHero)
 	end
 		
 	if CanUseSpell(myHero,_W) and KalistaMenu.Combo.SentinelBug:Value() then
-		if Gos:GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < GoS:GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) and GoS:GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
+		if GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) and GoS:GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
                 CastSkillShot(_W,9882.892, -71.24, 4438.446)	
                 elseif GoS:GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
                 CastSkillShot(_W,5087.77, -71.24, 10471.3808)
@@ -788,7 +788,7 @@ OnLoop(function(myHero)
            if GetObjectName(ally) == "Blitzcrank" then
 	        KalistaMenu.Ult:Boolean("Balista", "Balista Combo", true)
 		for i,enemy in pairs(GetEnemyHeroes()) do
-  	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GoS:GetDistance(ally, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
+  	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GetDistance(ally, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
                   CastSpell(_R)
                   end
                 end
