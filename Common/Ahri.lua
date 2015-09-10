@@ -69,7 +69,7 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
         
-		        local target = IOW:GetTarget()
+		        local target = GetCurrentTarget()
 		        local mousePos = GetMousePos()
 	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
@@ -94,7 +94,7 @@ OnLoop(function(myHero)
 	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
-                        local target = IOW:GetTarget()
+                        local target = GetCurrentTarget()
 		        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
