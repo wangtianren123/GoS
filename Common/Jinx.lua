@@ -166,7 +166,7 @@ function Killsteal()
           end
         end
 		
-        if SpellWREADY and GoS:ValidTarget(enemy, GetCastRange(myHero,_W)) and JinxMenu.Killsteal.W:Value() and WPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy)  < GoS:CalcDamage(myHero, enemy, 50*GetCastLevel(myHero,_Q) - 40 + 1.4*GetBaseDamage(myHero)) then  
+        if SpellWREADY and GoS:ValidTarget(enemy, GetCastRange(myHero,_W)) and JinxMenu.Killsteal.W:Value() and WPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 50*GetCastLevel(myHero,_Q) - 40 + 1.4*GetBaseDamage(myHero)) then  
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	elseif SpellRREADY and GoS:ValidTarget(enemy, 4000) and GoS:GetDistance(myHero, enemy) > 400 and JinxMenu.Killsteal.R:Value() and RPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, (GetMaxHP(enemy)-GetCurrentHP(enemy))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GoS:GetDistance(enemy)/1700))) then 
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
