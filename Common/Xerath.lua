@@ -86,16 +86,16 @@ local target = GetTarget(1500, DAMAGE_MAGIC)
 if IOW:Mode() == "Combo" then
 				
     local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_E),60,true,true)
-    if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Xerath.c.E:Value() and GoS:GoS:ValidTarget(target, GetCastRange(myHero,_E)) then
+    if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Xerath.c.E:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_E)) then
     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
     end
 	
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,GetCastRange(myHero,_W),125,false,true)
-    if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and Xerath.c.W:Value() and GoS:GoS:ValidTarget(target, GetCastRange(myHero,_W)) then
+    if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and Xerath.c.W:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_W)) then
     CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
     end		
 
-    if CanUseSpell(myHero, _Q) == READY and GoS:GoS:ValidTarget(target, 1500) and Xerath.c.Q:Value() then
+    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1500) and Xerath.c.Q:Value() then
       local myHeroPos = GoS:myHeroPos()
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
       for i=250, 1500, 250 do
@@ -115,7 +115,7 @@ end
 local target = GetTarget(1500, DAMAGE_MAGIC)
 if IOW:Mode() == "Harass" then
 
-    if CanUseSpell(myHero, _Q) == READY and GoS:GoS:ValidTarget(target, 1500) and Xerath.h.Q:Value() then
+    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1500) and Xerath.h.Q:Value() then
       local myHeroPos = GoS:myHeroPos()
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
       for i=250, 1500, 250 do
@@ -130,12 +130,12 @@ if IOW:Mode() == "Harass" then
     end
 
     local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_E),60,true,true)
-    if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Xerath.h.E:Value() and GoS:GoS:ValidTarget(target, GetCastRange(myHero,_E)) then
+    if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and Xerath.h.E:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_E)) then
     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
     end
 	
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,GetCastRange(myHero,_W),125,false,true)
-    if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and Xerath.h.W:Value() and GoS:GoS:ValidTarget(target, GetCastRange(myHero,_W)) then
+    if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and Xerath.h.W:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_W)) then
     CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
     end		
 end
@@ -190,9 +190,9 @@ function Killsteal()
     for i,enemy in pairs(GetEnemyHeroes()) do
        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,700,GetCastRange(myHero,_W),125,false,true)
 	   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_E),60,true,true)
-       if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy,GetCastRange(myHero,_W)) and Xerath.Killsteal.W:Value() and WPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero,_Q)+ 30 + 0.6*GetBonusAP(myHero)) then
+       if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy,GetCastRange(myHero,_W)) and Xerath.Killsteal.W:Value() and WPred.HitChance == 1 and GetCurrentHP(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero,_Q)+ 30 + 0.6*GetBonusAP(myHero)) then
 	   CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
-	   elseif CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, GetCastRange(myHero, _E)) and Xerath.Killsteal.E:Value() and EPred.HitChance == 1 and GetCurrentHP(enemy) < CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero,_E)+ 50 + 0.45*GetBonusAP(myHero)) then  
+	   elseif CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, GetCastRange(myHero, _E)) and Xerath.Killsteal.E:Value() and EPred.HitChance == 1 and GetCurrentHP(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero,_E)+ 50 + 0.45*GetBonusAP(myHero)) then  
        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
        end
     end
@@ -216,7 +216,7 @@ function AutoR()
   if waitTickCount < GetTickCount() then
 	local target = GetTarget(GetCastRange(myHero,_R), DAMAGE_MAGIC)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
-    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
+    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
 	waitTickCount = GetTickCount() + 1400
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
@@ -229,7 +229,7 @@ function AutoRkey()
   if waitTickCount < GetTickCount() then
 	local target = GetTarget(800 + 1050*GetCastLevel(myHero,_R), DAMAGE_MAGIC)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
-    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
+    if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
 	waitTickCount = GetTickCount() + 1400
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
