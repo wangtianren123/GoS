@@ -89,8 +89,10 @@ function Combo()
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
         end
 	
-	if SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Combo.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+	if SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and IsFacing(target,GetCastRange(myHero,_E)) and JinxMenu.Combo.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x-200,EPred.PredPos.y-200,EPred.PredPos.z-200)
+        elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Combo.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x+200,EPred.PredPos.y+200,EPred.PredPos.z+200)
         end
 	
 	if SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(target, 2500) and JinxMenu.Combo.R:Value() and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GoS:GetDistance(target)/1700))) then
@@ -120,8 +122,10 @@ function Harass()
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
         end
 	
-	if SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Harass.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+	if SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and IsFacing(target,GetCastRange(myHero,_E)) and JinxMenu.Harass.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x-200,EPred.PredPos.y-200,EPred.PredPos.z-200)
+        elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Harass.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x+200,EPred.PredPos.y+200,EPred.PredPos.z+200)
         end
 		
 	end
@@ -226,3 +230,115 @@ SpellEREADY = CanUseSpell(myHero,_E) == READY
 SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
 end 
+
+--------------------------------------Thanks Maxxxel For this <3--------------------------------
+local myHero = GetMyHero()
+local lastattackposition={true,true,true}
+
+function IsFacing(targetFace,range,unit) 
+	range=range or 99999
+	unit=unit or myHero
+	targetFace=targetFace
+	if (targetFace and unit)~=nil and (ValidtargetUnit(targetFace,range,unit)) and GetDistance2(targetFace,unit)<=range then
+		local unitXYZ= GetOrigin(unit)
+		local targetFaceXYZ=GetOrigin(targetFace)
+		local lastwalkway={true,true,true}
+		local walkway = GetPredictionForPlayer(GetOrigin(unit),targetFace,GetMoveSpeed(targetFace),0,1000,2000,0,false,false)
+
+		if walkway.PredPos.x==targetFaceXYZ.x then
+
+			if lastwalkway.x~=nil then
+
+				local d1 = GetDistance2(targetFace,unit)
+    		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
+    		return d2 < d1
+
+
+    	elseif lastwalkway.x==nil then
+    		if lastattackposition.x~=nil and lastattackposition.name==GetObjectName(targetFace) then
+					local d1 = GetDistance2(targetFace,unit)
+    			local d2 = GetDistance2XYZ(lastattackposition.x,lastattackposition.z,unitXYZ.x,unitXYZ.z)
+    			return d2 < d1
+    		end
+    	end
+    elseif walkway.PredPos.x~=targetFaceXYZ.x then
+    	lastwalkway={x=walkway.PredPos.x,y=walkway.PredPos.y,z=walkway.PredPos.z} 
+
+    	if lastwalkway.x~=nil then
+		local d1 = GetDistance2(targetFace,unit)
+    		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
+    		return d2 < d1
+    	end
+    end
+	end
+end
+
+
+function ValidtargetUnit(targetFace,range,unit)
+    range = range or 25000
+    unit = unit or myHero
+    if targetFace == nil or GetOrigin(targetFace) == nil or IsImmune(targetFace,unit) or IsDead(targetFace) or not IsVisible(targetFace) or GetTeam(targetFace) == GetTeam(unit) or GetDistance2(targetFace,unit)>range then return false end
+    return true
+end
+
+function GetDistance2(p1,p2)
+    p1 = GetOrigin(p1) or p1
+    p2 = GetOrigin(p2) or p2
+    return math.sqrt(GetDistance2Sqr(p1,p2))
+end
+
+function GetDistance2Sqr(p1,p2)
+    p2 = p2 or GetMyHeroPos()
+    local dx = p1.x - p2.x
+    local dz = (p1.z or p1.y) - (p2.z or p2.y)
+    return dx*dx + dz*dz
+end
+
+function GetDistance2XYZ(x,z,x2,z2)
+	if (x and z and x2 and z2)~=nil then
+		a=x2-x
+		b=z2-z
+		if (a and b)~=nil then
+			a2=a*a
+			b2=b*b
+			if (a2 and b2)~=nil then
+				return math.sqrt(a2+b2)
+			else
+				return 99999
+			end
+		else
+			return 99999
+		end
+	end	
+end
+
+OnProcessSpell(function(Object,spellProc)
+	local Obj_Type = GetObjectType(Object)
+	if Object~=nil and Obj_Type==Obj_AI_Hero then
+		if spellProc.name~=nil then
+			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+				if ValidtargetUnit(enemy,25000) then
+					local targetFaceXYZ=GetOrigin(enemy)
+					if (spellProc.name:find("Attack") and spellProc.BaseName~=nil and spellProc.BaseName:find(GetObjectName(enemy))) then 
+
+						if spellProc.startPos.x==targetFaceXYZ.x and spellProc.startPos.y==targetFaceXYZ.y and spellProc.startPos.z==targetFaceXYZ.z then 
+							if spellProc.endPos.x ~=targetFaceXYZ.x and spellProc.endPos.y ~=targetFaceXYZ.y and spellProc.endPos.z ~=targetFaceXYZ.z then 
+
+								lastattackposition={x=spellProc.endPos.x,y=spellProc.endPos.y,z=spellProc.endPos.z,Name=GetObjectName(enemy)}
+								break
+							else
+								break
+							end
+						else
+							break
+						end
+					else
+						break
+					end
+				else
+					break
+				end
+			end
+		end
+	end
+end)
