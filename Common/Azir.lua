@@ -1,58 +1,37 @@
-require('Dlib')
 
-local version = 1
-local UP=Updater.new("D3ftsu/GoS/master/Common/Azir.lua", "Common\\Azir", version)
-if UP.newVersion() then UP.update() end
+Ignite = (GetCastName(myHero,SUMMONER_1):lower():find("summonerdot") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerdot") and SUMMONER_2 or nil))
 
---------------- Thanks ilovesona for this ------------------------
-DelayAction(function ()
-        for _, imenu in pairs(menuTable) do
-                local submenu = menu.addItem(SubMenu.new(imenu.name))
-                for _,subImenu in pairs(imenu) do
-                        if subImenu.type == SCRIPT_PARAM_ONOFF then
-                                local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
-                                OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
-                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
-                                local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
-                                OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
-                        elseif subImenu.type == SCRIPT_PARAM_INFO then
-                                submenu.addItem(MenuSeparator.new(subImenu.t))
-                        end
-                end
-        end
-        _G.DrawMenu = function ( ... )  end
-end, 1000)
+Azir = Menu("Azir", "Azir")
 
-myIAC = IAC()
+Azir:SubMenu("c", "Combo")
+Azir.c:Boolean("Q", "Use Q", true)
+Azir.c:Boolean("W", "Use W", true)
+Azir.c:Boolean("E", "Use E", true)
+Azir.c:Boolean("R", "Use R", true)
+Azir.c:Key("combo", "Combo", string.byte(" "))
+Azir.c:Boolean("AA", "Use AA", true)
+Azir.c:Key("flee", "Flee", string.byte("Z"))
 
-local root = menu.addItem(SubMenu.new("Azir"))
+Azir:SubMenu("h", "Harass")
+Azir.h:Boolean("Q", "Use Q", true)
+Azir.h:Boolean("W", "Use W", true)
+Azir.h:Key("harass", "Harass", string.byte("C"))
+Azir.h:Boolean("AA", "Use AA", true)
 
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseAA = Combo.addItem(MenuBool.new("Use AA",true))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseW = Combo.addItem(MenuBool.new("Use W",true))
-local CUseE = Combo.addItem(MenuBool.new("Use E",true))
-local CUseR = Combo.addItem(MenuBool.new("Use R",true))
-local Escape = Combo.addItem(MenuKeyBind.new("Flee", 71))
+Azir:SubMenu("Killsteal", "Killsteal")
+Azir.Killsteal:Boolean("Q", "Killsteal with Q", true)
 
-local Harass = root.addItem(SubMenu.new("Harass"))
-local HUseAA = Harass.addItem(MenuBool.new("Use AA", true))
-local HUseQ = Harass.addItem(MenuBool.new("Use Q", true))
-local HUseW = Harass.addItem(MenuBool.new("Use W", true))
+Azir:SubMenu("Misc", "Misc")
+Azir.Misc:Boolean("Autoignite", "Auto Ignite", true)
+Azir.Misc:Boolean("Autolvl", "Auto level", true)
+Azir.Misc:Boolean("Interrupt", "Interrupt", true)
 
-local KSmenu = root.addItem(SubMenu.new("Killsteal"))
-local KSQ = KSmenu.addItem(MenuBool.new("Killsteal with Q", true))
+Azir:SubMenu("Drawings", "Drawings")
+Azir.Drawings:Boolean("Q", "Draw Q Range", true)
+Azir.Drawings:Boolean("W", "Draw W Range", true)
+Azir.Drawings:Boolean("E", "Draw E Range", true)
+Azir.Drawings:Boolean("R", "Draw R Range", true)
 
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local MiscInterrupt = Misc.addItem(MenuBool.new("Interrupt", true))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
-local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", true))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
-local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -92,68 +71,68 @@ end
 AzirSoldiers = {}
 
 OnLoop(function(myHero)
-  if IWalkConfig.Combo then
+  if IOW:Mode() == "Combo" then
 	local target = GetCurrentTarget()
 	
 	    local SoldierRange = 0
-	    local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-	    local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
-	    local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+	    local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
+	    local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
+	    local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
-	           if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
-		   SoldierRange = GetDistance(AzirSoldiers[i], target)
+	           if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
+		   SoldierRange = GoS:GetDistance(AzirSoldiers[i], target)
 		   end
 		
-		   if CanUseSpell(myHero,_E) and ValidTarget(target, 1300) and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and CUseE.getValue() then 
+		   if CanUseSpell(myHero,_E) and GoS:ValidTarget(target, 1300) and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and Azir.c.E:Value() then 
 		   CastSpell(_E)
 		   end
 		   
-		   if CanUseSpell(myHero,_Q) and SoldierRange > 400 and ValidTarget(target, 950) and QPred.HitChance == 1 and CUseQ.getValue() then
+		   if CanUseSpell(myHero,_Q) and SoldierRange > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and Azir.c.E:Value() then
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		   end
 		   
-		   if ValidTarget(target, 1500) and GetDistance(target) > 550 and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and CUseAA.getValue() then
+		   if GoS:ValidTarget(target, 1500) and GoS:GetDistance(target) > 550 and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and Azir.c.AA:Value() then
 		   AttackUnit(target)
 		   end
 	    end
 	
-		if CanUseSpell(myHero,_W) == READY and ValidTarget(target,500) and WPred.HitChance == 1 and CUseW.getValue() then
+		if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,500) and WPred.HitChance == 1 and Azir.c.W:Value() then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
-		if ValidTarget(target, 1500) and table.getn(AzirSoldiers) < 1 and QPred.HitChance == 1 and CUseW.getValue() then
+		if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) < 1 and QPred.HitChance == 1 and Azir.c.Q:Value() then
 		CastSkillShot(_W,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 	
   end
 	
-	if IWalkConfig.Harass then
+	if IOW:Mode() == "Harass"  then
 	local target = GetCurrentTarget()
 	    
 		local SoldierRange = 0
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-		local WPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
-	           if ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
-		   SoldierRange = GetDistance(AzirSoldiers[i], target)
+	           if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
+		   SoldierRange = GoS:GetDistance(AzirSoldiers[i], target)GoS:
 		   end
 		   
-		   if CanUseSpell(myHero,_Q) and GetDistance(target) > 400 and ValidTarget(target, 950) and QPred.HitChance == 1 and HUseQ.getValue() then
+		   if CanUseSpell(myHero,_Q) and GoS:GetDistance(target) > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and Azir.h.Q:Value()then
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		   end
 	    end
 		
-		if ValidTarget(target, 1500) and GetDistance(target) > 550 and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and HUseAA.getValue() then
+		if GoS:ValidTarget(target, 1500) and GoS:GetDistance(target) > 550 and table.getn(AzirSoldiers) > 0 and SoldierRange < 400 and Azir.h.AA:Value() then
 		AttackUnit(target)
 		end
 		
-		if CanUseSpell(myHero,_W) == READY and ValidTarget(target,500) and WPred.HitChance == 1 and HUseW.getValue() then
+		if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,500) and WPred.HitChance == 1 and Azir.h.W:Value() then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
-		if ValidTarget(target, 1500) and table.getn(AzirSoldiers) < 1 and QPred.HitChance == 1 and HUseW.getValue() then
+		if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) < 1 and QPred.HitChance == 1 and Azir.h.Q:Value() then
 		CastSkillShot(_W,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
@@ -169,13 +148,17 @@ OnLoop(function(myHero)
 		
 		local QPred = GetPredictionForPlayer(GetMyHeroPos(),enemy,GetMoveSpeed(enemy),1600,0,950,80,false,true)
 
-		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(enemy, 950) and KSQ.getValue() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q)+45+.5*GetBonusAP(myHero) + ExtraDmg) then 
+		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 950) and Azir.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q)+45+.5*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
-		
+				if Ignite and Azir.Misc.Autoignite:Value() then
+                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+                  CastTargetSpell(enemy, Ignite)
+                  end
+                end
 	end
 	
-	if Escape.getValue() then
+	if Azir.c.flee:Value() then
 	local mousePos = GetMousePos()
 	
 	        if table.getn(AzirSoldiers) < 1 then CastSkillShot(_W, mousePos.x, mousePos.y, mousePos.z) end
@@ -189,7 +172,7 @@ OnLoop(function(myHero)
 		end
 	end
 	
-if MiscEnableAutolvl.getValue() then  
+if Azir.Misc.Autolvl:Value() then  
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
 	LevelSpell(_W)
@@ -231,10 +214,10 @@ end
 end
 
 local HeroPos = GetOrigin(myHero)
-if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
+if Azir.Drawings.Q:Value() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
+if Azir.Drawings.W:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
+if Azir.Drawings.E:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if Azir.Drawings.R:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 
 end)
 
@@ -251,12 +234,12 @@ end
 end)
 
 addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
-  if IsInDistance(target, 450) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS and MiscInterrupt.getValue() then
+  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+  if GoS:IsInDistance(target, 450) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS and Azir.Misc.Interrupt:Value() then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
 
 AddGapcloseEvent(_R, 450, false)
 
-notification("Azir by Deftsu loaded.", 10000)
+PrintChat("Azir by Deftsu loaded.")
