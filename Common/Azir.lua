@@ -139,7 +139,7 @@ OnLoop(function(myHero)
 		
 	end
 	
-	for i,enemy in pairs(GetEnemyHeroes()) do
+	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
                 local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
