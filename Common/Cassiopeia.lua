@@ -79,8 +79,8 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 
-		local unit = IOW:GetTarget() 
-		local target = IOW:GetTarget()
+		local unit = GetCurrentTarget()
+		local target = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
@@ -112,8 +112,8 @@ OnLoop(function(myHero)
 	
     if IOW:Mode() == "Harass" then
 	
-                local unit = IOW:GetTarget() 
-		local target = IOW:GetTarget()
+                local unit = GetCurrentTarget()
+		local target = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
