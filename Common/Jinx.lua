@@ -19,7 +19,7 @@ JinxMenu.Harass:Boolean("E", "Use E", true)
 JinxMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 JinxMenu:SubMenu("Killsteal", "Killsteal")
-JinxMenu.Killsteal:Boolean("E", "Killsteal with E", true)
+JinxMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 JinxMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 JinxMenu:SubMenu("Misc", "Misc")
