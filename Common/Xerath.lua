@@ -187,7 +187,7 @@ end
 end
 
 function Killsteal()
-    for i,enemy in pairs(GetEnemyHeroes()) do
+    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,700,GetCastRange(myHero,_W),125,false,true)
 	   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_E),60,true,true)
        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy,GetCastRange(myHero,_W)) and Xerath.Killsteal.W:Value() and WPred.HitChance == 1 and GetCurrentHP(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero,_Q)+ 30 + 0.6*GetBonusAP(myHero)) then
