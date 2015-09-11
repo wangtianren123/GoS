@@ -23,7 +23,7 @@ Xerath:SubMenu("Misc", "Misc")
 Xerath.Misc:Boolean("Autoignite", "Auto Ignite", true)
 Xerath.Misc:Boolean("Autolvl", "Auto level  Q-W-E", true)
 Xerath.Misc:Boolean("AutoR", "Auto R Killable", true)
-Xerath.h:Key("AutoRKey", "Auto R Killable", string.byte("T"))
+Xerath.Misc:Key("AutoRKey", "Auto R Killable", string.byte("T"))
 Xerath.Misc:Boolean("Interrupt", "Interrupt", true)
 
 Xerath:SubMenu("Drawings", "Drawings")
