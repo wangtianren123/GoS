@@ -72,7 +72,7 @@ end
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
-	local target = IOW:GetTarget()
+	local target = GetCurrentTarget()
 	if GetItemSlot(myHero,3153) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
@@ -102,7 +102,7 @@ OnLoop(function(myHero)
 	end
 		
 	
-        local target = IOW:GetTarget()
+        local target = GetCurrentTarget()
 	if GotBuff(myHero, "vaynetumblefade") > 0 and VayneMenu.Combo.R.KeepInvis:Value() and GoS:ValidTarget(target, VayneMenu.Combo.R.KeepInvisdis:Value()) and GoS:GetDistance(target) < VayneMenu.Combo.R.KeepInvisdis:Value() then 
 	IOW:DisableAutoAttacks()
 	elseif GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
