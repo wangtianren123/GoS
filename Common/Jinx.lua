@@ -168,8 +168,10 @@ function BullShit()
 local target = GetCurrentTarget()
 local targetpos = GetOrigin(target)
 
-if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and GotBuff(target, "snare") > 0 or GotBuff(target, "suppression") > 0 or GotBuff(target, "stun") > 0 then
-CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
+if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) then
+  if GotBuff(target, "snare") > 0 or GotBuff(target, "suppression") > 0 or GotBuff(target, "stun") > 0 then
+  CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
+  end
 end
 
 if IOW:Mode() == "LastHit" then
