@@ -31,6 +31,7 @@ Azir.Drawings:Boolean("Q", "Draw Q Range", true)
 Azir.Drawings:Boolean("W", "Draw W Range", true)
 Azir.Drawings:Boolean("E", "Draw E Range", true)
 Azir.Drawings:Boolean("R", "Draw R Range", true)
+ 
 
 
 CHANELLING_SPELLS = {
@@ -75,9 +76,9 @@ OnLoop(function(myHero)
 	local target = GetCurrentTarget()
 	
 	    local SoldierRange = 0
-	    local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-	    local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
-	    local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+	    local QPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1600,0,950,80,false,true)
+	    local WPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
+	    local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
 	           if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
@@ -111,12 +112,12 @@ OnLoop(function(myHero)
 	local target = GetCurrentTarget()
 	    
 		local SoldierRange = 0
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
+		local QPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1600,0,950,80,false,true)
+		local WPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),math.huge,0,600,100,false,true)
 		
 	    for i = 1, #AzirSoldiers do 
 	           if GoS:ValidTarget(target, 1500) and table.getn(AzirSoldiers) > 0 then
-		   SoldierRange = GoS:GetDistance(AzirSoldiers[i], target)GoS:
+		   SoldierRange = GoS:GetDistance(AzirSoldiers[i], target)
 		   end
 		   
 		   if CanUseSpell(myHero,_Q) and GoS:GetDistance(target) > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and Azir.h.Q:Value()then
@@ -146,7 +147,7 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos,enemy,GetMoveSpeed(enemy),1600,0,950,80,false,true)
+		local QPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),1600,0,950,80,false,true)
 
 		if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 950) and Azir.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q)+45+.5*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
@@ -234,12 +235,11 @@ end
 end)
 
 addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+  local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
   if GoS:IsInDistance(target, 450) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS and Azir.Misc.Interrupt:Value() then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
 
-AddGapcloseEvent(_R, 450, false)
 
 PrintChat("Azir by Deftsu loaded.")
