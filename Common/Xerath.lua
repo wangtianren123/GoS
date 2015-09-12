@@ -82,7 +82,7 @@ end
 
 LevelUp()
 
-local target = GetTarget(1500, DAMAGE_MAGIC)
+local target = GetCurrentTarget()
 if IOW:Mode() == "Combo" then
 				
     local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_E),60,true,true)
@@ -112,7 +112,7 @@ if IOW:Mode() == "Combo" then
 end
 
 
-local target = GetTarget(1500, DAMAGE_MAGIC)
+local target = GetCurrentTarget()
 if IOW:Mode() == "Harass" then
 
     if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1500) and Xerath.h.Q:Value() then
@@ -213,11 +213,11 @@ if CanUseSpell(myHero, _R) == READY and Xerath.Drawings.R:Value() then DrawCircl
 end
 
 function AutoR()
+  local waitTickCount = GetTickCount() + 1400
   if waitTickCount < GetTickCount() then
-	local target = GetTarget(GetCastRange(myHero,_R), DAMAGE_MAGIC)
+	local target = GoS:GetTarget(GetCastRange(myHero,_R), DAMAGE_MAGIC)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
     if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
-	waitTickCount = GetTickCount() + 1400
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
@@ -226,11 +226,11 @@ function AutoR()
 end
 
 function AutoRkey()
+  local waitTickCount = GetTickCount() + 1400
   if waitTickCount < GetTickCount() then
-	local target = GetTarget(800 + 1050*GetCastLevel(myHero,_R), DAMAGE_MAGIC)
+	local target = GoS:GetTarget(800 + 1050*GetCastLevel(myHero,_R), DAMAGE_MAGIC)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
     if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
-	waitTickCount = GetTickCount() + 1400
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
@@ -245,4 +245,3 @@ addInterrupterCallback(function(target, spellType)
   end
 end)
 
-AddGapcloseEvent(_E, 200, false)
