@@ -99,7 +99,7 @@ if IOW:Mode() == "Combo" then
       local myHeroPos = GoS:myHeroPos()
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
       for i=250, 1500, 250 do
-        DelayAction(function()
+        GoS:DelayAction(function()
             local _Qrange = 750 + math.min(700, i/2)
               local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,_Qrange,100,false,true)
               if QPred.HitChance == 1 then
