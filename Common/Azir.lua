@@ -1,6 +1,3 @@
-
-Ignite = (GetCastName(myHero,SUMMONER_1):lower():find("summonerdot") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerdot") and SUMMONER_2 or nil))
-
 Azir = Menu("Azir", "Azir")
 
 Azir:SubMenu("c", "Combo")
@@ -240,6 +237,3 @@ addInterrupterCallback(function(target, spellType)
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
-
-
-PrintChat("Azir by Deftsu loaded.")
