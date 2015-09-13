@@ -151,7 +151,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,300,800,180,false,true)
 		
 		if Ignite and CassiopeiaMenu.Misc.AutoIgnite:Value() then
-                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
 		end
