@@ -72,9 +72,9 @@ local Tick = 0
 OnLoop(function(myHero)
 Tick = Tick + 1
 Drawings()
---Checks()
+Checks()
 
-if Tick > 20 then
+if Tick > 32 then
 Combo()
 Harass()
 Killsteal()
@@ -1149,6 +1149,14 @@ if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroP
 if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 end
+
+function Checks()
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+end 
 
 function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
