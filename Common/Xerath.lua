@@ -119,7 +119,7 @@ if IOW:Mode() == "Harass" then
       local myHeroPos = GoS:myHeroPos()
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
       for i=250, 1500, 250 do
-        DelayAction(function()
+        GoS:DelayAction(function()
             local _Qrange = 700 + math.min(700, i/2)
               local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,_Qrange,100,false,true)
               if QPred.HitChance == 1 then
@@ -215,12 +215,12 @@ end
 function AutoR()
   local waitTickCount = GetTickCount() + 1400
   if waitTickCount < GetTickCount() then
-	local target = GoS:GetTarget(GetCastRange(myHero,_R), DAMAGE_MAGIC)
+	local target = GetCurrentTarget()
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
     if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
-	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
-	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
+	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
+	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	end
   end
 end
@@ -228,12 +228,12 @@ end
 function AutoRkey()
   local waitTickCount = GetTickCount() + 1400
   if waitTickCount < GetTickCount() then
-	local target = GoS:GetTarget(800 + 1050*GetCastLevel(myHero,_R), DAMAGE_MAGIC)
+	local target = GetCurrentTarget()
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
     if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero)) then
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
-	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
-	DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
+	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
+	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	end
   end
 end
