@@ -150,7 +150,7 @@ OnLoop(function(myHero)
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 				if Ignite and Azir.Misc.Autoignite:Value() then
-                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 900) then
                   CastTargetSpell(enemy, Ignite)
                   end
                 end
