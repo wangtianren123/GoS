@@ -195,7 +195,7 @@ function Killsteal()
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2300,700,4000,140,false,true)
 		
 	if Ignite and JinxMenu.Misc.AutoIgnite:Value() then
-          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 900) then
+          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
         end
