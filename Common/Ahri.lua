@@ -92,6 +92,7 @@ function Combo()
 		        local mousePos = GetMousePos()
 	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
+                        local HeroPos = GetOrigin(myHero)
 		        local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 550
                         local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 		
@@ -99,9 +100,9 @@ function Combo()
                         CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                         end
 			
-			if GotBuff(myHero, "AhriTumble") > 0 and GoS:GetDistance(myHero, target) > 550 and DistanceAfterTumble < 550 then
+			if GotBuff(myHero, "AhriTumble") > 0 and DistanceAfterTumble < 550 then
 			CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-		        elseif SpellRREADY and GoS:ValidTarget(target, 1000) and AhriMenu.Combo.R:Value() and GoS:GetDistance(myHero, target) > 550 and DistanceAfterTumble < 550 and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
+		        elseif SpellRREADY and GoS:ValidTarget(target, 1000) and AhriMenu.Combo.R:Value() and DistanceAfterTumble < 550 and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
 		        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
 		        end
 				
