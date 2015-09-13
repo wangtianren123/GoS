@@ -67,6 +67,9 @@ callback = callback0
 end
 
 OnLoop(function(myHero)
+end)
+
+function Combo()
     if IOW:Mode() == "Combo" then
         
 		        local target = GetCurrentTarget()
@@ -91,7 +94,9 @@ OnLoop(function(myHero)
                         end
 					
     end
-	
+end
+
+function Harass()	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
                         local target = GetCurrentTarget()
@@ -111,7 +116,9 @@ OnLoop(function(myHero)
                         end
 		
     end
+end
 	
+function Killsteal()	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
@@ -137,7 +144,9 @@ OnLoop(function(myHero)
 	end
 	
 	end
-	
+end
+
+function Autolvl()
 if AhriMenu.Misc.Autolvl:Value() then  
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -179,7 +188,9 @@ elseif GetLevel(myHero) == 18 then
 end
 
 end
+end
 
+function JungleClear()
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
         if IOW:Mode() == "LaneClear" then
@@ -199,7 +210,9 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
         end
 end
+end
 
+function Drawings()
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,3,100,0xff00ff00) end
 if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,3,100,0xff00ff00) end
 if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,3,100,0xff00ff00) end
@@ -214,7 +227,6 @@ if AhriMenu.Drawings.Text:Value() then
 		end
 	end
 end
-end)
 
 function GetDrawText(enemy)
 	local ExtraDmg = 0
@@ -245,6 +257,15 @@ function GetDrawText(enemy)
 	return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
+end
+
+function Checks()
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+end 
 
 addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,1000,100,true,true)
