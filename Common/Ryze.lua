@@ -55,65 +55,7 @@ end
                           CastTargetSpell(target, _E)
 		                  end
 						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	                      elseif CanUseSpell(myHero, _Q) == READY and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	                      elseif CanUseSpell(myHero, _Q) == READY and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _E) == READY and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-                          CastTargetSpell(target, _E)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	                      elseif CanUseSpell(myHero, _Q) == READY and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	                      elseif CanUseSpell(myHero, _Q) == READY and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _E) == READY and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-                          CastTargetSpell(target, _E)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	                      elseif CanUseSpell(myHero, _Q) == READY and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-			              if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-		                  end
+					
 						
 						elseif GotBuff(myHero, "ryzepassive") > 0 then
 						
@@ -141,77 +83,7 @@ end
                           CastSpell(_R)
 		                  end
 						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _E) == READY and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-                          CastTargetSpell(target, _E)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-						  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _E) == READY and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-                          CastTargetSpell(target, _E)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-						  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _E) == READY and ValidTarget(target, GetCastRange(myHero,_E)) and Config.E then
-                          CastTargetSpell(target, _E)
-		                  end
-						  
-						  if CanUseSpell(myHero, _Q) == READY and Config.Q and GotBuff(target, "RyzeW") == 1 then
-                          CastSkillShot(_Q,targetPos.x,targetPos.y,targetPos.z)
-				          elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and Config.Q then
-				          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			              elseif CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and Config.Q then
-				          CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-						  end
-						  
-						  if CanUseSpell(myHero, _W) == READY and ValidTarget(target, GetCastRange(myHero,_W)) and Config.W then
-                          CastTargetSpell(target, _W)
-						  end
+						
 						  
 						end 
 						
