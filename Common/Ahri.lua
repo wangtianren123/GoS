@@ -73,7 +73,7 @@ Tick = Tick + 1
 Checks()
 Drawings()
 
-if Tick > 20 then
+if Tick > 32 then
 Combo()
 Harass()
 Killsteal()
@@ -92,12 +92,16 @@ function Combo()
 		        local mousePos = GetMousePos()
 	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
 		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
+		        local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 550
+                        local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 		
                         if SpellEREADY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
                         CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
                         end
-					
-		        if SpellRREADY and GoS:ValidTarget(target, 900) and AhriMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
+			
+			if GotBuff(myHero, "AhriTumble") > 0 and GoS:GetDistance(myHero, target) > 550 and DistanceAfterTumble < 550 then
+			CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+		        elseif SpellRREADY and GoS:ValidTarget(target, 1000) and AhriMenu.Combo.R:Value() and GoS:GetDistance(myHero, target) > 550 and DistanceAfterTumble < 550 and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
 		        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
 		        end
 				
