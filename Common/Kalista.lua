@@ -67,7 +67,29 @@ OnProcessSpell(function(unit, spell)
  end
 end)
 
+local Tick = 0
+
 OnLoop(function(myHero)
+Tick = Tick + 1
+Drawings()
+--Checks()
+
+if Tick > 20 then
+Combo()
+Harass()
+Killsteal()
+JungleClear()
+Bullshit()
+WallJump()
+Farm()
+AllyCombos()
+Autolvl()
+Tick = 0
+end
+
+end)
+
+function Combo()
     if IOW:Mode() == "Combo" then
 	
 	local target = IOW:GetTarget()
@@ -98,7 +120,9 @@ OnLoop(function(myHero)
         end
 		
 	end
+end
 	
+function Harass()
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
 	
 	local target = IOW:GetTarget()
@@ -109,7 +133,10 @@ OnLoop(function(myHero)
         end
 		
 	end
-    
+end
+
+
+function Bullshit()   
 	if KalistaMenu.Misc.E:Value() then
 	   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
                 if 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Misc.Mana:Value() and GetLevel(myHero) <= KalistaMenu.Misc.Elvl:Value() then
@@ -147,7 +174,9 @@ OnLoop(function(myHero)
 		end
 	    end
 	end
-	
+end
+
+function WallJump()	
 	local mousePos = GetMousePos()
 	local HeroPos = GetOrigin(myHero)
 	local pos1 = Vector(2894, 95.748046875, 4648)
@@ -854,7 +883,9 @@ OnLoop(function(myHero)
 	elseif KalistaMenu.Combo.WallJump:Value() and GoS:GetDistance(mousePos, zoudjpos44) < 80 then
 	MoveToXYZ(10122, 91.429840087891, 12406)
 	end
-	
+end
+
+function Killsteal()	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	   local Damage = GoS:CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
@@ -883,7 +914,9 @@ OnLoop(function(myHero)
 	   end
 	   
     end
-	
+end
+
+function AllyCombos()	
 	for _, ally in pairs(GoS:GetAllyHeroes()) do
            if GetObjectName(ally) == "Blitzcrank" then
 		for i,enemy in pairs(GoS:GetEnemyHeroes()) do
@@ -907,7 +940,9 @@ OnLoop(function(myHero)
                 end
             end
 	end
-	
+end
+
+function Autolvl()	
 if KalistaMenu.Misc.Autolvl:Value() then  
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -947,8 +982,12 @@ elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
 elseif GetLevel(myHero) == 18 then
         LevelSpell(_W)
 end
+
 end
-	
+end
+
+
+function Farm()	
     local killableminions = 0
     for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
     local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
@@ -972,7 +1011,9 @@ end
         CastSpell(_E)
 	end
       end
-	
+end
+
+function JungleClear()	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
     local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if GoS:IsInDistance(mob, GetCastRange(myHero,_E)) then  
@@ -996,18 +1037,23 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  CastSpell(_E)
 	  end
     end
-   
-        if Gos:ValidTarget(mob, 1200) and KalistaMenu.Drawings.Edmg:Value() then
-	local mobPos = GetOrigin(mob)
-        local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
-          if Damage > GetCurrentHP(mob) then
-	  DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
-	  elseif Damage > 0 then
-          DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
-          end
-        end
+end
 end
   
+function Drawings()
+for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+    local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+    if Gos:ValidTarget(mob, 1200) and KalistaMenu.Drawings.Edmg:Value() then
+	local mobPos = GetOrigin(mob)
+        local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
+        if Damage > GetCurrentHP(mob) then
+	DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
+	elseif Damage > 0 then
+        DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
+        end
+    end
+end
+
 if KalistaMenu.Combo.WallJump:Value() then
 DrawCircle(pos1,80,0,0,0xffffffff)
 DrawCircle(zoudjpos1,80,0,0,0xffffffff)
@@ -1102,7 +1148,7 @@ end
 if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
-end)
+end
 
 function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
