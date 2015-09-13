@@ -65,16 +65,16 @@ OnLoop(function(myHero)
 Tick = Tick + 1
 Checks()
 Drawings()
+if BaseultMenu.RT:Value() then 
+RecallTracker()
+end
 
-if Tick > 20 then
+if Tick > 32 then
 Combo()
 Harass()
 BullShit()
 Killsteal()
 Autolvl()
-if BaseultMenu.RT:Value() then 
-RecallTracker()
-end
 Tick = 0
 end		
 
@@ -195,7 +195,7 @@ function Killsteal()
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2300,700,4000,140,false,true)
 		
 	if Ignite and JinxMenu.Misc.AutoIgnite:Value() then
-          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 900) then
           CastTargetSpell(enemy, Ignite)
           end
         end
