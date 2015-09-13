@@ -50,11 +50,11 @@ KalistaMenu.JungleClear:SubMenu("Junglesteal", "Junglesteal (E)")
 KalistaMenu.JungleClear.Junglesteal:Boolean("baron", "Baron", true)
 KalistaMenu.JungleClear.Junglesteal:Boolean("dragon", "Dragon", true)
 KalistaMenu.JungleClear.Junglesteal:Boolean("red", "Red", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("blue", "Blue", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("krug", "Krug", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("blue", "Blue", false)
+KalistaMenu.JungleClear.Junglesteal:Boolean("krug", "Krug", false)
 KalistaMenu.JungleClear.Junglesteal:Boolean("wolf", "Wolf", true)
 KalistaMenu.JungleClear.Junglesteal:Boolean("wraiths", "Wraiths", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("gromp", "Gromp", true)
+KalistaMenu.JungleClear.Junglesteal:Boolean("gromp", "Gromp", false)
 KalistaMenu.JungleClear.Junglesteal:Boolean("crab", "Crab", true)
 
 OnProcessSpell(function(unit, spell)
@@ -861,7 +861,7 @@ OnLoop(function(myHero)
            local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1500,250,1150,50,true,true)
 	   
 	   if Ignite and KalistaMenu.Misc.AutoIgnite:Value() then
-             if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
+             if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 900) then
              CastTargetSpell(enemy, Ignite)
              end
 	   end
