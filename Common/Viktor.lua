@@ -77,7 +77,6 @@ if Tick > 20 then
 Combo()
 Harass()
 Killsteal()
-JungleClear()
 Autolvl()
 Tick = 0
 end
@@ -159,36 +158,11 @@ function Killsteal()
 				
 		if SpellQREADY and GoS:ValidTarget(enemy, GetCastRange(myHero,_Q)) and ViktorMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero)) then
         CastTargetSpell(enemy, _Q)
-		elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(enemy,1225) and ViktorMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero)) then
-		CastSkillShot3(_E,StartPos,EPred.PredPos)
 		elseif SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, GetCastRange(myHero, _R)) and ViktorMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero)) then  
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)    
 		end
 		
 	end
-end
-
-function JungleClear()
-    for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-		
-        if IOW:Mode() == "LaneClear" then
-		local mobPos = GetOrigin(mob)
-		
-		if SpellQREADY and ViktorMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, GetCastRange(myHero,_Q)) then
-		CastTargetSpell(mob, _Q)
-		AttackUnit(mob)
-		end
-		
-		if SpellWREADY and ViktorMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 700) then
-		CastSkillShot(_W, mobPos.x, mobPos.y, mobPos.z)
-		end
-		
-	    if SpellEREADY and ViktorMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 1225) then
-		CastSkillShot3(_E,StartPos, mobPos)
-		end
-		
-        end
-    end
 end
 
 function Autolvl()
