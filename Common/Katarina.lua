@@ -107,14 +107,19 @@ end
 
 local function ValidTarget( object )
 	local objType = GetObjectType(object)
+		
+	if GetObjectName(myHero) == "LeeSin" then
+		return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object) and GetTeam(object) == GetTeam(myHero)
+	else		
 		return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object)
+	end
 end
 
 local findWardSlot = function ()
 	local slot = 0
-for i,wardItem in pairs(wardItems) do
-	slot = GetItemSlot(myHero,wardItem.id)
-	if slot > 0 and CanUseSpell(myHero, slot) == READY then return slot end
+	for i,wardItem in pairs(wardItems) do
+		slot = GetItemSlot(myHero,wardItem.id)
+		if slot > 0 and CanUseSpell(myHero, slot) == READY then return slot end
 	end
 end
 
@@ -123,11 +128,11 @@ local function putWard(pos0)
 
 	local pos = pos0
 	if not IsInDistance(wardRange, pos) then
-	pos = calcMaxPos(pos)
+		pos = calcMaxPos(pos)
 	end
 
 	if slot and slot > 0 then
-	CastSkillShot(slot,pos.x,pos.y,pos.z)
+		CastSkillShot(slot,pos.x,pos.y,pos.z)
 	end
 end
 
@@ -136,11 +141,11 @@ local spellLock = nil
 function wardJump( pos )
 	if not spellLock and CanUseSpell(myHero, spellSlot) == READY then
 		if jumpTarget then
-		CastTargetSpell(jumpTarget, spellSlot)
-		spellLock = GetTickCount()
+			CastTargetSpell(jumpTarget, spellSlot)
+			spellLock = GetTickCount()
 		elseif not wardLock then
-		wardLock = GetTickCount()
-		putWard(pos)
+			wardLock = GetTickCount()
+			putWard(pos)
 		end
 	end
 end
@@ -148,7 +153,7 @@ end
 local function GetJumpTarget()
 	local pos = mousePos
 	if not IsInDistance(wardRange, mousePos, GetOrigin(myHero)) then
-	pos = maxPos
+		pos = maxPos
 	end
 	for _,object in pairs(objectList) do
 	  if ValidTarget(object) and IsInDistance(200, GetOrigin(object), pos) then
@@ -161,22 +166,22 @@ end
 OnProcessSpell(function(unit,spell)
 
 	if unit and unit == myHero and spell and not spell.name:lower():find("katarina") then
-	spellObj = spell
-	wardpos = spellObj.endPos
+		spellObj = spell
+		wardpos = spellObj.endPos
 	end
 end)
 
 OnCreateObj(function(object)
 	local objType = GetObjectType(object)
 	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-	objectList[object] = object
+		objectList[object] = object
 	end
 end)
 
 OnDeleteObj(function(Object)
 	local objType = GetObjectType(object)
 	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-	objectList[object] = nil
+		objectList[object] = nil
 	end
 end)
 
@@ -185,34 +190,18 @@ local Tick = 0
 OnLoop(function(myHero)
 Tick = Tick + 1
 Checks()
-Bullshit()
 Drawings()
-Combo()
-Harass()
-Killsteal()
-
-if Tick > 32 then
-AutoSpells()
-JungleClear()
-Autolvl()
-Tick = 0
-end
-
-end)	
-
-function Bullshit()
-    mousePos = GetMousePos()
+mousePos = GetMousePos()
 	maxPos = calcMaxPos(mousePos)
 
 	jumpTarget = GetJumpTarget()
-
 
 	if not spellLock and wardLock and jumpTarget and CanUseSpell(myHero, spellSlot) == READY then
 		CastTargetSpell(jumpTarget, spellSlot)
 		spellLock = GetTickCount()
 	end
 
-	if KatarinaMenu.Combo.WardJumpkey:Value() then
+	if RyzeMenu.Combo.WardJumpkey:Value() then
 		wardJump(mousePos)
 		MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
@@ -234,23 +223,35 @@ function Bullshit()
   elseif GotBuff(myHero, "katarinarsound") < 1 then 
   IOW:EnableOrbwalking() 
   end
+
+Combo()
+Harass()
+Killsteal()
+
+if Tick > 32 then
+AutoSpells()
+JungleClear()
+Autolvl()
+Tick = 0
 end
+
+end)	
 
 function Combo()  
   if IOW:Mode() == "Combo" then
       local target = GetCurrentTarget()
 	  
-      if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero, _Q)) then
+      if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
-      end
+	  end
 	  
-      if SpellWREADY and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, GetCastRange(myHero, _W)) then
+      if SpellWREADY and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
-      end
+	  end
 	  
-      if SpellEREADY and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, GetCastRange(myHero, _E)) then
+      if SpellEREADY and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
-      end
+	  end
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
       CastSpell(_R)
@@ -264,11 +265,11 @@ function Harass()
 	  
       if SpellQREADY and KatarinaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
-      end
+	  end
 	  
       if SpellWREADY and KatarinaMenu.Harass.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
-      end
+	  end
 	  
       if SpellEREADY and KatarinaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
@@ -289,21 +290,21 @@ end
 end
 
 function Killsteal()
-        for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-                if KatarinaMenu.Killsteal.SmartKS:Value() then
+    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+       if KatarinaMenu.Killsteal.SmartKS:Value() then
 	   
-                               local ExtraDmg = 0
-		               if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-		               ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		               end
+                local ExtraDmg = 0
+		        if GotBuff(myHero, "itemmagicshankcharge") > 99 then
+		        ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
+		        end
 				
 				if Ignite and KatarinaMenu.Misc.Autoignite:Value() then
-                                  if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
-                                  CastTargetSpell(enemy, Ignite)
-                                  end
-                                end
+                  if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  CastTargetSpell(enemy, Ignite)
+                  end
+                end
 		
-                                if SpellWREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero)) and GoS:ValidTarget(enemy, 375) then 
+                if SpellWREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero)) and GoS:ValidTarget(enemy, 375) then 
 				CastSpell(_W)
 				
 				elseif SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) and GoS:ValidTarget(enemy, 675) then 
@@ -326,10 +327,11 @@ function Killsteal()
 				CastSpell(_W)
 				end
 				
-	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:GetDistance(enemy) < 1275 and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
-			        wardJump(GetOrigin(enemy))
-		                CastTargetSpell(enemy, _Q)
-	                        end
+	            if KatarinaMenu.Killsteal.UseWards:Value() and GoS:GetDistance(enemy) < 1275 and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
+			    wardJump(GetOrigin(enemy))
+		        CastTargetSpell(enemy, _Q)
+	            end
+				
 		end
 	end
 end
@@ -415,6 +417,7 @@ end
 end
 
 function JungleClear()
+	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
    if IOW:Mode() == "LaneClear" then
@@ -433,6 +436,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
 	end
 end
+
 end
 
 function Drawings()
