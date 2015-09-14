@@ -164,7 +164,7 @@ OnProcessSpell(function(unit, spell)
                                 CastSkillShot(_Q,GoS:GenerateMovePos().x, GoS:GenerateMovePos().y, GoS:GenerateMovePos().z)
                                 end
                         end
-                end, spell.windUpTime*1000)
+                end, spell.windUpTime*1000 + GetLatency())
 	end		
 	
         if spell.name:lower():find("vaynetumble") then 
@@ -172,7 +172,7 @@ OnProcessSpell(function(unit, spell)
                         if IOW:Mode() == "Combo" and VayneMenu.Combo.Q:Value() then
                         AttackUnit(target)
                         end
-                 end, spell.animationTime*1000)
+                 end, spell.animationTime*1000 + GetLatency())
         end
       end
   end
