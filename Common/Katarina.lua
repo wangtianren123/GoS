@@ -36,14 +36,12 @@ KatarinaMenu.Drawings:Boolean("R", "Draw R Range", true)
 KatarinaMenu.Drawings:Boolean("Text", "Draw Text", true)
 
 KatarinaMenu:SubMenu("Farm", "Farm")
-KatarinaMenu.Farm:SubMenu("LastHit", "LastHit")
-KatarinaMenu.LastHit:Boolean("Q", "Lasthit with Q", false)
-KatarinaMenu.LastHit:Boolean("W", "Lasthit with W", false)
-KatarinaMenu.LastHit:Boolean("E", "Lasthit with E", false)
-KatarinaMenu.Farm:SubMenu("LaneClear", "LaneClear")
-KatarinaMenu.LaneClear:Boolean("Q", "Clear with Q", false)
-KatarinaMenu.LaneClear:Boolean("W", "Clear with W", false)
-KatarinaMenu.LaneClear:Boolean("E", "Clear with E", false)
+KatarinaMenu.Farm:Boolean("Q", "Lasthit with Q", false)
+KatarinaMenu.Farm:Boolean("W", "Lasthit with W", false)
+KatarinaMenu.Farm:Boolean("E", "Lasthit with E", false)
+KatarinaMenu.Farm:Boolean("QLC", "Clear with Q", false)
+KatarinaMenu.Farm:Boolean("WLC", "Clear with W", false)
+KatarinaMenu.Farm:Boolean("ELC", "Clear with E", false)
 
 local spellList = { Katarina = _E }
 local myHero = GetMyHero()
@@ -388,26 +386,26 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		end
 
     if IOW:Mode() == "LaneClear" then
-		if SpellQREADY and KatarinaMenu.Farm.LaneClear.Q:Value() and GoS:ValidTarget(minion, 675) then
+		if SpellQREADY and KatarinaMenu.Farm.QLC:Value() and GoS:ValidTarget(minion, 675) then
 		CastTargetSpell(minion, _Q)
 		end
 		
-		if SpellWREADY and KatarinaMenu.Farm.LaneClear.W:Value() and GoS:ValidTarget(minion, 375) then
+		if SpellWREADY and KatarinaMenu.Farm.WLC:Value() and GoS:ValidTarget(minion, 375) then
 		CastSpell(_W)
 		end
 		
-		if SpellEREADY and KatarinaMenu.Farm.LaneClear.E:Value() and GoS:ValidTarget(minion, 700) then
+		if SpellEREADY and KatarinaMenu.Farm.ELC:Value() and GoS:ValidTarget(minion, 700) then
 		CastTargetSpell(minion, _E)
 		end
 	end
 	
 	if IOW:Mode() == "LastHit" then
 		
-	    if SpellWREADY and KatarinaMenu.Farm.LastHit.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) then
+	    if SpellWREADY and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) then
 		CastSpell(_W)
-		elseif SpellQREADY and KatarinaMenu.Farm.LastHit.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
+		elseif SpellQREADY and KatarinaMenu.Farm.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _Q)
-		elseif SpellEREADY and KatarinaMenu.Farm.LastHit.E:Value() and GoS:ValidTarget(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + ExtraDmg) then
+		elseif SpellEREADY and KatarinaMenu.Farm.E:Value() and GoS:ValidTarget(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _E)
 		end
 		
