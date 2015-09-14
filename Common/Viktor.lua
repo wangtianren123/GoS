@@ -148,8 +148,6 @@ end
 function Killsteal()
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	        
-                local enemyPos = GetOrigin(enemy)
-		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,1225,80,false,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,250,700,450,false,true)
         local StartPos = Vector(GoS:myHeroPos()) - 525 * (Vector(GoS:myHeroPos()) - Vector(enemyPos)):normalized()
 		
