@@ -1,3 +1,4 @@
+if GetObjectName(myHero) ~= "Azir" then return end
 Azir = Menu("Azir", "Azir")
 
 Azir:SubMenu("c", "Combo")
