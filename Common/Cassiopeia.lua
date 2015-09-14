@@ -76,7 +76,25 @@ function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
+local Tick = 0
+
 OnLoop(function(myHero)
+Tick = Tick + 1
+Checks()
+Drawings()
+Combo()
+Harass()
+Killsteal()
+
+if Tick > 32 then
+JungleClear()
+Autolvl()
+Tick = 0
+end
+
+end)
+
+function Combo()
     if IOW:Mode() == "Combo" then
 
 		local unit = GetCurrentTarget()
@@ -109,7 +127,9 @@ OnLoop(function(myHero)
 		end
 		
     end
-	
+end
+
+function Harass()	
     if IOW:Mode() == "Harass" then
 	
                 local unit = GetCurrentTarget()
@@ -138,7 +158,9 @@ OnLoop(function(myHero)
 		end
 		
     end
-	
+end
+
+function Killsteal()
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
                 local ExtraDmg = 0
@@ -165,7 +187,9 @@ OnLoop(function(myHero)
 		end
 		
 	end
-	
+end
+
+function Autolvl()
 if CassiopeiaMenu.Misc.Autolvl:Value() then    
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -207,7 +231,9 @@ elseif GetLevel(myHero) == 18 then
 end
 
 end
+end
 
+function Farm()
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 local unit = minion
@@ -243,8 +269,9 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	      end
 	    end
 end
+end
 
-
+function JungleClear()
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
@@ -272,13 +299,22 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		end
 	end
 end
-	
+end
+
+function Drawings()
 if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
- 
-end)
+end
+
+function Checks()
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+end 
 
 addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
