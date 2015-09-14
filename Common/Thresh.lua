@@ -1,5 +1,5 @@
 require('Dlib')
-
+if GetObjectName(myHero) ~= "Thresh" then return end
 local version = 2
 local UP=Updater.new("D3ftsu/GoS/master/Common/Thresh.lua", "Common\\Thresh", version)
 if UP.newVersion() then UP.update() end
