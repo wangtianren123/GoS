@@ -325,7 +325,7 @@ function Killsteal()
 				CastSpell(_W)
 				end
 				
-	            if KatarinaMenu.Killsteal.UseWards:Value() and GoS:GetDistance(enemy) < 1275 and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
+	            if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
 			    wardJump(GetOrigin(enemy))
 		        CastTargetSpell(enemy, _Q)
 	            end
