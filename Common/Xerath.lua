@@ -77,7 +77,6 @@ OnLoop(function(myHero)
 Tick = Tick + 1
 Checks()
 Drawings()
-GetDrawText(enemy)
 
 if Tick > 32 then
 Combo()
