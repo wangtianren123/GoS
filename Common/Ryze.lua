@@ -101,7 +101,7 @@ function Combo()
 end
 
 function Harass()				
-  if IOW:Mode() == "Combo" then
+  if IOW:Mode() == "Harass" then
 	
 	local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
@@ -114,7 +114,6 @@ function Harass()
 						  
       
 	 if SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
-
 	CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
 	elseif SpellQREADY and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
 	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
