@@ -91,7 +91,7 @@ function Combo()
 				local targetPos = GetOrigin(target)     
 	            local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,500,700,300,false,true)
 				local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,1225,80,false,true)
-			    local StartPos = Vector(GoS:myHeroPos()) - 525 * (Vector(GoS:myHeroPos()) - Vector(targetPos)):normalized()
+			    local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
                 local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,250,700,450,false,true)     
                 local damage = GoS:CalcDamage(myHero, target, 0, 25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero))				
 										
@@ -124,7 +124,7 @@ function Harass()
 				local targetPos = GetOrigin(target)
 				local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,500,700,300,false,true)
 				local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,1225,80,false,true)
-                local StartPos = Vector(GoS:myHeroPos()) - 525 * (Vector(GoS:myHeroPos()) - Vector(targetPos)):normalized()
+                local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
 					                 
 				if SpellEREADY and EPred.HitChance == 1 and ViktorMenu.Harass.E:Value() then
 				CastSkillShot3(_E,StartPos,EPred.PredPos)
