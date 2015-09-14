@@ -24,11 +24,6 @@ ViktorMenu.Misc:Boolean("Autolvl", "Auto level", true)
 ViktorMenu.Misc:Boolean("InterruptE", "Interrupt Spells (E)", true)
 ViktorMenu.Misc:Boolean("InterruptR", "Interrupt Spells (R)", false)
 
-ViktorMenu:SubMenu("JungleClear", "JungleClear")
-ViktorMenu.JungleClear:Boolean("Q", "Use Q", true)
-ViktorMenu.JungleClear:Boolean("W", "Use W", true)
-ViktorMenu.JungleClear:Boolean("E", "Use E", true)
-
 ViktorMenu:SubMenu("Drawings", "Drawings")
 ViktorMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 ViktorMenu.Drawings:Boolean("W", "Draw W Range", true)
