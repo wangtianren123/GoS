@@ -217,7 +217,7 @@ function Bullshit()
 		spellLock = GetTickCount()
 	end
 
-	if RyzeMenu.Combo.WardJumpkey:Value() then
+	if Katarina.Combo.WardJumpkey:Value() then
 		wardJump(mousePos)
 		MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
