@@ -77,7 +77,7 @@ OnLoop(function(myHero)
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 andt VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
+        if GetItemSlot(myHero,3144) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
         CastTargetSpell(target, GetItemSlot(myHero,3144))
         end
 
