@@ -199,7 +199,7 @@ mousePos = GetMousePos()
 		spellLock = GetTickCount()
 	end
 
-	if RyzeMenu.Combo.WardJumpkey:Value() then
+	if KatarinaMenu.Combo.WardJumpkey:Value() then
 		wardJump(mousePos)
 		MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
