@@ -118,7 +118,6 @@ function Combo()
                 CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
               end
           end, i)
-      end
     end	
                     
     end
