@@ -118,14 +118,14 @@ function Combo()
                 CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
               end
           end, i)
-    end	
-                    
+      end	
+    end        
     end
 end
 
 function Harass()
 
-    if IOW:Mode() == "Harass"100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= XerathMenu.Harass.Mana:Value() then
+    if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= XerathMenu.Harass.Mana:Value() then
     
 	local target = GetCurrentTarget()
 	local myHeroPos = GoS:myHeroPos()
