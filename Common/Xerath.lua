@@ -72,7 +72,7 @@ OnLoop(function(myHero)
 Tick = Tick + 1
 Checks()
 Drawings()
-AutoRKey()
+AutoRkey()
 
 if Tick > 32 then
 Combo()
