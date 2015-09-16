@@ -33,26 +33,7 @@ RyzeMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 RyzeMenu.Drawings:Boolean("W", "Draw W Range", true)
 RyzeMenu.Drawings:Boolean("E", "Draw E Range", true)
 	
-local Tick = 0
-
 OnLoop(function(myHero)
-Tick = Tick + 1
-Checks()
-Drawings()
-Combo()
-Harass()
-
-
-if Tick > 32 then
-Killsteal()
-JungleClear()
-Autolvl()
-Tick = 0
-end
-
-end)	
-	
-function Combo()
   if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
@@ -98,9 +79,7 @@ function Combo()
 	end
 						
   end
-end
 
-function Harass()				
   if IOW:Mode() == "Harass" then
 	
 	local target = GetCurrentTarget()
@@ -124,12 +103,10 @@ function Harass()
 	end
 	
   end 
-end
 
-function Killsteal()
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
-	    local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_Q),55,true,true)
+	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_Q),55,true,true)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
@@ -150,9 +127,7 @@ function Killsteal()
 		end
 		
 	end
-end
 
-function JungleClear()
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
         if IOW:Mode() == "LaneClear" then
@@ -176,9 +151,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
         end
 end
-end
 
-function Autolvl()
 if RyzeMenu.Misc.Autolvl:Value() then
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -220,18 +193,17 @@ elseif GetLevel(myHero) == 18 then
 end
 
 end
-end
 
-function Drawings()
 if RyzeMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if RyzeMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if RyzeMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-end
 
-function Checks()
 SpellQREADY = CanUseSpell(myHero,_Q) == READY
 SpellWREADY = CanUseSpell(myHero,_W) == READY
 SpellEREADY = CanUseSpell(myHero,_E) == READY
 SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-end 
+
+end)	
+	
+ 
