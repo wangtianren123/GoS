@@ -66,27 +66,8 @@ function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
-local Tick = 0
-
 OnLoop(function(myHero)
-Tick = Tick + 1
-Checks()
-Drawings()
-AutoRkey()
 
-if Tick > 32 then
-Combo()
-Harass()
-Killsteal()
-Autolvl()
-AutoR()
-
-Tick = 0
-end
-
-end)
-
-function Combo()
     if IOW:Mode() == "Combo" then
 	
     local target = GetCurrentTarget()
@@ -116,9 +97,6 @@ function Combo()
       end	
     end        
     end
-end
-
-function Harass()
 
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= XerathMenu.Harass.Mana:Value() then
     
@@ -150,9 +128,7 @@ function Harass()
     end	
 	
     end
-end
 
-function Autolvl()     
 if XerathMenu.Misc.Autolvl:Value() then
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -192,10 +168,9 @@ elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
 elseif GetLevel(myHero) == 18 then
         LevelSpell(_E)
 end
-end
+
 end
 
-function Killsteal()
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,700,GetCastRange(myHero,_W),125,false,true)
        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_E),60,true,true)
@@ -212,9 +187,7 @@ function Killsteal()
        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
        end
     end
-end
 
-function Drawings()
 if XerathMenu.Drawings.Qmin:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,750,3,100,0xff00ff00) end
 if XerathMenu.Drawings.Qmax:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1500,3,100,0xff00ff00) end
 if XerathMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
@@ -230,12 +203,9 @@ if XerathMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPo
 		end
 	end
  end
-end
 
-function AutoR()
-
-    local waitTickCount = GetTickCount() + 1400
-    local target = GetCurrentTarget()
+        local waitTickCount = GetTickCount() + 1400
+        local target = GetCurrentTarget()
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
 	
 	local ExtraDmg = 0
@@ -250,28 +220,13 @@ function AutoR()
 	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	end
-    end
-end
-
-function AutoRkey()
-  local waitTickCount = GetTickCount() + 1400
-  local target = GetCurrentTarget()
-  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,700,800 + 1050*GetCastLevel(myHero,_R),120,false,true)
-	
-  local ExtraDmg = 0
-  if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-  ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-  end
-  
-  if waitTickCount < GetTickCount() then
-
-    if SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and XerathMenu.Misc.AutoRKey:Value() and GetCurrentHP(target)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero) + ExtraDmg) then
+    elseif SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(target, 800 + 1050*GetCastLevel(myHero,_R)) and XerathMenu.Misc.AutoRKey:Value() and GetCurrentHP(target)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, target, 0, 405+165*GetCastLevel(myHero, _R)+1.29*GetBonusAP(myHero) + ExtraDmg) then
 	CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z) 
 	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	GoS:DelayAction(function() CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)end, 700)
 	end
     end
-end
+   
 
 function GetDrawText(enemy)
 	
@@ -290,13 +245,13 @@ function GetDrawText(enemy)
 	
 end
 
-function Checks()
 SpellQREADY = CanUseSpell(myHero,_Q) == READY
 SpellWREADY = CanUseSpell(myHero,_W) == READY
 SpellEREADY = CanUseSpell(myHero,_E) == READY
 SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-end 
+
+end)
 
 addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_E),60,true,true)
