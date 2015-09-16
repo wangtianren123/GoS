@@ -88,12 +88,12 @@ OnLoop(function(myHero)
 
     if SpellQREADY and GoS:ValidTarget(target, 1500) and XerathMenu.Combo.Q:Value() then
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
-      for i=250, 1500, 250 do
+      for m=250, 1500, 250 do
         GoS:DelayAction(function()
               if QPred.HitChance == 1 then
                 CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
               end
-          end, i)
+          end, m)
       end	
     end        
     end
@@ -109,12 +109,12 @@ OnLoop(function(myHero)
 	
     if SpellQREADY and GoS:ValidTarget(target, 1500) and XerathMenu.Harass.Q:Value() then
       CastSkillShot(_Q, myHeroPos.x, myHeroPos.y, myHeroPos.z)
-      for i=250, 1500, 250 do
+      for s=250, 1500, 250 do
         GoS:DelayAction(function()
               if QPred.HitChance == 1 then
                 CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
               end
-          end, i)
+          end, s)
       end
     end
 
