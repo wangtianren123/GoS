@@ -60,25 +60,8 @@ function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
-local Tick = 0
-
 OnLoop(function(myHero)
-Tick = Tick + 1
-Checks()
-Drawings()
 
-if Tick > 32 then
-Combo()
-Harass()
-Killsteal()
-Junglesteal()
-Autolvl()
-Tick = 0
-end
-
-end)
-
-function Combo()
     if IOW:Mode() == "Combo" then
 	
 	        local target = GetCurrentTarget()
@@ -101,9 +84,7 @@ function Combo()
 	        end
 	                      
 	end	
-end
 	
-function Harass()	
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= BlitzcrankMenu.Harass.Mana:Value() then
 	
 		local target = GetCurrentTarget()
@@ -118,9 +99,7 @@ function Harass()
 		end
 		
 	end
-end
 	
-function Killsteal()
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1800,250,975,80,true,true)
@@ -143,9 +122,7 @@ function Killsteal()
 	        end
 		
 	end
-end
 
-function Autolvl()	
 if BlitzcrankMenu.Misc.Autolvl:Value() then    
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -187,9 +164,7 @@ elseif GetLevel(myHero) == 18 then
 end
 
 end
-end
 
-function Junglesteal()
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	
 	local mobPos = GetOrigin(mob)
@@ -208,20 +183,19 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
           end
         end
 end
-end
 
-function Drawings()
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,3,100,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,3,100,0xff00ff00) end
-end
 
-function Checks()
 SpellQREADY = CanUseSpell(myHero,_Q) == READY
 SpellWREADY = CanUseSpell(myHero,_W) == READY
 SpellEREADY = CanUseSpell(myHero,_E) == READY
 SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-end 
+
+end)
+
+
 
 addInterrupterCallback(function(target, spellType)
   local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
