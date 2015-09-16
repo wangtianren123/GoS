@@ -166,14 +166,6 @@ OnProcessSpell(function(unit, spell)
                         end
                 end, spell.windUpTime*1000 + GetLatency())
 	end		
-	
-        if spell.name:lower():find("vaynetumble") then 
-	        GoS:DelayAction(function() 
-                        if IOW:Mode() == "Combo" and VayneMenu.Combo.Q:Value() then
-                        AttackUnit(target)
-                        end
-                 end, spell.animationTime*1000 + GetLatency())
-        end
       end
   end
 end)
