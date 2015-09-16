@@ -183,13 +183,9 @@ OnDeleteObj(function(Object)
 	end
 end)
 
-local Tick = 0
-
 OnLoop(function(myHero)
-Tick = Tick + 1
-Checks()
-Drawings()
-mousePos = GetMousePos()
+
+        mousePos = GetMousePos()
 	maxPos = calcMaxPos(mousePos)
 
 	jumpTarget = GetJumpTarget()
@@ -222,20 +218,6 @@ mousePos = GetMousePos()
   IOW:EnableOrbwalking() 
   end
 
-Combo()
-Harass()
-Killsteal()
-
-if Tick > 32 then
-AutoSpells()
-JungleClear()
-Autolvl()
-Tick = 0
-end
-
-end)	
-
-function Combo()  
   if IOW:Mode() == "Combo" then
       local target = GetCurrentTarget()
 	  
@@ -255,9 +237,7 @@ function Combo()
       CastSpell(_R)
       end
   end
-end
 
-function Harass()
   if IOW:Mode() == "Harass" then
       local target = GetCurrentTarget()
 	  
@@ -273,9 +253,7 @@ function Harass()
       CastTargetSpell(target, _E)
       end
   end
-end
 
-function AutoSpells()  
 local target = GetCurrentTarget()
 
 if KatarinaMenu.Harass.AutoQ:Value() and GoS:ValidTarget(target, 675) and GotBuff(myHero, "katarinarsound") < 1 then
@@ -285,9 +263,7 @@ end
 if KatarinaMenu.Harass.AutoW:Value() and GoS:ValidTarget(target, 375) and GotBuff(myHero, "katarinarsound") < 1 then
 CastSpell(_W)
 end
-end
 
-function Killsteal()
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
        if KatarinaMenu.Killsteal.SmartKS:Value() then
 	   
@@ -332,9 +308,7 @@ function Killsteal()
 				
 		end
 	end
-end
 
-function Autolvl()
 if KatarinaMenu.Misc.Autolvl:Value() then
  
     if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -375,9 +349,7 @@ if KatarinaMenu.Misc.Autolvl:Value() then
     LevelSpell(_E)
     end
 end
-end
 
-function Farm()
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		
 		local ExtraDmg = 0
@@ -385,7 +357,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 
-    if IOW:Mode() == "LaneClear" then
+        if IOW:Mode() == "LaneClear" then
 		if SpellQREADY and KatarinaMenu.Farm.QLC:Value() and GoS:ValidTarget(minion, 675) then
 		CastTargetSpell(minion, _Q)
 		end
@@ -401,7 +373,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	
 	if IOW:Mode() == "LastHit" then
 		
-	    if SpellWREADY and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) then
+	        if SpellWREADY and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) then
 		CastSpell(_W)
 		elseif SpellQREADY and KatarinaMenu.Farm.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
 		CastTargetSpell(minion, _Q)
@@ -412,9 +384,6 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	end
 
 end
-end
-
-function JungleClear()
 	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
@@ -435,9 +404,6 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	end
 end
 
-end
-
-function Drawings()
 if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,675,3,100,0xff00ff00) end
 if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,375,3,100,0xff00ff00) end
 if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,700,3,100,0xff00ff00) end
@@ -452,7 +418,14 @@ if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroP
 		end
 	end
   end
-end
+
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+
+end)	
 
 function GetDrawText(enemy)
 	local ExtraDmg = 0
@@ -487,11 +460,3 @@ function GetDrawText(enemy)
 		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
-
-function Checks()
-SpellQREADY = CanUseSpell(myHero,_Q) == READY
-SpellWREADY = CanUseSpell(myHero,_W) == READY
-SpellEREADY = CanUseSpell(myHero,_E) == READY
-SpellRREADY = CanUseSpell(myHero,_R) == READY
-SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-end 
