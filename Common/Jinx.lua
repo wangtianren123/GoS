@@ -59,28 +59,11 @@ delay = 600
 missileSpeed = (GoS:GetDistance(enemyBasePos) / (1 + (GoS:GetDistance(enemyBasePos)-1500)/2500)) -- thanks Noddy
 damage = function(target) return GoS:CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
 
-local Tick = 0
-
 OnLoop(function(myHero)
-Tick = Tick + 1
-Checks()
-Drawings()
+
 if BaseultMenu.RT:Value() then 
 RecallTracker()
 end
-
-if Tick > 32 then
-Combo()
-Harass()
-BullShit()
-Killsteal()
-Autolvl()
-Tick = 0
-end		
-
-end)
-
-function Combo()
 
     if IOW:Mode() == "Combo" then
 	
@@ -132,9 +115,6 @@ function Combo()
         end
 
   end
-end
-
-function Harass()
 
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= JinxMenu.Harass.Mana:Value() then
 	
@@ -161,9 +141,6 @@ function Harass()
         end
 		
 	end
-end
-
-function BullShit()
 
 local target = GetCurrentTarget()
 local targetpos = GetOrigin(target)
@@ -186,9 +163,7 @@ if IOW:Mode() == "LaneClear" then
   end
 end
   
-end
 
-function Killsteal()
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
     
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),3300,600,GetCastRange(myHero,_W),60,true,true)
@@ -206,9 +181,7 @@ function Killsteal()
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
         end
     end
-end
 
-function Autolvl()     
 if JinxMenu.Misc.Autolvl:Value() then 
 
 if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
@@ -250,20 +223,19 @@ elseif GetLevel(myHero) == 18 then
 end
 
 end
-end
 
-function Drawings()
 if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
 if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-end
 
-function Checks()
 SpellQREADY = CanUseSpell(myHero,_Q) == READY
 SpellWREADY = CanUseSpell(myHero,_W) == READY
 SpellEREADY = CanUseSpell(myHero,_E) == READY
 SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-end 
+
+end)
+
+
 
 --------------------------------------Thanks Maxxxel For this <3--------------------------------
 local myHero = GetMyHero()
