@@ -171,7 +171,7 @@ end
 
 end
 
-    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+    for _,enemy in pairs(GoS:GetEnemyHeroes()) do
        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,700,GetCastRange(myHero,_W),125,false,true)
        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_E),60,true,true)
 	   
