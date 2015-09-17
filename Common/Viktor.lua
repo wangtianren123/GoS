@@ -101,7 +101,7 @@ OnLoop(function(myHero)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,1225,80,false,true)
                 local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
 					                 
-		if SpellEREADY and EPred.HitChance == 1 and ViktorMenu.Harass.E:Value() then
+		if SpellEREADY and GoS:ValidTarget(target, 1225) and EPred.HitChance == 1 and ViktorMenu.Harass.E:Value() then
 		CastSkillShot3(_E,StartPos,EPred.PredPos)
 		end
 					
