@@ -69,11 +69,11 @@ OnLoop(function(myHero)
 		local targetPos = GetOrigin(target)     
 	        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,500,700,300,false,true)
 	        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,1225,80,false,true)
-		local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
                 local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,250,700,450,false,true)     
                 local damage = GoS:CalcDamage(myHero, target, 0, 25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero))				
 										
 		if SpellEREADY and GoS:ValidTarget(target, 1225) and EPred.HitChance == 1 and ViktorMenu.Combo.E:Value() then
+                local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
                 CastSkillShot3(_E,StartPos,EPred.PredPos)
 		end
 					
@@ -99,9 +99,9 @@ OnLoop(function(myHero)
 		local targetPos = GetOrigin(target)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,500,700,300,false,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,1225,80,false,true)
-                local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
 					                 
 		if SpellEREADY and GoS:ValidTarget(target, 1225) and EPred.HitChance == 1 and ViktorMenu.Harass.E:Value() then
+		local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(target)):normalized()
 		CastSkillShot3(_E,StartPos,EPred.PredPos)
 		end
 					
@@ -123,7 +123,7 @@ OnLoop(function(myHero)
 	 
         local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,1225,80,false,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,250,700,450,false,true)
-        local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
+        
 		
 	if Ignite and ViktorMenu.Misc.AutoIgnite:Value() then
           if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
@@ -133,8 +133,9 @@ OnLoop(function(myHero)
 				
 	if SpellQREADY and GoS:ValidTarget(enemy, GetCastRange(myHero,_Q)) and ViktorMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero)) then
         CastTargetSpell(enemy, _Q)
-        elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(enemy,1225) and ViktorMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero)) then
-		CastSkillShot3(_E,StartPos,EPred.PredPos)
+elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(enemy,1225) and ViktorMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero)) then
+	local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
+	CastSkillShot3(_E,StartPos,EPred.PredPos)
 	elseif SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, GetCastRange(myHero, _R)) and ViktorMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero)) then  
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)    
         end
