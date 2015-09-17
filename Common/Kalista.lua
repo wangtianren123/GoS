@@ -140,9 +140,9 @@ OnLoop(function(myHero)
 	    for _, ally in pairs(GoS:GetAllyHeroes()) do
                 for i,enemy in pairs(GoS:GetEnemyHeroes()) do 
 			local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
-			if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:GetDistance(ally, enemy) <= 600 then
+			if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:ValidTarget(ally, 1450) and GoS:GetDistance(ally, enemy) <= 600 then
+                        CastSpell(_R)
 		        PrintChat("Rescuing low health "..GetObjectName(ally).."")
-			CastSpell(_R)
 			end
 		end
 	    end
