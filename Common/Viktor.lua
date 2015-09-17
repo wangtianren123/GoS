@@ -122,7 +122,7 @@ OnLoop(function(myHero)
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	        
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,250,700,450,false,true)
-        local StartPos = Vector(GoS:myHeroPos()) - 525 * (Vector(GoS:myHeroPos()) - Vector(enemyPos)):normalized()
+        local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
 		
 	if Ignite and ViktorMenu.Misc.AutoIgnite:Value() then
           if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetHPRegen(enemy)*2.5 and GoS:GetDistanceSqr(GetOrigin(enemy)) < 600*600 then
