@@ -120,7 +120,8 @@ OnLoop(function(myHero)
 	end
 
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	        
+	 
+        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,1225,80,false,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,250,700,450,false,true)
         local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
 		
