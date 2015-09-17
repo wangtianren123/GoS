@@ -1,58 +1,31 @@
-require('Dlib')
 if GetObjectName(myHero) ~= "Thresh" then return end
-local version = 2
-local UP=Updater.new("D3ftsu/GoS/master/Common/Thresh.lua", "Common\\Thresh", version)
-if UP.newVersion() then UP.update() end
 
---------------- Thanks ilovesona for this ------------------------
-DelayAction(function ()
-        for _, imenu in pairs(menuTable) do
-                local submenu = menu.addItem(SubMenu.new(imenu.name))
-                for _,subImenu in pairs(imenu) do
-                        if subImenu.type == SCRIPT_PARAM_ONOFF then
-                                local ggeasy = submenu.addItem(MenuBool.new(subImenu.t, subImenu.value))
-                                OnLoop(function(myHero) subImenu.value = ggeasy.getValue() end)
-                        elseif subImenu.type == SCRIPT_PARAM_KEYDOWN then
-                                local ggeasy = submenu.addItem(MenuKeyBind.new(subImenu.t, subImenu.key))
-                                OnLoop(function(myHero) subImenu.key = ggeasy.getValue(true) end)
-                        elseif subImenu.type == SCRIPT_PARAM_INFO then
-                                submenu.addItem(MenuSeparator.new(subImenu.t))
-                        end
-                end
-        end
-        _G.DrawMenu = function ( ... )  end
-end, 1000)
+ThreshMenu = Menu("Thresh", "Thresh")
+ThreshMenu:SubMenu("Combo", "Combo")
+ThreshMenu.Combo:Boolean("Q", "Use Q", true)
+ThreshMenu.Combo:Boolean("Q2", "Jump to Target", true)
+ThreshMenu.Combo:Boolean("E", "Use E", true)
+ThreshMenu.Combo:Boolean("R", "Use R", true)
 
-local root = menu.addItem(SubMenu.new("Thresh"))
+ThreshMenu:SubMenu("Harass", "Harass")
+ThreshMenu.Harass:Boolean("Q", "Use Q", true)
+ThreshMenu.Harass:Boolean("E", "Use E", true)
 
-local Combo = root.addItem(SubMenu.new("Combo"))
-local CUseQ = Combo.addItem(MenuBool.new("Use Q",true))
-local CUseQ2 = Combo.addItem(MenuBool.new("Jump to Target",true))
-local CUseE = Combo.addItem(MenuBool.new("Use E",true))
-local CUseR = Combo.addItem(MenuBool.new("Use R",true))
+ThreshMenu:SubMenu("Misc", "Misc")
+ThreshMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+ThreshMenu.Misc:Boolean("Autolvl", "Auto level", true)
+ThreshMenu.Misc:Key("Lantern", "Throw Lantern", string.byte("G"))
+ThreshMenu.Misc:Boolean("AutoR", "Auto R", true)
+ThreshMenu.Misc:Slider("AutoRmin", "Minimum Enemies in Range", 3, 1, 5, 1)
+ThreshMenu.Misc:SubMenu("Interrupt", "Interrupt")
+ThreshMenu.Misc.Interrupt:Boolean("Q", "Interrupt with Q", true)
+ThreshMenu.Misc.Interrupt:Boolean("E", "Interrupt with E", true)
 
-local Harass = root.addItem(SubMenu.new("Harass"))
-local HUseQ = Harass.addItem(MenuBool.new("Use Q",true))
-local HUseE = Harass.addItem(MenuBool.new("Use E",true))
-
-local Misc = root.addItem(SubMenu.new("Misc"))
-local MiscAutolvl = Misc.addItem(SubMenu.new("Auto level", true))
-local MiscEnableAutolvl = MiscAutolvl.addItem(MenuBool.new("Enable", true))
-local AutoLantern = Misc.addItem(MenuKeyBind.new("Auto Lantern", 71))
-local AutoR = Misc.addItem(SubMenu.new("Auto R", true))
-local AutoREnabled = AutoR.addItem(SubMenu.new("Enabled", true))
-local AutoRmin = AutoR.addItem(MenuSlider.new("Minimum Enemies in Range", 3, 1, 5, 1))
-local MiscInterrupt = Misc.addItem(SubMenu.new("Interrupt"))
-local InterruptQ = MiscInterrupt.addItem(MenuBool.new("Interrupt with Q", true))
-local InterruptE = MiscInterrupt.addItem(MenuBool.new("Interrupt with E", true))
-
-local Drawings = root.addItem(SubMenu.new("Drawings"))
-local DrawingsQ = Drawings.addItem(MenuBool.new("Draw Q Range", true))
-local DrawingsW = Drawings.addItem(MenuBool.new("Draw W Range", true))
-local DrawingsE = Drawings.addItem(MenuBool.new("Draw E Range", true))
-local DrawingsR = Drawings.addItem(MenuBool.new("Draw R Range", true))
-
-myIAC = IAC()
+ThreshMenu:SubMenu("Drawings", "Drawings")
+ThreshMenu.Drawings:Boolean("Q", "Draw Q Range", true)
+ThreshMenu.Drawings:Boolean("W", "Draw W Range", true)
+ThreshMenu.Drawings:Boolean("E", "Draw E Range", true)
+ThreshMenu.Drawings:Boolean("R", "Draw R Range", true)
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -90,15 +63,15 @@ function addInterrupterCallback( callback0 )
 end
 
 OnLoop(function(myHero)
-    if IWalkConfig.Combo then
-	local target = GetCurrentTarget()
-		    
-        local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
-		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
+    if IOW:Mode() == "Combo" then
+	
+		local target = GetCurrentTarget()
+        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
+		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
 				
-        if GetCastName(myHero, _Q) ~= "threshqleap" and CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1100) and CUseQ.getValue() then
+        if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Combo.Q:Value() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-		elseif GetCastName(myHero, _Q) == "threshqleap" and CUseQ2.getValue() then
+		elseif GetCastName(myHero, _Q) == "threshqleap" and ThreshMenu.Combo.Q2:Value() then
         CastSpell(_Q)
         end
 			
@@ -106,24 +79,25 @@ OnLoop(function(myHero)
 		local yPos = GetOrigin(myHero).y + (GetOrigin(myHero).y - EPred.PredPos.y)
 		local zPos = GetOrigin(myHero).z + (GetOrigin(myHero).z - EPred.PredPos.z)
 			
-		if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and CUseE.getValue() and ValidTarget(target, 400) and GetCurrentHP(myHero)/GetMaxHP(myHero) >= 0.26 then
+		if SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Combo.E:Value() and GoS:ValidTarget(target, 400) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) >= 26 then
 		CastSkillShot(_E, xPos, yPos, zPos)
-		elseif CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and CUseE.getValue() and ValidTarget(target, 400) and GetCurrentHP(myHero)/GetMaxHP(myHero) < 0.26 then
+		elseif SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Combo.E:Value() and GoS:ValidTarget(target, 400) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 26 then
         CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		end				
            
-		if CanUseSpell(myHero, _R) == READY and ValidTarget(target, 450) and CUseR.getValue() and GetCurrentHP(target)/GetMaxHP(target) < 0.5 then
+		if SpellRREADY and GoS:ValidTarget(target, 450) and ThreshMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
 		CastSpell(_R)
 		end
+		
     end
 		
-	if IWalkConfig.Harass then 
-	local target = GetCurrentTarget()
+	if IOW:Mode() == "Harass" then
 	
-		local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
-		local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
+	    local target = GetCurrentTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
+		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
 				
-        if GetCastName(myHero, _Q) ~= "threshqleap" and CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ValidTarget(target, 1100) and HUseQ.getValue() then
+        if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Harass.Q:Value() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
@@ -131,18 +105,27 @@ OnLoop(function(myHero)
 		local yPos = GetOrigin(myHero).y + (GetOrigin(myHero).y - EPred.PredPos.y)
 		local zPos = GetOrigin(myHero).z + (GetOrigin(myHero).z - EPred.PredPos.z)
 			
-		if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and HUseE.getValue() and ValidTarget(target, 400) then
+		if SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Harass.E:Value() and GoS:ValidTarget(target, 400) then
 		CastSkillShot(_E, xPos, yPos, zPos)
 		end
 	end
 	
-    if AutoR.getValue() and CanUseSpell(myHero,_R) and EnemiesAround(GetMyHeroPos(), 450) >= AutoRmin.getValue() then
+    if ThreshMenu.Misc.AutoR:Value() and SpellRREADY and GoS:EnemiesAround(GoS:myHeroPos(), 450) >= ThreshMenu.Misc.AutoRmin:Value() then
 	CastSpell(_R)
 	end
 	
-	if AutoLantern.getValue() then
-	  for _, ally in pairs(GetAllyHeroes()) do
-      local WPred = GetPredictionForPlayer(GetMyHeroPos(),ally,GetMoveSpeed(ally),math.huge,250,950,90,false,true)
+	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+	   
+				if Ignite and ThreshMenu.Misc.Autoignite:Value() then
+                  if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  CastTargetSpell(enemy, Ignite)
+                  end
+                end
+	end
+	
+	if ThreshMenu.Misc.Lantern:Value() then
+	  for _, ally in pairs(GoS:GetAllyHeroes()) do
+      local WPred = GetPredictionForPlayer(GoS:myHeroPos(),ally,GetMoveSpeed(ally),3300,250,950,90,false,true)
       local AllyPos = GetOrigin(ally)
       local mousePos = GetMousePos()
         if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GetDistance(myHero, ally) < 950 then
@@ -153,29 +136,30 @@ OnLoop(function(myHero)
       end
 	end
 
-if MiscEnableAutolvl.getValue() then  
-local leveltable = { _Q, _E, _W, _E, _E, _R, _Q, _Q, _Q, _E, _R, _Q, _E, _W, _W, _R, _W, _W} -- Credits goes to Inferno for saving me 20 line xD
+if ThreshMenu.Misc.Autolvl:Value() then  
+local leveltable = {_Q, _E, _W, _E, _E, _R, _Q, _Q, _Q, _E, _R, _Q, _E, _W, _W, _R, _W, _W} -- Credits goes to Inferno for saving me 20 line xD
 LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
-local HeroPos = GetOrigin(myHero)
-if DrawingsQ.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,1100,3,100,0xff00ff00) end
-if DrawingsW.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,950,3,100,0xff00ff00) end
-if DrawingsE.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,400,3,100,0xff00ff00) end
-if DrawingsR.getValue() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,450,3,100,0xff00ff00) end
+if ThreshMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1100,3,100,0xff00ff00) end
+if ThreshMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,3,100,0xff00ff00) end
+if ThreshMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,400,3,100,0xff00ff00) end
+if ThreshMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,3,100,0xff00ff00) end
+
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+
 end)
 
 addInterrupterCallback(function(target, spellType)
-local QPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
-local EPred = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
-  if IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and EPred.HitChance == 1 and InterruptE.getValue() and spellType == CHANELLING_SPELLS then
+  local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
+  local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
+  if IsInDistance(target, GetCastRange(myHero,_E)) and SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Misc.Interrupt.E:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-  elseif IsInDistance(target, GetCastRange(myHero,_Q)) and CanUseSpell(myHero,_Q) == READY and QPred.HitChance == 1 and InterruptQ.getValue() and spellType == CHANELLING_SPELLS then
+  elseif IsInDistance(target, GetCastRange(myHero,_Q)) and SpellQREADY and QPred.HitChance == 1 and ThreshMenu.Misc.Interrupt.Q:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
   end
 end)
-
-AddGapcloseEvent(_E, 400, false)
-
-
-notification("Thresh by Deftsu loaded.", 10000)
