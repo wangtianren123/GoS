@@ -136,7 +136,6 @@ OnLoop(function(myHero)
         MoveToXYZ(12060, 51, 4806)
         end
 		
-
 if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
 if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if VayneMenu.Drawings.WT:Value() then
@@ -150,8 +149,9 @@ OnProcessSpell(function(unit, spell)
       if unit == myHero then
         if spell.name:lower():find("attack") then 
 	        GoS:DelayAction(function() 
-                        if IOW:Mode() == "Combo" and VayneMenu.Combo.Q:Value() then
+                        if IOW:Mode() == "Combo" and and ValidTarget(target, 850) VayneMenu.Combo.Q:Value() then
 				local HeroPos = GetOrigin(myHero)
+				local mousePos = GetMousePos()
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
                                 local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 							  
@@ -163,7 +163,7 @@ OnProcessSpell(function(unit, spell)
                                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
                         end
-                end, spell.windUpTime*1000 + GetLatency())
+                end, spell.windUpTime*1000)
 	end		
       end
   end
