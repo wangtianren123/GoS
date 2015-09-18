@@ -103,9 +103,7 @@ end
 
 local function ValidTarget( object )
 	local objType = GetObjectType(object)
-	if GetObjectName(myHero) == "LeeSin" then
-	return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object) and GetTeam(object) == GetTeam(myHero)
-	else		
+	if GetObjectName(myHero) == "Katarina" then
 	return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object)
 	end
 end
