@@ -101,11 +101,10 @@ OnLoop(function(myHero)
         CastSpell(_R)
 	end
 		
-	
         local target = GetCurrentTarget()
 	if GotBuff(myHero, "vaynetumblefade") > 0 and VayneMenu.Combo.R.KeepInvis:Value() and GoS:ValidTarget(target, VayneMenu.Combo.R.KeepInvisdis:Value()) and GoS:GetDistance(target) < VayneMenu.Combo.R.KeepInvisdis:Value() then 
 	IOW:DisableAutoAttacks()
-	elseif GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
+	elseif GotBuff(myHero, "vaynetumblefade") > 0 and GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
 	IOW:EnableAutoAttacks()
 	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
 	IOW:EnableAutoAttacks()
@@ -157,11 +156,11 @@ OnProcessSpell(function(unit, spell)
                                 local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 							  
                                 if DistanceAfterTumble < 630 and DistanceAfterTumble > 200 then
-                                CastSkillShot(_Q,GoS:GenerateMovePos().x, GoS:GenerateMovePos().y, GoS:GenerateMovePos().z)
+                                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
   
                                 if GoS:GetDistance(myHero, target) > 630 and DistanceAfterTumble < 630 then
-                                CastSkillShot(_Q,GoS:GenerateMovePos().x, GoS:GenerateMovePos().y, GoS:GenerateMovePos().z)
+                                CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
                         end
                 end, spell.windUpTime*1000 + GetLatency())
@@ -189,7 +188,7 @@ function AutoE()
 			local self=GetOrigin(myHero)
 			selfx = self.x
 			selfy = self.y
-    	    selfz = self.z
+    	                selfz = self.z
 			local HeroPos = Vector(selfx, selfy, selfz)
     	
 			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GoS:GetDistance(target))
