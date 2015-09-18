@@ -253,7 +253,7 @@ end
 
 addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_E),60,true,true)
-  if GoS:IsInDistance(target, GetCastRange(myHero,_E)) and SpellEREADY and EPred.HitChance == 1 and Xerath.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
+  if GoS:IsInDistance(target, GetCastRange(myHero,_E)) and SpellEREADY and EPred.HitChance == 1 and XerathMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
   end
 end)
