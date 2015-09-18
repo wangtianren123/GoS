@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Syndra" then return end
 
 Balls = 3
 if Balls > 7 then
-Balls = 700
+Balls = 7
 end
 lastBallPos = Vector(0,0,0)
 	
