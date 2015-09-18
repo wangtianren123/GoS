@@ -66,14 +66,14 @@ OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
 		local target = GetCurrentTarget()
-        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
+                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
 				
-        if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Combo.Q:Value() then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Combo.Q:Value() then
+                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif GetCastName(myHero, _Q) == "threshqleap" and ThreshMenu.Combo.Q2:Value() then
-        CastSpell(_Q)
-        end
+                CastSpell(_Q)
+                end
 			
 		local xPos = GetOrigin(myHero).x + (GetOrigin(myHero).x - EPred.PredPos.x)
 		local yPos = GetOrigin(myHero).y + (GetOrigin(myHero).y - EPred.PredPos.y)
@@ -82,7 +82,7 @@ OnLoop(function(myHero)
 		if SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Combo.E:Value() and GoS:ValidTarget(target, 400) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) >= 26 then
 		CastSkillShot(_E, xPos, yPos, zPos)
 		elseif SpellEREADY and EPred.HitChance == 1 and ThreshMenu.Combo.E:Value() and GoS:ValidTarget(target, 400) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 26 then
-        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 		end				
            
 		if SpellRREADY and GoS:ValidTarget(target, 450) and ThreshMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
@@ -93,12 +93,12 @@ OnLoop(function(myHero)
 		
 	if IOW:Mode() == "Harass" then
 	
-	    local target = GetCurrentTarget()
+	        local target = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
 				
-        if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Harass.Q:Value() then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                if GetCastName(myHero, _Q) ~= "threshqleap" and SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1100) and ThreshMenu.Harass.Q:Value() then
+                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
 		local xPos = GetOrigin(myHero).x + (GetOrigin(myHero).x - EPred.PredPos.x)
@@ -110,13 +110,13 @@ OnLoop(function(myHero)
 		end
 	end
 	
-    if ThreshMenu.Misc.AutoR:Value() and SpellRREADY and GoS:EnemiesAround(GoS:myHeroPos(), 450) >= ThreshMenu.Misc.AutoRmin:Value() then
+        if ThreshMenu.Misc.AutoR:Value() and SpellRREADY and GoS:EnemiesAround(GoS:myHeroPos(), 450) >= ThreshMenu.Misc.AutoRmin:Value() then
 	CastSpell(_R)
 	end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	   
-				if Ignite and ThreshMenu.Misc.Autoignite:Value() then
+		if Ignite and ThreshMenu.Misc.Autoignite:Value() then
                   if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
@@ -125,15 +125,15 @@ OnLoop(function(myHero)
 	
 	if ThreshMenu.Misc.Lantern:Value() then
 	  for _, ally in pairs(GoS:GetAllyHeroes()) do
-      local WPred = GetPredictionForPlayer(GoS:myHeroPos(),ally,GetMoveSpeed(ally),3300,250,950,90,false,true)
-      local AllyPos = GetOrigin(ally)
-      local mousePos = GetMousePos()
-        if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GetDistance(myHero, ally) < 950 then
-        CastSkillShot(_W,WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
+            local WPred = GetPredictionForPlayer(GoS:myHeroPos(),ally,GetMoveSpeed(ally),3300,250,950,90,false,true)
+            local AllyPos = GetOrigin(ally)
+            local mousePos = GetMousePos()
+            if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GoS:GetDistance(ally) < 950 then
+            CastSkillShot(_W,WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
 	    else
 	    MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	    end
-      end
+         end
 	end
 
 if ThreshMenu.Misc.Autolvl:Value() then  
