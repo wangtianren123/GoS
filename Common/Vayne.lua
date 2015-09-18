@@ -145,6 +145,7 @@ end
 end)
 
 OnProcessSpell(function(unit, spell)
+    local target = GetCurrentTarget()
     if unit and spell and spell.name then
       if unit == myHero then
         if spell.name:lower():find("attack") then 
