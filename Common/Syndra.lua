@@ -63,7 +63,7 @@ OnProcessSpell(function(unit, spell)
             for _, spellSlot in pairs(unitChanellingSpells) do
                 if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
             end
-		end
+	end
 end)
  
 function addInterrupterCallback( callback0 )
@@ -73,50 +73,50 @@ end
 OnLoop(function(myHero)
   if IOW:Mode() == "Combo" then
 	
-    local target = GetCurrentTarget()
+        local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,800,925,190,false,true)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
 	
 	if SpellQREADY and QPred.HitChance == 1 and SyndraMenu.Combo.Q:Value() and GoS:ValidTarget(target, 790) then
-    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
 	if lastBallPos and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
-      local x,i,z = VectorPointProjectionOnLineSegment(myHero, target, lastBallPos)
-      if SpellEREADY and z and GoS:GetDistance(x, target) < 125 and EPred.HitChance == 1 then
-      CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-      end
-    end
+          local x,i,z = VectorPointProjectionOnLineSegment(myHero, target, lastBallPos)
+          if SpellEREADY and z and GoS:GetDistance(x, target) < 125 and EPred.HitChance == 1 then
+          CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+          end
+        end
 	
 	if SpellWREADY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
 	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-        if Balls > 0 then 
-        CastTargetSpell(lastBallPos, _W)	  
+            if Balls > 0 then 
+            CastTargetSpell(lastBallPos, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
 	    elseif GoS:IsInDistance(minion, 925) then 
-		CastTargetSpell(minion, _W)	  
+	    CastTargetSpell(minion, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-		elseif GoS:IsInDistance(mob, 925) then 
-		CastTargetSpell(mob, _W)	  
+	    elseif GoS:IsInDistance(mob, 925) then 
+	    CastTargetSpell(mob, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-		end
+	    end
 	  end
 	end
 	end
 	
-	if SpellRREADY and SyndraMenu.Combo.R:Value() and GoS:ValidTarget(target, 725) then
+      if SpellRREADY and SyndraMenu.Combo.R:Value() and GoS:ValidTarget(target, 725) then
 	
         local ExtraDmg = 0
-		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
-		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		end
-		
-		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*Balls + ExtraDmg) then
-		CastTargetSpell(target, _R)
-		end
+	if GotBuff(myHero, "itemmagicshankcharge") == 100 then
+	ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 	end
+		
+	if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*Balls + ExtraDmg) then
+	CastTargetSpell(target, _R)
+	end
+      end
   end
   
   if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SyndraMenu.Harass.Mana:Value() then
@@ -127,57 +127,57 @@ OnLoop(function(myHero)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
 	
 	if SpellQREADY and QPred.HitChance == 1 and SyndraMenu.Harass.Q:Value() and GoS:ValidTarget(target, 790) then
-    CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
 	if lastBallPos and GoS:ValidTarget(target, 1250) and SyndraMenu.Harass.E:Value() then
-      local x,i,z = VectorPointProjectionOnLineSegment(myHero, target, lastBallPos)
-      if SpellEREADY and z and GoS:GetDistance(x, target) < 125 and EPred.HitChance == 1 then
-      CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-      end
-    end
+          local x,i,z = VectorPointProjectionOnLineSegment(myHero, target, lastBallPos)
+          if SpellEREADY and z and GoS:GetDistance(x, target) < 125 and EPred.HitChance == 1 then
+          CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+          end
+        end
 	
-	if SpellWREADY and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
+       if SpellWREADY and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
 	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-        if Balls > 0 then 
-        CastTargetSpell(lastBallPos, _W)	  
+            if Balls > 0 then 
+            CastTargetSpell(lastBallPos, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
 	    elseif GoS:IsInDistance(minion, 925) then 
-		CastTargetSpell(minion, _W)	  
+	    CastTargetSpell(minion, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-		elseif GoS:IsInDistance(mob, 925) then 
-		CastTargetSpell(mob, _W)	  
+	    elseif GoS:IsInDistance(mob, 925) then 
+	    CastTargetSpell(mob, _W)	  
 	    DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-		end
+	    end
 	  end
 	end
-	end
+       end
   end
   
   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
-	  local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
+	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
 		if Ignite and SyndraMenu.Misc.Autoignite:Value() then
-          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
-          CastTargetSpell(enemy, Ignite)
-          end
-    end
+                  if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  CastTargetSpell(enemy, Ignite)
+                  end
+                end
 		
 		if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 790) and SyndraMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_Q)+5+.6*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-	  end
+	        end
   end
   
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
     if IOW:Mode() == "LaneClear" then
-	local mobPos = GetOrigin(mob)
+	        local mobPos = GetOrigin(mob)
 		
 		if SpellQREADY and SyndraMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 790) then
 		CastSkillShot(_Q, mobPos.x, mobPos.y, mobPos.z)
@@ -194,11 +194,11 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		end
 		
 		if lastBallPos and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
-          local x,i,z = VectorPointProjectionOnLineSegment(myHero, mob, lastBallPos)
-          if SpellEREADY and z and GoS:GetDistance(x, mob) < 125 and EPred.HitChance == 1 then
-          CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-          end
-    end
+                  local x,i,z = VectorPointProjectionOnLineSegment(myHero, mob, lastBallPos)
+                  if SpellEREADY and z and GoS:GetDistance(x, mob) < 125 and EPred.HitChance == 1 then
+                  CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+                  end
+                end
 		
     end
 end
