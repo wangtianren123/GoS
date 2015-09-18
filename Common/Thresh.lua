@@ -128,7 +128,7 @@ OnLoop(function(myHero)
             local WPred = GetPredictionForPlayer(GoS:myHeroPos(),ally,GetMoveSpeed(ally),3300,250,950,90,false,true)
             local AllyPos = GetOrigin(ally)
             local mousePos = GetMousePos()
-            if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GoS:GetDistance(ally) < 950 then
+            if CanUseSpell(myHero,_W) and IsObjectAlive(ally) and GoS:GetDistance(myHero, ally) < 950 then
             CastSkillShot(_W,WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
 	    else
 	    MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
