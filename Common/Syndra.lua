@@ -1,6 +1,9 @@
 if GetObjectName(myHero) ~= "Syndra" then return end
 
-Balls = 0
+Balls = 3
+if Balls > 7 then
+Balls = 700
+end
 lastBallPos = Vector(0,0,0)
 	
 SyndraMenu = Menu("Syndra", "Syndra")
@@ -9,6 +12,7 @@ SyndraMenu.Combo:Boolean("Q", "Use Q", true)
 SyndraMenu.Combo:Boolean("W", "Use W", true)
 SyndraMenu.Combo:Boolean("E", "Use E", true)
 SyndraMenu.Combo:Boolean("R", "Use R", true)
+SyndraMenu.Combo:Boolean("QE", "Use QE Snipe", true)
 
 SyndraMenu:SubMenu("Harass", "Harass")
 SyndraMenu.Harass:Boolean("Q", "Use Q", true)
@@ -78,10 +82,11 @@ OnLoop(function(myHero)
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,800,925,190,false,true)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
+	local QEPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
 	
 	if SpellRREADY and SyndraMenu.Combo.R:Value() and GoS:ValidTarget(target, 725) then
 	
-        local ExtraDmg = 0
+                local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
@@ -92,7 +97,7 @@ OnLoop(function(myHero)
         end
 
 	if SpellQREADY and QPred.HitChance == 1 and SyndraMenu.Combo.Q:Value() and GoS:ValidTarget(target, 790) then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 	
 	if lastBallPos and SpellEREADY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
@@ -101,6 +106,11 @@ OnLoop(function(myHero)
           CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
           end
         end
+        
+        if SpellQREADY and SpellEREADY and QEPred.HitChance == 1 and SyndraMenu.Combo.QE:Value() and GoS:ValidTarget(target, 1250) then
+	CastSkillShot(_Q,QEPred.PredPos.x,QEPred.PredPos.y,QEPred.PredPos.z)
+	GoS:DelayAction(function() CastSkillShot(_E, QEPred.PredPos.x, QEPred.PredPos.y, QEPred.PredPos.z) end, 200)
+	end
 	
 	if SpellWREADY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
 	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
