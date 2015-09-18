@@ -149,7 +149,7 @@ OnProcessSpell(function(unit, spell)
       if unit == myHero then
         if spell.name:lower():find("attack") then 
 	        GoS:DelayAction(function() 
-                        if IOW:Mode() == "Combo" and GoS:ValidTarget(target, 850) VayneMenu.Combo.Q:Value() then
+                        if IOW:Mode() == "Combo" and GoS:ValidTarget(target, 850) and VayneMenu.Combo.Q:Value() then
 				local HeroPos = GetOrigin(myHero)
 				local mousePos = GetMousePos()
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
