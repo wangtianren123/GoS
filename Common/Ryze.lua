@@ -36,29 +36,29 @@ RyzeMenu.Drawings:Boolean("E", "Draw E Range", true)
 OnLoop(function(myHero)
   if IOW:Mode() == "Combo" then
 	
-	local target = GetCurrentTarget()
+        local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
 	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,false,true)
 
-	  if SpellRREADY and GoS:ValidTarget(target, 700) and RyzeMenu.Combo.R:Value() and GotBuff(myHero, "ryzepassivestack") == 4 then
-          CastSpell(_R)
-	  end  
+	if SpellRREADY and GoS:ValidTarget(target, 700) and RyzeMenu.Combo.R:Value() and GotBuff(myHero, "ryzepassivestack") == 4 then
+        CastSpell(_R)
+	end  
 	  
-	  if SpellWREADY and GoS:ValidTarget(target, GetCastRange(myHero,_W)) and RyzeMenu.Combo.W:Value() then
-          CastTargetSpell(target, _W)
-	  end
+	if SpellWREADY and GoS:ValidTarget(target, GetCastRange(myHero,_W)) and RyzeMenu.Combo.W:Value() then
+        CastTargetSpell(target, _W)
+	end
 						  
-	  if SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
-	  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
-	  elseif SpellQREADY and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
-	  CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-	  elseif SpellQREADY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
-	  CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-	  end
+	if SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
+	elseif SpellQREADY and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
+	elseif SpellQREADY and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
+	end
 						  
-	  if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and RyzeMenu.Combo.E:Value() then
-          CastTargetSpell(target, _E)
-	  end
+	if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and RyzeMenu.Combo.E:Value() then
+        CastTargetSpell(target, _E)
+	end
 		
   end
 
@@ -72,7 +72,6 @@ OnLoop(function(myHero)
 	if SpellWREADY and GoS:ValidTarget(target, GetCastRange(myHero,_W)) and RyzeMenu.Combo.W:Value() then
         CastTargetSpell(target, _W)
 	end
-						  
       
 	if SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
 	CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)  
