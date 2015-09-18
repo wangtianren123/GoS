@@ -207,13 +207,11 @@ OnLoop(function(myHero)
 	spellObj = nil
 	wardpos = nil
   
-  if GotBuff(myHero, "katarinarsound") > 0 then
-  IOW:DisableOrbwalking()
-  elseif GotBuff(myHero, "katarinarsound") < 1 then 
+  if GotBuff(myHero, "katarinarsound") < 1 then 
   IOW:EnableOrbwalking() 
   end
 
-  if IOW:Mode() == "Combo" then
+  if IOW:Mode() == "Combo" and waitTickCount < GetTickCount() then
       local target = GetCurrentTarget()
 	  
       if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
@@ -229,6 +227,9 @@ OnLoop(function(myHero)
       end
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
+      HoldPosition()
+      IOW:DisableOrbwalking() 
+      waitTickCount = GetTickCount() + 50
       CastSpell(_R)
       end
   end
@@ -455,3 +456,11 @@ function GetDrawText(enemy)
 		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
+
+OnProcessSpell(function(unit, spell)
+  if unit and spell then
+    if unit == myHero and spell.name:lower():find("katarinar") then
+      waitTickCount = GetTickCount() + 2500
+    end
+  end
+end)
