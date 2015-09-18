@@ -83,12 +83,10 @@ end
 
 local function IsInDistance(r, p1, p2, fast)
 		local fast = fast or false
-
 		if fast then
-
-			local p1y = p1.z or p1.y
-			local p2y = p2.z or p2.y
-			return (p1.x + r >= p2.x) and (p1.x - r <= p2.x) and (p1y + r >= p2y) and (p1y - r <= p2y)
+		local p1y = p1.z or p1.y
+		local p2y = p2.z or p2.y
+		return (p1.x + r >= p2.x) and (p1.x - r <= p2.x) and (p1y + r >= p2y) and (p1y - r <= p2y)
 		else
     	return GetDistanceSqr(p1, p2) < r*r
     end
@@ -105,19 +103,18 @@ end
 
 local function ValidTarget( object )
 	local objType = GetObjectType(object)
-		
 	if GetObjectName(myHero) == "LeeSin" then
-		return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object) and GetTeam(object) == GetTeam(myHero)
+	return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object) and GetTeam(object) == GetTeam(myHero)
 	else		
-		return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object)
+	return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object)
 	end
 end
 
 local findWardSlot = function ()
 	local slot = 0
 	for i,wardItem in pairs(wardItems) do
-		slot = GetItemSlot(myHero,wardItem.id)
-		if slot > 0 and CanUseSpell(myHero, slot) == READY then return slot end
+	slot = GetItemSlot(myHero,wardItem.id)
+	if slot > 0 and CanUseSpell(myHero, slot) == READY then return slot end
 	end
 end
 
@@ -126,11 +123,11 @@ local function putWard(pos0)
 
 	local pos = pos0
 	if not IsInDistance(wardRange, pos) then
-		pos = calcMaxPos(pos)
+	pos = calcMaxPos(pos)
 	end
 
 	if slot and slot > 0 then
-		CastSkillShot(slot,pos.x,pos.y,pos.z)
+	CastSkillShot(slot,pos.x,pos.y,pos.z)
 	end
 end
 
@@ -139,11 +136,11 @@ local spellLock = nil
 function wardJump( pos )
 	if not spellLock and CanUseSpell(myHero, spellSlot) == READY then
 		if jumpTarget then
-			CastTargetSpell(jumpTarget, spellSlot)
-			spellLock = GetTickCount()
+		CastTargetSpell(jumpTarget, spellSlot)
+		spellLock = GetTickCount()
 		elseif not wardLock then
-			wardLock = GetTickCount()
-			putWard(pos)
+		wardLock = GetTickCount()
+		putWard(pos)
 		end
 	end
 end
@@ -151,7 +148,7 @@ end
 local function GetJumpTarget()
 	local pos = mousePos
 	if not IsInDistance(wardRange, mousePos, GetOrigin(myHero)) then
-		pos = maxPos
+	pos = maxPos
 	end
 	for _,object in pairs(objectList) do
 	  if ValidTarget(object) and IsInDistance(200, GetOrigin(object), pos) then
@@ -164,22 +161,22 @@ end
 OnProcessSpell(function(unit,spell)
 
 	if unit and unit == myHero and spell and not spell.name:lower():find("katarina") then
-		spellObj = spell
-		wardpos = spellObj.endPos
+	spellObj = spell
+	wardpos = spellObj.endPos
 	end
 end)
 
 OnCreateObj(function(object)
 	local objType = GetObjectType(object)
 	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-		objectList[object] = object
+	objectList[object] = object
 	end
 end)
 
 OnDeleteObj(function(Object)
 	local objType = GetObjectType(object)
 	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-		objectList[object] = nil
+	objectList[object] = nil
 	end
 end)
 
@@ -191,21 +188,21 @@ OnLoop(function(myHero)
 	jumpTarget = GetJumpTarget()
 
 	if not spellLock and wardLock and jumpTarget and CanUseSpell(myHero, spellSlot) == READY then
-		CastTargetSpell(jumpTarget, spellSlot)
-		spellLock = GetTickCount()
+	CastTargetSpell(jumpTarget, spellSlot)
+	spellLock = GetTickCount()
 	end
 
 	if KatarinaMenu.Combo.WardJumpkey:Value() then
-		wardJump(mousePos)
-		MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+	wardJump(mousePos)
+	MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
 	end
 	
 	if wardLock and (wardLock + 500) < GetTickCount()  then
-		wardLock = nil
+	wardLock = nil
 	end
 	
 	if spellLock and (spellLock + 500) < GetTickCount()  then
-		spellLock = nil
+	spellLock = nil
 	end
 
 	jumpTarget = nil
@@ -223,15 +220,15 @@ OnLoop(function(myHero)
 	  
       if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
-	  end
+      end
 	  
       if SpellWREADY and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
-	  end
+      end
 	  
       if SpellEREADY and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
-	  end
+      end
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
       CastSpell(_R)
@@ -243,11 +240,11 @@ OnLoop(function(myHero)
 	  
       if SpellQREADY and KatarinaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
-	  end
+      end
 	  
       if SpellWREADY and KatarinaMenu.Harass.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
-	  end
+      end
 	  
       if SpellEREADY and KatarinaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
@@ -268,17 +265,17 @@ end
        if KatarinaMenu.Killsteal.SmartKS:Value() then
 	   
                 local ExtraDmg = 0
-		        if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-		        ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		        end
+		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
+	        ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
+		end
 				
-				if Ignite and KatarinaMenu.Misc.Autoignite:Value() then
+		if Ignite and KatarinaMenu.Misc.Autoignite:Value() then
                   if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
                 end
 		
-                if SpellWREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero)) and GoS:ValidTarget(enemy, 375) then 
+                                if SpellWREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero)) and GoS:ValidTarget(enemy, 375) then 
 				CastSpell(_W)
 				
 				elseif SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) and GoS:ValidTarget(enemy, 675) then 
@@ -301,13 +298,13 @@ end
 				CastSpell(_W)
 				end
 				
-	            if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
-			    wardJump(GetOrigin(enemy))
-		        CastTargetSpell(enemy, _Q)
-	            end
+	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and SpellQREADY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
+			        wardJump(GetOrigin(enemy))
+		                CastTargetSpell(enemy, _Q)
+	                        end
 				
-		end
 	end
+     end
 
 if KatarinaMenu.Misc.Autolvl:Value() then
  
@@ -318,35 +315,35 @@ if KatarinaMenu.Misc.Autolvl:Value() then
     elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
 	LevelSpell(_W)
     elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-    LevelSpell(_Q)
+        LevelSpell(_Q)
     elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-    LevelSpell(_Q)
+        LevelSpell(_Q)
     elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
 	LevelSpell(_R)
     elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
 	LevelSpell(_Q)
     elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-    LevelSpell(_W)
+        LevelSpell(_W)
     elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-    LevelSpell(_Q)
+        LevelSpell(_Q)
     elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-    LevelSpell(_W)
+        LevelSpell(_W)
     elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-    LevelSpell(_R)
+        LevelSpell(_R)
     elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-    LevelSpell(_W)
+        LevelSpell(_W)
     elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-    LevelSpell(_W)
+        LevelSpell(_W)
     elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-    LevelSpell(_E)
+        LevelSpell(_E)
     elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-    LevelSpell(_E)
+        LevelSpell(_E)
     elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-    LevelSpell(_R)
+        LevelSpell(_R)
     elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-    LevelSpell(_E)
+        LevelSpell(_E)
     elseif GetLevel(myHero) == 18 then
-    LevelSpell(_E)
+        LevelSpell(_E)
     end
 end
 
@@ -397,7 +394,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		CastSpell(_W)
 		end
 		
-	    if SpellEREADY and KatarinaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 700) then
+	        if SpellEREADY and KatarinaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 700) then
 		CastTargetSpell(mob, _E)
 		end
 		
@@ -411,7 +408,7 @@ if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroP
   if KatarinaMenu.Drawings.Text:Value() then
 	for _, enemy in pairs(GoS:GetEnemyHeroes()) do
 		if GoS:ValidTarget(enemy) then
-		    local enemyPos = GetOrigin(enemy)
+		        local enemyPos = GetOrigin(enemy)
 			local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
 			local enemyText, color = GetDrawText(enemy)
 			DrawText(enemyText, 20, drawpos.x, drawpos.y, color)
