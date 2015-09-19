@@ -288,7 +288,7 @@ end)
 
 addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
-  if IsInDistance(target, 800) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
+  if GoS:IsInDistance(target, 800) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
