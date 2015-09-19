@@ -87,7 +87,7 @@ OnLoop(function(myHero)
 	        end
 	
 	        if SpellRREADY and GoS:ValidTarget(target, 700) then
-                local damage = GoS:CalcDamage(myHero, target, 0, 25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero)
+                local damage = GoS:CalcDamage(myHero, target, 0, 25 + 200*GetCastLevel(myHero,_R) + 1.25*GetBonusAP(myHero))
                   if RPred.HitChance == 1 and damage > GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
                   end
