@@ -83,13 +83,13 @@ OnLoop(function(myHero)
 	        CastTargetSpell(target, _Q)
 		end
 				 
-		if SpellWREADY and GoS:ValidTarget(target, 700) and WPred.HitChance == 1 and ViktorMenu.Combo.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(myHero) < 70 then
+		if SpellWREADY and GoS:ValidTarget(target, 700) and WPred.HitChance == 1 and ViktorMenu.Combo.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 70 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	        end
 	
 	        if SpellRREADY and GoS:ValidTarget(target, 700) and RPred.HitChance == 1 and ViktorMenu.Combo.R:Value() and damage > GetCurrentHP(target) then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-                elseif GetCastName(myHero, _R) == "viktorchaosstormguide" and GoS:ValidTarget(target, 1000) then
+                elseif GetCastName(myHero, _R) == "viktorchaosstormguide" and GoS:ValidTarget(target, 1000) and ViktorMenu.Combo.R:Value() then
                 CastSkillShot(_R, targetPos.x,targetPos.y, targetPos.z)
                 end
         
