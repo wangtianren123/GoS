@@ -79,7 +79,7 @@ OnLoop(function(myHero)
 		  end
 		end
 					
-		if SpellQREADY and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) and ViktorMenu.Combo.Q:Value() then
+		if SpellQREADY and GoS:ValidTarget(target, 700) and ViktorMenu.Combo.Q:Value() then
 	        CastTargetSpell(target, _Q)
 		end
 				 
@@ -109,11 +109,11 @@ OnLoop(function(myHero)
 		  end
 		end
 					
-		if SpellQREADY and ViktorMenu.Harass.Q:Value() then
+		if SpellQREADY and GoS:ValidTarget(target, 700) and ViktorMenu.Harass.Q:Value() then
 		CastTargetSpell(target, _Q)
 		end
 					  
-		if SpellWREADY and WPred.HitChance == 1 and ViktorMenu.Harass.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(myHero) < 70 then
+		if SpellWREADY and WPred.HitChance == 1 and :ValidTarget(target, 700) and ViktorMenu.Harass.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(myHero) < 70 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 					 
@@ -135,15 +135,14 @@ OnLoop(function(myHero)
           end
         end
 				
-	if SpellQREADY and GoS:ValidTarget(enemy, GetCastRange(myHero,_Q)) and ViktorMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero)) then
+	if SpellQREADY and GoS:ValidTarget(enemy, 700) and ViktorMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q) + 20 + 0.2*GetBonusAP(myHero)) then
         CastTargetSpell(enemy, _Q)
         elseif SpellEREADY and EPred.HitChance == 1 and GoS:ValidTarget(enemy,1225) and ViktorMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_E) + 25 + 0.7*GetBonusAP(myHero)) then
 	local StartPos = Vector(myHero) - 525 * (Vector(myHero) - Vector(enemy)):normalized()
           if EPred.HitChance == 1 then
           CastSkillShot3(_E,StartPos,EPred.PredPos)
 	  end
-	CastSkillShot3(_E,StartPos,EPred.PredPos)
-	elseif SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, GetCastRange(myHero, _R)) and ViktorMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero)) then  
+	elseif SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 700) and ViktorMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 100*GetCastLevel(myHero,_R) + 50 + 0.55*GetBonusAP(myHero)) then  
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)    
         end
 		
