@@ -458,8 +458,8 @@ function GetDrawText(enemy)
 end
 
 OnProcessSpell(function(unit, spell)
-  if unit and spell then
-    if unit == myHero and spell.name:lower():find("katarinar") then
+  if unit and unit == myHero and spell then
+    if spell.name:lower():find("katarinar") then
       waitTickCount = GetTickCount() + 2500
     end
   end
