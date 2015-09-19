@@ -101,13 +101,12 @@ OnLoop(function(myHero)
         CastSpell(_R)
 	end
 		
-        local target = GetCurrentTarget()
-	if GotBuff(myHero, "vaynetumblefade") > 0 and VayneMenu.Combo.R.KeepInvis:Value() and GoS:ValidTarget(target, VayneMenu.Combo.R.KeepInvisdis:Value()) and GoS:GetDistance(target) < VayneMenu.Combo.R.KeepInvisdis:Value() then 
-	IOW:DisableAutoAttacks()
-	elseif GotBuff(myHero, "vaynetumblefade") > 0 and GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
+        if GotBuff(myHero, "vaynetumblefade") > 0 and GoS:ValidTarget(target, 550) and GoS:GetDistance(target) > VayneMenu.Combo.R.KeepInvisdis:Value() then
 	IOW:EnableAutoAttacks()
 	elseif GotBuff(myHero, "vaynetumblefade") < 1 then
 	IOW:EnableAutoAttacks()
+	elseif GotBuff(myHero, "vaynetumblefade") > 0 and VayneMenu.Combo.R.KeepInvis:Value() and GoS:ValidTarget(target, VayneMenu.Combo.R.KeepInvisdis:Value()) and GoS:GetDistance(myHero, target) < VayneMenu.Combo.R.KeepInvisdis:Value() then 
+	IOW:DisableAutoAttacks()
 	end
 	
    end
