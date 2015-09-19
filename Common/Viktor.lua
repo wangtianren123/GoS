@@ -113,7 +113,7 @@ OnLoop(function(myHero)
 		CastTargetSpell(target, _Q)
 		end
 					  
-		if SpellWREADY and WPred.HitChance == 1 and :ValidTarget(target, 700) and ViktorMenu.Harass.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(myHero) < 70 then
+		if SpellWREADY and WPred.HitChance == 1 and GoS:ValidTarget(target, 700) and ViktorMenu.Harass.W:Value() and 100*GetCurrentHP(target)/GetMaxHP(myHero) < 70 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 					 
