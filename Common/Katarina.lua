@@ -162,6 +162,10 @@ OnProcessSpell(function(unit,spell)
 	spellObj = spell
 	wardpos = spellObj.endPos
 	end
+
+        if unit and unit == myHero and spellspell.name:lower():find("katarinar") then
+        waitTickCount = GetTickCount() + 2500
+        end
 end)
 
 OnCreateObj(function(object)
@@ -230,7 +234,7 @@ OnLoop(function(myHero)
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
       HoldPosition()
-      IOW:DisableOrbwalking() 
+      --IOW:DisableOrbwalking() 
       waitTickCount = GetTickCount() + 50
       CastSpell(_R)
       end
@@ -458,11 +462,3 @@ function GetDrawText(enemy)
 		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
-
-OnProcessSpell(function(unit, spell)
-  if unit and unit == myHero and spell then
-    if spell.name:lower():find("katarinar") then
-      waitTickCount = GetTickCount() + 2500
-    end
-  end
-end)
