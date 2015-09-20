@@ -857,8 +857,7 @@ OnLoop(function(myHero)
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
-	   local Damage = GoS:CalcDamage(myHero, enemy, 10*GetCastLevel(myHero,_E)+10+(0.6*(GetBaseDamage(myHero)+GetBonusDmg(myHero))) + (((({[1]=10,[2]=14,[3]=19,[4]=25,[5]=32})[GetCastLevel(myHero,_E)])+((0.025*GetCastLevel(myHero,_E)+0.175)*(GetBaseDamage(myHero)+GetBonusDmg(myHero))))*(GotBuff(enemy,"kalistaexpungemarker")-1)))
-
+	   local Damage = GoS:CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
            local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1500,250,1150,50,true,true)
 	   
 	   if Ignite and KalistaMenu.Misc.AutoIgnite:Value() then
@@ -912,13 +911,49 @@ OnLoop(function(myHero)
 	end
 	
 if KalistaMenu.Misc.Autolvl:Value() then  
-local leveltable = {_E, _Q, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W} 
-LevelSpell(leveltable[GetLevel(myHero)])
+
+if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
+	LevelSpell(_W)
+elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
+	LevelSpell(_Q)
+elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
+	LevelSpell(_R)
+elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
+	LevelSpell(_E)
+elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
+        LevelSpell(_E)
+elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
+        LevelSpell(_Q)
+elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
+        LevelSpell(_R)
+elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
+        LevelSpell(_W)
+elseif GetLevel(myHero) == 18 then
+        LevelSpell(_W)
+end
 end
 	
     local killableminions = 0
     for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-    local Damage = GoS:CalcDamage(myHero, minion, 10*GetCastLevel(myHero,_E)+10+(0.6*(GetBaseDamage(myHero)+GetBonusDmg(myHero))) + (((({[1]=10,[2]=14,[3]=19,[4]=25,[5]=32})[GetCastLevel(myHero,_E)])+((0.025*GetCastLevel(myHero,_E)+0.175)*(GetBaseDamage(myHero)+GetBonusDmg(myHero))))*(GotBuff(minion,"kalistaexpungemarker")-1)))
+    local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
    
       if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion):find("Siege")) and GoS:ValidTarget(minion, GetCastRange(myHero,_E)) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
       CastSpell(_E)
@@ -929,7 +964,7 @@ end
       end
 	  
       if Damage > 0 and Damage > GetCurrentHP(minion) and GoS:ValidTarget(minion, GetCastRange(myHero,_E)) then 
-      killableminions = killableminions + 1
+      killableminions = killableminions	+ 1
       end
 	
     end
@@ -941,7 +976,7 @@ end
       end
 	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-    local Damage = GoS:CalcDamage(myHero, mob, 10*GetCastLevel(myHero,_E)+10+(0.6*(GetBaseDamage(myHero)+GetBonusDmg(myHero))) + (((({[1]=10,[2]=14,[3]=19,[4]=25,[5]=32})[GetCastLevel(myHero,_E)])+((0.025*GetCastLevel(myHero,_E)+0.175)*(GetBaseDamage(myHero)+GetBonusDmg(myHero))))*(GotBuff(mob,"kalistaexpungemarker")-1)))
+    local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
     if GoS:IsInDistance(mob, GetCastRange(myHero,_E)) then  
 	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
