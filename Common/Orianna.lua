@@ -64,12 +64,13 @@ OnLoop(function(myHero)
       CastTargetSpell(myHero, _E)
       end
     end	
+end
 	
 	if IOW:Mode() == "Harass" then
 	
     local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
+	l ocal QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if SpellQREADY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 825) then
     CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
@@ -79,8 +80,8 @@ OnLoop(function(myHero)
 	local BallPos = Ball or myHero
 	  if GetDistance(BallPos, target) < 245 then
 	  CastSpell(_W)
-      end
-    end
+          end
+       end
 
     if Ball ~= nil and SpellEREADY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
       local x,i,z = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Ball)
@@ -88,6 +89,7 @@ OnLoop(function(myHero)
       CastTargetSpell(myHero, _E)
       end
     end	
+end
 
 end)
 
