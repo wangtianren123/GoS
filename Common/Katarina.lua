@@ -211,9 +211,9 @@ OnLoop(function(myHero)
   IOW:EnableOrbwalking() 
   end
 
- if waitTickCount > GetTickCount() then return end
-
   if IOW:Mode() == "Combo" then
+       
+      if waitTickCount > GetTickCount() then return end
       local target = GetCurrentTarget()
 	  
       if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
