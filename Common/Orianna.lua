@@ -53,7 +53,7 @@ OnLoop(function(myHero)
 	
 	if SpellWREADY and OriannaMenu.Combo.W:Value() and GoS:ValidTarget(target, 825) then
 	local BallPos = Ball or myHero
-	  if GetDistance(BallPos, target) < 245 then
+	  if GoS:GetDistance(BallPos, target) < 245 then
 	  CastSpell(_W)
       end
     end
@@ -78,7 +78,7 @@ end
 	
 	if SpellWREADY and OriannaMenu.Harass.W:Value() and GoS:ValidTarget(target, 825) then
 	local BallPos = Ball or myHero
-	  if GetDistance(BallPos, target) < 245 then
+	  if GoS:GetDistance(BallPos, target) < 245 then
 	  CastSpell(_W)
           end
        end
@@ -109,6 +109,6 @@ end)
 
 OnCreateObj(function(Object) 
 if GetObjectBaseName(Object) == "TheDoomBall" and GetTeam(Object) == GetTeam(myHero) then
-Ball = Vector(Object)
+Ball = GetOrigin(Object)
 end
 end)
