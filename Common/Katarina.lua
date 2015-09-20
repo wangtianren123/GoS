@@ -162,10 +162,6 @@ OnProcessSpell(function(unit,spell)
 	spellObj = spell
 	wardpos = spellObj.endPos
 	end
-
-        if unit and unit == myHero and spellspell.name:lower():find("katarinar") then
-        waitTickCount = GetTickCount() + 2500
-        end
 end)
 
 OnCreateObj(function(object)
@@ -211,13 +207,13 @@ OnLoop(function(myHero)
 	spellObj = nil
 	wardpos = nil
   
-  if GotBuff(myHero, "katarinarsound") < 1 then 
+  if GotBuff(myHero, "katarinarsound") > 0 then
+  IOW:DisableOrbwalking()
+  elseif GotBuff(myHero, "katarinarsound") < 1 then 
   IOW:EnableOrbwalking() 
   end
 
   if IOW:Mode() == "Combo" then
-       
-      if waitTickCount > GetTickCount() then return end
       local target = GetCurrentTarget()
 	  
       if SpellQREADY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
@@ -233,9 +229,7 @@ OnLoop(function(myHero)
       end
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
-      HoldPosition()
-      --IOW:DisableOrbwalking() 
-      waitTickCount = GetTickCount() + 50
+      IOW:DisableOrbwalking()
       CastSpell(_R)
       end
   end
