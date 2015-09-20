@@ -8,7 +8,7 @@ OriannaMenu.Combo:Boolean("Q", "Use Q", true)
 OriannaMenu.Combo:Boolean("W", "Use W", true)
 OriannaMenu.Combo:Boolean("E", "Use E", true)
 OriannaMenu.Combo:Boolean("AutoR", "Auto R", true)
-OriannaMenu.Harass:Slider("Renemy", "if X Around", 3, 0, 5, 1)
+OriannaMenu.Combo:Slider("Renemy", "if X Around", 3, 0, 5, 1)
 
 OriannaMenu:SubMenu("Harass", "Harass")
 OriannaMenu.Harass:Boolean("Q", "Use Q", true)
