@@ -12,7 +12,7 @@ KatarinaMenu:SubMenu("Harass", "Harass")
 KatarinaMenu.Harass:Boolean("Q", "Use Q", true)
 KatarinaMenu.Harass:Boolean("W", "Use W", true)
 KatarinaMenu.Harass:Boolean("E", "Use E", true)
-KatarinaMenu.Harass:Boolean("AutoQ", "Auto Q", true)
+KatarinaMenu.Harass:Boolean("AutoQ", "Auto Q", false)
 KatarinaMenu.Harass:Boolean("AutoW", "Auto W", true)
 
 KatarinaMenu:SubMenu("Killsteal", "Killsteal")
