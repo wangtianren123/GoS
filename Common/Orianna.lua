@@ -96,14 +96,13 @@ end)
 OnProcessSpell(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
-        if spell.name:lower():find("OrianaIzunaCommand") then 
+                if spell.name:lower():find("OrianaIzunaCommand") then 
 		Ball = spell.endPos
 		end
 		
 		if spell.name:lower():find("OrianaRedactCommand") then 
 		Ball = spell.target
 		end
-          end
        end
     end
 end)
