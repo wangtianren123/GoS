@@ -103,6 +103,10 @@ OnProcessSpell(function(unit, spell)
 		if spell.name:lower():find("OrianaRedactCommand") then 
 		Ball = spell.target
 		end
+          end
+       end
+    end
+end)
 
 OnCreateObj(function(Object) 
 if GetObjectBaseName(Object) == "TheDoomBall" and GetTeam(Object) == GetTeam(myHero) then
