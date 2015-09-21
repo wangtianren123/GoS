@@ -108,9 +108,3 @@ OnProcessSpell(function(unit, spell)
         end
     end
 end)
-
-OnCreateObj(function(Object) 
-if GetObjectBaseName(Object) == "TheDoomBall" then
-Ball = Object
-end
-end)
