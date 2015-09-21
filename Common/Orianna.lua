@@ -70,8 +70,6 @@ end
 	
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
-
 	local QPred = GetPredictionForPlayer(Ball or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if SpellQREADY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 825) then
@@ -93,6 +91,12 @@ end
     end	
 end
 
+SpellQREADY = CanUseSpell(myHero,_Q) == READY
+SpellWREADY = CanUseSpell(myHero,_W) == READY
+SpellEREADY = CanUseSpell(myHero,_E) == READY
+SpellRREADY = CanUseSpell(myHero,_R) == READY
+SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+
 end)
 
 OnProcessSpell(function(unit, spell)
@@ -107,4 +111,10 @@ OnProcessSpell(function(unit, spell)
 		end
         end
     end
+end)
+
+OnCreateObj(function(Object) 
+if GetObjectBaseName(Object) == "TheDoomBall" then
+Ball = GetOrigin(Object)
+end
 end)
