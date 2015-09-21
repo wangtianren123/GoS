@@ -41,7 +41,7 @@ OnLoop(function(myHero)
 	
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(Ball or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
+	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if SpellQREADY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
@@ -66,7 +66,7 @@ end
 	
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(Ball or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
+	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if SpellQREADY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 825) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
