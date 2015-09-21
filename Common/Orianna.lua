@@ -36,10 +36,6 @@ OriannaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 OriannaMenu.Drawings:Boolean("E", "Draw E Range", true)
 
 OnLoop(function(myHero)
-
-        if Ball and GoS:GetDistance(myHero, Ball) > 1250 then
-        Ball = nil
-        end
 	
 	if IOW:Mode() == "Combo" then
 	
