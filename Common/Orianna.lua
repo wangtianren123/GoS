@@ -115,6 +115,6 @@ end)
 
 OnCreateObj(function(Object) 
 if GetObjectBaseName(Object) == "TheDoomBall" then
-Ball = GetOrigin(Object)
+Ball = Object
 end
 end)
