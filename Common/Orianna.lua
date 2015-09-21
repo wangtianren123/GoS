@@ -59,7 +59,7 @@ OnLoop(function(myHero)
         end
 
     if Ball ~= nil and SpellEREADY and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
-      local x,i,z = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Ball)
+      local x,i,z = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
       if y and GoS:GetDistance(x, target) < 80 then
       CastTargetSpell(myHero, _E)
       end
@@ -84,7 +84,7 @@ end
         end
 
     if Ball ~= nil and SpellEREADY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
-      local x,i,z = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Ball)
+      local x,i,z = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
       if y and GoS:GetDistance(x, target) < 80 then
       CastTargetSpell(myHero, _E)
       end
