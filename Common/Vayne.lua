@@ -163,7 +163,7 @@ OnProcessSpell(function(unit, spell)
                                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
                         end
-                end, spell.windUpTime*1000)
+                end, GetWindUp(myHero)*1000)
 	end		
       end
   end
