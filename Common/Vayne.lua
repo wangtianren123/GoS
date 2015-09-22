@@ -279,3 +279,5 @@ addInterrupterCallback(function(target, spellType)
   CastTargetSpell(target, _E)
   end
 end)
+
+GoS:AddGapcloseEvent(_E, 550, true) -- hi Copy-Pasters ^^
