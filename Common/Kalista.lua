@@ -237,6 +237,7 @@ OnLoop(function(myHero)
 	    end
 	end
 	
+        local HeroPos = GetOrigin(myHero)
 	local mousePos = GetMousePos()
 	
 	--pos1
