@@ -280,4 +280,4 @@ addInterrupterCallback(function(target, spellType)
   end
 end)
 
-GoS:AddGapcloseEvent(_E, 550, true) -- hi Copy-Pasters ^^
+GoS:AddGapcloseEvent(_E, 450, true) -- hi Copy-Pasters ^^
