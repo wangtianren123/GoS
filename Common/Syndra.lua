@@ -210,7 +210,8 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 end
   
 if SyndraMenu.Misc.Autolvl:Value() then
-
+local leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E} 
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if SyndraMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,790,3,100,0xff00ff00) end
