@@ -155,7 +155,7 @@ OnProcessSpell(function(unit, spell)
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
                                 local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
 							  
-                                if DistanceAfterTumble < 630 and DistanceAfterTumble > 200 then
+                                if DistanceAfterTumble < 730 and DistanceAfterTumble > 200 then
                                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
   
