@@ -145,7 +145,7 @@ OnLoop(function(myHero)
 	end
 	
 if AhriMenu.Misc.Autolvl:Value() then  
-local leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, W} 
+local leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W} 
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
