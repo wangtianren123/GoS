@@ -172,9 +172,9 @@ end
 
 end
 
-if RyzeMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if RyzeMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if RyzeMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if RyzeMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,900,3,100,0xff00ff00) end
+if RyzeMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,3,100,0xff00ff00) end
+if RyzeMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,3,100,0xff00ff00) end
 
 SpellQREADY = CanUseSpell(myHero,_Q) == READY
 SpellWREADY = CanUseSpell(myHero,_W) == READY
@@ -183,3 +183,4 @@ SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
 
 end)	
+GoS:AddGapcloseEvent(_W, 600, true) -- hi Copy-Pasters ^^
