@@ -81,10 +81,9 @@ OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 
 		local unit = GetCurrentTarget()
-		local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
 		for i=0, 63 do
@@ -93,19 +92,19 @@ OnLoop(function(myHero)
 		    end
 		end
       
-		if IsFacing(target, 800) and GoS:ValidTarget(target, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 60 then
+		if IsFacing(unit, 800) and GoS:ValidTarget(unit, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 60 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
-	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
-		CastTargetSpell(target, _E)
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
+		CastTargetSpell(unit, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(unit, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 and not poisoned then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
@@ -113,11 +112,10 @@ OnLoop(function(myHero)
 
     if IOW:Mode() == "Harass" then
 	
-                local unit = GetCurrentTarget()
-		local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
+		local unit = GetCurrentunit()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
 		for i=0, 63 do
@@ -126,15 +124,15 @@ OnLoop(function(myHero)
 		    end
 		end
 		
-	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
-		CastTargetSpell(target, _E)
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
+		CastTargetSpell(unit, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Harass.Q:Value() and GoS:ValidTarget(unit, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Harass.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
@@ -168,45 +166,8 @@ OnLoop(function(myHero)
 	end
 
 if CassiopeiaMenu.Misc.Autolvl:Value() then    
-
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) == 18 then
-        LevelSpell(_W)
-end
-
+local leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W} 
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
