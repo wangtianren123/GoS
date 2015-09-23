@@ -37,25 +37,24 @@ OnLoop(function(myHero)
   if IOW:Mode() == "Combo" then
 	
         local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
-	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,false,true)
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,true,true)
+	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,false,true)
 
 	if SpellRREADY and GoS:ValidTarget(target, 700) and RyzeMenu.Combo.R:Value() and GotBuff(myHero, "ryzepassivestack") == 4 then
         CastSpell(_R)
 	end  
 	  
-	if SpellWREADY and GoS:ValidTarget(target, GetCastRange(myHero,_W)) and RyzeMenu.Combo.W:Value() then
+	if SpellWREADY and GoS:ValidTarget(target, 600) and RyzeMenu.Combo.W:Value() then
         CastTargetSpell(target, _W)
 	end
 						    
-	
-	if SpellQREADY and Q2Pred.HitChance == 1 and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+	if SpellQREADY and Q2Pred.HitChance == 1 and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, 900) then
 	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-        elseif SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+        elseif SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, 900) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 						  
-	if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and RyzeMenu.Combo.E:Value() then
+	if SpellEREADY and GoS:ValidTarget(target, 600) and RyzeMenu.Combo.E:Value() then
         CastTargetSpell(target, _E)
 	end
 		
@@ -64,20 +63,20 @@ OnLoop(function(myHero)
   if IOW:Mode() == "Harass" then
 	
 	local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,true,true)
-	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,GetCastRange(myHero,_Q),55,false,true)
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,true,true)
+	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,false,true)
 	 	  
-	if SpellWREADY and GoS:ValidTarget(target, GetCastRange(myHero,_W)) and RyzeMenu.Harass.W:Value() then
+	if SpellWREADY and GoS:ValidTarget(target, 600) and RyzeMenu.Harass.W:Value() then
         CastTargetSpell(target, _W)
 	end
       
-	if SpellQREADY and Q2Pred.Hitchance == 1 and RyzeMenu.Harass.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+	if SpellQREADY and Q2Pred.Hitchance == 1 and RyzeMenu.Harass.Q:Value() and GoS:ValidTarget(target, 900) then
 	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
-        elseif SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Harass.Q:Value() and GoS:ValidTarget(target, GetCastRange(myHero,_Q)) then
+        elseif SpellQREADY and QPred.HitChance == 1 and RyzeMenu.Harass.Q:Value() and GoS:ValidTarget(target, 900) then
 	CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 						  
-	if SpellEREADY and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and RyzeMenu.Harass.E:Value() then
+	if SpellEREADY and GoS:ValidTarget(target, 600) and RyzeMenu.Harass.E:Value() then
         CastTargetSpell(target, _E)
 	end
 	
@@ -85,7 +84,7 @@ OnLoop(function(myHero)
 
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
-	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,GetCastRange(myHero,_Q),55,true,true)
+	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,900,55,true,true)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
@@ -97,11 +96,11 @@ OnLoop(function(myHero)
                   end
                 end
 		
-		if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy,GetCastRange(myHero,_Q)) and RyzeMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_Q)+35+.55*GetBonusAP(myHero)+0.015*GetMaxMana(myHero)+0.005*GetCastLevel(myHero,_Q)*GetMaxMana(myHero) + ExtraDmg) then 
+		if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 900) and RyzeMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25*GetCastLevel(myHero,_Q)+35+.55*GetBonusAP(myHero)+0.015*GetMaxMana(myHero)+0.005*GetCastLevel(myHero,_Q)*GetMaxMana(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-		elseif SpellWREADY and GoS:ValidTarget(enemy,GetCastRange(myHero,_W)) and RyzeMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 60+20*GetCastLevel(myHero,_W)+0.4*GetBonusAP(myHero)+0.025*GetMaxMana(myHero) + ExtraDmg) then
+		elseif SpellWREADY and GoS:ValidTarget(enemy, 600) and RyzeMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 60+20*GetCastLevel(myHero,_W)+0.4*GetBonusAP(myHero)+0.025*GetMaxMana(myHero) + ExtraDmg) then
 		CastTargetSpell(enemy, _W)
-		elseif SpellEREADY and GoS:ValidTarget(enemy,GetCastRange(myHero,_E)) and RyzeMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20+16*GetCastLevel(myHero,_E)+0.2*GetBonusAP(myHero)+0.02*GetMaxMana(myHero) + ExtraDmg) then
+		elseif SpellEREADY and GoS:ValidTarget(enemy, 600) and RyzeMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20+16*GetCastLevel(myHero,_E)+0.2*GetBonusAP(myHero)+0.02*GetMaxMana(myHero) + ExtraDmg) then
 		CastTargetSpell(enemy, _E)
 		end
 		
@@ -116,15 +115,15 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		CastSpell(_R)
 		end
 		
-		if SpellWREADY and RyzeMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, GetCastRange(myHero, _W)) then
+		if SpellWREADY and RyzeMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 600) then
 		CastTargetSpell(mob, _W)
 		end
 		
-		if SpellQREADY and RyzeMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, GetCastRange(myHero, _Q)) then
+		if SpellQREADY and RyzeMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 900) then
 		CastSkillShot(_Q, mobPos.x, mobPos.y, mobPos.z)
 		end
 		
-	        if SpellEREADY and RyzeMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, GetCastRange(myHero, _E)) then
+	        if SpellEREADY and RyzeMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 600) then
 		CastTargetSpell(mob, _E)
 		end
 		
