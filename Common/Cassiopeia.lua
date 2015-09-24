@@ -86,7 +86,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") > 0 then
+		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") then
                 poisoned = true
                 end
       
@@ -116,7 +116,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") > 0 then
+		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") then
                 poisoned = true
                 end
 		
@@ -169,7 +169,7 @@ end
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
 		local poisoned = false
-	        if GotBuff(minion, "poison") > 0 then
+	        if GotBuff(minion, "poison") then
                 poisoned = true
 		end
 		
@@ -203,7 +203,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
                 local poisoned = false
-                if GotBuff(mob, "poison") > 0 then
+                if GotBuff(mob, "poison") then
 		poisoned = true
 		end
 		
