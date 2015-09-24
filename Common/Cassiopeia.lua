@@ -166,8 +166,6 @@ local leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, 
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-end
-
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
 		local poisoned = false
