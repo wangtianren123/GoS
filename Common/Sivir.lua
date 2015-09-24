@@ -123,8 +123,9 @@ OnProcessSpell(function(unit, spell)
                                  if IOW:Mode() == "Harass" and GoS:ValidTarget(target, 600) and SivirMenu.Harass.W:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SivirMenu.Harass.Mana:Value() then	  
                                  CastSpell(_W)
                                  end
-                        end
+                       
                 end, GetWindUp(myHero)*1000)
+            end
       end
   end
 end)
