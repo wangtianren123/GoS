@@ -36,8 +36,8 @@ OnLoop(function(myHero)
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1350,250,1075,85,false,true)
 	
 	if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1075) and SivirMenu.Combo.Q:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SivirMenu.Combo.QMana:Value() then
-                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-  end
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
 	
 	if GetItemSlot(myHero,3153) > 0 and SivirMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
@@ -67,12 +67,12 @@ OnLoop(function(myHero)
 
  if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SivirMenu.Harass.Mana:Value() then
  
-  local target = GetCurrentTarget()
+        local target = GetCurrentTarget()
  	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1350,250,1075,85,false,true)
 	
 	if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1075) and SivirMenu.Harass.Q:Value() then
-                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-  end
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
 
  end
  
@@ -90,13 +90,13 @@ OnLoop(function(myHero)
 	CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 		
-    end
+end
   
 if SivirMenu.Misc.Autolvl:Value() then
       if SivirMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _Q, _E, _Q , _R _Q , _W, _Q , _W, _R, _W, _W, _E, _E, _R, _E, _E}
-				elseif SivirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _W, _E, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
-				elseif SivirMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_E, _Q, _E, _W, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W,}
-				end
+      elseif SivirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _W, _E, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+      elseif SivirMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_E, _Q, _E, _W, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W,}
+      end
 end
 
 if SivirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1075,3,100,0xff00ff00) end
@@ -116,11 +116,13 @@ OnProcessSpell(function(unit, spell)
         if spell.name:lower():find("attack") then 
 	        GoS:DelayAction(function() 
 
-                        						                                 if IOW:Mode() == "Combo" and GoS:ValidTarget(target, 600) and SivirMenu.Combo.W:Value() then	  
-CastSpell(_W)					                                                           end
+                                 if IOW:Mode() == "Combo" and GoS:ValidTarget(target, 600) and SivirMenu.Combo.W:Value() then	  
+                                 CastSpell(_W)		
+ 			         end
+                                                
                                  if IOW:Mode() == "Harass" and GoS:ValidTarget(target, 600) and SivirMenu.Harass.W:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SivirMenu.Harass.Mana:Value() then	  
-CastSpell(_W)
-end
+                                 CastSpell(_W)
+                                 end
                         end
                 end, GetWindUp(myHero)*1000)
       end
