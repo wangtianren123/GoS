@@ -80,29 +80,31 @@ OnLoop(function(myHero)
 
     if IOW:Mode() == "Combo" then
 
-		local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
+		local unit = GetCurrentTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") then
-                poisoned = true
-                end
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+		        poisoned = true
+		    end
+		end
       
-		if IsFacing(target, 800) and GoS:ValidTarget(target, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 60 then
+		if IsFacing(unit, 800) and GoS:ValidTarget(unit, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 60 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
-	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
-		CastTargetSpell(target, _E)
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
+		CastTargetSpell(unit, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(unit, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 and not poisoned then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 and not poisoned then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
@@ -110,25 +112,27 @@ OnLoop(function(myHero)
 
     if IOW:Mode() == "Harass" then
 	
-                local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,850,75,false,true)
-		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
+		local unit = GetCurrentunit()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
+		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") then
-                poisoned = true
-                end
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
+		end
 		
-	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) and poisoned then
-		CastTargetSpell(target, _E)
+	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
+		CastTargetSpell(unit, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Harass.Q:Value() and GoS:ValidTarget(unit, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) and WPred.HitChance == 1 then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Harass.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
@@ -168,9 +172,12 @@ end
 
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
+                local unit = minion
 		local poisoned = false
-	        if GotBuff(minion, "poison") then
-                poisoned = true
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
 		end
 		
 		local ExtraDmg = 0
@@ -202,9 +209,13 @@ end
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
-                local poisoned = false
-                if GotBuff(mob, "poison") then
-		poisoned = true
+                local unit = mob
+     	        local poisoned = false
+	        local poisoned = false
+		for i=0, 63 do
+		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
+			poisoned = true
+		    end
 		end
 		
         if IOW:Mode() == "LaneClear" then
