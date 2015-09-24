@@ -112,7 +112,7 @@ OnLoop(function(myHero)
 
     if IOW:Mode() == "Harass" then
 	
-		local unit = GetCurrentunit()
+		local unit = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
