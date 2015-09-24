@@ -98,7 +98,7 @@ OnLoop(function(myHero)
 		CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:VaplidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
