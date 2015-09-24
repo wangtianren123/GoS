@@ -86,7 +86,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "Poison") > 0 then
+		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") > 0 then
                 poisoned = true
                 end
       
@@ -98,7 +98,7 @@ OnLoop(function(myHero)
 		CastTargetSpell(target, _E)
 		end
 			
-		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 850) and QPred.HitChance == 1 then
+		if CanUseSpell(myHero, _Q) == READY and CassiopeiaMenu.Combo.Q:Value() and GoS:VaplidTarget(target, 850) and QPred.HitChance == 1 then
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
@@ -116,7 +116,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		if GoS:ValidTarget(target, 700) and GotBuff(target, "Poison") > 0 then
+		if GoS:ValidTarget(target, 700) and GotBuff(target, "poison") > 0 then
                 poisoned = true
                 end
 		
@@ -169,7 +169,7 @@ end
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
 		local poisoned = false
-	        if GotBuff(minion, "Poison") > 0 then
+	        if GotBuff(minion, "poison") > 0 then
                 poisoned = true
 		end
 		
@@ -203,7 +203,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
                 local poisoned = false
-                if GotBuff(mob, "Poison") > 0 then
+                if GotBuff(mob, "poison") > 0 then
 		poisoned = true
 		end
 		
