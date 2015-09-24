@@ -97,6 +97,7 @@ if SivirMenu.Misc.Autolvl:Value() then
       elseif SivirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _W, _E, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
       elseif SivirMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_E, _Q, _E, _W, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W,}
       end
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if SivirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1075,3,100,0xff00ff00) end
