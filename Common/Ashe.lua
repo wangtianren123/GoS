@@ -108,7 +108,8 @@ OnLoop(function(myHero)
 	
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
-		
+	
+      if IOW:Mode() == "Combo" then	
 	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > AsheMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3153))
         end
@@ -120,7 +121,8 @@ OnLoop(function(myHero)
         if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end	
-	
+      end
+      
 	if Ignite and AsheMenu.Misc.Autoignite:Value() then
           if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
