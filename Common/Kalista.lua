@@ -4,6 +4,8 @@ KalistaMenu = Menu("Kalista", "Kalista")
 KalistaMenu:SubMenu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
 KalistaMenu.Combo:Boolean("Items", "Use Items", true)
+KalistaMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
+KalistaMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 KalistaMenu.Combo:Boolean("QSS", "Use QSS", true)
 KalistaMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 KalistaMenu.Combo:Key("WallJump", "WallJump", string.byte("G"))
@@ -167,18 +169,6 @@ OnLoop(function(myHero)
 		
         if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-        end
-		
-	if GetItemSlot(myHero,3153) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
-        CastTargetSpell(target, GetItemSlot(myHero,3153))
-        end
-
-        if GetItemSlot(myHero,3144) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
-        CastTargetSpell(target, GetItemSlot(myHero,3144))
-        end
-
-        if GetItemSlot(myHero,3142) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(target, 600) then
-        CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
 		
 	if GetItemSlot(myHero,3140) > 0 and KalistaMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.QSSHP:Value() then
@@ -867,6 +857,18 @@ OnLoop(function(myHero)
 	   local Damage = GoS:CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
            local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1500,250,1150,50,true,true)
 	   
+	   if GetItemSlot(myHero,3153) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > KalistaMenu.Combo.targetHP:Value() then
+           CastTargetSpell(enemy, GetItemSlot(myHero,3153))
+           end
+
+           if GetItemSlot(myHero,3144) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > KalistaMenu.Combo.targetHP:Value() then
+           CastTargetSpell(enemy, GetItemSlot(myHero,3144))
+           end
+
+           if GetItemSlot(myHero,3142) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
+           CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+           end
+        
 	   if Ignite and KalistaMenu.Misc.AutoIgnite:Value() then
              if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
              CastTargetSpell(enemy, Ignite)
