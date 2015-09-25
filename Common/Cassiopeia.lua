@@ -239,12 +239,6 @@ if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHe
 if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
 if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
 
-SpellQREADY = CanUseSpell(myHero,_Q) == READY
-SpellWREADY = CanUseSpell(myHero,_W) == READY
-SpellEREADY = CanUseSpell(myHero,_E) == READY
-SpellRREADY = CanUseSpell(myHero,_R) == READY
-SpellIREADY = CanUseSpell(myHero,Ignite) == READY
-
 end)
 
 addInterrupterCallback(function(target, spellType)
