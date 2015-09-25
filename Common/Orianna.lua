@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Orianna" then return end
 
-local Ball = nil
+local Ball = myHero
 	
 OriannaMenu = Menu("Orianna", "Orianna")
 OriannaMenu:SubMenu("Combo", "Combo")
@@ -110,7 +110,10 @@ OnProcessSpell(function(unit, spell)
 end)
 
 OnCreateObj(function(Object) 
-if GetObjectBaseName(Object) == "TheDoomBall" then
+if GetObjectBaseName(Object) == "Orianna_Ball_Flash_Reverse" then
+Ball = myHero
+end
+if GetObjectBaseName(Object) == "yomu_ring_green" then
 Ball = Object
 end
 end)
