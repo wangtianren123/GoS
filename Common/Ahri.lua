@@ -20,7 +20,8 @@ AhriMenu.Killsteal:Boolean("E", "Killsteal with E", false)
 
 AhriMenu:SubMenu("Misc", "Misc")
 AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
-AhriMenu.Misc:Boolean("Autolvl", "Auto level", false)
+AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
+AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 AhriMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
 AhriMenu:SubMenu("JungleClear", "JungleClear")
@@ -145,7 +146,10 @@ OnLoop(function(myHero)
 	end
 	
 if AhriMenu.Misc.Autolvl:Value() then  
-local leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W} 
+  if AhriMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _E, _W, _Q, _Q , _R, _Q , _E, _Q , _E, _R, _E, _E, _W, _W, _R, _W, _W}
+  elseif AhriMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+  elseif AhriMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
+  end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
