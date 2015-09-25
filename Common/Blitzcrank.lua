@@ -18,7 +18,8 @@ BlitzcrankMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 BlitzcrankMenu:SubMenu("Misc", "Misc")
 BlitzcrankMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
-BlitzcrankMenu.Misc:Boolean("Autolvl", "Auto level", false)
+BlitzcrankMenu.Misc:Boolean("Autolvl", "Auto level", true)
+BlitzcrankMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "W-Q-E"})
 BlitzcrankMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
 
 BlitzcrankMenu:SubMenu("Junglesteal", "Baron/Drake Steal")
@@ -124,7 +125,10 @@ OnLoop(function(myHero)
 	end
 
 if BlitzcrankMenu.Misc.Autolvl:Value() then    
-local leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, W} 
+   if BlitzcrankMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _E, _W, _Q, _Q , _R, _Q , _E, _Q , _E, _R, _E, _E, _W, _W, _R, _W, _W}
+   elseif BlitzcrankMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+   elseif BlitzcrankMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+   end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
@@ -157,8 +161,6 @@ SpellRREADY = CanUseSpell(myHero,_R) == READY
 SpellIREADY = CanUseSpell(myHero,Ignite) == READY
 
 end)
-
-
 
 addInterrupterCallback(function(target, spellType)
   local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
