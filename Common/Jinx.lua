@@ -446,3 +446,5 @@ OnProcessRecall(function(Object,recallProc)
 	recalling[GetObjectName(Object)] = rec
 
 end)
+
+GoS:AddGapcloseEvent(_E, 0, false) -- hi Copy-Pasters ^^
