@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Orianna" then return end
 
-local Ball = myHero
+local Ball = nil
 	
 OriannaMenu = Menu("Orianna", "Orianna")
 OriannaMenu:SubMenu("Combo", "Combo")
@@ -111,7 +111,7 @@ end)
 
 OnCreateObj(function(Object) 
 if GetObjectBaseName(Object) == "Orianna_Ball_Flash_Reverse" then
-Ball = myHero
+Ball = nil
 end
 if GetObjectBaseName(Object) == "yomu_ring_green" then
 Ball = Object
