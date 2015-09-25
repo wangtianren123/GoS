@@ -27,6 +27,7 @@ JinxMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 JinxMenu:SubMenu("Misc", "Misc")
 JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 JinxMenu.Misc:Boolean("Autolvl", "Auto level", true)
+JinxMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 
 JinxMenu:SubMenu("Drawings", "Drawings")
 JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
@@ -184,7 +185,11 @@ end
         end
     end
 
-if JinxMenu.Misc.Autolvl:Value() then 
+if JinxMenu.Misc.Autolvl:Value() then
+    if JinxMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+    elseif JinxMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+    end
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
