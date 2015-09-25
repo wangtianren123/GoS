@@ -19,7 +19,8 @@ CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 CassiopeiaMenu:SubMenu("Misc", "Misc")
 CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
-CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", false)
+CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", true)
+CassiopeiaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
 CassiopeiaMenu.Misc:Boolean("Interrupt", "Interrupt Spells with R", true)
 CassiopeiaMenu.Misc:Slider("HP", "if HP % <", 50, 1, 100, 1)
 
@@ -166,7 +167,10 @@ OnLoop(function(myHero)
 	end
 
 if CassiopeiaMenu.Misc.Autolvl:Value() then    
-local leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W} 
+   if CassiopeiaMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E , _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
+   elseif CassiopeiaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
+   elseif CassiopeiaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _W, _W, _R, _W, _E, _W, _E, _R, _E, _E, _Q, _Q, _R, _Q, _Q}
+   end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
