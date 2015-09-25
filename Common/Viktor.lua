@@ -21,7 +21,7 @@ ViktorMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 ViktorMenu:SubMenu("Misc", "Misc")
 ViktorMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 ViktorMenu.Misc:Boolean("Autolvl", "Auto level", true)
-ViktorMenu.Misc:Boolean("InterruptE", "Interrupt Spells (E)", true)
+ViktorMenu.Misc:Boolean("InterruptW", "Interrupt Spells (W)", true)
 ViktorMenu.Misc:Boolean("InterruptR", "Interrupt Spells (R)", false)
 
 ViktorMenu:SubMenu("Drawings", "Drawings")
