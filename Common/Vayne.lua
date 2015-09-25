@@ -18,6 +18,8 @@ VayneMenu.Combo.R:Slider("Rallyrange", "Range", 1000, 1, 2000, 10)
 VayneMenu.Combo.R:Slider("Rminenemy", "Minimum Enemies in Range", 2, 1, 5, 1)
 VayneMenu.Combo.R:Slider("Renemyrange", "Range", 1000, 1, 2000, 10)
 VayneMenu.Combo:Boolean("Items", "Use Items", true)
+VayneMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
+VayneMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 VayneMenu.Combo:Boolean("QSS", "Use QSS", true)
 VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 
@@ -73,17 +75,6 @@ OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
-	if GetItemSlot(myHero,3153) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
-        CastTargetSpell(target, GetItemSlot(myHero,3153))
-        end
-
-        if GetItemSlot(myHero,3144) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
-        CastTargetSpell(target, GetItemSlot(myHero,3144))
-        end
-
-        if GetItemSlot(myHero,3142) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(target, 600) then
-        CastTargetSpell(myHero, GetItemSlot(myHero,3142))
-        end
 		
 	if GetItemSlot(myHero,3140) > 0 and VayneMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < VayneMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
@@ -112,6 +103,21 @@ OnLoop(function(myHero)
    end
 
         for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+        
+        if IOW:Mode() == "Combo" then  
+          if GetItemSlot(myHero,3153) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < VayneMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > VayneMenu.Combo.targetHP:Value() then
+          CastTargetSpell(enemy, GetItemSlot(myHero,3153))
+          end
+
+          if GetItemSlot(myHero,3144) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < VayneMenu.Combo.targetHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > VayneMenu.Combo.targetHP:Value() then
+          CastTargetSpell(enemy, GetItemSlot(myHero,3144))
+          end
+
+          if GetItemSlot(myHero,3142) > 0 and VayneMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
+          CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+          end
+        end
+        
           if Ignite and VayneMenu.Misc.AutoIgnite:Value() then
             if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 900) then
             CastTargetSpell(enemy, Ignite)
