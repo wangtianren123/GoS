@@ -18,6 +18,8 @@ SyndraMenu.Harass:Boolean("Q", "Use Q", true)
 SyndraMenu.Harass:Boolean("W", "Use W", true)
 SyndraMenu.Harass:Boolean("E", "Use E", false)
 SyndraMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
+SyndraMenu.Harass:Boolean("AutoQ", "Auto Q", true)
+SyndraMenu.Harass:Slider("QMana", "Auto Q if Mana >", 70, 0, 80, 1)
 
 SyndraMenu:SubMenu("Killsteal", "Killsteal")
 SyndraMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
@@ -159,9 +161,18 @@ OnLoop(function(myHero)
 	  end
 	end
 	end
-  end
+   end
+
+   if SyndraMenu.Combo.AutoQ:Value() then
+        local target = GetCurrentTarget()
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
   
-  for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+        if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(target, 790) and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= SyndraMenu.Harass.QMana:Value() then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+	end
+   end
+	
+   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 		local ExtraDmg = 0
@@ -178,7 +189,7 @@ OnLoop(function(myHero)
 		if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 790) and SyndraMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_Q)+5+.6*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	        end
-  end
+   end
   
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
