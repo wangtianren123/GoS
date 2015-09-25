@@ -86,7 +86,7 @@ OnLoop(function(myHero)
           end
 	end
 	
-	if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 1075) and SivirMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 20*GetCastLevel(myHero,_Q)+5+(0.6+0.1*GetCastlevel(myHero, _Q))*(GetBaseDamage(myHero)+GetBonusDmg(myHero)) + 0.5*GetBonusAP(myHero), 0) then 
+	if SpellQREADY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 1075) and SivirMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 20*GetCastLevel(myHero,_Q)+5+(0.6+0.1*GetCastLevel(myHero, _Q))*(GetBaseDamage(myHero)+GetBonusDmg(myHero)) + 0.5*GetBonusAP(myHero), 0) then 
 	CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 		
