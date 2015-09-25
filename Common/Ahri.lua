@@ -221,3 +221,5 @@ addInterrupterCallback(function(target, spellType)
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
   end
 end)
+
+GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
