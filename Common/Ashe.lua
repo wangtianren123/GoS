@@ -6,6 +6,8 @@ AsheMenu.Combo:Boolean("Q", "Use Q", true)
 AsheMenu.Combo:Boolean("W", "Use W", true)
 AsheMenu.Combo:Boolean("R", "Use R", true)
 AsheMenu.Combo:Boolean("Items", "Use Items", true)
+AsheMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
+AsheMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 AsheMenu.Combo:Boolean("QSS", "Use QSS", true)
 AsheMenu.Combo:Slider("QSSHP", "if HP % <", 75, 0, 100, 1)
 
@@ -21,7 +23,8 @@ AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 AsheMenu:SubMenu("Misc", "Misc")
 AsheMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
-AsheMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
+AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
+AsheMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with R", true)
 
 AsheMenu:SubMenu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
@@ -65,23 +68,23 @@ OnLoop(function(myHero)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,2000,130,false,true)
 		
-	if SpellQREADY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
+	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if SpellWREADY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
         end
 						
-        if SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
+        if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 	end
 		
-	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
+	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) > AsheMenu.Combo.targetHP:Value() then
         CastTargetSpell(target, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 50 and 100*GetCurrentHP(target)/GetMaxHP(target) > 20 then
+        if GetItemSlot(myHero,3144) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(target, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) > AsheMenu.Combo.targetHP:Value() then
         CastTargetSpell(target, GetItemSlot(myHero,3144))
         end
 
@@ -103,11 +106,11 @@ OnLoop(function(myHero)
         local target = GetCurrentTarget()
         local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)	
 		
-	if SpellQREADY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
+	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if SpellWREADY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 		
@@ -119,39 +122,35 @@ OnLoop(function(myHero)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
 		
 	if Ignite and AsheMenu.Misc.Autoignite:Value() then
-          if SpellIREADY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+          if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
 	end
 	
-	if SpellWREADY and WPred.HitChance == 1 and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
+	if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
 	CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 		  
-	if SpellRREADY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R) + 75 + GetBonusAP(myHero)) then
+	if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R) + 75 + GetBonusAP(myHero)) then
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 	end
 		
     end
 
 if AsheMenu.Misc.Autolvl:Value() then  
-local leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E} 
+    if AsheMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W , _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+    elseif AsheMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+    end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-
-SpellQREADY = CanUseSpell(myHero,_Q) == READY
-SpellWREADY = CanUseSpell(myHero,_W) == READY
-SpellEREADY = CanUseSpell(myHero,_E) == READY
-SpellRREADY = CanUseSpell(myHero,_R) == READY
-SpellIREADY = CanUseSpell(myHero,Ignite) == READY
+if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1200,3,100,0xff00ff00) end
 
 end)
 
 addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,1000,130,false,true)
-  if GoS:IsInDistance(target, 1000) and SpellRREADY and AsheMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
+  if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero, _R) == READY and AsheMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
