@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Ryze" then return end
 
-RyzeMenu = Menu("Ryze", "Ryze")
+local RyzeMenu = Menu("Ryze", "Ryze")
 RyzeMenu:SubMenu("Combo", "Combo")
 RyzeMenu.Combo:Boolean("Q", "Use Q", true)
 RyzeMenu.Combo:Boolean("W", "Use W", true)
