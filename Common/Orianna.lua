@@ -214,7 +214,7 @@ OnLoop(function(myHero)
 		
 		if CanUseSpell(myHero, _E) == READY and OriannaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 1000) and Ball ~= nil then
 		  local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, Vector(Ball))
-                  if pointLine and GoS:GetDistance(pointSegment, mob) <= 80
+                  if pointLine and GoS:GetDistance(pointSegment, mob) <= 80 then
 		  CastTargetSpell(myHero, _E)
 		  end
 		end
