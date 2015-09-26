@@ -69,10 +69,10 @@ OnProcessSpell(function(unit, spell)
             for _, spellSlot in pairs(unitChanellingSpells) do
                 if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
             end
-		end
+	end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
@@ -80,7 +80,8 @@ end
 OnLoop(function(myHero)
 	
      if IOW:Mode() == "Combo" then
-	
+	    
+	local myHero = myHero
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
 	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
@@ -91,9 +92,16 @@ OnLoop(function(myHero)
 	  end
 	end
 	
-	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+	if CanUseSpell(myHero, _R) == READY then
+	  if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
+          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+	  end
+	elseif CanUseSpell(myHero, _R) ~= READY then
+          if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
+          CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
+	  end
 	end
+		
 	
 	if CanUseSpell(myHero, _W) == READY and OriannaMenu.Combo.W:Value() and GoS:ValidTarget(target, 1200) then
 	 if GoS:GetDistance(Ball or GoS:myHeroPos(), target) <= 250 then
@@ -111,11 +119,12 @@ OnLoop(function(myHero)
 	
      if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= OriannaMenu.Harass.Mana:Value() then
 	
+	local myHero = myHero
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
 	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
-	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 825) then
+	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
@@ -137,6 +146,7 @@ OnLoop(function(myHero)
 	
         for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	  
+	    local myHero = myHero
 	    local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,825,80,false,true)
 	    local enemyPos = GetOrigin(enemy)
 		
@@ -177,7 +187,7 @@ OnLoop(function(myHero)
 	    end
 		
 		local QThrowPos = GetMEC(400,enemy) 
-		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and OriannaMenu.Combo.Q:Value() then 
+		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and CanUseSpell(myHero, _R) == READY and OriannaMenu.Combo.Q:Value() then 
         CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
         end
 		
@@ -254,7 +264,7 @@ end
 
 end)
 
-addInterrupterCallback(function(target, spellType)
+local addInterrupterCallback(function(target, spellType)
   if CanUseSpell(myHero, _R) == READY and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSpell(_R)
   end
@@ -287,7 +297,7 @@ local function ExcludeFurthest(point, tbl)
     return newTable
 end
 
-function GetMEC(aoe_radius, listOfEntities, starTarget)
+local function GetMEC(aoe_radius, listOfEntities, starTarget)
     local average = {x=0, y=0, z=0, count = 0}
     for i=1, #listOfEntities do
         local ori = GetOrigin(listOfEntities[i])
