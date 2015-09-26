@@ -91,7 +91,7 @@ OnLoop(function(myHero)
 	  end
 	end
 	
-	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
+	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
@@ -176,6 +176,11 @@ OnLoop(function(myHero)
               end 
 	    end
 		
+		local QThrowPos = GetMEC(400,enemy) 
+		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and OriannaMenu.Combo.Q:Value() then 
+        CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
+        end
+		
 	end
 	
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
@@ -254,3 +259,67 @@ addInterrupterCallback(function(target, spellType)
   CastSpell(_R)
   end
 end)
+
+-- Huge Credits To Inferno for MEC
+local GetOrigin = GetOrigin
+local SQRT = math.sqrt
+
+local function TargetDist(point, target)
+    local origin = GetOrigin(target)
+    local dx, dz = origin.x-point.x, origin.z-point.z
+    return SQRT( dx*dx + dz*dz )
+end
+
+local function ExcludeFurthest(point, tbl)
+    local removalId = 1
+    for i=2, #tbl do
+        if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
+            removalId = i
+        end
+    end
+    
+    local newTable = {}
+    for i=1, #tbl do
+        if i ~= removalId then
+            newTable[#newTable+1] = tbl[i]
+        end
+    end
+    return newTable
+end
+
+function GetMEC(aoe_radius, listOfEntities, starTarget)
+    local average = {x=0, y=0, z=0, count = 0}
+    for i=1, #listOfEntities do
+        local ori = GetOrigin(listOfEntities[i])
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    if starTarget then
+        local ori = GetOrigin(starTarget)
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    average.x = average.x / average.count
+    average.y = average.y / average.count
+    average.z = average.z / average.count
+    
+    local targetsInRange = 0
+    for i=1, #listOfEntities do
+        if TargetDist(average, listOfEntities[i]) <= aoe_radius then
+            targetsInRange = targetsInRange + 1
+        end
+    end
+    if starTarget and TargetDist(average, starTarget) <= aoe_radius then
+        targetsInRange = targetsInRange + 1
+    end
+    
+    if targetsInRange == average.count then
+        return average
+    else
+        return GetMEC(aoe_radius, ExcludeFurthest(average, listOfEntities), starTarget)
+    end
+end
