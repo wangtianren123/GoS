@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Ashe" then return end
 
-AsheMenu = Menu("Ashe", "Ashe")
+local AsheMenu = Menu("Ashe", "Ashe")
 AsheMenu:SubMenu("Combo", "Combo")
 AsheMenu.Combo:Boolean("Q", "Use Q", true)
 AsheMenu.Combo:Boolean("W", "Use W", true)
