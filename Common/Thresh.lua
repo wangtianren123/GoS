@@ -141,10 +141,10 @@ local leveltable = {_Q, _E, _W, _E, _E, _R, _Q, _Q, _Q, _E, _R, _Q, _E, _W, _W, 
 LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
-if ThreshMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1100,3,100,0xff00ff00) end
-if ThreshMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,3,100,0xff00ff00) end
-if ThreshMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,400,3,100,0xff00ff00) end
-if ThreshMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,3,100,0xff00ff00) end
+if ThreshMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1100,0,1,0xff00ff00) end
+if ThreshMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,0,1,0xff00ff00) end
+if ThreshMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,400,0,1,0xff00ff00) end
+if ThreshMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,0,1,0xff00ff00) end
 
 end)
 
