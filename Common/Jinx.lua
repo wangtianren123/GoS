@@ -96,9 +96,9 @@ end
         end
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and IsFacing(target,GetCastRange(myHero,_E)) and JinxMenu.Combo.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x-200,EPred.PredPos.y-200,EPred.PredPos.z-200)
+        CastSkillShot(_E,EPred.PredPos.x-100,EPred.PredPos.y-100,EPred.PredPos.z-100)
         elseif CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Combo.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x+200,EPred.PredPos.y+200,EPred.PredPos.z+200)
+        CastSkillShot(_E,EPred.PredPos.x+100,EPred.PredPos.y+100,EPred.PredPos.z+100)
         end
 	
 	if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(target, 2500) and JinxMenu.Combo.R:Value() and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GoS:GetDistance(target)/1700))) then
@@ -126,9 +126,9 @@ end
         end
 	
 	if CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and IsFacing(target,GetCastRange(myHero,_E)) and JinxMenu.Harass.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x-200,EPred.PredPos.y-200,EPred.PredPos.z-200)
+        CastSkillShot(_E,EPred.PredPos.x-100,EPred.PredPos.y-100,EPred.PredPos.z-100)
         elseif CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and GoS:ValidTarget(target, GetCastRange(myHero,_E)) and JinxMenu.Harass.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x+200,EPred.PredPos.y+200,EPred.PredPos.z+200)
+        CastSkillShot(_E,EPred.PredPos.x+100,EPred.PredPos.y+100,EPred.PredPos.z+100)
         end
 		
 	end
