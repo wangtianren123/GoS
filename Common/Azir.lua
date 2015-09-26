@@ -177,10 +177,10 @@ LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 local HeroPos = GetOrigin(myHero)
-if Azir.Drawings.Q:Value() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if Azir.Drawings.W:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),3,100,0xff00ff00) end
-if Azir.Drawings.E:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
-if Azir.Drawings.R:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),3,100,0xff00ff00) end
+if Azir.Drawings.Q:Value() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),0,1,0xff00ff00) end
+if Azir.Drawings.W:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),0,1,0xff00ff00) end
+if Azir.Drawings.E:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),0,1,0xff00ff00) end
+if Azir.Drawings.R:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),0,1,0xff00ff00) end
 
 end)
 
