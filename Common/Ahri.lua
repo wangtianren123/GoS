@@ -219,7 +219,7 @@ local function GetDrawText(enemy)
 	end
 end
 
-local addInterrupterCallback(function(target, spellType)
+addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,1000,100,true,true)
   if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero,_E) == READY and AhriMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
