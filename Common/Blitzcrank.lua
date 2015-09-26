@@ -57,7 +57,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
@@ -156,7 +156,7 @@ if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHe
 
 end)
 
-addInterrupterCallback(function(target, spellType)
+local addInterrupterCallback(function(target, spellType)
   local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
   if GoS:IsInDistance(target, 975) and CanUseSpell(myHero,_Q) == READY and BlitzcrankMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
