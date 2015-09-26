@@ -10,7 +10,7 @@ OriannaMenu.Combo:Boolean("E", "Use E", true)
 OriannaMenu.Combo:SubMenu("R", "Use R")
 OriannaMenu.Combo.R:Slider("Rcatch", "if can catch X enemies", 2, 0, 5, 1)
 OriannaMenu.Combo.R:Boolean("Rkill", "if Can Kill", true)
-OriannaMenu.Misc:Key("FlashR", "R Flash Combo", string.byte("G"))
+OriannaMenu.Combo.R:Key("FlashR", "R Flash Combo", string.byte("G"))
 OriannaMenu.Combo.R:Slider("FlashRcatch", "if can catch X enemies", 3, 0, 5, 1)
 
 OriannaMenu:SubMenu("Harass", "Harass")
