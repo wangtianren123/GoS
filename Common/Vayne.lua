@@ -176,7 +176,7 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-local function AutoE()
+function AutoE()
 	 for _,target in pairs(Gos:GetEnemyHeroes()) do
 		if GoS:ValidTarget(target,1000) then
 			local enemyposx,enemyposy,enemypoz,selfx,selfy,selfz
