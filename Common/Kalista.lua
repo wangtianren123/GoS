@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Kalista" then return end
 
-KalistaMenu = Menu("Kalista", "Kalista")
+local KalistaMenu = Menu("Kalista", "Kalista")
 KalistaMenu:SubMenu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
 KalistaMenu.Combo:Boolean("Items", "Use Items", true)
@@ -150,16 +150,6 @@ do
 	pos44 = Vector(9822, 52.306301116943, 12306)
 	zoudjpos44 = Vector(10122, 91.429840087891, 12406)
 end
-
-OnProcessSpell(function(unit, spell)
- for _, ally in pairs(GoS:GetAllyHeroes()) do
-  if unit and unit == myHero and spell then
-    if spell.name:lower():find("kalistapspellcast") then
-    PrintChat("You are now pledged to "..GetObjectName(spell.target).."")
-    end
-  end
- end
-end)
 
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
@@ -1085,7 +1075,7 @@ if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroP
 if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),0,1,0xff00ff00) end
 end)
 
-function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
+local function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
 if x <= 1 then return 10 else return kalE(x-1) + 2 + x
 end 
 end 
