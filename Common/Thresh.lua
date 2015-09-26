@@ -151,7 +151,7 @@ end)
 addInterrupterCallback(function(target, spellType)
   local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,500,1100,70,true,true)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,125,400,200,false,true)
-  if GoS:IsInDistance(target, 400 and CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ThreshMenu.Misc.Interrupt.E:Value() and spellType == CHANELLING_SPELLS then
+  if GoS:IsInDistance(target, 400) and CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and ThreshMenu.Misc.Interrupt.E:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
   elseif GoS:IsInDistance(target, 1100) and CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and ThreshMenu.Misc.Interrupt.Q:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
