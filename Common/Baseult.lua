@@ -48,7 +48,6 @@ OnProcessRecall(function(Object,recallProc)
 			local timeToHit = delay + (distance * 1000 / missileSpeed)
 			if timeToRecall > timeToHit then
 				recallPos = Vector(Object)
-				PrintChat("BaseUlt on "..GetObjectName(Object).."")
 				GoS:DelayAction(
 					function() 
 						if recallPos == Vector(Object) then
