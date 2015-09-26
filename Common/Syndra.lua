@@ -1,12 +1,12 @@
 if GetObjectName(myHero) ~= "Syndra" then return end
 
-Balls = 3
+local Balls = 3
 if Balls > 7 then
 Balls = 7
 end
-lastBallPos = Vector(0,0,0)
+local lastBallPos = Vector(0,0,0)
 	
-SyndraMenu = Menu("Syndra", "Syndra")
+local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
 SyndraMenu.Combo:Boolean("W", "Use W", true)
@@ -72,7 +72,7 @@ OnProcessSpell(function(unit, spell)
 		end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
