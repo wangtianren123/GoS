@@ -165,7 +165,7 @@ OnLoop(function(myHero)
 	end
    end
 
-   if SyndraMenu.Combo.AutoQ:Value() then
+   if SyndraMenu.Harass.AutoQ:Value() then
         local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
   
