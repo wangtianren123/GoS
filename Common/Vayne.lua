@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Vayne" then return end
 
 require('MapPositionGOS')
 
-VayneMenu = Menu("Vayne", "Vayne")
+local VayneMenu = Menu("Vayne", "Vayne")
 VayneMenu:SubMenu("Combo", "Combo")
 VayneMenu.Combo:Boolean("Q", "Use Q", true)
 VayneMenu.Combo:Boolean("E", "Use E", true)
@@ -68,7 +68,7 @@ OnProcessSpell(function(unit, spell)
         end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
@@ -145,8 +145,8 @@ OnLoop(function(myHero)
 if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),0,1,0xff00ff00) end
 if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),0,1,0xff00ff00) end
 if VayneMenu.Drawings.WT:Value() then
-DrawCircle(6962, 51, 8952,80,0,1,0xffffffff)
-DrawCircle(12060, 51, 4806,80,0,1,0xffffffff)
+DrawCircle(6962, 51, 8952,80,0,0,0xffffffff)
+DrawCircle(12060, 51, 4806,80,0,0,0xffffffff)
 end
 end)
 
@@ -176,7 +176,7 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-function AutoE()
+local function AutoE()
 	 for _,target in pairs(Gos:GetEnemyHeroes()) do
 		if GoS:ValidTarget(target,1000) then
 			local enemyposx,enemyposy,enemypoz,selfx,selfy,selfz
