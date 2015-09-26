@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Viktor" then return end
 
-ViktorMenu = Menu("Viktor", "Viktor")
+local ViktorMenu = Menu("Viktor", "Viktor")
 ViktorMenu:SubMenu("Combo", "Combo")
 ViktorMenu.Combo:Boolean("Q", "Use Q", true)
 ViktorMenu.Combo:Boolean("W", "Use W", true)
@@ -58,7 +58,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
