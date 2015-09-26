@@ -26,6 +26,7 @@ VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 VayneMenu:SubMenu("Misc", "Misc")
 VayneMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 VayneMenu.Misc:Boolean("Autolvl", "Auto level", true)
+VayneMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 VayneMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 VayneMenu.Misc:Boolean("AutoE", "Auto Wall Condemn", true)
 VayneMenu.Misc:Key("WallTumble1", "WallTumble Mid", string.byte("T"))
@@ -141,11 +142,11 @@ OnLoop(function(myHero)
         MoveToXYZ(12060, 51, 4806)
         end
 		
-if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),3,100,0xff00ff00) end
-if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),3,100,0xff00ff00) end
+if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),0,1,0xff00ff00) end
+if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),0,1,0xff00ff00) end
 if VayneMenu.Drawings.WT:Value() then
-DrawCircle(6962, 51, 8952,80,1,1,0xffffffff)
-DrawCircle(12060, 51, 4806,80,1,1,0xffffffff)
+DrawCircle(6962, 51, 8952,80,0,1,0xffffffff)
+DrawCircle(12060, 51, 4806,80,0,1,0xffffffff)
 end
 end)
 
@@ -238,47 +239,11 @@ function AutoE()
 end
 
 if VayneMenu.Misc.Autolvl:Value() then  
-
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) == 18 then
-        LevelSpell(_E)
+if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+   elseif VayneMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+   end
+LevelSpell(leveltable[GetLevel(myHero)])
 end
-
-end
-
 
 addInterrupterCallback(function(target, spellType)
   if GoS:IsInDistance(target, GetCastRange(myHero,_E)) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Misc.Interrupt:Value() then
