@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Sivir" then return end
 
-SivirMenu = Menu("Sivir", "Sivir")
+local SivirMenu = Menu("Sivir", "Sivir")
 SivirMenu:SubMenu("Combo", "Combo")
 SivirMenu.Combo:Boolean("Q", "Use Q", true)
 SivirMenu.Combo:Slider("QMana", "Q if Mana % >", 30, 0, 80, 1)
