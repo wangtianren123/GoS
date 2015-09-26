@@ -88,12 +88,12 @@ OnLoop(function(myHero)
          end
         end
 
-    if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
-      local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
-      if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
-      CastTargetSpell(myHero, _E)
-      end
-    end	
+        if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
+          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
+          if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
+          CastTargetSpell(myHero, _E)
+          end
+        end	
 end
 	
 	if IOW:Mode() == "Harass" then
@@ -113,12 +113,12 @@ end
          end
         end
 
-    if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
-      local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
-      if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
-      CastTargetSpell(myHero, _E)
-      end
-    end	
+        if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
+          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
+          if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
+          CastTargetSpell(myHero, _E)
+          end
+        end	
 end
 
 end)
@@ -127,12 +127,12 @@ OnProcessSpell(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
         if spell.name:lower():find("orianaizunacommand") then 
-		Ball = spell.endPos
-		end
+	Ball = spell.endPos
+	end
 		
-		if spell.name:lower():find("orianaredactcommand") then 
-		Ball = spell.target
-		end
+	if spell.name:lower():find("orianaredactcommand") then 
+	Ball = spell.target
+	end
       end
     end
 end)
