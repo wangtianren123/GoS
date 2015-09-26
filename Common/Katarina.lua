@@ -368,10 +368,10 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	end
 end
 
-if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,675,3,100,0xff00ff00) end
-if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,375,3,100,0xff00ff00) end
-if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,700,3,100,0xff00ff00) end
-if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,550,3,100,0xff00ff00) end
+if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,675,0,1,0xff00ff00) end
+if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,375,0,1,0xff00ff00) end
+if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,700,0,1,0xff00ff00) end
+if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,550,0,1,0xff00ff00) end
   if KatarinaMenu.Drawings.Text:Value() then
 	for _, enemy in pairs(GoS:GetEnemyHeroes()) do
 		if GoS:ValidTarget(enemy) then
