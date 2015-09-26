@@ -25,7 +25,7 @@ OriannaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 OriannaMenu.Killsteal:Boolean("E", "Killsteal with E", false)
 
 OriannaMenu:SubMenu("Misc", "Misc")
-OriannaMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+OriannaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 OriannaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 OriannaMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
 OriannaMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
