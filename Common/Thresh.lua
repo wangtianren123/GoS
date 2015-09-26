@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Thresh" then return end
 
-ThreshMenu = Menu("Thresh", "Thresh")
+local ThreshMenu = Menu("Thresh", "Thresh")
 ThreshMenu:SubMenu("Combo", "Combo")
 ThreshMenu.Combo:Boolean("Q", "Use Q", true)
 ThreshMenu.Combo:Boolean("Q2", "Jump to Target", true)
@@ -58,7 +58,7 @@ OnProcessSpell(function(unit, spell)
 		end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
