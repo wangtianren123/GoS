@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
-CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
+local CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:SubMenu("Combo", "Combo")
 CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.Combo:Boolean("W", "Use W", true)
