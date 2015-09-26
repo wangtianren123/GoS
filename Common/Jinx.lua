@@ -317,7 +317,7 @@ local rowHeight = 18
 local onlyEnemies = true
 local onlyFOW = false
 
-function RecallTracker()
+local function RecallTracker()
 	local i = 0
 	for hero, recallObj in pairs(recalling) do
 		local percent=math.floor(GetCurrentHP(recallObj.hero)/GetMaxHP(recallObj.hero)*100)
