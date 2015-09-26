@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
-AhriMenu = Menu("Ahri", "Ahri")
+local AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
 AhriMenu.Combo:Boolean("W", "Use W", true)
@@ -63,7 +63,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
@@ -189,7 +189,7 @@ if AhriMenu.Drawings.Text:Value() then
 end
 end)
 
-function GetDrawText(enemy)
+local function GetDrawText(enemy)
 	local ExtraDmg = 0
 	if Ignite and CanUseSpell(myHero, Ignite) == READY then
 	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
@@ -219,7 +219,7 @@ function GetDrawText(enemy)
 	end
 end
 
-addInterrupterCallback(function(target, spellType)
+local addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,1000,100,true,true)
   if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero,_E) == READY and AhriMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
