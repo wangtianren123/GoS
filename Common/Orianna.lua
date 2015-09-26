@@ -29,6 +29,7 @@ OriannaMenu:SubMenu("Misc", "Misc")
 OriannaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 OriannaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 OriannaMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
+OriannaMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells (R)", true)
 OriannaMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
 OriannaMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
 OriannaMenu.Misc.AutoUlt:Slider("1", "if Can Catch X Enemies", 3, 0, 5, 1)
@@ -246,4 +247,10 @@ if GetObjectBaseName(Object) == "yomu_ring_green" then
 Ball = Object
 end
 
+end)
+
+addInterrupterCallback(function(target, spellType)
+  if CanUseSpell(myHero, _R) == READY and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
+  CastSpell(_R)
+  end
 end)
