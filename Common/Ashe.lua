@@ -56,7 +56,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-function addInterrupterCallback( callback0 )
+local function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
@@ -150,7 +150,7 @@ if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 
 end)
 
-addInterrupterCallback(function(target, spellType)
+local addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,1000,130,false,true)
   if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero, _R) == READY and AsheMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
