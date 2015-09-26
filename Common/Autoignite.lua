@@ -1,7 +1,7 @@
-AutoIgniteMenu = Menu("AutoIgnite", "Auto Ignite")
+local AutoIgniteMenu = Menu("AutoIgnite", "Auto Ignite")
 AutoIgniteMenu:Boolean("Enabled", "Enabled", true)
 
-AutoSmiteMenu = Menu("AutoSmite", "Auto Smite")
+local AutoSmiteMenu = Menu("AutoSmite", "Auto Smite")
 AutoSmiteMenu:Boolean("Enabled", "Enabled", true)
 
 ChillingSmite = (summonerNameOne:lower():find("s5_summonersmiteplayerganker") and SUMMONER_1 or (summonerNameTwo:lower():find("s5_summonersmiteplayerganker") and SUMMONER_2 or nil))
