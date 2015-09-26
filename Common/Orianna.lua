@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Orianna" then return end
 
 local Ball = nil
 	
-OriannaMenu = Menu("Orianna", "Orianna")
+local OriannaMenu = Menu("Orianna", "Orianna")
 OriannaMenu:SubMenu("Combo", "Combo")
 OriannaMenu.Combo:Boolean("Q", "Use Q", true)
 OriannaMenu.Combo:Boolean("W", "Use W", true)
@@ -264,7 +264,7 @@ end
 
 end)
 
-local addInterrupterCallback(function(target, spellType)
+addInterrupterCallback(function(target, spellType)
   if CanUseSpell(myHero, _R) == READY and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSpell(_R)
   end
