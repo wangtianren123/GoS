@@ -139,10 +139,9 @@ end)
 
 OnCreateObj(function(Object) 
 
-end
-
 if GetObjectBaseName(Object) == "Orianna_Ball_Flash_Reverse" then
 Ball = nil
+end
 if GetObjectBaseName(Object) == "yomu_ring_green" then
 Ball = Object
 end
