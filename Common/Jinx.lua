@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
-JinxMenu = Menu("Jinx", "Jinx")
+local JinxMenu = Menu("Jinx", "Jinx")
 JinxMenu:SubMenu("Combo", "Combo")
 JinxMenu.Combo:Boolean("Q", "Use Q", true)
 JinxMenu.Combo:Boolean("W", "Use W", true)
@@ -34,7 +34,7 @@ JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
 JinxMenu.Drawings:Boolean("E", "Draw E Range", true)
 
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
-BaseultMenu = Menu("Baseult", "Baseult")
+local BaseultMenu = Menu("Baseult", "Baseult")
 BaseultMenu:Boolean("Enabled", "Enabled", true)
 BaseultMenu:Boolean("RT", "RecallTracker", true)
 myHero = GetMyHero()
@@ -198,10 +198,10 @@ if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 end)
 
 --------------------------------------Thanks Maxxxel For this <3--------------------------------
-local myHero = GetMyHero()
+local myHero = myHeri
 local lastattackposition={true,true,true}
 
-function IsFacing(targetFace,range,unit) 
+local function IsFacing(targetFace,range,unit) 
 	range=range or 99999
 	unit=unit or myHero
 	targetFace=targetFace
@@ -240,27 +240,27 @@ function IsFacing(targetFace,range,unit)
 end
 
 
-function ValidtargetUnit(targetFace,range,unit)
+local function ValidtargetUnit(targetFace,range,unit)
     range = range or 25000
     unit = unit or myHero
     if targetFace == nil or GetOrigin(targetFace) == nil or IsImmune(targetFace,unit) or IsDead(targetFace) or not IsVisible(targetFace) or GetTeam(targetFace) == GetTeam(unit) or GetDistance2(targetFace,unit)>range then return false end
     return true
 end
 
-function GetDistance2(p1,p2)
+local function GetDistance2(p1,p2)
     p1 = GetOrigin(p1) or p1
     p2 = GetOrigin(p2) or p2
     return math.sqrt(GetDistance2Sqr(p1,p2))
 end
 
-function GetDistance2Sqr(p1,p2)
+local function GetDistance2Sqr(p1,p2)
     p2 = p2 or GetMyHeroPos()
     local dx = p1.x - p2.x
     local dz = (p1.z or p1.y) - (p2.z or p2.y)
     return dx*dx + dz*dz
 end
 
-function GetDistance2XYZ(x,z,x2,z2)
+local function GetDistance2XYZ(x,z,x2,z2)
 	if (x and z and x2 and z2)~=nil then
 		a=x2-x
 		b=z2-z
@@ -380,7 +380,6 @@ OnProcessRecall(function(Object,recallProc)
 			local timeToHit = delay + (distance * 1000 / missileSpeed)
 			if timeToRecall > timeToHit then
 				recallPos = Vector(Object)
-				PrintChat("BaseUlt on "..GetObjectName(Object)"")
 				GoS:DelayAction(
 					function() 
 						if recallPos == Vector(Object) then
