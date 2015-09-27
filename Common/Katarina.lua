@@ -132,7 +132,7 @@ end
 
 local spellLock = nil
 
-local function wardJump( pos )
+function wardJump( pos )
 	if not spellLock and CanUseSpell(myHero, spellSlot) == READY then
 		if jumpTarget then
 		CastTargetSpell(jumpTarget, spellSlot)
@@ -181,10 +181,10 @@ end)
 
 OnLoop(function(myHero)
 
-        local mousePos = GetMousePos()
-	local maxPos = calcMaxPos(mousePos)
+        mousePos = GetMousePos()
+	maxPos = calcMaxPos(mousePos)
 
-	local jumpTarget = GetJumpTarget()
+	jumpTarget = GetJumpTarget()
 
 	if not spellLock and wardLock and jumpTarget and CanUseSpell(myHero, spellSlot) == READY then
 	CastTargetSpell(jumpTarget, spellSlot)
@@ -385,7 +385,7 @@ if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroP
 
 end)	
 
-local function GetDrawText(enemy)
+function GetDrawText(enemy)
 	local ExtraDmg = 0
 	if Ignite and CanUseSpell(myHero,Ignite) == READY then
 	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
