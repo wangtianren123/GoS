@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Vayne" then return end
 
 require('MapPositionGOS')
 
-local VayneMenu = Menu("Vayne", "Vayne")
+VayneMenu = Menu("Vayne", "Vayne")
 VayneMenu:SubMenu("Combo", "Combo")
 VayneMenu.Combo:Boolean("Q", "Use Q", true)
 VayneMenu.Combo:Boolean("E", "Use E", true)
