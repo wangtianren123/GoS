@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Sivir" then return end
 
-SivirMenu = Menu("Sivir", "Sivir")
+local SivirMenu = Menu("Sivir", "Sivir")
 SivirMenu:SubMenu("Combo", "Combo")
 SivirMenu.Combo:Boolean("Q", "Use Q", true)
 SivirMenu.Combo:Slider("QMana", "Q if Mana % >", 30, 0, 80, 1)
@@ -102,7 +102,7 @@ if SivirMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if SivirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1075,0,1,0xff00ff00) end
+if SivirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1075,1,128,0xff00ff00) end
 
 end)
 
