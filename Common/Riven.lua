@@ -136,7 +136,9 @@ OnLoop(function(myHero)
 	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	elseif CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _Q) == READY then
 	CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
-	end
+        else 
+	MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+        end
   end
   
   if RivenMenu.Misc.AutoW:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 125) >= RivenMenu.Misc.catchable:Value() then
