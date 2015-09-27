@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Orianna" then return end
 
 local Ball = nil
 	
-local OriannaMenu = Menu("Orianna", "Orianna")
+OriannaMenu = Menu("Orianna", "Orianna")
 OriannaMenu:SubMenu("Combo", "Combo")
 OriannaMenu.Combo:Boolean("Q", "Use Q", true)
 OriannaMenu.Combo:Boolean("W", "Use W", true)
@@ -81,7 +81,6 @@ OnLoop(function(myHero)
 	
      if IOW:Mode() == "Combo" then
 	    
-	local myHero = myHero
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
 	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
@@ -119,7 +118,6 @@ OnLoop(function(myHero)
 	
      if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= OriannaMenu.Harass.Mana:Value() then
 	
-	local myHero = myHero
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
 	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
