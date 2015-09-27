@@ -29,7 +29,7 @@ XerathMenu.Drawings:Boolean("Qmin", "Draw Q Min Range", true)
 XerathMenu.Drawings:Boolean("Qmax", "Draw Q Max Range", true)
 XerathMenu.Drawings:Boolean("W", "Draw W Range", true)
 XerathMenu.Drawings:Boolean("E", "Draw E Range", true)
---XerathMenu.Drawings:Boolean("R", "Draw R Range", true)
+XerathMenu.Drawings:Boolean("R", "Draw R Range", true)
 XerathMenu.Drawings:Boolean("Text", "Draw Text", true)
 
 CHANELLING_SPELLS = {
