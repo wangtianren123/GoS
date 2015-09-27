@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Singed" then return end
 
-SingedMenu = Menu("Singed", "Singed")
+local SingedMenu = Menu("Singed", "Singed")
 SingedMenu:Key("Q", "Q Exploit", string.byte("T"))
 
 OnLoop(function(myHero)
