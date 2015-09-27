@@ -56,7 +56,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-local function addInterrupterCallback( callback0 )
+function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
