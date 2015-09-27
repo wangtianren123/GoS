@@ -1,5 +1,5 @@
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
-BaseultMenu = Menu("Baseult", "Baseult")
+local BaseultMenu = Menu("Baseult", "Baseult")
 BaseultMenu:Boolean("Enabled", "Enabled", true)
 myHero = GetMyHero()
 mapID = GetMapID()
