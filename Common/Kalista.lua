@@ -151,6 +151,16 @@ do
 	zoudjpos44 = Vector(10122, 91.429840087891, 12406)
 end
 
+OnProcessSpell(function(unit, spell)
+ for _, ally in pairs(GoS:GetAllyHeroes()) do
+  if unit and unit == myHero and spell then
+    if spell.name:lower():find("kalistapspellcast") then
+    PrintChat("You are now pledged to "..GetObjectName(spell.target).."")
+    end
+  end
+ end
+end)
+
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
