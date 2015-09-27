@@ -220,10 +220,125 @@ OnProcessSpell(function(unit, spell)
 				end
 								
 		             end
+
+                             if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
 							
+				   local target = GetCurrentTarget()
+				   local targetPos = GetOrigin(target)
+								
+				   if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+				   CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+				   end
+								
+				end
+						
                         end, GetWindUp(myHero) * 1000)
-		end	
+	end
+
+        if spell.name:lower():find("rivenmartyr") then
+		                GoS:DelayAction(function() 
+                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
+							
+							    local target = GetCurrentTarget()
+							    local targetPos = GetOrigin(target)
+								
+							    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							    CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							    end
+						    
+					end
+							
+					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
+							
+							    local target = GetCurrentTarget()
+							    local targetPos = GetOrigin(target)
+								
+							    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							    CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+					                     end
+						   
+					end
+				end, spell.windUpTime * 1000 + GetLatency() / 2000)
+		end
 		
+		if spell.name:lower():find("rivenfengshuiengine") then
+		                GoS:DelayAction(function() 
+                               if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+				end
+							
+				if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+				 end
+			end, spell.windUpTime * 1000 + GetLatency() / 2000)
+		end
+		
+		if spell.name:lower():find("rivenizunablade") then
+		                GoS:DelayAction(function() 
+                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+				        end
+							
+					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+					end
+				end, spell.windUpTime * 1000 + GetLatency() / 2000)
+		end
+		
+		if spell.name:lower():find("itemtiamatcleave") then
+		                GoS:DelayAction(function() 
+                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+					end
+							
+					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
+							
+							local target = GetCurrentTarget()
+							local targetPos = GetOrigin(target)
+								
+							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							end
+						    
+				        end
+				end, spell.windUpTime * 1000 + GetLatency() / 2000)
+		end
+	
       end
   end
 end)
