@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Katarina" then return end
 
-KatarinaMenu = Menu("Katarina", "Katarina")
+local KatarinaMenu = Menu("Katarina", "Katarina")
 KatarinaMenu:SubMenu("Combo", "Combo")
 KatarinaMenu.Combo:Boolean("Q", "Use Q", true)
 KatarinaMenu.Combo:Boolean("W", "Use W", true)
@@ -132,7 +132,7 @@ end
 
 local spellLock = nil
 
-function wardJump( pos )
+local function wardJump( pos )
 	if not spellLock and CanUseSpell(myHero, spellSlot) == READY then
 		if jumpTarget then
 		CastTargetSpell(jumpTarget, spellSlot)
@@ -181,10 +181,10 @@ end)
 
 OnLoop(function(myHero)
 
-        mousePos = GetMousePos()
-	maxPos = calcMaxPos(mousePos)
+        local mousePos = GetMousePos()
+	local maxPos = calcMaxPos(mousePos)
 
-	jumpTarget = GetJumpTarget()
+	local jumpTarget = GetJumpTarget()
 
 	if not spellLock and wardLock and jumpTarget and CanUseSpell(myHero, spellSlot) == READY then
 	CastTargetSpell(jumpTarget, spellSlot)
@@ -368,10 +368,10 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	end
 end
 
-if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,675,0,1,0xff00ff00) end
-if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,375,0,1,0xff00ff00) end
-if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,700,0,1,0xff00ff00) end
-if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,550,0,1,0xff00ff00) end
+if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,675,1,128,0xff00ff00) end
+if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,375,1,128,0xff00ff00) end
+if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,700,1,128,0xff00ff00) end
+if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,550,1,128,0xff00ff00) end
   if KatarinaMenu.Drawings.Text:Value() then
 	for _, enemy in pairs(GoS:GetEnemyHeroes()) do
 		if GoS:ValidTarget(enemy) then
@@ -385,7 +385,7 @@ if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroP
 
 end)	
 
-function GetDrawText(enemy)
+local function GetDrawText(enemy)
 	local ExtraDmg = 0
 	if Ignite and CanUseSpell(myHero,Ignite) == READY then
 	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
