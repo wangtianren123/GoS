@@ -228,11 +228,11 @@ if OriannaMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if OriannaMenu.Drawings.Ball:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,150,0,1,0xffffffff) end
-if OriannaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,825,0,1,0xff00ff00) end
-if OriannaMenu.Drawings.W:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,250,0,1,0xff00ff00) end
-if OriannaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1000,0,1,0xff00ff00) end
-if OriannaMenu.Drawings.R:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,400,0,1,0xff00ff00) end
+if OriannaMenu.Drawings.Ball:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,150,1,128,0xffffffff) end
+if OriannaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,825,1,128,0xff00ff00) end
+if OriannaMenu.Drawings.W:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,250,1,128,0xff00ff00) end
+if OriannaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1000,1,128,0xff00ff00) end
+if OriannaMenu.Drawings.R:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,400,1,128,0xff00ff00) end
 
 end)
 
