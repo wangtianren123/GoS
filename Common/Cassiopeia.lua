@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
-local CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
+CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:SubMenu("Combo", "Combo")
 CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.Combo:Boolean("W", "Use W", true)
@@ -293,6 +293,7 @@ function IsFacing(targetFace,range,unit)
     end
 	end
 end
+
 
 function ValidtargetUnit(targetFace,range,unit)
     range = range or 25000
