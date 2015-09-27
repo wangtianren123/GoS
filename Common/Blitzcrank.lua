@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Blitzcrank" then return end
 
-BlitzcrankMenu = Menu("Blitzcrank", "Blitzcrank")
+local BlitzcrankMenu = Menu("Blitzcrank", "Blitzcrank")
 BlitzcrankMenu:SubMenu("Combo", "Combo")
 BlitzcrankMenu.Combo:Boolean("Q", "Use Q", true)
 BlitzcrankMenu.Combo:Boolean("W", "Use W", true)
@@ -151,8 +151,8 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         end
 end
 
-if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,0,1,0xff00ff00) end
-if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,0,1,0xff00ff00) end
+if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
+if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 
 end)
 
