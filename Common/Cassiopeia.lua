@@ -73,7 +73,7 @@ OnProcessSpell(function(unit, spell)
         end
 end)
  
-local function addInterrupterCallback( callback0 )
+function addInterrupterCallback( callback0 )
 callback = callback0
 end
 
@@ -253,10 +253,10 @@ addInterrupterCallback(function(target, spellType)
 end)
 
 --------------------------------------Thanks Maxxxel For this <3--------------------------------
-local myHero = myHero
+local myHero = GetMyHero()
 local lastattackposition={true,true,true}
 
-local function IsFacing(targetFace,range,unit) 
+function IsFacing(targetFace,range,unit) 
 	range=range or 99999
 	unit=unit or myHero
 	targetFace=targetFace
@@ -294,28 +294,27 @@ local function IsFacing(targetFace,range,unit)
 	end
 end
 
-
-local function ValidtargetUnit(targetFace,range,unit)
+function ValidtargetUnit(targetFace,range,unit)
     range = range or 25000
     unit = unit or myHero
     if targetFace == nil or GetOrigin(targetFace) == nil or IsImmune(targetFace,unit) or IsDead(targetFace) or not IsVisible(targetFace) or GetTeam(targetFace) == GetTeam(unit) or GetDistance2(targetFace,unit)>range then return false end
     return true
 end
 
-local function GetDistance2(p1,p2)
+function GetDistance2(p1,p2)
     p1 = GetOrigin(p1) or p1
     p2 = GetOrigin(p2) or p2
     return math.sqrt(GetDistance2Sqr(p1,p2))
 end
 
-local function GetDistance2Sqr(p1,p2)
+function GetDistance2Sqr(p1,p2)
     p2 = p2 or GetMyHeroPos()
     local dx = p1.x - p2.x
     local dz = (p1.z or p1.y) - (p2.z or p2.y)
     return dx*dx + dz*dz
 end
 
-local function GetDistance2XYZ(x,z,x2,z2)
+function GetDistance2XYZ(x,z,x2,z2)
 	if (x and z and x2 and z2)~=nil then
 		a=x2-x
 		b=z2-z
