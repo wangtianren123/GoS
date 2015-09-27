@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
-JinxMenu = Menu("Jinx", "Jinx")
+local JinxMenu = Menu("Jinx", "Jinx")
 JinxMenu:SubMenu("Combo", "Combo")
 JinxMenu.Combo:Boolean("Q", "Use Q", true)
 JinxMenu.Combo:Boolean("W", "Use W", true)
@@ -192,8 +192,8 @@ if JinxMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),0,1,0xff00ff00) end
-if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),0,1,0xff00ff00) end
+if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),1,128,0xff00ff00) end
+if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
 
 end)
 
