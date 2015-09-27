@@ -100,8 +100,8 @@ OnLoop(function(myHero)
 	CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
 	end
 	
-	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125+GetHitBox(target)) then	
-        CastSpell(_W)
+	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125+GetHitBox(target)*2) then	
+    CastSpell(_W)
 	end
 	
 	if 100*GetCurrentHP(target)/GetMaxHP(target) <= 50 and GoS:ValidTarget(target, 900) and RivenMenu.Combo.R:Value() and GetCastName(myHero, _R) == "RivenFengShuiEngine" then 
@@ -195,7 +195,7 @@ OnProcessSpell(function(unit, spell)
 							      local target = GetCurrentTarget()
 							      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
 							 
-				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[R].dmg()+SpellData[Q].dmg()+SpellData[-1].dmg() > GetCurrentHP(target)+GetDmgShield(target) then
+				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[_R].dmg()+SpellData[_Q].dmg()+SpellData[-1].dmg() > GetCurrentHP(target)+GetDmgShield(target) then
 							      CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 							      end
 								
