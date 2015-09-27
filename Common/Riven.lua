@@ -184,16 +184,29 @@ OnProcessSpell(function(unit, spell)
       if unit == myHero then
         if spell.name:lower():find("attack") then 
 		        GoS:DelayAction(function() 
-                                if IOW:Mode() == "Combo" and RivenMenu.Combo.R:Value() then
+                            if IOW:Mode() == "Combo" then
+
+							    if RivenMenu.Combo.R:Value() then
 							
-							    local target = GetCurrentTarget()
-							    local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
+							      local target = GetCurrentTarget()
+							      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
 							 
-				                            if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and spellData[R].dmg()+SpellData[Q].dmg()+spellData[-1].dmg()+GoS:GetDmg(myHero, target) > GetCurrentHP(target)+GetDmgShield(target) then
-							    CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
-							    end
+				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and spellData[R].dmg()+SpellData[Q].dmg()+spellData[-1].dmg()+GoS:GetDmg(myHero, target) > GetCurrentHP(target)+GetDmgShield(target) then
+							      CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
+							      end
 								
                                 end
+								
+								if RivenMenu.Combo.Q:Value() then
+							
+							      local target = GetCurrentTarget()
+							      local targetPos = GetOrigin(target)
+								
+							      if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+							      CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+							      end
+								
+								end
                         end, GetWindUp(myHero) * 1000)
 		end	
 
