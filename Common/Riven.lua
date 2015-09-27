@@ -162,7 +162,7 @@ OnLoop(function(myHero)
 
 		if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy, 125) and RivenMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, spellData[_W].dmg(), 0) then
 		CastSpell(_W)
-		elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(enemy, 900) and RivenMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, spellData[_R].dmg(), 0) then
+		elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(enemy, 900) and RivenMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, spellData[_R].dmg(), 0) then
 		CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 		end
 		
@@ -211,6 +211,7 @@ OnProcessSpell(function(unit, spell)
 							      end
 								
 								end
+								
 							end
 							
                         end, GetWindUp(myHero) * 1000)
