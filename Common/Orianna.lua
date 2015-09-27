@@ -32,8 +32,8 @@ OriannaMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"}
 OriannaMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells (R)", true)
 OriannaMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
 OriannaMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
-OriannaMenu.Misc.AutoUlt:Slider("1", "if Can Catch X Enemies", 3, 0, 5, 1)
-OriannaMenu.Misc.AutoUlt:Slider("2", "if Can Kill X Enemies", 2, 0, 5, 1)
+OriannaMenu.Misc.AutoUlt:Slider("catchable", "if Can Catch X Enemies", 3, 0, 5, 1)
+OriannaMenu.Misc.AutoUlt:Slider("killable", "if Can Kill X Enemies", 2, 0, 5, 1)
 
 OriannaMenu:SubMenu("JungleClear", "JungleClear")
 OriannaMenu.JungleClear:Boolean("Q", "Use Q", true)
@@ -168,7 +168,7 @@ OnLoop(function(myHero)
               KillableEnemies = KillableEnemies	+ 1
               end
 		  
-	      if KillableEnemies >= OriannaMenu.Misc.AutoUlt.2:Value() then
+	      if KillableEnemies >= OriannaMenu.Misc.AutoUlt.killable:Value() then
 	      CastSpell(_R)
 	      end
 	    end
@@ -184,7 +184,7 @@ OnLoop(function(myHero)
               end 
 	    end
 		
-		local QThrowPos = GetMEC(400,enemy) 
+		local QThrowPos = GetMEC(400,GoS:GetEnemyHeroes()) 
 		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and CanUseSpell(myHero, _R) == READY and OriannaMenu.Combo.Q:Value() then 
         CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
         end
@@ -192,7 +192,7 @@ OnLoop(function(myHero)
 	end
 	
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-	  if GoS:EnemiesAround(Ball or GoS:myHeroPos(), 400) >= OriannaMenu.Misc.AutoUlt.1:Value() then
+	  if GoS:EnemiesAround(Ball or GoS:myHeroPos(), 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
 	  CastSpell(_R)
 	  end
 	end
@@ -228,11 +228,40 @@ if OriannaMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if OriannaMenu.Drawings.Ball:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,150,1,128,0xffffffff) end
+if Ball == nil then 
+
+if OriannaMenu.Drawings.Ball:Value() then 
+DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,150,1,128,0xffffffff) 
+end
+
+if OriannaMenu.Drawings.W:Value() then 
+DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,250,1,128,0xff00ff00) 
+end
+
+if OriannaMenu.Drawings.R:Value() then 
+DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,400,1,128,0xff00ff00)
+end
+
+end
+
+if Ball ~= nil then
+
+if OriannaMenu.Drawings.Ball:Value() then
+DrawCircle(Ball.x, Ball.y, Ball.z,150,1,128,0xffffffff) 
+end
+
+if OriannaMenu.Drawings.W:Value() then
+DrawCircle(Ball.x, Ball.y, Ball.z,250,1,128,0xffffffff) 
+end
+
+if OriannaMenu.Drawings.R:Value() then
+DrawCircle(Ball.x, Ball.y, Ball.z,400,1,128,0xffffffff) 
+end
+
+end
+
 if OriannaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,825,1,128,0xff00ff00) end
-if OriannaMenu.Drawings.W:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,250,1,128,0xff00ff00) end
 if OriannaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1000,1,128,0xff00ff00) end
-if OriannaMenu.Drawings.R:Value() then DrawCircle(GetOrigin(Ball).x or GoS:myHeroPos().x, GetOrigin(Ball).y or GoS:myHeroPos().y, GetOrigin(Ball).z or GoS:myHeroPos().z,400,1,128,0xff00ff00) end
 
 end)
 
@@ -244,7 +273,7 @@ OnProcessSpell(function(unit, spell)
 	end
 		
 	if spell.name:lower():find("orianaredactcommand") then 
-	Ball = spell.target
+	Ball = nil
 	end
       end
     end
@@ -272,13 +301,13 @@ end)
 local GetOrigin = GetOrigin
 local SQRT = math.sqrt
 
-local function TargetDist(point, target)
+function TargetDist(point, target)
     local origin = GetOrigin(target)
     local dx, dz = origin.x-point.x, origin.z-point.z
     return SQRT( dx*dx + dz*dz )
 end
 
-local function ExcludeFurthest(point, tbl)
+function ExcludeFurthest(point, tbl)
     local removalId = 1
     for i=2, #tbl do
         if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
