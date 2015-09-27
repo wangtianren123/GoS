@@ -6,7 +6,7 @@ Balls = 7
 end
 local lastBallPos = Vector(0,0,0)
 	
-SyndraMenu = Menu("Syndra", "Syndra")
+local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
 SyndraMenu.Combo:Boolean("W", "Use W", true)
@@ -229,10 +229,10 @@ if SyndraMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if SyndraMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,790,0,1,0xff00ff00) end
-if SyndraMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,925,0,1,0xff00ff00) end
-if SyndraMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,700,0,1,0xff00ff00) end
-if SyndraMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,725,0,1,0xff00ff00) end
+if SyndraMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,790,1,128,0xff00ff00) end
+if SyndraMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,925,1,128,0xff00ff00) end
+if SyndraMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,700,1,128,0xff00ff00) end
+if SyndraMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,725,1,128,0xff00ff00) end
 
 end)
 	
