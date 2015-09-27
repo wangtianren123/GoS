@@ -186,8 +186,8 @@ OnLoop(function(myHero)
 		
 		local QThrowPos = GetMEC(400,GoS:GetEnemyHeroes()) 
 		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and CanUseSpell(myHero, _R) == READY and OriannaMenu.Combo.Q:Value() then 
-        CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
-        end
+                CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
+                end
 		
 	end
 	
@@ -228,38 +228,9 @@ if OriannaMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if Ball == nil then 
-
-if OriannaMenu.Drawings.Ball:Value() then 
-DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,150,1,128,0xffffffff) 
-end
-
-if OriannaMenu.Drawings.W:Value() then 
-DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,250,1,128,0xff00ff00) 
-end
-
-if OriannaMenu.Drawings.R:Value() then 
-DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,400,1,128,0xff00ff00)
-end
-
-end
-
-if Ball ~= nil then
-
-if OriannaMenu.Drawings.Ball:Value() then
-DrawCircle(Ball.x, Ball.y, Ball.z,150,1,128,0xffffffff) 
-end
-
-if OriannaMenu.Drawings.W:Value() then
-DrawCircle(Ball.x, Ball.y, Ball.z,250,1,128,0xffffffff) 
-end
-
-if OriannaMenu.Drawings.R:Value() then
-DrawCircle(Ball.x, Ball.y, Ball.z,400,1,128,0xffffffff) 
-end
-
-end
-
+if OriannaMenu.Drawings.Ball:Value() thenDrawCircle(GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z,150,1,128,0xffffffff) end
+if OriannaMenu.Drawings.W:Value() thenDrawCircle(GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z,250,1,128,0xffffffff) end
+if OriannaMenu.Drawings.R:Value() thenDrawCircle(GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z,400,1,128,0xffffffff) end
 if OriannaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,825,1,128,0xff00ff00) end
 if OriannaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1000,1,128,0xff00ff00) end
 
@@ -268,28 +239,26 @@ end)
 OnProcessSpell(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
-        if spell.name:lower():find("orianaizunacommand") then 
-	Ball = spell.endPos
-	end
 		
 	if spell.name:lower():find("orianaredactcommand") then 
-	Ball = nil
+	Ball = spell.target
 	end
+	
       end
     end
 end)
 
 OnCreateObj(function(Object) 
 
-if GetObjectBaseName(Object) == "Orianna_Base_Z_Ball_Flash_Reverse.troy" then
-Ball = nil
+if GetObjectBaseName(Object) == "Orianna_Base_Q_yomu_ring_green.troy" then
+Ball = Object
 end
 
 end)
 
 OnUpdateBuff(function(Object,BuffName,Stacks)
   if Object == myHero and BuffName == "orianaghostself" and Stacks == 1 then
-  Ball = nil
+  Ball = myHero
   end
 end)
 
