@@ -189,7 +189,7 @@ if AhriMenu.Drawings.Text:Value() then
 end
 end)
 
-local function GetDrawText(enemy)
+function GetDrawText(enemy)
 	local ExtraDmg = 0
 	if Ignite and CanUseSpell(myHero, Ignite) == READY then
 	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
