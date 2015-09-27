@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Kalista" then return end
 
-local KalistaMenu = Menu("Kalista", "Kalista")
+KalistaMenu = Menu("Kalista", "Kalista")
 KalistaMenu:SubMenu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
 KalistaMenu.Combo:Boolean("Items", "Use Items", true)
