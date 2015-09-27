@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
-local AhriMenu = Menu("Ahri", "Ahri")
+AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
 AhriMenu.Combo:Boolean("W", "Use W", true)
