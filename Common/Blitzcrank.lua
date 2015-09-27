@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Blitzcrank" then return end
 
-local BlitzcrankMenu = Menu("Blitzcrank", "Blitzcrank")
+BlitzcrankMenu = Menu("Blitzcrank", "Blitzcrank")
 BlitzcrankMenu:SubMenu("Combo", "Combo")
 BlitzcrankMenu.Combo:Boolean("Q", "Use Q", true)
 BlitzcrankMenu.Combo:Boolean("W", "Use W", true)
