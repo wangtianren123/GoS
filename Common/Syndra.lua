@@ -6,7 +6,7 @@ Balls = 7
 end
 local lastBallPos = Vector(0,0,0)
 	
-local SyndraMenu = Menu("Syndra", "Syndra")
+SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
 SyndraMenu.Combo:Boolean("W", "Use W", true)
