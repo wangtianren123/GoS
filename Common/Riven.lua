@@ -160,9 +160,9 @@ OnLoop(function(myHero)
                   end
                 end
 
-		if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy, 125) and RivenMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, spellData[_W].dmg(), 0) then
+		if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy, 125) and RivenMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, SpellData[_W].dmg(), 0) then
 		CastSpell(_W)
-		elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(enemy, 900) and RivenMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, spellData[_R].dmg(), 0) then
+		elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(enemy, 900) and RivenMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, SpellData[_R].dmg(), 0) then
 		CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 		end
 		
@@ -216,110 +216,6 @@ OnProcessSpell(function(unit, spell)
 							
                         end, GetWindUp(myHero) * 1000)
 		end	
-
-		if spell.name:lower():find("rivenmartyr") then
-		                GoS:DelayAction(function() 
-                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
-							
-							    local target = GetCurrentTarget()
-							    local targetPos = GetOrigin(target)
-								
-							    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							    CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							    end
-						    
-					end
-							
-					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
-							
-							    local target = GetCurrentTarget()
-							    local targetPos = GetOrigin(target)
-								
-							    if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							    CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-					                     end
-						   
-					end
-				end, spell.windUpTime * 1000 + GetLatency() / 2000)
-		end
-		
-		if spell.name:lower():find("rivenfengshuiengine") then
-		                GoS:DelayAction(function() 
-                               if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-				end
-							
-				if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-				 end
-			end, spell.windUpTime * 1000 + GetLatency() / 2000)
-		end
-		
-		if spell.name:lower():find("rivenizunablade") then
-		                GoS:DelayAction(function() 
-                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-				        end
-							
-					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-					end
-				end, spell.windUpTime * 1000 + GetLatency() / 2000)
-		end
-		
-		if spell.name:lower():find("itemtiamatcleave") then
-		                GoS:DelayAction(function() 
-                                        if IOW:Mode() == "Combo" and RivenMenu.Combo.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-					end
-							
-					if IOW:Mode() == "Harass" and RivenMenu.Harass.Q:Value() then
-							
-							local target = GetCurrentTarget()
-							local targetPos = GetOrigin(target)
-								
-							if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							end
-						    
-				        end
-				end, spell.windUpTime * 1000 + GetLatency() / 2000)
-		end
 		
       end
   end
