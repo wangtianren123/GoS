@@ -68,7 +68,7 @@ OnProcessSpell(function(unit, spell)
         end
 end)
  
-local function addInterrupterCallback( callback0 )
+function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
@@ -251,4 +251,4 @@ addInterrupterCallback(function(target, spellType)
   end
 end)
 
-GoS:AddGapcloseEvent(_E, 450, true) -- hi Copy-Pasters ^^
+GoS:AddGapcloseEvent(_E, 550, true) -- hi Copy-Pasters ^^
