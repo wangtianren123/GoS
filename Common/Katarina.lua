@@ -172,7 +172,7 @@ OnCreateObj(function(object)
 	end
 end)
 
-OnDeleteObj(function(Object)
+OnDeleteObj(function(object)
 	local objType = GetObjectType(object)
 	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
 	objectList[object] = nil
