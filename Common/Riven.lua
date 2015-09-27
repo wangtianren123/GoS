@@ -91,6 +91,10 @@ OnLoop(function(myHero)
         if GetItemSlot(myHero,3139) > 0 and RivenMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < RivenMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
+		
+	if CanUseSpell(myHero, _Q) and RivenMenu.Combo.Q:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
+	CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+	end
 	
 	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
 	CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
@@ -207,6 +211,8 @@ OnProcessSpell(function(unit, spell)
 							      end
 								
 								end
+							end
+							
                         end, GetWindUp(myHero) * 1000)
 		end	
 
