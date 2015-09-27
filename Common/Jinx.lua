@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
-local JinxMenu = Menu("Jinx", "Jinx")
+JinxMenu = Menu("Jinx", "Jinx")
 JinxMenu:SubMenu("Combo", "Combo")
 JinxMenu.Combo:Boolean("Q", "Use Q", true)
 JinxMenu.Combo:Boolean("W", "Use W", true)
@@ -34,7 +34,7 @@ JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
 JinxMenu.Drawings:Boolean("E", "Draw E Range", true)
 
 local enemyBasePos, delay, missileSpeed, damage, recallPos = nil, 0, 0, nil, nil
-local BaseultMenu = Menu("Baseult", "Baseult")
+BaseultMenu = Menu("Baseult", "Baseult")
 BaseultMenu:Boolean("Enabled", "Enabled", true)
 BaseultMenu:Boolean("RT", "RecallTracker", true)
 myHero = GetMyHero()
