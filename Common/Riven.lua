@@ -97,12 +97,12 @@ OnLoop(function(myHero)
 	CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
-	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
+	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) > 250 then
 	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
-	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125+GetHitBox(target)*2) then	
-    CastSpell(_W)
+	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 250) then	
+        CastSpell(_W)
 	end
 	
 	if 100*GetCurrentHP(target)/GetMaxHP(target) <= 50 and GoS:ValidTarget(target, 900) and RivenMenu.Combo.R:Value() and GetCastName(myHero, _R) == "RivenFengShuiEngine" then 
@@ -125,19 +125,25 @@ OnLoop(function(myHero)
 	local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
         local mousePos = GetMousePos()
-	
-	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
+
+	if CanUseSpell(myHero, _Q) and RivenMenu.Harass.Q:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) > 300 then
+	CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
+	end
+
+	if CanUseSpell(myHero, _E) and RivenMenu.Harass.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) > 250 then
 	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
-	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125) then	
+	if CanUseSpell(myHero,_W) == READY and RivenMenu.Harass.W:Value() and GoS:ValidTarget(target, 250) then	
         CastSpell(_W)
 	end
 	
   end 
   
   if RivenMenu.Misc.Flee:Value() then
+
         local mousePos = GetMousePos()
+
         if CanUseSpell(myHero, _E) == READY then
 	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	elseif CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _Q) == READY then
@@ -154,7 +160,7 @@ OnLoop(function(myHero)
 
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,500,1100,200,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,1100,200,false,true)
 		
 		if Ignite and RivenMenu.Misc.AutoIgnite:Value() then
                   if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
@@ -179,7 +185,7 @@ LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if RivenMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,260,1,128,0xff00ff00) end
-if RivenMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,125,1,128,0xff00ff00) end
+if RivenMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,250,1,128,0xff00ff00) end
 if RivenMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,325,1,128,0xff00ff00) end
 if RivenMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,900,1,128,0xff00ff00) end
 
@@ -191,30 +197,29 @@ OnProcessSpell(function(unit, spell)
         if spell.name:lower():find("attack") then 
 		        GoS:DelayAction(function() 
                             if IOW:Mode() == "Combo" then
-
-							    if RivenMenu.Combo.R:Value() then
-							
-							      local target = GetCurrentTarget()
-							      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
+                               if RivenMenu.Combo.R:Value() then
+					
+                                  local target = GetCurrentTarget()
+				  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,1100,200,false,true)
 							 
-				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[_R].dmg()+SpellData[_Q].dmg()+SpellData[-1].dmg() > GetCurrentHP(target)+GetDmgShield(target) then
+				  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[_R].dmg()+SpellData[_Q].dmg()+SpellData[-1].dmg() > GetCurrentHP(target)+GetDmgShield(target) then
 					          CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
-							      end
+		                  end
 								
-                                                 end
+                                end
 								
-								if RivenMenu.Combo.Q:Value() then
+				if RivenMenu.Combo.Q:Value() then
 							
-							      local target = GetCurrentTarget()
-							      local targetPos = GetOrigin(target)
+				   local target = GetCurrentTarget()
+				   local targetPos = GetOrigin(target)
 								
-							      if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
-							      CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
-							      end
+				   if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 260) then
+				   CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+				   end
 								
-						        end
+				end
 								
-							end
+		             end
 							
                         end, GetWindUp(myHero) * 1000)
 		end	
@@ -223,4 +228,4 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-GoS:AddGapcloseEvent(_W, 125, false) -- hi Copy-Pasters ^^
+GoS:AddGapcloseEvent(_W, 250, false) -- hi Copy-Pasters ^^
