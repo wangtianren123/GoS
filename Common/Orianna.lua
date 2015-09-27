@@ -281,14 +281,16 @@ end)
 
 OnCreateObj(function(Object) 
 
-if GetObjectBaseName(Object) == "Orianna_Ball_Flash_Reverse" then
+if GetObjectBaseName(Object) == "Orianna_Base_Z_Ball_Flash_Reverse.troy" then
 Ball = nil
 end
 
-if GetObjectBaseName(Object) == "yomu_ring_green" then
-Ball = Object
-end
+end)
 
+OnUpdateBuff(function(Object,BuffName,Stacks)
+  if Object == myHero and BuffName == "orianaghostself" and Stacks == 1 then
+  Ball = nil
+  end
 end)
 
 addInterrupterCallback(function(target, spellType)
