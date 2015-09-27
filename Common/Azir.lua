@@ -1,5 +1,5 @@
 if GetObjectName(myHero) ~= "Azir" then return end
-Azir = Menu("Azir", "Azir")
+local Azir = Menu("Azir", "Azir")
 
 Azir:SubMenu("c", "Combo")
 Azir.c:Boolean("Q", "Use Q", true)
@@ -177,10 +177,10 @@ LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 local HeroPos = GetOrigin(myHero)
-if Azir.Drawings.Q:Value() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),0,1,0xff00ff00) end
-if Azir.Drawings.W:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),0,1,0xff00ff00) end
-if Azir.Drawings.E:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),0,1,0xff00ff00) end
-if Azir.Drawings.R:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),0,1,0xff00ff00) end
+if Azir.Drawings.Q:Value() then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
+if Azir.Drawings.W:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_W),1,128,0xff00ff00) end
+if Azir.Drawings.E:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
+if Azir.Drawings.R:Value()  then DrawCircle(HeroPos.x,HeroPos.y,HeroPos.z,GetCastRange(myHero,_R),1,128,0xff00ff00) end
 
 end)
 
