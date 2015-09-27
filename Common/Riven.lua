@@ -83,6 +83,7 @@ OnLoop(function(myHero)
 	
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
+        local mousePos = GetMousePos()
 	
 	if GetItemSlot(myHero,3140) > 0 and RivenMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < RivenMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
@@ -92,12 +93,12 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	if CanUseSpell(myHero, _Q) and RivenMenu.Combo.Q:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
-	CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
+	if CanUseSpell(myHero, _Q) and RivenMenu.Combo.Q:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) > 300 then
+	CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
 	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
-	CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
+	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
 	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125+GetHitBox(target)*2) then	
@@ -123,9 +124,10 @@ OnLoop(function(myHero)
 	
 	local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
+        local mousePos = GetMousePos()
 	
 	if CanUseSpell(myHero, _E) and RivenMenu.Combo.E:Value() and GoS:ValidTarget(target, 500) and GoS:GetDistance(target) < 250 then
-	CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
+	CastSkillShot(_E, mousePos.x, mousePos.y, mousePos.z)
 	end
 	
 	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125) then	
@@ -199,7 +201,7 @@ OnProcessSpell(function(unit, spell)
 							      CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 							      end
 								
-                                end
+                                                 end
 								
 								if RivenMenu.Combo.Q:Value() then
 							
