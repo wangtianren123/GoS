@@ -70,7 +70,7 @@ OnProcessSpell(function(unit, spell)
 end)
 
 
-spellData =
+SpellData =
         {
         [-1] = {dmg = function () return 5+math.max(5*math.floor((GetLevel(myHero)+2)/3)+10,10*math.floor((GetLevel(myHero)+2/3)-15)*(GetBaseDamage(myHero)+GetBonusDmg(myHero))/100) end, }, -- only 1 buff not 3
         [_Q] = {dmg = function () return 20*GetCastLevel(myHero, _Q)-10+(.05*GetCastLevel(myHero, _Q)+.35)*(GetBaseDamage(myHero)+GetBonusDmg(myHero)) end }, --only 1 strike end,
@@ -100,7 +100,7 @@ OnLoop(function(myHero)
 	CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
 	end
 	
-	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125) then	
+	if CanUseSpell(myHero,_W) == READY and RivenMenu.Combo.W:Value() and GoS:ValidTarget(target, 125+GetHitBox(target)) then	
         CastSpell(_W)
 	end
 	
@@ -195,7 +195,7 @@ OnProcessSpell(function(unit, spell)
 							      local target = GetCurrentTarget()
 							      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
 							 
-				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and spellData[R].dmg()+SpellData[Q].dmg()+spellData[-1].dmg()+GoS:GetDmg(myHero, target) > GetCurrentHP(target)+GetDmgShield(target) then
+				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[R].dmg()+SpellData[Q].dmg()+SpellData[-1].dmg()+GoS:GetDmg(myHero, target) > GetCurrentHP(target)+GetDmgShield(target) then
 							      CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 							      end
 								
