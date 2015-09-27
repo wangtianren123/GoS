@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Xerath" then return end
 
-local XerathMenu = Menu("Xerath", "Xerath")
+XerathMenu = Menu("Xerath", "Xerath")
 XerathMenu:SubMenu("Combo", "Combo")
 XerathMenu.Combo:Boolean("Q", "Use Q", true)
 XerathMenu.Combo:Boolean("W", "Use W", true)
@@ -17,8 +17,9 @@ XerathMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 XerathMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 XerathMenu:SubMenu("Misc", "Misc")
-XerathMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+XerathMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 XerathMenu.Misc:Boolean("Autolvl", "Auto level", true)
+XerathMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "Q-E-W"})
 XerathMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 --XerathMenu.Misc:Boolean("AutoR", "Auto R Killable", true)
 --XerathMenu.Misc:Key("AutoRKey", "R Killable(hold)", string.byte("T"))
@@ -59,7 +60,7 @@ OnProcessSpell(function(unit, spell)
             for _, spellSlot in pairs(unitChanellingSpells) do
                 if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
             end
-		end
+	end
 end)
  
 function addInterrupterCallback( callback0 )
@@ -130,45 +131,10 @@ OnLoop(function(myHero)
     end
 
 if XerathMenu.Misc.Autolvl:Value() then
-
-if GetLevel(myHero) >= 1 and GetLevel(myHero) < 2 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 2 and GetLevel(myHero) < 3 then
-	LevelSpell(_W)
-elseif GetLevel(myHero) >= 3 and GetLevel(myHero) < 4 then
-	LevelSpell(_E)
-elseif GetLevel(myHero) >= 4 and GetLevel(myHero) < 5 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 5 and GetLevel(myHero) < 6 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 6 and GetLevel(myHero) < 7 then
-	LevelSpell(_R)
-elseif GetLevel(myHero) >= 7 and GetLevel(myHero) < 8 then
-	LevelSpell(_Q)
-elseif GetLevel(myHero) >= 8 and GetLevel(myHero) < 9 then
-        LevelSpell(_Q)
-elseif GetLevel(myHero) >= 9 and GetLevel(myHero) < 10 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 10 and GetLevel(myHero) < 11 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 11 and GetLevel(myHero) < 12 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 12 and GetLevel(myHero) < 13 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 13 and GetLevel(myHero) < 14 then
-        LevelSpell(_W)
-elseif GetLevel(myHero) >= 14 and GetLevel(myHero) < 15 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 15 and GetLevel(myHero) < 16 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) >= 16 and GetLevel(myHero) < 17 then
-        LevelSpell(_R)
-elseif GetLevel(myHero) >= 17 and GetLevel(myHero) < 18 then
-        LevelSpell(_E)
-elseif GetLevel(myHero) == 18 then
-        LevelSpell(_E)
-end
-
+   if XerathMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+   elseif XerathMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
+   end
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
     for i,enemy in pairs(GoS:GetEnemyHeroes()) do
