@@ -72,7 +72,7 @@ OnProcessSpell(function(unit, spell)
 	end
 end)
  
-local function addInterrupterCallback( callback0 )
+function addInterrupterCallback( callback0 )
         callback = callback0
 end
 
@@ -297,7 +297,7 @@ local function ExcludeFurthest(point, tbl)
     return newTable
 end
 
-local function GetMEC(aoe_radius, listOfEntities, starTarget)
+function GetMEC(aoe_radius, listOfEntities, starTarget)
     local average = {x=0, y=0, z=0, count = 0}
     for i=1, #listOfEntities do
         local ori = GetOrigin(listOfEntities[i])
