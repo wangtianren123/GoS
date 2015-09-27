@@ -198,7 +198,7 @@ OnProcessSpell(function(unit, spell)
 							      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,500,1100,200,false,true)
 							 
 				                  if CanUseSpell(myHero, _R) == READY and GetCastName(myHero, _R) ~= "RivenFengShuiEngine" and GoS:ValidTarget(target, 900) and SpellData[_R].dmg()+SpellData[_Q].dmg()+SpellData[-1].dmg() > GetCurrentHP(target)+GetDmgShield(target) then
-							      CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
+					          CastSkillShot(_R, RPred.PredPos.x, RPred.PredPos.y, RPred.PredPos.z)
 							      end
 								
                                                  end
@@ -212,7 +212,7 @@ OnProcessSpell(function(unit, spell)
 							      CastSkillShot(_Q, targetPos.x, targetPos.y, targetPos.z)
 							      end
 								
-								end
+						        end
 								
 							end
 							
