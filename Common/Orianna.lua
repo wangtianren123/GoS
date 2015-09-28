@@ -83,7 +83,7 @@ OnLoop(function(myHero)
 	    
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
+	local QPred = GetPredictionForPlayer(GetOrigin(Ball),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Combo.R.REnabled:Value() then
 	  if GoS:EnemiesAround(Ball or GoS:myHeroPos(), 400) >= OriannaMenu.Combo.R.Rcatch:Value() then
@@ -101,14 +101,13 @@ OnLoop(function(myHero)
 	  end
 	end
 		
-	
 	if CanUseSpell(myHero, _W) == READY and OriannaMenu.Combo.W:Value() and GoS:ValidTarget(target, 1200) then
-	 if GoS:GetDistance(Ball or GoS:myHeroPos(), target) <= 250 then
+	 if GoS:GetDistance(Ball, target) <= 250 then
 	 CastSpell(_W)
          end
         end
 
-        if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
+        if Ball ~= myHero and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
           local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
           if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
           CastTargetSpell(myHero, _E)
@@ -120,19 +119,19 @@ OnLoop(function(myHero)
 	
         local target = GetCurrentTarget()
 	local targetPos = GetOrigin(target)
-	local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),target,GetMoveSpeed(target),1200,0,825,80,false,true)
+	local QPred = GetPredictionForPlayer(GetOrigin(Ball),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and OriannaMenu.Harass.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
 	if CanUseSpell(myHero, _W) == READY and OriannaMenu.Harass.W:Value() and GoS:ValidTarget(target, 825) then
-	 if GoS:GetDistance(Ball or GoS:myHeroPos(), target) <= 250 then
+	 if GoS:GetDistance(Ball, target) <= 250 then
 	 CastSpell(_W)
          end
         end
 
-        if Ball ~= nil and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
+        if Ball ~= myHero and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
           local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, Vector(Ball))
           if pointLine and GoS:GetDistance(pointSegment, target) <= 80 then
           CastTargetSpell(myHero, _E)
@@ -143,9 +142,8 @@ OnLoop(function(myHero)
 	local KillableEnemies = 0
 	
         for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	  
-	    local myHero = myHero
-	    local QPred = GetPredictionForPlayer(GetOrigin(Ball) or GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1200,0,825,80,false,true)
+	 
+	    local QPred = GetPredictionForPlayer(GetOrigin(Ball),enemy,GetMoveSpeed(enemy),1200,0,825,80,false,true)
 	    local enemyPos = GetOrigin(enemy)
 		
 	    local ExtraDmg = 0
@@ -159,13 +157,13 @@ OnLoop(function(myHero)
               end
             end
 						
-  	    if IOW:Mode() == "Combo" and GoS:ValidTarget(enemy, 1200) and OriannaMenu.Combo.R.Rkill:Value() and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) < 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + ExtraDmg) then 
+  	    if IOW:Mode() == "Combo" and GoS:ValidTarget(enemy, 1200) and OriannaMenu.Combo.R.Rkill:Value() and GoS:GetDistance(Ball, enemy) < 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + ExtraDmg) then 
             CastSpell(_R)
             end
 		
 	    if CanUseSpell(myHero, _R) == READY and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-              if GoS:ValidTarget(enemy, 1200) and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + ExtraDmg) then 
-              KillableEnemies = KillableEnemies	+ 1
+              if GoS:ValidTarget(enemy, 1200) and GoS:GetDistance(Ball, enemy) <= 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + ExtraDmg) then 
+              KillableEnemies = KillableEnemies + 1
               end
 		  
 	      if KillableEnemies >= OriannaMenu.Misc.AutoUlt.killable:Value() then
@@ -173,11 +171,11 @@ OnLoop(function(myHero)
 	      end
 	    end
 		
-	    if CanUseSpell(myHero, _W) == READY and OriannaMenu.Killsteal.W:Value() and GoS:ValidTarget(target, 1200) and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 250 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_W)+25+0.7*GetBonusAP(myHero) + ExtraDmg) then
+	    if CanUseSpell(myHero, _W) == READY and OriannaMenu.Killsteal.W:Value() and GoS:ValidTarget(target, 1200) and GoS:GetDistance(Ball, enemy) <= 250 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_W)+25+0.7*GetBonusAP(myHero) + ExtraDmg) then
 	    CastSpell(_W)
 	    elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + ExtraDmg) then 
             CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-            elseif CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() and Ball ~= nil then
+            elseif Ball ~= myHero and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() and Balthen
               local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), enemyPos, Vector(Ball))
               if pointLine and GoS:GetDistance(pointSegment, enemy) <= 80 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _R)+30+0.3*GetBonusAP(myHero) + ExtraDmg) then
               CastTargetSpell(myHero, _E)
@@ -192,7 +190,7 @@ OnLoop(function(myHero)
 	end
 	
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-	  if GoS:EnemiesAround(Ball or GoS:myHeroPos(), 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
+	  if GoS:EnemiesAround(Ball, 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
 	  CastSpell(_R)
 	  end
 	end
@@ -202,7 +200,7 @@ OnLoop(function(myHero)
             if IOW:Mode() == "LaneClear" then
 	        local mobPos = GetOrigin(mob)
 	    
-		if CanUseSpell(myHero, _W) == READY and OriannaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) and GoS:GetDistance(Ball or GoS:myHeroPos(), mob) <= 250 then
+		if CanUseSpell(myHero, _W) == READY and OriannaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) and GoS:GetDistance(Ball, mob) <= 250 then
 		CastSpell(_W)
 		end
 		
@@ -210,7 +208,7 @@ OnLoop(function(myHero)
 		CastSkillShot(_Q, mobPos.x, mobPos.y, mobPos.z) 
 		end
 		
-		if CanUseSpell(myHero, _E) == READY and OriannaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 1000) and Ball ~= nil then
+		if Ball ~= myHero and CanUseSpell(myHero, _E) == READY and OriannaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 1000) then
 		  local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, Vector(Ball))
                   if pointLine and GoS:GetDistance(pointSegment, mob) <= 80 then
 		  CastTargetSpell(myHero, _E)
@@ -239,11 +237,9 @@ end)
 OnProcessSpell(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
-		
 	if spell.name:lower():find("orianaredactcommand") then 
 	Ball = spell.target
 	end
-	
       end
     end
 end)
@@ -263,7 +259,7 @@ OnUpdateBuff(function(Object,buffProc)
 end)
 
 addInterrupterCallback(function(target, spellType)
-  if CanUseSpell(myHero, _R) == READY and GoS:GetDistance(Ball or GoS:myHeroPos(), enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
+  if CanUseSpell(myHero, _R) == READY and GoS:GetDistance(Ball, enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSpell(_R)
   end
 end)
