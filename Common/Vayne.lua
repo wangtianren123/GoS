@@ -177,8 +177,8 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function AutoE()
-	 for _,target in pairs(Gos:GetEnemyHeroes()) do
-		if GoS:ValidTarget(target,1000) then
+	 for _,enemy in pairs(GoS:GetEnemyHeroes()) do
+		if GoS:ValidTarget(enemy,1000) then
 			local enemyposx,enemyposy,enemypoz,selfx,selfy,selfz
 			local distance1=24
 			local distance2=118
@@ -186,7 +186,7 @@ function AutoE()
 			local distance4=306
 			local distance5=400
  
-			local enemyposition = GetOrigin(target)
+			local enemyposition = GetOrigin(enemy)
 			enemyposx=enemyposition.x
 			enemyposy=enemyposition.y
 			enemyposz=enemyposition.z
@@ -205,32 +205,32 @@ function AutoE()
 			local Pos5 = TargetPos-(TargetPos-HeroPos)*(-distance5/GoS:GetDistance(target))
  
 				if MapPosition:inWall(Pos1)==true then
-					if GoS:GetDistance(target)<=550 then
-					CastTargetSpell(target, _E) 
+					if GoS:GetDistance(enemy)<=550 then
+					CastTargetSpell(enemy, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos2)==true then
-					if GoS:GetDistance(target)<=550 then
-					CastTargetSpell(target, _E) 
+					if GoS:GetDistance(enemy)<=550 then
+					CastTargetSpell(enemy, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos3)==true then
-					if GoS:GetDistance(target)<=550 then
-					CastTargetSpell(target, _E) 
+					if GoS:GetDistance(enemy)<=550 then
+					CastTargetSpell(enemy, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos4)==true then
-					if GoS:GetDistance(target)<=550 then
-					CastTargetSpell(target, _E) 
+					if GoS:GetDistance(enemy)<=550 then
+					CastTargetSpell(enemy, _E) 
 					end
 				end
 				
 				if MapPosition:inWall(Pos5)==true then
-					if GoS:GetDistance(target)<=550 then
-					CastTargetSpell(target, _E) 
+					if GoS:GetDistance(enemy)<=550 then
+					CastTargetSpell(enemy, _E) 
 					end
 				end
 				
@@ -239,7 +239,7 @@ function AutoE()
 end
 
 if VayneMenu.Misc.Autolvl:Value() then  
-if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+   if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
    elseif VayneMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
    end
 LevelSpell(leveltable[GetLevel(myHero)])
