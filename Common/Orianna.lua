@@ -1,6 +1,6 @@
 if GetObjectName(myHero) ~= "Orianna" then return end
 
-local Ball = nil
+local Ball = myHero
 	
 local OriannaMenu = Menu("Orianna", "Orianna")
 OriannaMenu:SubMenu("Combo", "Combo")
