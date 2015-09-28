@@ -256,8 +256,8 @@ end
 
 end)
 
-OnUpdateBuff(function(Object,BuffName,Stacks)
-  if Object == myHero and BuffName == "orianaghostself" and Stacks == 1 then
+OnUpdateBuff(function(Object,buffProc)
+  if Object == myHero and buffProc.Name == "orianaghostself" and buffProc.Stacks == 1 then
   Ball = myHero
   end
 end)
