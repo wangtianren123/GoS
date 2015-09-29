@@ -1,10 +1,10 @@
 if GetObjectName(myHero) ~= "Syndra" then return end
 
-local Balls = 3
+Balls = 3
 if Balls > 7 then
 Balls = 7
 end
-local lastBallPos = Vector(0,0,0)
+lastBallPos = Vector(0,0,0)
 	
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
