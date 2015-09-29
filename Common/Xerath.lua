@@ -30,7 +30,6 @@ XerathMenu.Drawings:Boolean("Qmax", "Draw Q Max Range", true)
 XerathMenu.Drawings:Boolean("W", "Draw W Range", true)
 XerathMenu.Drawings:Boolean("E", "Draw E Range", true)
 XerathMenu.Drawings:Boolean("R", "Draw R Range", true)
-XerathMenu.Drawings:Boolean("Text", "Draw Text", true)
 
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {_R},
@@ -159,35 +158,8 @@ if XerathMenu.Drawings.Qmax:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHer
 if XerathMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),1,128,0xff00ff00) end
 if XerathMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if XerathMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),1,128,0xff00ff00) end
- if XerathMenu.Drawings.Text:Value() then
-	for _, enemy in pairs(Gos:GetEnemyHeroes()) do
-		if GoS:ValidTarget(enemy) then
-		    local enemyPos = GetOrigin(enemy)
-		    local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
-		    local enemyText, color = GetDrawText(enemy)
-		    DrawText(enemyText, 20, drawpos.x, drawpos.y, color)
-		end
-	end
- end
 
 end)
-
-function GetDrawText(enemy)
-	
-	local ExtraDmg = 0
-	if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-	ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-	end
-	
-	if CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 135 + 55*GetCastLevel(myHero,_R) + 0.433*GetBonusAP(myHero) + ExtraDmg) then
-	return '1R = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 2*(135 + 55*GetCastLevel(myHero,_R) + 0.433*GetBonusAP(myHero)) + ExtraDmg) then
-	return '2R = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 3*(135 + 55*GetCastLevel(myHero,_R) + 0.433*GetBonusAP(myHero)) + ExtraDmg) then
-	return '3R = Kill!', ARGB(255, 200, 160, 0)
-	end
-	
-end
 
 addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,975,60,true,true)
