@@ -79,19 +79,15 @@ end
 
 OnLoop(function(myHero)
 
+local poisoned = false
+
     if IOW:Mode() == "Combo" then
 
 		local unit = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,825, 80*math.pi/180,false,true)
-		
-		local poisoned = false
-		poisonbuff = GetBuffData(unit,"poison") 
-		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
-		poisoned = true
-		end
-      
+	      
 		if IsFacing(unit, 825) and GoS:ValidTarget(unit, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
@@ -116,12 +112,6 @@ OnLoop(function(myHero)
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
-		
-		local poisoned = false
-		poisonbuff = GetBuffData(unit,"poison") 
-		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
-	        poisoned = true
-		end
 		
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
 		CastTargetSpell(unit, _E)
@@ -175,12 +165,6 @@ end
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 local unit = minion
-		local poisoned = false
-		poisonbuff = GetBuffData(unit,"poison") 
-		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
-	        poisoned = true
-		end
-		
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
@@ -210,14 +194,7 @@ end
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
-                local unit = mob
-                poisonbuff = GetBuffData(unit,"poison") 
-		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
-	        poisoned = true
-	        end
-         
-     	        
-		
+         	
         if IOW:Mode() == "LaneClear" then
 		
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.JungleClear.E:Value() and GoS:IsInDistance(mob, 700) and poisoned then
@@ -245,6 +222,12 @@ addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,825,80*math.pi /180,false,true)
   if GoS:IsInDistance(target, 825) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
+  end
+end)
+
+OnUpdateBuff(function(Object,buffProc)
+  if GetTeam(Object) ~= GetTeam(myHero) and buffProc.Name == "poison" and buffProc.ExpireTime - (math.min(GoS:GetDistance(myHero, Object), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+  poisoned = true
   end
 end)
 
