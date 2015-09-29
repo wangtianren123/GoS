@@ -345,6 +345,32 @@ OnProcessSpell(function(Object,spellProc)
 end)
 
 -- Huge Credits To Inferno for MEC
+local GetOrigin = GetOrigin
+local SQRT = math.sqrt
+
+function TargetDist(point, target)
+    local origin = GetOrigin(target)
+    local dx, dz = origin.x-point.x, origin.z-point.z
+    return SQRT( dx*dx + dz*dz )
+end
+
+function ExcludeFurthest(point, tbl)
+    local removalId = 1
+    for i=2, #tbl do
+        if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
+            removalId = i
+        end
+    end
+    
+    local newTable = {}
+    for i=1, #tbl do
+        if i ~= removalId then
+            newTable[#newTable+1] = tbl[i]
+        end
+    end
+    return newTable
+end
+
 function GetMEC(aoe_radius, listOfEntities, starTarget)
     local average = {x=0, y=0, z=0, count = 0}
     for i=1, #listOfEntities do
