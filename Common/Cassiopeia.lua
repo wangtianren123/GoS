@@ -1,5 +1,7 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
+local poisoned = false
+
 local CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:SubMenu("Combo", "Combo")
 CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
@@ -78,8 +80,6 @@ callback = callback0
 end
 
 OnLoop(function(myHero)
-
-local poisoned = false
 
     if IOW:Mode() == "Combo" then
 
@@ -226,8 +226,10 @@ addInterrupterCallback(function(target, spellType)
 end)
 
 OnUpdateBuff(function(Object,buffProc)
-  if GetTeam(Object) ~= GetTeam(myHero) and buffProc.Name == "poison" and buffProc.ExpireTime - (math.min(GoS:GetDistance(myHero, Object), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
-  poisoned = true
+  if GetTeam(Object) ~= GetTeam(myHero) and buffProc.Type == 23 and buffProc.ExpireTime - (math.min(GoS:GetDistance(myHero, Object), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+ poisoned = true
+  else
+ poisoned = false
   end
 end)
 
@@ -272,7 +274,6 @@ function IsFacing(targetFace,range,unit)
     end
 	end
 end
-
 
 function ValidtargetUnit(targetFace,range,unit)
     range = range or 25000
