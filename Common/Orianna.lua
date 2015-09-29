@@ -86,7 +86,7 @@ OnLoop(function(myHero)
 	local QPred = GetPredictionForPlayer(GetOrigin(Ball),target,GetMoveSpeed(target),1200,0,825,80,false,true)
 
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Combo.R.REnabled:Value() then
-	  if GoS:EnemiesAround(Ball or GoS:myHeroPos(), 400) >= OriannaMenu.Combo.R.Rcatch:Value() then
+	  if GoS:EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Combo.R.Rcatch:Value() then
 	  CastSpell(_R)
 	  end
 	end
@@ -190,7 +190,7 @@ OnLoop(function(myHero)
 	end
 	
 	if CanUseSpell(myHero, _R) == READY and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-	  if GoS:EnemiesAround(Ball, 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
+	  if GoS:EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
 	  CastSpell(_R)
 	  end
 	end
