@@ -198,11 +198,11 @@ function AutoE()
     	                selfz = self.z
 			local HeroPos = Vector(selfx, selfy, selfz)
     	
-			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GoS:GetDistance(target))
-			local Pos2 = TargetPos-(TargetPos-HeroPos)*(-distance2/GoS:GetDistance(target))
-			local Pos3 = TargetPos-(TargetPos-HeroPos)*(-distance3/GoS:GetDistance(target))
-			local Pos4 = TargetPos-(TargetPos-HeroPos)*(-distance4/GoS:GetDistance(target))
-			local Pos5 = TargetPos-(TargetPos-HeroPos)*(-distance5/GoS:GetDistance(target))
+			local Pos1 = TargetPos-(TargetPos-HeroPos)*(-distance1/GoS:GetDistance(enemy))
+			local Pos2 = TargetPos-(TargetPos-HeroPos)*(-distance2/GoS:GetDistance(enemy))
+			local Pos3 = TargetPos-(TargetPos-HeroPos)*(-distance3/GoS:GetDistance(enemy))
+			local Pos4 = TargetPos-(TargetPos-HeroPos)*(-distance4/GoS:GetDistance(enemy))
+			local Pos5 = TargetPos-(TargetPos-HeroPos)*(-distance5/GoS:GetDistance(enemy))
  
 				if MapPosition:inWall(Pos1)==true then
 					if GoS:GetDistance(enemy)<=550 then
