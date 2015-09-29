@@ -175,7 +175,7 @@ OnLoop(function(myHero)
 	    CastSpell(_W)
 	    elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + ExtraDmg) then 
             CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-            elseif Ball ~= myHero and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() and Balthen
+            elseif Ball ~= myHero and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() then
               local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), enemyPos, Vector(Ball))
               if pointLine and GoS:GetDistance(pointSegment, enemy) <= 80 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _R)+30+0.3*GetBonusAP(myHero) + ExtraDmg) then
               CastTargetSpell(myHero, _E)
