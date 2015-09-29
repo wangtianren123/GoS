@@ -84,7 +84,7 @@ OnLoop(function(myHero)
 		local unit = GetCurrentTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
-		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
+		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,825, 80*math.pi/180,false,true)
 		
 		local poisoned = false
 		local poisonbuff = GetBuffData(unit,"poison") 
@@ -92,7 +92,7 @@ OnLoop(function(myHero)
 		poisoned = true
 		end
       
-		if IsFacing(unit, 800) and GoS:ValidTarget(unit, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 60 then
+		if IsFacing(unit, 825) and GoS:ValidTarget(unit, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
 		
@@ -242,8 +242,8 @@ if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHe
 end)
 
 addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,800,180,false,true)
-  if GoS:IsInDistance(target, 800) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
+  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,825,80*math.pi /180,false,true)
+  if GoS:IsInDistance(target, 825) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
   end
 end)
