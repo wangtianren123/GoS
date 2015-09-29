@@ -87,10 +87,9 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		for i=0, 63 do
-		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-		        poisoned = true
-		    end
+		local poisonbuff = GetBuffData(unit,"poison") 
+		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
+		poisoned = true
 		end
       
 		if IsFacing(unit, 800) and GoS:ValidTarget(unit, 800) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 60 then
@@ -119,10 +118,9 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		for i=0, 63 do
-		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-			poisoned = true
-		    end
+		local poisonbuff = GetBuffData(unit,"poison") 
+		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
+	        poisoned = true
 		end
 		
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
@@ -178,10 +176,9 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 local unit = minion
 		local poisoned = false
-		for i=0, 63 do
-		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-			poisoned = true
-		    end
+		local poisonbuff = GetBuffData(unit,"poison") 
+		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
+	        poisoned = true
 		end
 		
 		local ExtraDmg = 0
@@ -214,13 +211,12 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
                 local unit = mob
-     	        local poisoned = false
-	        local poisoned = false
-		for i=0, 63 do
-		    if unit and GoS:ValidTarget(unit, 700) and GetBuffCount(unit,i) > 0 and GetBuffName(unit,i):lower():find("poison") then
-			poisoned = true
-		    end
-		end
+                local poisonbuff = GetBuffData(unit,"poison") 
+		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
+	        poisoned = true
+	        end
+         
+     	        
 		
         if IOW:Mode() == "LaneClear" then
 		
@@ -363,3 +359,41 @@ OnProcessSpell(function(Object,spellProc)
 		end
 	end
 end)
+
+-- Huge Credits To Inferno for MEC
+function GetMEC(aoe_radius, listOfEntities, starTarget)
+    local average = {x=0, y=0, z=0, count = 0}
+    for i=1, #listOfEntities do
+        local ori = GetOrigin(listOfEntities[i])
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    if starTarget then
+        local ori = GetOrigin(starTarget)
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    average.x = average.x / average.count
+    average.y = average.y / average.count
+    average.z = average.z / average.count
+    
+    local targetsInRange = 0
+    for i=1, #listOfEntities do
+        if TargetDist(average, listOfEntities[i]) <= aoe_radius then
+            targetsInRange = targetsInRange + 1
+        end
+    end
+    if starTarget and TargetDist(average, starTarget) <= aoe_radius then
+        targetsInRange = targetsInRange + 1
+    end
+    
+    if targetsInRange == average.count then
+        return average
+    else
+        return GetMEC(aoe_radius, ExcludeFurthest(average, listOfEntities), starTarget)
+    end
+end
