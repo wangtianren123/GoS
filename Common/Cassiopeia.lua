@@ -87,7 +87,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,825, 80*math.pi/180,false,true)
 		
 		local poisoned = false
-		local poisonbuff = GetBuffData(unit,"poison") 
+		poisonbuff = GetBuffData(unit,"poison") 
 		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
 		poisoned = true
 		end
@@ -118,7 +118,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 		
 		local poisoned = false
-		local poisonbuff = GetBuffData(unit,"poison") 
+		poisonbuff = GetBuffData(unit,"poison") 
 		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
 	        poisoned = true
 		end
@@ -176,7 +176,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 local unit = minion
 		local poisoned = false
-		local poisonbuff = GetBuffData(unit,"poison") 
+		poisonbuff = GetBuffData(unit,"poison") 
 		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
 	        poisoned = true
 		end
@@ -211,7 +211,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
 	        local mobPos = GetOrigin(mob)
                 local unit = mob
-                local poisonbuff = GetBuffData(unit,"poison") 
+                poisonbuff = GetBuffData(unit,"poison") 
 		if GoS:ValidTarget(unit, 700) and (poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0) then
 	        poisoned = true
 	        end
