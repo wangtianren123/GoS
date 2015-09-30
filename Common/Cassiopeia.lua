@@ -1,7 +1,5 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
-local poisoned = false
-
 local CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:SubMenu("Combo", "Combo")
 CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
@@ -91,12 +89,11 @@ OnLoop(function(myHero)
 		if IsFacing(unit, 825) and GoS:ValidTarget(unit, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
-	
+	       
+                local poisoned = false
                 poisonbuff = GetBuffData(unit, "poison")
-                if poisonbuff.Type == 23 and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
                 poisoned = true
-                else
-                poisoned = false
                 end
 
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
@@ -107,7 +104,7 @@ OnLoop(function(myHero)
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 and not poisoned then
+		if CanUseSpell(myHero, _W) == READY and CassiopeiaMenu.Combo.W:Value() and GoS:ValidTarget(unit, 925) and WPred.HitChance == 1 and not targetpoisoned then
 		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 		end
 		
@@ -119,7 +116,13 @@ OnLoop(function(myHero)
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,600,850,75,false,true)
 		local WPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),2500,500,925,90,false,true)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
-		
+
+                local poisoned = false
+		poisonbuff = GetBuffData(unit, "poison")
+                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                poisoned = true
+                end
+
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Harass.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
 		CastTargetSpell(unit, _E)
 		end
@@ -171,11 +174,16 @@ end
 
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
-                local unit = minion
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
+                       
+                local poisoned = false
+                poisonbuff = GetBuffData(minion, "poison")
+                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, minion), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                poisoned = true
+                end
 
         if IOW:Mode() == "LaneClear" then
 		  if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Farm.LaneClear.E:Value() and GoS:IsInDistance(minion, 700) and poisoned and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= CassiopeiaMenu.Farm.LaneClear.Mana:Value() then
@@ -200,8 +208,14 @@ end
 
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         
-	        local mobPos = GetOrigin(mob)
-         	
+	local mobPos = GetOrigin(mob)
+
+                local poisoned = false
+                poisonbuff = GetBuffData(mob, "poison")
+                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, mob), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                poisoned = true
+                end
+
         if IOW:Mode() == "LaneClear" then
 		
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.JungleClear.E:Value() and GoS:IsInDistance(mob, 700) and poisoned then
@@ -220,7 +234,7 @@ end
 
 if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
 if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),1,128,0xff00ff00) end
-if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
+if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,700,1,128,0xff00ff00) end
 if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),1,128,0xff00ff00) end
 
 end)
