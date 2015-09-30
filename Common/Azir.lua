@@ -2,7 +2,6 @@ if GetObjectName(myHero) ~= "Azir" then return end
 
 local AzirSoldiers = {}
 
-
 local AzirMenu = Menu("Azir", "Azir")
 AzirMenu:SubMenu("Combo", "Combo")
 AzirMenu.Combo:Boolean("Q", "Use Q", true)
