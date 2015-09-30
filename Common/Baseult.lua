@@ -50,7 +50,8 @@ local onlyEnemies = true
 local onlyFOW = false
 
 OnLoop(function()
-	
+
+if BaseultMenu.RT:Value() then
 	local i = 0
 	for hero, recallObj in pairs(recalling) do
 		local percent=math.floor(GetCurrentHP(recallObj.hero)/GetMaxHP(recallObj.hero)*100)
@@ -86,6 +87,8 @@ OnLoop(function()
 		
 		i=i+1
 	end
+end
+
 end)
 
 function percentToRGB(percent) 
