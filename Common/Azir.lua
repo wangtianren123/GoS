@@ -152,20 +152,21 @@ OnLoop(function(myHero)
 	
 	if AzirMenu.Combo.Flee:Value() then
 	
+        local HeroPos = GetOrigin(myHero)
 	local mousePos = GetMousePos()
 	
 	    if table.getn(AzirSoldiers) < 1 then 
-		local movePos = myHero + (Vector(mousePos) - myHero):normalized()*450
-		CastSkillShot(_W, movePos.x, movePos.y, movePos.z) 
-		end
+            local movePos = HeroPos + (Vector(mousePos) - HeroPos):normalized()*450
+	    CastSkillShot(_W, movePos.x, movePos.y, movePos.z) 
+	    end
 		
 	    for _,Soldier in pairs(AzirSoldiers) do
 		  local movePos = myHero + (Vector(mousePos) - myHero):normalized()*950
 		  if movePos then
-          CastTargetSpell(Soldier, _E)
-          CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
-          end
-		end
+                 CastTargetSpell(Soldier, _E)
+                 CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
+                 end
+	    end
 		
 	end
 	
