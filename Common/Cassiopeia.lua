@@ -91,7 +91,14 @@ OnLoop(function(myHero)
 		if IsFacing(unit, 825) and GoS:ValidTarget(unit, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(unit)/GetMaxHP(unit) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
 		CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 		end
-		
+	
+                poisonbuff = GetBuffData(unit, "poison")
+                if poisonbuff.Type == 23 and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                poisoned = true
+                else
+                poisoned = false
+                end
+
 	        if CanUseSpell(myHero, _E) == READY and CassiopeiaMenu.Combo.E:Value() and GoS:ValidTarget(unit, 700) and poisoned then
 		CastTargetSpell(unit, _E)
 		end
@@ -222,14 +229,6 @@ addInterrupterCallback(function(target, spellType)
   local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,300,825,80*math.pi /180,false,true)
   if GoS:IsInDistance(target, 825) and IsFacing(target, 800) and CassiopeiaMenu.Misc.Interrupt:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= CassiopeiaMenu.Misc.HP:Value() and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS then
   CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-  end
-end)
-
-OnUpdateBuff(function(Object,buffProc)
-  if GetTeam(Object) ~= GetTeam(myHero) and buffProc.Type == 23 and buffProc.ExpireTime - (math.min(GoS:GetDistance(myHero, Object), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
- poisoned = true
-  else
- poisoned = false
   end
 end)
 
