@@ -141,6 +141,13 @@ OnLoop(function(myHero)
         elseif VayneMenu.Misc.WallTumble2:Value() then
         MoveToXYZ(12060, 51, 4806)
         end
+
+if VayneMenu.Misc.Autolvl:Value() then  
+   if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+   elseif VayneMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+   end
+LevelSpell(leveltable[GetLevel(myHero)])
+end
 		
 if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
 if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
@@ -236,13 +243,6 @@ function AutoE()
 				
 		end
 	end
-end
-
-if VayneMenu.Misc.Autolvl:Value() then  
-   if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
-   elseif VayneMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
-   end
-LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 addInterrupterCallback(function(target, spellType)
