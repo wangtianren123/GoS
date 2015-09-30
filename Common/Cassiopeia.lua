@@ -91,8 +91,7 @@ OnLoop(function(myHero)
 		end
 	       
                 local poisoned = false
-                poisonbuff = GetBuffData(unit, "poison")
-                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                if GotBuff(unit, "cassiopeianoxiousblastpoison") > 0 or GotBuff(unit, "cassiopeiamiasmapoison") > 0 and GoS:ValidTarget(unit, 700) then
                 poisoned = true
                 end
 
@@ -118,8 +117,7 @@ OnLoop(function(myHero)
 		local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),math.huge,300,800,180,false,true)
 
                 local poisoned = false
-		poisonbuff = GetBuffData(unit, "poison")
-                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, unit), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                if GotBuff(unit, "cassiopeianoxiousblastpoison") > 0 or GotBuff(unit, "cassiopeiamiasmapoison") > 0 and GoS:ValidTarget(unit, 700) then
                 poisoned = true
                 end
 
@@ -180,8 +178,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		end
                        
                 local poisoned = false
-                poisonbuff = GetBuffData(minion, "poison")
-                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, minion), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                if GotBuff(minion, "cassiopeianoxiousblastpoison") > 0 or GotBuff(minion, "cassiopeiamiasmapoison") > 0 and GoS:ValidTarget(minion, 700) then
                 poisoned = true
                 end
 
@@ -211,8 +208,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	local mobPos = GetOrigin(mob)
 
                 local poisoned = false
-                poisonbuff = GetBuffData(mob, "poison")
-                if poisonbuff.Type == 23 and GoS:ValidTarget(unit, 700) and poisonbuff.ExpireTime - (math.min(GoS:GetDistance(myHero, mob), 700)/1900 + 0.25 + GetLatency()/2000) - GetGameTimer() > 0 then
+                if GotBuff(mob, "cassiopeianoxiousblastpoison") > 0 or GotBuff(mob, "cassiopeiamiasmapoison") > 0 and GoS:ValidTarget(mob, 700) then
                 poisoned = true
                 end
 
