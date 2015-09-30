@@ -95,9 +95,9 @@ OnLoop(function(myHero)
 end
   
 if SivirMenu.Misc.Autolvl:Value() then
-      if SivirMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _Q, _E, _Q , _R, _Q , _W, _Q , _W, _R, _W, _W, _E, _E, _R, _E, _E}
-      elseif SivirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _W, _E, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
-      elseif SivirMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_E, _Q, _E, _W, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
+      if SivirMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _Q, _Q , _R, _Q , _W, _Q , _W, _R, _W, _W, _E, _E, _R, _E, _E}
+      elseif SivirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+      elseif SivirMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_W, _Q, _E, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
       end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
