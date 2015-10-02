@@ -179,7 +179,7 @@ OnLoop(function(myHero)
 		
 	end
 	
-if AzirMenu.Combo.Insec:Value() then
+if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
 	
     local HeroPos = GetOrigin(myHero)
 	local mousePos = GetMousePos()
@@ -192,10 +192,10 @@ if AzirMenu.Combo.Insec:Value() then
 
     if table.getn(AzirSoldiers) < 1 and CanUseSpell(myHero, _W) == READY then
     CastSkillShot(_W, GetOrigin(enemy).x, GetOrigin(enemy).y, GetOrigin(enemy).z)
-    end
-	
+   end
+
 	for _,Soldier in pairs(AzirSoldiers) do
-    if table.getn(AzirSoldiers) > 0 and self.soldierToDash then
+    if table.getn(AzirSoldiers) > 0 then
       local movePos = HeroPos + (Vector(enemy) - HeroPos):normalized() * 950
       if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
