@@ -223,7 +223,6 @@ OnLoop(function(myHero)
    end
 	
    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,600,790,125,false,true)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
