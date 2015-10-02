@@ -5,12 +5,14 @@ table.insert(Balls, 3)
 	
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
+SyndraMenu.Combo:Boolean("EQ", "Use EQ Snipe", true)
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
 SyndraMenu.Combo:Boolean("W", "Use W", true)
 SyndraMenu.Combo:Boolean("E", "Use E", true)
 SyndraMenu.Combo:Boolean("R", "Use R", true)
 
 SyndraMenu:SubMenu("Harass", "Harass")
+SyndraMenu.Harass:Boolean("EQ", "Use EQ Snipe", true)
 SyndraMenu.Harass:Boolean("Q", "Use Q", true)
 SyndraMenu.Harass:Boolean("W", "Use W", true)
 SyndraMenu.Harass:Boolean("E", "Use E", false)
@@ -20,12 +22,20 @@ SyndraMenu.Harass:Slider("QMana", "Auto Q if Mana >", 70, 0, 80, 1)
 
 SyndraMenu:SubMenu("Killsteal", "Killsteal")
 SyndraMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
+--SyndraMenu.Killsteal:Boolean("W", "Killsteal with W", true)
+--SyndraMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 SyndraMenu:SubMenu("Misc", "Misc")
-SyndraMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+SyndraMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 SyndraMenu.Misc:Boolean("Autolvl", "Auto level", true)
 SyndraMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E"})
 SyndraMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
+
+SyndraMenu:SubMenu("LaneClear", "LaneClear")
+SyndraMenu.LaneClear:Boolean("Q", "Use Q", true)
+SyndraMenu.LaneClear:Boolean("W", "Use W", true)
+SyndraMenu.LaneClear:Boolean("E", "Use E", false)
+SyndraMenu.LaneClear:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
 
 SyndraMenu:SubMenu("JungleClear", "JungleClear")
 SyndraMenu.JungleClear:Boolean("Q", "Use Q", true)
@@ -81,18 +91,22 @@ OnLoop(function(myHero)
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,800,925,190,false,true)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
-	
+        local EQPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,1280,60,false,true)
+
 	if CanUseSpell(myHero, _R) == READY and SyndraMenu.Combo.R:Value() and GoS:ValidTarget(target, 725) then
 	
                 local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		end
-		
+		end	
 		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*table.getn(Balls) + ExtraDmg) then
 		CastTargetSpell(target, _R)
 	        end
-	
+        end
+        
+        if CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _E) == READY and  EQPred.HitChance == 1 and SyndraMenu.Combo.EQ:Value() then
+        CastSkillShot(_Q,EQPred.PredPos.x, EQPred.PredPos.y, EQPred.PredPos.z)
+        GoS:DelayAction(function() CastSkillShot(_E,EQPred.PredPos.x, EQPred.PredPos.y, EQPred.PredPos.z) end, 250)
         end
 
 	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and SyndraMenu.Combo.Q:Value() and GoS:ValidTarget(target, 790) then
@@ -147,7 +161,13 @@ OnLoop(function(myHero)
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,600,790,125,false,true)
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),math.huge,800,925,190,false,true)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
-	
+        local EQPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,0,1280,60,false,true)
+	  
+        if CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _E) == READY and  EQPred.HitChance == 1 and SyndraMenu.Harass.EQ:Value() then
+        CastSkillShot(_Q,EQPred.PredPos.x, EQPred.PredPos.y, EQPred.PredPos.z)
+        GoS:DelayAction(function() CastSkillShot(_E,EQPred.PredPos.x, EQPred.PredPos.y, EQPred.PredPos.z) end, 250)
+        end
+
 	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and SyndraMenu.Harass.Q:Value() and GoS:ValidTarget(target, 790) then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
@@ -210,7 +230,7 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-	        if Ignite and SyndraMenu.Misc.Autoignite:Value() then
+	        if Ignite and SyndraMenu.Misc.AutoIgnite:Value() then
                   if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
@@ -249,9 +269,57 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	    
                  for i,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	           if GoS:GetDistance(myHero, minion) <= 925 then 
+	           CastTargetSpell(minion, _W)
+                   end
+                 end
+
+	           if GoS:GetDistance(myHero, mob) <= 925 then 
+	           CastTargetSpell(mob, _W)	  
+	           end
+             end
+		
+	  if table.getn(Balls) > 3 then
+            for _,Ball in pairs(Balls) do
+              if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
+                local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
+                 if isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 then
+                CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
+                end
+              end	
+            end
+          end
+   end
+end
+
+for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+		
+   if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > SyndraMenu.LaneClear.Mana:Value() then
+
+     local minionPos = GetOrigin(minion)	
+     local QPred = GetMEC(125, GoS:GetAllMinions(MINION_ENEMY)) 
+     local WPred = GetMEC(190, GoS:GetAllMinions(MINION_ENEMY))
+
+		if CanUseSpell(myHero, _Q) == READY and SyndraMenu.LaneClear.Q:Value() and GoS:ValidTarget(minion, 790) then
+		CastSkillShot(_Q, QPred.x, QPred.y, QPred.z)
+		end
+		
+		if GetCastName(myHero, _W) == "syndrawcast" and SyndraMenu.LaneClear.W:Value() and GoS:ValidTarget(minion, 925) then
+                CastSkillShot(_W, WPred.x, WPred.y, WPred.z)
+                end
+	  
+                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(minion, 925) and SyndraMenu.LaneClear.W:Value() then
+
+                  if table.getn(Balls) > 3 then 
+                   for _,Ball in pairs(Balls) do
+                     if GoS:GetDistance(myHero, Ball) <= 925 then
+                     CastTargetSpell(Ball, _W)
+                     end
+                   end
+                 end	  
+	   
+	           if GoS:GetDistance(myHero, minion) <= 925 then 
 	           CastTargetSpell(minion, _W)	  
 	           end
-                 end
              
                  for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	           if GoS:GetDistance(myHero, mob) <= 925 then 
@@ -262,9 +330,9 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
 	  if table.getn(Balls) > 3 then
             for _,Ball in pairs(Balls) do
-              if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
-                local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
-                 if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 and EPred.HitChance == 1 then
+              if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(minion, 1250) and SyndraMenu.LaneClear.E:Value() then
+                local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), minionPos, GetOrigin(Ball))
+                 if isOnSegment and GoS:GetDistance(pointSegment, minion) < 125 then
                 CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
                 end
               end	
