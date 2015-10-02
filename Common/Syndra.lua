@@ -6,13 +6,13 @@ table.insert(Balls, 3)
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
---SyndraMenu.Combo:Boolean("W", "Use W", true)
+SyndraMenu.Combo:Boolean("W", "Use W", true)
 SyndraMenu.Combo:Boolean("E", "Use E", true)
 SyndraMenu.Combo:Boolean("R", "Use R", true)
 
 SyndraMenu:SubMenu("Harass", "Harass")
 SyndraMenu.Harass:Boolean("Q", "Use Q", true)
---SyndraMenu.Harass:Boolean("W", "Use W", true)
+SyndraMenu.Harass:Boolean("W", "Use W", true)
 SyndraMenu.Harass:Boolean("E", "Use E", false)
 SyndraMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
 SyndraMenu.Harass:Boolean("AutoQ", "Auto Q", true)
@@ -29,7 +29,7 @@ SyndraMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
 SyndraMenu:SubMenu("JungleClear", "JungleClear")
 SyndraMenu.JungleClear:Boolean("Q", "Use Q", true)
---SyndraMenu.JungleClear:Boolean("W", "Use W", true)
+SyndraMenu.JungleClear:Boolean("W", "Use W", true)
 SyndraMenu.JungleClear:Boolean("E", "Use E", true)
 
 SyndraMenu:SubMenu("Drawings", "Drawings")
@@ -110,22 +110,33 @@ OnLoop(function(myHero)
          end
         end
 	
-	--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
-	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-            if Balls > 0 then 
-            CastTargetSpell(lastBallPos, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-	    elseif GoS:IsInDistance(minion, 925) then 
-	    CastTargetSpell(minion, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-	    elseif GoS:IsInDistance(mob, 925) then 
-	    CastTargetSpell(mob, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
+	if GetCastName(myHero, _W) == "syndrawcast" and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
+        CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
+        end
+	  
+       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
+
+            if table.getn(Balls) > 3 then 
+              for _,Ball in pairs(Balls) do
+                if GoS:GetDistance(myHero, Ball) <= 925 then
+                CastTargetSpell(Ball, _W)
+                end
+              end
+            end	  
+	    
+            for i,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+	      if GoS:GetDistance(myHero, minion) <= 925 then 
+	      CastTargetSpell(minion, _W)	  
+	      end
+            end
+             
+            for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+	      if GoS:GetDistance(myHero, mob) <= 925 then 
+	      CastTargetSpell(mob, _W)	  
+	      end
 	    end
-	  end
-	end
-	end]]
+
+       end
 	
   end
   
@@ -152,22 +163,34 @@ OnLoop(function(myHero)
          end
         end
 	
-	--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
-	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-            if Balls > 0 then 
-            CastTargetSpell(lastBallPos, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-	    elseif GoS:IsInDistance(minion, 925) then 
-	    CastTargetSpell(minion, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
-	    elseif GoS:IsInDistance(mob, 925) then 
-            CastTargetSpell(mob, _W)	  
-	    GoS:DelayAction(function() CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z) end, 200)
+	if GetCastName(myHero, _W) == "syndrawcast" and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
+        CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
+        end
+	  
+       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Harass.W:Value() then
+
+            if table.getn(Balls) > 3 then 
+              for _,Ball in pairs(Balls) do
+                if GoS:GetDistance(myHero, Ball) <= 925 then
+                CastTargetSpell(Ball, _W)
+                end
+              end
+            end	  
+	    
+            for i,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+	      if GoS:GetDistance(myHero, minion) <= 925 then 
+	      CastTargetSpell(minion, _W)	  
+	      end
+            end
+             
+            for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+	      if GoS:GetDistance(myHero, mob) <= 925 then 
+	      CastTargetSpell(mob, _W)	  
+	      end
 	    end
-	  end
-	end
-	end]]
+
+       end
+
    end
 
    if SyndraMenu.Harass.AutoQ:Value() then
@@ -204,31 +227,50 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 
      local mobPos = GetOrigin(mob)	
      local QPred = GetMEC(125, GoS:GetAllMinions(MINION_JUNGLE)) 
+     local WPred = GetMEC(190, GoS:GetAllMinions(MINION_JUNGLE))
+
 		if CanUseSpell(myHero, _Q) == READY and SyndraMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 790) then
 		CastSkillShot(_Q, QPred.x, QPred.y, QPred.z)
 		end
 		
-		--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 925) then
-		  if Balls > 0 then
-		  CastTargetSpell(lastBallPos, _W)
-		  GoS:DelayAction(function() CastSkillShot(_W, mobPos.x, mobPos.y, mobPos.z) end, 200)
-		  else
-		  CastTargetSpell(mob, _W)
-		  GoS:DelayAction(function() CastSkillShot(_W, mobPos.x, mobPos.y, mobPos.z) end, 200)
-		  end
-		end]]
+		if GetCastName(myHero, _W) == "syndrawcast" and SyndraMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 925) then
+                CastSkillShot(_W, WPred.x, WPred.y, WPred.z)
+                end
+	  
+                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(mob, 925) and SyndraMenu.JungleClear.W:Value() then
+
+                  if table.getn(Balls) > 3 then 
+                   for _,Ball in pairs(Balls) do
+                     if GoS:GetDistance(myHero, Ball) <= 925 then
+                     CastTargetSpell(Ball, _W)
+                     end
+                   end
+                 end	  
+	    
+                 for i,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+	           if GoS:GetDistance(myHero, minion) <= 925 then 
+	           CastTargetSpell(minion, _W)	  
+	           end
+                 end
+             
+                 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+	           if GoS:GetDistance(myHero, mob) <= 925 then 
+	           CastTargetSpell(mob, _W)	  
+	           end
+	         end
+             end
 		
 	  if table.getn(Balls) > 3 then
-      for _,Ball in pairs(Balls) do
-        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
-          local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
-          if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 and EPred.HitChance == 1 then
-          CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
+            for _,Ball in pairs(Balls) do
+              if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
+                local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
+                 if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 and EPred.HitChance == 1 then
+                CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
+                end
+              end	
+            end
           end
-        end	
-      end
-    end
-  end
+   end
 end
   
 if SyndraMenu.Misc.Autolvl:Value() then
