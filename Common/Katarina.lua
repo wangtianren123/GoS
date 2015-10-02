@@ -286,21 +286,21 @@ end
 				
 				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) and GoS:ValidTarget(enemy, 375) then 
 				CastSpell(_W)
-				CastTargetSpell(enemy, _Q)
+                                GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 		
 				elseif CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + ExtraDmg) and GoS:ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
-				CastSpell(_W)
+				GoS:DelayAction(function() CastSpell(_W) end, 250)
 				
 				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + ExtraDmg) and GoS:ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
-				CastTargetSpell(enemy, _Q)
-				CastSpell(_W)
+				GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
+				GoS:DelayAction(function() CastSpell(_W) end, 250)
 				end
 				
 	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + ExtraDmg) then
 			        wardJump(GetOrigin(enemy))
-		                CastTargetSpell(enemy, _Q)
+		                GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 	                        end
 				
 	end
