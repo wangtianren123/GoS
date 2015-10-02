@@ -1,10 +1,7 @@
 if GetObjectName(myHero) ~= "Syndra" then return end
 
-Balls = 3
-if Balls > 7 then
-Balls = 7
-end
-lastBallPos = Vector(0,0,0)
+Balls = {}
+table.insert(Balls, 3)
 	
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
@@ -92,21 +89,25 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*Balls + ExtraDmg) then
+		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*table.getn(Balls) + ExtraDmg) then
 		CastTargetSpell(target, _R)
-	end
+	        end
 	
         end
 
 	if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and SyndraMenu.Combo.Q:Value() and GoS:ValidTarget(target, 790) then
-       CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 	
-	if lastBallPos and CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
-          local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, lastBallPos)
-          if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
-          CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+	if table.getn(Balls) > 3 then
+	 for _,Ball in pairs(Balls) do
+	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
+            if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
+            CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+            end
           end
+         end
         end
 	
 	if CanUseSpell(myHero, _W) == READY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
@@ -140,10 +141,14 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
-        if lastBallPos and GoS:ValidTarget(target, 1250) and SyndraMenu.Harass.E:Value() then
-         local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, lastBallPos)
-         if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
-         CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        if table.getn(Balls) > 3 then
+	 for _,Ball in pairs(Balls) do
+	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Harass.E:Value() then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
+            if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
+            CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+            end
+          end
          end
         end
 	
@@ -238,9 +243,8 @@ end)
 	
 OnCreateObj(function(Object) 
 if GetObjectBaseName(Object) == "Seed" then
-lastBallPos = Vector(Object)
-Balls = Balls + 1
-GoS:DelayAction(function() Balls = Balls - 1 end, 6900)
+table.insert(Balls, Object)
+GoS:DelayAction(function() table.remove(Balls, 1) end, 6900)
 end
 end)
 
@@ -248,12 +252,24 @@ addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
   if GoS:IsInDistance(target, 700) and CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and SyndraMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-  elseif lastBallPos and GoS:ValidTarget(target, 1250) and SyndraMenu.Misc.Interrupt:Value() then
-    local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, lastBallPos)
-    if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
+  elseif table.getn(Balls) > 3 then
+    for _,Ball in pairs(Balls) do
+      if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and and SyndraMenu.Misc.Interrupt:Value() then
+      local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, lastBallPos)
+      if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
     CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
     end
   end
+  if table.getn(Balls) > 3 then
+	 for _,Ball in pairs(Balls) do
+	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
+            if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
+            CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+            end
+          end
+         end
+        end
 end)
 
 GoS:AddGapcloseEvent(_E, 500, false) -- hi Copy-Pasters ^^
