@@ -6,13 +6,13 @@ table.insert(Balls, 3)
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
 SyndraMenu.Combo:Boolean("Q", "Use Q", true)
-SyndraMenu.Combo:Boolean("W", "Use W", true)
+--SyndraMenu.Combo:Boolean("W", "Use W", true)
 SyndraMenu.Combo:Boolean("E", "Use E", true)
 SyndraMenu.Combo:Boolean("R", "Use R", true)
 
 SyndraMenu:SubMenu("Harass", "Harass")
 SyndraMenu.Harass:Boolean("Q", "Use Q", true)
-SyndraMenu.Harass:Boolean("W", "Use W", true)
+--SyndraMenu.Harass:Boolean("W", "Use W", true)
 SyndraMenu.Harass:Boolean("E", "Use E", false)
 SyndraMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
 SyndraMenu.Harass:Boolean("AutoQ", "Auto Q", true)
@@ -29,7 +29,7 @@ SyndraMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
 SyndraMenu:SubMenu("JungleClear", "JungleClear")
 SyndraMenu.JungleClear:Boolean("Q", "Use Q", true)
-SyndraMenu.JungleClear:Boolean("W", "Use W", true)
+--SyndraMenu.JungleClear:Boolean("W", "Use W", true)
 SyndraMenu.JungleClear:Boolean("E", "Use E", true)
 
 SyndraMenu:SubMenu("Drawings", "Drawings")
@@ -110,7 +110,7 @@ OnLoop(function(myHero)
          end
         end
 	
-	if CanUseSpell(myHero, _W) == READY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
+	--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.Combo.W:Value() and GoS:ValidTarget(target, 925) then
 	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
             if Balls > 0 then 
@@ -125,7 +125,7 @@ OnLoop(function(myHero)
 	    end
 	  end
 	end
-	end
+	end]]
 	
   end
   
@@ -152,7 +152,7 @@ OnLoop(function(myHero)
          end
         end
 	
-	if CanUseSpell(myHero, _W) == READY and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
+	--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.Harass.W:Value() and GoS:ValidTarget(target, 925) then
 	for _,minion in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  for i,mob in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
             if Balls > 0 then 
@@ -167,7 +167,7 @@ OnLoop(function(myHero)
 	    end
 	  end
 	end
-	end
+	end]]
    end
 
    if SyndraMenu.Harass.AutoQ:Value() then
@@ -200,14 +200,15 @@ OnLoop(function(myHero)
   
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
-    if IOW:Mode() == "LaneClear" then
-	local mobPos = GetOrigin(mob)
-		
+   if IOW:Mode() == "LaneClear" then
+
+     local mobPos = GetOrigin(mob)	
+     local QPred = GetMEC(125, GoS:GetAllMinions(MINION_JUNGLE)) 
 		if CanUseSpell(myHero, _Q) == READY and SyndraMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 790) then
-		CastSkillShot(_Q, mobPos.x, mobPos.y, mobPos.z)
+		CastSkillShot(_Q, QPred.x, QPred.y, QPred.z)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and SyndraMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 925) then
+		--[[if CanUseSpell(myHero, _W) == READY and SyndraMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 925) then
 		  if Balls > 0 then
 		  CastTargetSpell(lastBallPos, _W)
 		  GoS:DelayAction(function() CastSkillShot(_W, mobPos.x, mobPos.y, mobPos.z) end, 200)
@@ -215,16 +216,19 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		  CastTargetSpell(mob, _W)
 		  GoS:DelayAction(function() CastSkillShot(_W, mobPos.x, mobPos.y, mobPos.z) end, 200)
 		  end
-		end
+		end]]
 		
-	        if lastBallPos and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
-                  local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, lastBallPos)
-                  if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 and EPred.HitChance == 1 then
-                  CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                  end
-                end
-		
+	  if table.getn(Balls) > 3 then
+      for _,Ball in pairs(Balls) do
+        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
+          local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
+          if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, mob) < 125 and EPred.HitChance == 1 then
+          CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
+          end
+        end	
+      end
     end
+  end
 end
   
 if SyndraMenu.Misc.Autolvl:Value() then
@@ -250,26 +254,85 @@ end)
 
 addInterrupterCallback(function(target, spellType)
   local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2500,250,1250,45,false,true)
+
   if GoS:IsInDistance(target, 700) and CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and SyndraMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+
   elseif table.getn(Balls) > 3 then
     for _,Ball in pairs(Balls) do
       if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and and SyndraMenu.Misc.Interrupt:Value() then
-      local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, lastBallPos)
-      if CanUseSpell(myHero, _E) == READY and isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
-    CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), GetOrigin(Ball)))
+        if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
+        CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
+        end
+      end
     end
   end
-  if table.getn(Balls) > 3 then
-	 for _,Ball in pairs(Balls) do
-	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
-            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
-            if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
-            CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-            end
-          end
-         end
-        end
+
 end)
 
 GoS:AddGapcloseEvent(_E, 500, false) -- hi Copy-Pasters ^^
+
+-- Huge Credits To Inferno for MEC
+local GetOrigin = GetOrigin
+local SQRT = math.sqrt
+
+function TargetDist(point, target)
+    local origin = GetOrigin(target)
+    local dx, dz = origin.x-point.x, origin.z-point.z
+    return SQRT( dx*dx + dz*dz )
+end
+
+function ExcludeFurthest(point, tbl)
+    local removalId = 1
+    for i=2, #tbl do
+        if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
+            removalId = i
+        end
+    end
+    
+    local newTable = {}
+    for i=1, #tbl do
+        if i ~= removalId then
+            newTable[#newTable+1] = tbl[i]
+        end
+    end
+    return newTable
+end
+
+function GetMEC(aoe_radius, listOfEntities, starTarget)
+    local average = {x=0, y=0, z=0, count = 0}
+    for i=1, #listOfEntities do
+        local ori = GetOrigin(listOfEntities[i])
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    if starTarget then
+        local ori = GetOrigin(starTarget)
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    average.x = average.x / average.count
+    average.y = average.y / average.count
+    average.z = average.z / average.count
+    
+    local targetsInRange = 0
+    for i=1, #listOfEntities do
+        if TargetDist(average, listOfEntities[i]) <= aoe_radius then
+            targetsInRange = targetsInRange + 1
+        end
+    end
+    if starTarget and TargetDist(average, starTarget) <= aoe_radius then
+        targetsInRange = targetsInRange + 1
+    end
+    
+    if targetsInRange == average.count then
+        return average
+    else
+        return GetMEC(aoe_radius, ExcludeFurthest(average, listOfEntities), starTarget)
+    end
+end
