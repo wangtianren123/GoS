@@ -190,6 +190,18 @@ OnLoop(function(myHero)
         end
    end
 
+        if VayneMenu.Combo.WallTumble1:Value() and GoS:myHeroPos().x == 6962 and GoS:myHeroPos().z == 8952 then
+        CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
+        elseif VayneMenu.Combo.WallTumble1:Value() then
+        MoveToXYZ(6962, 51, 8952)
+        end
+    
+        if VayneMenu.Combo.WallTumble2:Value() and GoS:myHeroPos().x == 12060 and GoS:myHeroPos().z == 4806 then
+        CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
+        elseif VayneMenu.Combo.WallTumble2:Value() then
+        MoveToXYZ(12060, 51, 4806)
+        end
+
 if VayneMenu.Misc.Autolvl:Value() then  
    if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
    elseif VayneMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
