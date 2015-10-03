@@ -17,7 +17,7 @@ VayneMenu.Combo.E:Boolean("stuntarget", "Stun Current Target Only", false)
 VayneMenu.Combo.E:Boolean("AntiRengar", "Anti-Rengar", true)
 VayneMenu.Combo.E:Boolean("lowhp", "Peel with E when low health", false)
 VayneMenu.Combo.E:Boolean("AutoE", "Auto Wall Condemn", true)
-VayneMenu.Combo.E:Boolean("Interrupt", "Interrupt Spells (E)", true)
+VayneMenu.Combo.E:SubMenu("Interrupt", "Interrupt Spells (E)")
 
 VayneMenu.Combo:SubMenu("R", "Final Hour (R)")
 VayneMenu.Combo.R:Boolean("Enabled", "Enabled", true)
@@ -65,23 +65,16 @@ CHANELLING_SPELLS = {
     ["Xerath"]                      = {_R},
 }
 
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
+  for _,k in pairs(GoS:GetEnemyHeroes()) do
+  local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(k)]
+  local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
         if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
+            GoS:DelayAction(function()
+            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Interrupt",  "..GetObjectName(k).." ..(type(unitChanellingSpells) == 'number' and str[unitChanellingSpells]), true)
+            end, 1)
         end
-end)
- 
-function addInterrupterCallback( callback0 )
-        callback = callback0
-end
-
+  end
+  
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
 	
@@ -252,6 +245,19 @@ OnProcessSpell(function(unit, spell)
 	end		
       end
   end
+  
+        if not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+        local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
+ 
+        if unitChanellingSpells then
+            for _, spellSlot in pairs(unitChanellingSpells) do
+                if spell.name == GetCastName(unit, spellSlot) then 
+                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt:Value() then
+                  CastTargetSpell(unit, _E)
+                  end
+                end
+            end
+        end
 end)
 
 OnCreateObj(function(Object) 
@@ -259,12 +265,6 @@ OnCreateObj(function(Object)
     if GetObjectName(enemy) == "Rengar" and GetObjectBaseName(Object) == "Rengar_LeapSound.troy" and GoS:GetDistance(myHero, enemy) <= 550 and VayneMenu.Combo.E.AntiRengar:Value() then
     CastTargetSpell(enemy, _E)
     end
-  end
-end)
-
-addInterrupterCallback(function(target, spellType)
-  if GoS:IsInDistance(target, 550) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt:Value() then
-  CastTargetSpell(target, _E)
   end
 end)
 
