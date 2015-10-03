@@ -369,8 +369,8 @@ addInterrupterCallback(function(target, spellType)
 
   elseif table.getn(Balls) > 3 then
     for _,Ball in pairs(Balls) do
-      if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and and SyndraMenu.Misc.Interrupt:Value() then
-        local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), GetOrigin(Ball)))
+      if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Misc.Interrupt:Value() then
+        local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), GetOrigin(Ball))
         if isOnSegment and GoS:GetDistance(pointSegment, target) < 125 and EPred.HitChance == 1 then
         CastSkillShot(_E, GetOrigin(Ball).x, GetOrigin(Ball).y, GetOrigin(Ball).z)
         end
