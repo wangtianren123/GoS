@@ -49,26 +49,28 @@ VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = _R,
-    ["Katarina"]                    = _R,
-    ["MasterYi"]                    = _W,
-    ["FiddleSticks"]                = _R,
-    ["Galio"]                       = _R,
-    ["Lucian"]                      = _R,
-    ["MissFortune"]                 = _R,
-    ["VelKoz"]                      = _R,
-    ["Nunu"]                        = _R,
-    ["Shen"]                        = _R,
-    ["Malzahar"]                    = _R,
-    ["Pantheon"]                    = _R,
-    ["Warwick"]                     = _R,
-    ["Xerath"]                      = _R,
+    ["Caitlyn"]                     = {Name = "CaitlynAceintheHole", Spellslot = _R},
+    ["FiddleSticks"]                = {Name = "Drain", Spellslot = _W},
+    ["FiddleSticks"]                = {Name = "Crowstorm", Spellslot = _R},
+    ["Galio"]                       = {Name = "GalioIdolOfDurand", Spellslot = _R},
+    ["Karthus"]                     = {Name = "FallenOne", Spellslot = _R},
+    ["Katarina]                     = {Name = "KatarinaR", Spellslot = _R},
+    ["Lucian"]                      = {Name = "LucianR", Spellslot = _R},
+    ["Malzahar"]                    = {Name = "AlZaharNetherGrasp", Spellslot = _R},
+    ["MissFortune"]                 = {Name = "MissFortuneBulletTime", Spellslot = _R},
+    ["Nunu"]                        = {Name = "AbsoluteZero", Spellslot = _R},                        
+    ["Pantheon"]                    = {Name = "Pantheon_GrandSkyfall_Jump", Spellslot = _R},
+    ["Shen"]                        = {Name = "ShenStandUnited", Spellslot = _R},
+    ["Urgot"]                       = {Name = "UrgotSwap2", Spellslot = _R},
+    ["Varus"]                       = {Name = VarusQ", Spellslot = _Q},
+    ["Warwick"]                     = {Name = "InfiniteDuress", Spellslot = _R} 
 }
+
 GoS:DelayAction(function()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
         if CHANELLING_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)]) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)]]), true)
+            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)]) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)].Spellslot]), true)
         end
   end
 end, 1)
@@ -248,13 +250,14 @@ OnProcessSpell(function(unit, spell)
       end
   end
   
-        if not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
+      if unit and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
  
         if CHANELLING_SPELLS[GetObjectName(unit)] then
-                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
+                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit).Name] and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
+     end
 end)
 
 OnCreateObj(function(Object) 
