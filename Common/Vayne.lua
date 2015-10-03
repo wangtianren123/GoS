@@ -64,7 +64,6 @@ CHANELLING_SPELLS = {
     ["Warwick"]                     = _R,
     ["Xerath"]                      = _R,
 }
-
 GoS:DelayAction(function()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
@@ -248,7 +247,7 @@ OnProcessSpell(function(unit, spell)
         if not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
  
         if CHANELLING_SPELLS[GetObjectName(unit)] then
-                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt.[GetObjectName(unit).."Inter"] ~= nil or VayneMenu.Combo.E.Interrupt.[GetObjectName(unit).."Inter"]:Value() then 
+                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
