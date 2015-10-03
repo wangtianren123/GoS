@@ -54,7 +54,7 @@ CHANELLING_SPELLS = {
     ["FiddleSticks"]                = {Name = "Crowstorm", Spellslot = _R},
     ["Galio"]                       = {Name = "GalioIdolOfDurand", Spellslot = _R},
     ["Karthus"]                     = {Name = "FallenOne", Spellslot = _R},
-    ["Katarina]                     = {Name = "KatarinaR", Spellslot = _R},
+    ["Katarina"]                     = {Name = "KatarinaR", Spellslot = _R},
     ["Lucian"]                      = {Name = "LucianR", Spellslot = _R},
     ["Malzahar"]                    = {Name = "AlZaharNetherGrasp", Spellslot = _R},
     ["MissFortune"]                 = {Name = "MissFortuneBulletTime", Spellslot = _R},
