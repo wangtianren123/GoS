@@ -62,7 +62,7 @@ CHANELLING_SPELLS = {
     ["Pantheon"]                    = {Name = "Pantheon_GrandSkyfall_Jump", Spellslot = _R},
     ["Shen"]                        = {Name = "ShenStandUnited", Spellslot = _R},
     ["Urgot"]                       = {Name = "UrgotSwap2", Spellslot = _R},
-    ["Varus"]                       = {Name = VarusQ", Spellslot = _Q},
+    ["Varus"]                       = {Name = "VarusQ", Spellslot = _Q},
     ["Warwick"]                     = {Name = "InfiniteDuress", Spellslot = _R} 
 }
 
