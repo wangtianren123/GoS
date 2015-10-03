@@ -109,13 +109,14 @@ OnLoop(function(myHero)
 		
 	if VayneMenu.Combo.E.stuntarget:Value() and VayneMenu.Combo.E.Enabled:Value() then
 	  if GoS:ValidTarget(target, 550) then
-          local TargetPos = Vector(GetOrigin(target))
-          local HeroPos = Vector(GetOrigin(myHero))
-          local maxERange = TargetPos - (TargetPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(target))
-          local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
-          for i, Pos in pairs(shootLine:__getPoints()) do
-            if MapPosition:inWall(Pos) then
-            CastTargetSpell(target, _E) 
+            local TargetPos = Vector(GetOrigin(target))
+            local HeroPos = Vector(GetOrigin(myHero))
+            local maxERange = TargetPos - (TargetPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(target))
+            local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
+            for i, Pos in pairs(shootLine:__getPoints()) do
+              if MapPosition:inWall(Pos) then
+              CastTargetSpell(target, _E) 
+              end
             end
           end
         end
@@ -174,32 +175,20 @@ OnLoop(function(myHero)
         CastTargetSpell(enemy, _E)
         end
 
-        if VayneMenu.Combo.E.Enabled:Value() and VayneMenu.Combo.E.stuntarget:Value() == false then
+        if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
           if GoS:ValidTarget(enemy, 550) then
-          local TargetPos = Vector(GetOrigin(enemy))
-          local HeroPos = Vector(GetOrigin(myHero))
-          local maxERange = TargetPos - (TargetPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(enemy))
-          local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
-          for i, Pos in pairs(shootLine:__getPoints()) do
-            if MapPosition:inWall(Pos) then
-            CastTargetSpell(enemy, _E) 
+            local TargetPos = Vector(GetOrigin(enemy))
+            local HeroPos = Vector(GetOrigin(myHero))
+            local maxERange = TargetPos - (TargetPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(enemy))
+            local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
+            for i, Pos in pairs(shootLine:__getPoints()) do
+              if MapPosition:inWall(Pos) then
+              CastTargetSpell(enemy, _E) 
+              end
             end
           end
         end
    end
-
-
-        if VayneMenu.Combo.WallTumble1:Value() and GoS:myHeroPos().x == 6962 and GoS:myHeroPos().z == 8952 then
-        CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
-        elseif VayneMenu.Combo.WallTumble1:Value() then
-        MoveToXYZ(6962, 51, 8952)
-        end
-    
-        if VayneMenu.Combo.WallTumble2:Value() and GoS:myHeroPos().x == 12060 and GoS:myHeroPos().z == 4806 then
-        CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
-        elseif VayneMenu.Combo.WallTumble2:Value() then
-        MoveToXYZ(12060, 51, 4806)
-        end
 
 if VayneMenu.Misc.Autolvl:Value() then  
    if VayneMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
@@ -253,24 +242,6 @@ OnProcessSpell(function(unit, spell)
       end
   end
 end)
-
-function AutoE()
- for _,enemy in pairs(GoS:GetEnemyHeroes()) do
-  if GoS:ValidTarget(enemy, 1000) then
-   local TargetPos = Vector(GetOrigin(enemy))
-   local HeroPos = Vector(GetOrigin(myHero))
-   local maxERange = TargetPos - (TargetPos - HeroPos) * ( -400 / GoS:GetDistance(enemy))
-   local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
-   for i, Pos in pairs(shootLine:__getPoints()) do
-    if MapPosition:inWall(Pos) then
-     if GoS:GetDistance(enemy) <= 550 then
-       CastTargetSpell(enemy, _E) 
-     end
-    end
-   end
-  end
- end
-end
 
 addInterrupterCallback(function(target, spellType)
   if GoS:IsInDistance(target, 550) and CanUseSpell(myHero,_E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt:Value() then
