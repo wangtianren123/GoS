@@ -54,7 +54,7 @@ CHANELLING_SPELLS = {
     ["FiddleSticks"]                = {Name = "Crowstorm", Spellslot = _R},
     ["Galio"]                       = {Name = "GalioIdolOfDurand", Spellslot = _R},
     ["Karthus"]                     = {Name = "FallenOne", Spellslot = _R},
-    ["Katarina"]                     = {Name = "KatarinaR", Spellslot = _R},
+    ["Katarina"]                    = {Name = "KatarinaR", Spellslot = _R},
     ["Lucian"]                      = {Name = "LucianR", Spellslot = _R},
     ["Malzahar"]                    = {Name = "AlZaharNetherGrasp", Spellslot = _R},
     ["MissFortune"]                 = {Name = "MissFortuneBulletTime", Spellslot = _R},
@@ -64,6 +64,24 @@ CHANELLING_SPELLS = {
     ["Urgot"]                       = {Name = "UrgotSwap2", Spellslot = _R},
     ["Varus"]                       = {Name = "VarusQ", Spellslot = _Q},
     ["Warwick"]                     = {Name = "InfiniteDuress", Spellslot = _R} 
+}
+
+GAPCLOSER_SPELLS = {
+    ["Akali"]                       = {Name = "AkaliShadowDance", Spellslot = _R},
+    ["Alistar"]                     = {Name = "Headbutt", Spellslot = _W},
+    ["Diana"]                       = {Name = "DianaTeleport", Spellslot = _R},
+    ["Fizz"]                        = {Name = "FizzPiercingStrike", Spellslot = _Q},
+    ["Irelia"]                      = {Name = "IreliaGatotsu", Spellslot = _Q},
+    ["Jax"]                         = {Name = "JaxLeapStrike", Spellslot = _Q},
+    ["Jayce"]                       = {Name = "JayceToTheSkies", Spellslot = _Q},
+    ["LeeSin"]                      = {Name = "blindmonkqtwo", Spellslot = _Q},
+    ["Maokai"]                      = {Name = "MaokaiUnstableGrowth", Spellslot = _W},
+    ["MonkeyKing"]                  = {Name = "MonkeyKingNimbus", Spellslot = _E},
+    ["Pantheon]                     = {Name = "Pantheon_LeapBash", Spellslot = _W},
+    ["Poppy"]                       = {Name = "PoppyHeroicCharge", Spellslot = _E},
+    ["Quinn"]                       = {Name = "QuinnE", Spellslot = _E},
+    ["Rengar"]                      = {Name = "RengarLeap", Spellslot = _R},
+    ["XinZhao"]                     = {Name = "XenZhaoSweep", Spellslot = _E}
 }
 
 GoS:DelayAction(function()
