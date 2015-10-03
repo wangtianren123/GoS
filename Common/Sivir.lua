@@ -69,7 +69,8 @@ OnLoop(function(myHero)
  for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1350,250,1075,85,false,true)
-		
+	
+	if IOW:Mode() == "Combo" then	
 	if GetItemSlot(myHero,3153) > 0 and SivirMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < SivirMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > SivirMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3153))
         end
@@ -80,6 +81,7 @@ OnLoop(function(myHero)
 
         if GetItemSlot(myHero,3142) > 0 and SivirMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+        end
         end
         
 	if Ignite and SivirMenu.Misc.AutoIgnite:Value() then
