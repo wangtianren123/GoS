@@ -49,31 +49,29 @@ VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["MasterYi"]                    = {_W},
-    ["FiddleSticks"]                = {_W, _R},
-    ["Galio"]                       = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Shen"]                        = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Pantheon"]                    = {_R},
-    ["Warwick"]                     = {_R},
-    ["Xerath"]                      = {_R},
+    ["Caitlyn"]                     = _R,
+    ["Katarina"]                    = _R,
+    ["MasterYi"]                    = _W,
+    ["FiddleSticks"]                = _R,
+    ["Galio"]                       = _R,
+    ["Lucian"]                      = _R,
+    ["MissFortune"]                 = _R,
+    ["VelKoz"]                      = _R,
+    ["Nunu"]                        = _R,
+    ["Shen"]                        = _R,
+    ["Malzahar"]                    = _R,
+    ["Pantheon"]                    = _R,
+    ["Warwick"]                     = _R,
+    ["Xerath"]                      = _R,
 }
-
+GoS:DelayAction(function()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
-  local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(k)]
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-        if unitChanellingSpells then
-            GoS:DelayAction(function()
-            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Interrupt",  "..GetObjectName(k).." ..(type(unitChanellingSpells) == 'number' and str[unitChanellingSpells]), true)
-            end, 1)
+        if CHANELLING_SPELLS[GetObjectName(k)] then
+            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)]) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)]]), true)
         end
   end
+end, 1)
   
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
@@ -247,16 +245,11 @@ OnProcessSpell(function(unit, spell)
   end
   
         if not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-        local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
  
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then 
-                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt:Value() then
+        if CHANELLING_SPELLS[GetObjectName(unit)] then
+                  if GoS:IsInDistance(unit, 550) and CanUseSpell(myHero, _E) == READY and spellType == CHANELLING_SPELLS and VayneMenu.Combo.E.Interrupt.[GetObjectName(unit).."Inter"] ~= nil or VayneMenu.Combo.E.Interrupt.[GetObjectName(unit).."Inter"]:Value() == false then 
                   CastTargetSpell(unit, _E)
                   end
-                end
-            end
         end
 end)
 
