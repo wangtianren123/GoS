@@ -14,7 +14,7 @@ VayneMenu.Combo:SubMenu("E", "Condemn (E)")
 VayneMenu.Combo.E:Boolean("Enabled", "Enabled", true)
 VayneMenu.Combo.E:Slider("pushdistance", "E Push Distance", 400, 350, 490, 1)
 VayneMenu.Combo.E:Boolean("stuntarget", "Stun Current Target Only", false)
-VayneMenu.Combo.E:Boolean("KS", "Smart E KS", false)
+VayneMenu.Combo.E:Boolean("AntiRengar", "Anti-Rengar", true)
 VayneMenu.Combo.E:Boolean("lowhp", "Peel with E when low health", false)
 VayneMenu.Combo.E:Boolean("AutoE", "Auto Wall Condemn", true)
 VayneMenu.Combo.E:Boolean("Interrupt", "Interrupt Spells (E)", true)
@@ -59,7 +59,6 @@ CHANELLING_SPELLS = {
     ["VelKoz"]                      = {_R},
     ["Nunu"]                        = {_R},
     ["Shen"]                        = {_R},
-    ["Karthus"]                     = {_R},
     ["Malzahar"]                    = {_R},
     ["Pantheon"]                    = {_R},
     ["Warwick"]                     = {_R},
@@ -252,6 +251,14 @@ OnProcessSpell(function(unit, spell)
                 end, GetWindUp(myHero)*1000)
 	end		
       end
+  end
+end)
+
+OnCreateObj(function(Object) 
+  for i,enemy in pairs(GoS:GetEnemyHeroes()) do	
+    if GetObjectName(enemy) == "Rengar" and GetObjectBaseName(Object) == "Rengar_LeapSound.troy" and GoS:GetDistance(myHero, enemy) <= 550 and VayneMenu.Combo.E.AntiRengar:Value() then
+    CastTargetSpell(enemy, _E)
+    end
   end
 end)
 
