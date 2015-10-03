@@ -77,7 +77,7 @@ GAPCLOSER_SPELLS = {
     ["LeeSin"]                      = {Name = "blindmonkqtwo", Spellslot = _Q},
     ["Maokai"]                      = {Name = "MaokaiUnstableGrowth", Spellslot = _W},
     ["MonkeyKing"]                  = {Name = "MonkeyKingNimbus", Spellslot = _E},
-    ["Pantheon]                     = {Name = "Pantheon_LeapBash", Spellslot = _W},
+    ["Pantheon"]                     = {Name = "Pantheon_LeapBash", Spellslot = _W},
     ["Poppy"]                       = {Name = "PoppyHeroicCharge", Spellslot = _E},
     ["Quinn"]                       = {Name = "QuinnE", Spellslot = _E},
     ["Rengar"]                      = {Name = "RengarLeap", Spellslot = _R},
