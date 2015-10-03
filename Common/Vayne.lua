@@ -277,13 +277,13 @@ OnProcessSpell(function(unit, spell)
       if unit and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
  
         if CHANELLING_SPELLS[GetObjectName(unit)] then
-                  if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit).Name] and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
+                  if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit).Name]) and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
 
         if GAPCLOSER_SPELLS[GetObjectName(unit)] then
-                  if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit).Name] and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
+                  if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit).Name]) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
