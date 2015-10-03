@@ -116,7 +116,7 @@ end
 	if CanUseSpell(myHero, _Q) == READY and JinxMenu.Harass.Q:Value() and GoS:ValidTarget(target, 700) then
           if GoS:GetDistance(myHero, target) > 525 and GotBuff(myHero, "jinxqicon") > 0 then
           CastSpell(_Q)
-          elseif GoS:GetDistance(myHero, target) < 525 and GotBuff(myHero, "JinxQ") > 0 then
+          elseif GoS:GetDistance(myHero, target) < 570 and GotBuff(myHero, "JinxQ") > 0 then
           CastSpell(_Q)
           end
         end
@@ -159,7 +159,8 @@ end
     
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),3300,600,1500,60,true,true)
         local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2300,700,3000,140,false,true)
-		
+	
+	if IOW:Mode() == "Combo" then	
 	if GetItemSlot(myHero,3153) > 0 and JinxMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > JinxMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3153))
         end
@@ -170,6 +171,7 @@ end
 
         if GetItemSlot(myHero,3142) > 0 and JinxMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
+        end
         end
 		
 	if Ignite and JinxMenu.Misc.AutoIgnite:Value() then
