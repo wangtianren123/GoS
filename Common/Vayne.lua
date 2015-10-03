@@ -165,6 +165,10 @@ OnLoop(function(myHero)
         CastTargetSpell(enemy, _E)
         end
 
+        if IsJumping then
+        CastTargetSpell(enemy, _E)
+        end
+
         if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
           if GoS:ValidTarget(enemy, 550) then
             local TargetPos = Vector(GetOrigin(enemy))
@@ -256,7 +260,9 @@ end)
 OnCreateObj(function(Object) 
   for i,enemy in pairs(GoS:GetEnemyHeroes()) do	
     if GetObjectName(enemy) == "Rengar" and GetObjectBaseName(Object) == "Rengar_LeapSound.troy" and GoS:GetDistance(myHero, enemy) <= 550 and VayneMenu.Combo.E.AntiRengar:Value() then
-    CastTargetSpell(enemy, _E)
+    IsJumping = true
+    else
+    IsJumping = false
     end
   end
 end)
