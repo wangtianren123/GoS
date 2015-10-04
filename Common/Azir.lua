@@ -199,7 +199,7 @@ if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
     end
 
     if table.getn(AzirSoldiers) < 1 and CanUseSpell(myHero, _W) == READY then
-    CastSkillShot(_W, GetOrigin(enemy).x, GetOrigin(enemy).y, GetOrigin(enemy).z)
+    CastSkillShot(_W, HeroPos.x, HeroPos.y, HeroPos.z)
     end
      
     if table.getn(AzirSoldiers) > 0 then
@@ -208,7 +208,7 @@ if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
         local movePos = HeroPos + (Vector(enemy) - HeroPos):normalized() * 950
         if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
-        CastTargetSpell(Soldier, _E)
+        GoS:DelayAction(function() CastTargetSpell(Soldier, _E) end, 250)
           if GoS:ValidTarget(enemy) and GoS:GetDistance(myHero, enemy) < 250 then
           CastSkillShot(_R, GetOrigin(enemy).x, GetOrigin(enemy).y, GetOrigin(enemy).z)
           end
