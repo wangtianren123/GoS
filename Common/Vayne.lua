@@ -327,7 +327,7 @@ OnProcessSpell(function(unit, spell)
 										
                 if GoS:IsInDistance(unit, 2000) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then										
 		        if not spellExpired and (GetTickCount() - SpellsTable.Tick) <= (SpellsTable.Range / SpellsTable.ProjectileSpeed) * 1000 then
-				local Direction     = (SpellsTable.endPos - SpellsTable.StartPos):normalized()
+				local Direction     = Vector(SpellsTable.endPos - SpellsTable.StartPos):normalized()
 				local StartPosition = SpellsTable.StartPos + Direction
 				local EndPosition   = SpellsTable.StartPos + Direction * SpellsTable.Range
 				local myPos = Point(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z)
