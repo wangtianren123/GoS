@@ -49,6 +49,9 @@ VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 
+local SpellsTable = {}
+local SpellExpired = true
+
 CHANELLING_SPELLS = {
     ["Caitlyn"]                     = {Name = "CaitlynAceintheHole", Spellslot = _R},
     ["FiddleSticks"]                = {Name = "Drain", Spellslot = _W},
@@ -102,7 +105,7 @@ GAPCLOSER2_SPELLS = {
     ["Sejuani"]                     = {Name = "SejuaniArcticAssault", Range = 650, ProjectileSpeed = 2000, Spellslot = _Q},
     ["Shen"]                        = {Name = "ShenShadowDash", Range = 575, ProjectileSpeed = 2000, Spellslot = _E},
     ["Tristana"]                    = {Name = "RocketJump", Range = 900, ProjectileSpeed = 2000, Spellslot = _W},
-    ["Tryndamere"]                  = {Name = "slashCast", Range = 650, ProjectileSpeed = 1450, Spellslot = _E},
+    ["Tryndamere"]                  = {Name = "slashCast", Range = 650, ProjectileSpeed = 1450, Spellslot = _E}
 }
 
 GoS:DelayAction(function()
@@ -116,6 +119,9 @@ GoS:DelayAction(function()
             VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER_SPELLS[GetObjectName(k)]) == 'number' and str[GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot]), true)
         end
 
+        if GAPCLOSER2_SPELLS[GetObjectName(k)] then
+            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER2_SPELLS[GetObjectName(k)]) == 'number' and str[GAPCLOSER2_SPELLS[GetObjectName(k)].Spellslot]), true)
+        end
   end
 end, 1)
   
