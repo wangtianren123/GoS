@@ -112,16 +112,17 @@ GoS:DelayAction(function()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
         if CHANELLING_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)]) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)].Spellslot]), true)
+            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)].Spellslot]), true)
         end
 
         if GAPCLOSER_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER_SPELLS[GetObjectName(k)]) == 'number' and str[GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot]), true)
+            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot]), true)
         end
 
         if GAPCLOSER2_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER2_SPELLS[GetObjectName(k)]) == 'number' and str[GAPCLOSER2_SPELLS[GetObjectName(k)].Spellslot]), true)
+            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER2_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[GAPCLOSER2_SPELLS[GetObjectName(k)].Spellslot]), true)
         end
+		
   end
 end, 1)
   
@@ -303,13 +304,13 @@ OnProcessSpell(function(unit, spell)
       if unit and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
  
         if CHANELLING_SPELLS[GetObjectName(unit)] then
-                  if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit).Name]) and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
+                  if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)].Name) and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
 
         if GAPCLOSER_SPELLS[GetObjectName(unit)] then
-                  if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit).Name]) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
+                  if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit)].Name) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
