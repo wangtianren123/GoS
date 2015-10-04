@@ -14,7 +14,6 @@ VayneMenu.Combo:SubMenu("E", "Condemn (E)")
 VayneMenu.Combo.E:Boolean("Enabled", "Enabled", true)
 VayneMenu.Combo.E:Slider("pushdistance", "E Push Distance", 400, 350, 490, 1)
 VayneMenu.Combo.E:Boolean("stuntarget", "Stun Current Target Only", false)
-VayneMenu.Combo.E:Boolean("AntiRengar", "Anti-Rengar", true)
 VayneMenu.Combo.E:Boolean("lowhp", "Peel with E when low health", true)
 VayneMenu.Combo.E:Boolean("AutoE", "Auto Wall Condemn", true)
 VayneMenu.Combo.E:SubMenu("Interrupt", "Interrupt Spells")
@@ -218,10 +217,6 @@ OnLoop(function(myHero)
         CastTargetSpell(enemy, _E)
         end
 
-        if IsJumping then
-        CastTargetSpell(enemy, _E)
-        end
-
         if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
           if GoS:ValidTarget(enemy, 550) then
             local TargetPos = Vector(GetOrigin(enemy))
@@ -344,14 +339,4 @@ OnProcessSpell(function(unit, spell)
 				end
         end
      end
-end)
-
-OnCreateObj(function(Object) 
-  for i,enemy in pairs(GoS:GetEnemyHeroes()) do	
-    if GetObjectName(enemy) == "Rengar" and GetObjectBaseName(Object) == "Rengar_LeapSound.troy" and GoS:GetDistance(myHero, enemy) <= 550 and VayneMenu.Combo.E.AntiRengar:Value() then
-    IsJumping = true
-    else
-    IsJumping = false
-    end
-  end
 end)
