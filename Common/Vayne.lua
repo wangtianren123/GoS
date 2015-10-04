@@ -85,6 +85,26 @@ GAPCLOSER_SPELLS = {
     ["XinZhao"]                     = {Name = "XenZhaoSweep", Spellslot = _E}
 }
 
+GAPCLOSER2_SPELLS = {
+    ["Aatrox"]                      = {Name = "AatroxQ", Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
+    ["Gragas"]                      = {Name = "GragasE", Range = 600, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Graves"]                      = {Name = "GravesMove", Range = 425, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Hecarim"]                     = {Name = "HecarimUlt", Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
+    ["JarvanIV"]                    = {Name = "JarvanIVDragonStrike", Range = 770, ProjectileSpeed = 2000, Spellslot = _Q},
+    ["JarvanIV"]                    = {Name = "JarvanIVCataclysm", Range = 650, ProjectileSpeed = 2000, Spellslot = _R},
+    ["Khazix"]                      = {Name = "KhazixE", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Khazix"]                      = {Name = "khazixelong", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Leblanc"]                     = {Name = "LeblancSlide", Range = 600, ProjectilSpeed = 2000, Spellslot = _W},
+    ["Leblanc"]                     = {Name = "LeblancSlideM", Range = 600, ProjectilSpeed = 2000, Spellslot = _R},
+    ["Leona"]                       = {Name = "LeonaZenithBlade" Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Malphite"]                    = {Name = "UFSlash", Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
+    ["Renekton"]                    = {Name = "RenektonSliceAndDice", Range = 450, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Sejuani"]                     = {Name = "SejuaniArcticAssault", Range = 650, ProjectileSpeed = 2000, Spellslot = _Q},
+    ["Shen"]                        = {Name = "ShenShadowDash", Range = 575, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Tristana"]                    = {Name = "RocketJump", Range = 900, ProjectileSpeed = 2000, Spellslot = _W},
+    ["Tryndamere"]                  = {Name = "slashCast", Range = 650, ProjectileSpeed = 1450, Spellslot = _E},
+}
+
 GoS:DelayAction(function()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
