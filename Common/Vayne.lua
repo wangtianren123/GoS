@@ -93,11 +93,11 @@ NOTGAPCLOSER_SPELLS = {
     ["Graves"]                      = {Name = "GravesMove", Range = 425, ProjectileSpeed = 2000, Spellslot = _E},
     ["Hecarim"]                     = {Name = "HecarimUlt", Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
     ["JarvanIV"]                    = {Name = "JarvanIVDragonStrike", Range = 770, ProjectileSpeed = 2000, Spellslot = _Q},
-    --["JarvanIV"]                    = {Name = "JarvanIVCataclysm", Range = 650, ProjectileSpeed = 2000, Spellslot = _R},
+    --["JarvanIV"]                  = {Name = "JarvanIVCataclysm", Range = 650, ProjectileSpeed = 2000, Spellslot = _R},
     ["Khazix"]                      = {Name = "KhazixE", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
-    --["Khazix"]                      = {Name = "khazixelong", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
+    --["Khazix"]                    = {Name = "khazixelong", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
     ["Leblanc"]                     = {Name = "LeblancSlide", Range = 600, ProjectileSpeed = 2000, Spellslot = _W},
-    --["Leblanc"]                     = {Name = "LeblancSlideM", Range = 600, ProjectileSpeed = 2000, Spellslot = _R},
+    --["Leblanc"]                   = {Name = "LeblancSlideM", Range = 600, ProjectileSpeed = 2000, Spellslot = _R},
     ["Leona"]                       = {Name = "LeonaZenithBlade", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
     ["Malphite"]                    = {Name = "UFSlash", Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
     ["Renekton"]                    = {Name = "RenektonSliceAndDice", Range = 450, ProjectileSpeed = 2000, Spellslot = _E},
@@ -296,7 +296,7 @@ OnProcessSpell(function(unit, spell)
       end
   end
   
-      if unit and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
+      if unit and spell and spell.name and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
  
         if CHANELLING_SPELLS[GetObjectName(unit)] then
                   if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
@@ -308,35 +308,33 @@ OnProcessSpell(function(unit, spell)
                   if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
-	    elseif NOTGAPCLOSER_SPELLS[GetObjectName(unit)] then
-		
-		spellExpired = false
+        end
+
+        if NOTGAPCLOSER_SPELLS[GetObjectName(unit)] then
+	
 		SpellsTable = {
-					   Source = unit,
-					   Tick = GetTickCount(),
-					   startPos = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
-					   endPos = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
-				       Range = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Range,
-					   ProjectileSpeed = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].ProjectileSpeed
-					}
+                SpellSource = unit,
+	        SpellTick = GetTickCount(),
+		SpellstartPos = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
+		SpellendPos = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
+		SpellRange = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Range,
+		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].ProjectileSpeed
+		}
 										
                 if GoS:IsInDistance(unit, 2000) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then										
-		        if not spellExpired and (GetTickCount() - SpellsTable.Tick) <= (SpellsTable.Range / SpellsTable.ProjectileSpeed) * 1000 then
-				local Direction     = Vector(SpellsTable.endPos - SpellsTable.StartPos):normalized()
-				local StartPosition = SpellsTable.StartPos + Direction
-				local EndPosition   = SpellsTable.StartPos + Direction * SpellsTable.Range
-				local myPos = Point(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z)
-				local line = Line(Point(StartPosition.x, StartPosition.y, StartPosition.z), Point(EndPosition.x, EndPosition.y, EndPosition.z))
+		        if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
+				local SpellDirection     = (Vector(SpellsTable.SpellendPos) - Vector(SpellsTable.SpellStartPos)):normalized()
+				local SpellStartPosition = SpellsTable.SpellStartPos + SpellDirection
+				local SpellEndPosition   = SpellsTable.SpellStartPos + SpellDirection * SpellsTable.SpellRange
+				local HeroPos            = Point(GetOrigin(myHero).x, GetOrigin(myHero).y, GetOrigin(myHero).z)
+				local lineSegment        = Line(Point(SpellStartPosition.x, SpellStartPosition.y, SpellStartPosition.z), Point(SpellEndPosition.x, SpellEndPosition.y, SpellEndPosition.z))
 
-						if GoS:GetDistance(myHero, line) <= 400 then
-						CastTargetSpell(unit, _E)
-						end
-						
-				else
-						spellExpired = true
-						SpellsTable = {}
+				if GoS:GetDistance(myHero, line) <= 400 then
+				CastTargetSpell(unit, _E)
 				end
-				end
+
+			end
+                end
         end
      end
 end)
