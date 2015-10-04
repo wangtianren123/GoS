@@ -99,7 +99,7 @@ GAPCLOSER2_SPELLS = {
     ["Khazix"]                      = {Name = "khazixelong", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
     ["Leblanc"]                     = {Name = "LeblancSlide", Range = 600, ProjectilSpeed = 2000, Spellslot = _W},
     ["Leblanc"]                     = {Name = "LeblancSlideM", Range = 600, ProjectilSpeed = 2000, Spellslot = _R},
-    ["Leona"]                       = {Name = "LeonaZenithBlade" Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
+    ["Leona"]                       = {Name = "LeonaZenithBlade", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
     ["Malphite"]                    = {Name = "UFSlash", Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
     ["Renekton"]                    = {Name = "RenektonSliceAndDice", Range = 450, ProjectileSpeed = 2000, Spellslot = _E},
     ["Sejuani"]                     = {Name = "SejuaniArcticAssault", Range = 650, ProjectileSpeed = 2000, Spellslot = _Q},
