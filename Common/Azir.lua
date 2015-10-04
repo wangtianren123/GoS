@@ -209,7 +209,7 @@ if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
         if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
         CastTargetSpell(Soldier, _E)
-          if GoS:ValidTarget(enemy) and GetDistance(enemy) < 250 then
+          if GoS:ValidTarget(enemy) and GoS:GetDistance(myHero, enemy) < 250 then
           CastSkillShot(_R, GetOrigin(enemy).x, GetOrigin(enemy).y, GetOrigin(enemy).z)
           end
         end
