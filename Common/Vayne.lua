@@ -48,6 +48,8 @@ VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 
+local SpellExpired = false
+
 CHANELLING_SPELLS = {
     ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
     ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
@@ -301,6 +303,7 @@ OnProcessSpell(function(unit, spell)
 
         if NOTGAPCLOSER_SPELLS[spell.name] then
 
+                SpellExpired = false
 		SpellsTable = {
                 SpellSource          = unit,
 	        SpellTick            = GetTickCount(),
@@ -316,7 +319,7 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function NotGapcloser()
-    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
+    if not SpellExpired and CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
         if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
 
         local k = SpellsTable.SpellSource
@@ -328,6 +331,11 @@ function NotGapcloser()
 
 	   if GoS:GetDistance(myHero, lineSegment) <= 400 then
 	   CastTargetSpell(k, _E)
+
+           else 
+
+           SpellExpired = true
+           SpellsTable{}
 	   end
 
 	end
