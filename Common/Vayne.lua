@@ -302,6 +302,7 @@ OnProcessSpell(function(unit, spell)
         if NOTGAPCLOSER_SPELLS[spell.name] and GoS:GetDistance(myHero, unit) < 2000 then
 
 		SpellsTable = {
+                SpellSource          = unit,
 	        SpellTick            = GetTickCount(),
 		SpellstartPos        = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
 		SpellendPos          = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
@@ -315,10 +316,10 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function NotGapcloser()
-  for _,k in pairs(GoS:GetEnemyHeroes()) do
-    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(k).."gap"]:Value() then								
+    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
         if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
 
+        local k = SpellsTable.SpellSource
 	local SpellDirection     = (SpellsTable.SpellendPos - SpellsTable.SpellStartPos):normalized()
 	local SpellStartPosition = SpellsTable.SpellStartPos + SpellDirection
 	local SpellEndPosition   = SpellsTable.SpellStartPos + SpellDirection * SpellsTable.SpellRange
@@ -331,7 +332,6 @@ function NotGapcloser()
 
 	end
     end
-  end
 end
 
 function StunThisPleb(unit)
