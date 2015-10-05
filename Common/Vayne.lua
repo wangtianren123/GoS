@@ -316,7 +316,7 @@ end)
 
 function NotGapcloser()
   for _,k in pairs(GoS:GetEnemyHeroes()) do
-    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(enemy).."gap"]:Value() then								
+    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(k).."gap"]:Value() then								
         if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
 
 	local SpellDirection     = (SpellsTable.SpellendPos - SpellsTable.SpellStartPos):normalized()
@@ -326,7 +326,7 @@ function NotGapcloser()
 	local lineSegment        = Line(Point(SpellStartPosition.x, SpellStartPosition.y, SpellStartPosition.z), Point(SpellEndPosition.x, SpellEndPosition.y, SpellEndPosition.z))
 
 	   if GoS:GetDistance(myHero, lineSegment) <= 400 then
-	   CastTargetSpell(enemy, _E)
+	   CastTargetSpell(k, _E)
 	   end
 
 	end
