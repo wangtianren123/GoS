@@ -74,6 +74,7 @@ GAPCLOSER_SPELLS = {
     ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
     ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
     ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
+    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Spellslot = _R},
     ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
     ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
     ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
@@ -87,23 +88,22 @@ GAPCLOSER_SPELLS = {
 }
 
 NOTGAPCLOSER_SPELLS = {
-    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
-    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
-    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
-    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
-    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
-    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
-    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
-    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
-    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
-    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
+    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Radius = 250, Spellslot = _Q},
+    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Radius = 200, Spellslot = _E},
+    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Radius = 0,   Spellslot = _E},
+    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Radius = 350,   Spellslot = _R},
+    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Radius = 0,   Spellslot = _Q},
+    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Radius = 300, Spellslot = _E},
+    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Radius = 300, Spellslot = _E},
+    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Radius = 0,   Spellslot = _W},
+    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Radius = 0,   Spellslot = _R},
+    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Radius = 70,  Spellslot = _E},
+    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Radius = 270, Spellslot = _R},
+    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Radius = 20,  Spellslot = _E},
+    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Radius = 70,  Spellslot = _Q},
+    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Radius = 20,  Spellslot = _E},
+    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Radius = 270, Spellslot = _W},
+    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Radius = 100, Spellslot = _E}
 }
 
 GoS:DelayAction(function()
@@ -303,14 +303,13 @@ OnProcessSpell(function(unit, spell)
 
         if NOTGAPCLOSER_SPELLS[spell.name] then
 
-                SpellExpired = false
 		SpellsTable = {
                 SpellSource          = unit,
 	        SpellTick            = GetTickCount(),
-		SpellstartPos        = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
 		SpellendPos          = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
 		SpellRange           = NOTGAPCLOSER_SPELLS[spell.name].Range,
-		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[spell.name].ProjectileSpeed
+		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[spell.name].ProjectileSpeed,
+                SpellRadius          = NOTGAPCLOSER_SPELLS[spell.name].Radius
 		}
 										
          end
@@ -319,23 +318,15 @@ OnProcessSpell(function(unit, spell)
 end)
 
 function NotGapcloser()
-    if not SpellExpired and CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
+    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
         if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
 
-        local k = SpellsTable.SpellSource
-	local SpellDirection     = (SpellsTable.SpellendPos - SpellsTable.SpellStartPos):normalized()
-	local SpellStartPosition = SpellsTable.SpellStartPos + SpellDirection
-	local SpellEndPosition   = SpellsTable.SpellStartPos + SpellDirection * SpellsTable.SpellRange
-	local HeroPos            = Point(GetOrigin(myHero).x, GetOrigin(myHero).y, GetOrigin(myHero).z)
-	local lineSegment        = Line(Point(SpellStartPosition.x, SpellStartPosition.y, SpellStartPosition.z), Point(SpellEndPosition.x, SpellEndPosition.y, SpellEndPosition.z))
+           local k                  = SpellsTable.SpellSource
+	   local SpellEndPosition   = SpellsTable.SpellendPos
+           local Radius             = SpellsTable.SpellRadius
 
-	   if GoS:GetDistance(myHero, lineSegment) <= 400 then
+	   if GoS:GetDistance(myHero, SpellEndPosition + Radius) <= 100 then
 	   CastTargetSpell(k, _E)
-
-           else 
-
-           SpellExpired = true
-           SpellsTable{}
 	   end
 
 	end
