@@ -52,80 +52,95 @@ local SpellsTable = {}
 local SpellExpired = true
 
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {Name = "CaitlynAceintheHole", Spellslot = _R},
-    ["FiddleSticks"]                = {Name = "Drain", Spellslot = _W},
-    ["FiddleSticks"]                = {Name = "Crowstorm", Spellslot = _R},
-    ["Galio"]                       = {Name = "GalioIdolOfDurand", Spellslot = _R},
-    ["Karthus"]                     = {Name = "FallenOne", Spellslot = _R},
-    ["Katarina"]                    = {Name = "KatarinaR", Spellslot = _R},
-    ["Lucian"]                      = {Name = "LucianR", Spellslot = _R},
-    ["Malzahar"]                    = {Name = "AlZaharNetherGrasp", Spellslot = _R},
-    ["MissFortune"]                 = {Name = "MissFortuneBulletTime", Spellslot = _R},
-    ["Nunu"]                        = {Name = "AbsoluteZero", Spellslot = _R},                        
-    ["Pantheon"]                    = {Name = "Pantheon_GrandSkyfall_Jump", Spellslot = _R},
-    ["Shen"]                        = {Name = "ShenStandUnited", Spellslot = _R},
-    ["Urgot"]                       = {Name = "UrgotSwap2", Spellslot = _R},
-    ["Varus"]                       = {Name = "VarusQ", Spellslot = _Q},
-    ["Warwick"]                     = {Name = "InfiniteDuress", Spellslot = _R} 
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
 GAPCLOSER_SPELLS = {
-    ["Akali"]                       = {Name = "AkaliShadowDance", Spellslot = _R},
-    ["Alistar"]                     = {Name = "Headbutt", Spellslot = _W},
-    ["Diana"]                       = {Name = "DianaTeleport", Spellslot = _R},
-    ["Fizz"]                        = {Name = "FizzPiercingStrike", Spellslot = _Q},
-    ["Irelia"]                      = {Name = "IreliaGatotsu", Spellslot = _Q},
-    ["Jax"]                         = {Name = "JaxLeapStrike", Spellslot = _Q},
-    ["Jayce"]                       = {Name = "JayceToTheSkies", Spellslot = _Q},
-    ["LeeSin"]                      = {Name = "blindmonkqtwo", Spellslot = _Q},
-    ["Maokai"]                      = {Name = "MaokaiUnstableGrowth", Spellslot = _W},
-    ["MonkeyKing"]                  = {Name = "MonkeyKingNimbus", Spellslot = _E},
-    ["Pantheon"]                    = {Name = "Pantheon_LeapBash", Spellslot = _W},
-    ["Poppy"]                       = {Name = "PoppyHeroicCharge", Spellslot = _E},
-    ["Quinn"]                       = {Name = "QuinnE", Spellslot = _E},
-    ["Rengar"]                      = {Name = "RengarLeap", Spellslot = _R},
-    ["XinZhao"]                     = {Name = "XenZhaoSweep", Spellslot = _E}
+    ["AkaliShadowDance"]            = {Name = "Akali",      Spellslot = _R},
+    ["Headbutt"]                    = {Name = "Alistar",    Spellslot = _W},
+    ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
+    ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
+    ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
+    ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
+    ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
+    ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
+    ["MaokaiUnstableGrowth"]        = {Name = "Maokai",     Spellslot = _W},
+    ["MonkeyKingNimbus"]            = {Name = "MonkeyKing", Spellslot = _E},
+    ["Pantheon_LeapBash"]           = {Name = "Pantheon",   Spellslot = _W},
+    ["PoppyHeroicCharge"]           = {Name = "Poppy",      Spellslot = _E},
+    ["QuinnE"]                      = {Name = "Quinn",      Spellslot = _E},
+    ["RengarLeap"]                  = {Name = "Rengar",     Spellslot = _R},
+    ["XenZhaoSweep"]                = {Name = "XinZhao",    Spellslot = _E}
 }
 
 NOTGAPCLOSER_SPELLS = {
-    ["Aatrox"]                      = {Name = "AatroxQ", Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
-    ["Gragas"]                      = {Name = "GragasE", Range = 600, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Graves"]                      = {Name = "GravesMove", Range = 425, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Hecarim"]                     = {Name = "HecarimUlt", Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
-    ["JarvanIV"]                    = {Name = "JarvanIVDragonStrike", Range = 770, ProjectileSpeed = 2000, Spellslot = _Q},
-    --["JarvanIV"]                  = {Name = "JarvanIVCataclysm", Range = 650, ProjectileSpeed = 2000, Spellslot = _R},
-    ["Khazix"]                      = {Name = "KhazixE", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
-    --["Khazix"]                    = {Name = "khazixelong", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Leblanc"]                     = {Name = "LeblancSlide", Range = 600, ProjectileSpeed = 2000, Spellslot = _W},
-    --["Leblanc"]                   = {Name = "LeblancSlideM", Range = 600, ProjectileSpeed = 2000, Spellslot = _R},
-    ["Leona"]                       = {Name = "LeonaZenithBlade", Range = 900, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Malphite"]                    = {Name = "UFSlash", Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
-    ["Renekton"]                    = {Name = "RenektonSliceAndDice", Range = 450, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Sejuani"]                     = {Name = "SejuaniArcticAssault", Range = 650, ProjectileSpeed = 2000, Spellslot = _Q},
-    ["Shen"]                        = {Name = "ShenShadowDash", Range = 575, ProjectileSpeed = 2000, Spellslot = _E},
-    ["Tristana"]                    = {Name = "RocketJump", Range = 900, ProjectileSpeed = 2000, Spellslot = _W},
-    ["Tryndamere"]                  = {Name = "slashCast", Range = 650, ProjectileSpeed = 1450, Spellslot = _E}
+    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
+    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
+    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
+    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
 }
 
 GoS:DelayAction(function()
-  for _,k in pairs(GoS:GetEnemyHeroes()) do
+
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
-        if CHANELLING_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(CHANELLING_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[CHANELLING_SPELLS[GetObjectName(k)].Spellslot]), true)
-        end
 
-        if GAPCLOSER_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[GAPCLOSER_SPELLS[GetObjectName(k)].Spellslot]), true)
+  for i, spell in pairs(CHANELLING_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+            VayneMenu.Combo.E.Interrupt:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
         end
-
-        if NOTGAPCLOSER_SPELLS[GetObjectName(k)] then
-            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(NOTGAPCLOSER_SPELLS[GetObjectName(k)].Spellslot) == 'number' and str[NOTGAPCLOSER_SPELLS[GetObjectName(k)].Spellslot]), true)
-        end
-		
+    end
   end
+
+  for i, spell in pairs(GAPCLOSER_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        end
+    end
+  end
+
+  for i, spell in pairs(NOTGAPCLOSER_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+            VayneMenu.Combo.E.AntiGap:Boolean(GetObjectName(k).."gap", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        end
+    end
+  end
+		
 end, 1)
   
 OnLoop(function(myHero)
+
+    NotGapcloser()
+
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
@@ -232,10 +247,15 @@ end)
 OnProcessSpell(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
-        if spell.name:lower():find("attack") then 
+        if spell.name:lower():find("attack") and CanUseSpell(myHero, _Q) == READY then 
 	        GoS:DelayAction(function() 
+
 	        	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-                           if enemy ~= nil and IOW:Mode() == "Combo" and VayneMenu.Combo.Q.Mode:Value() == 1 and VayneMenu.Combo.Q.Enabled:Value() then
+
+                           if enemy ~= nil and IOW:Mode() == "Combo" then
+
+                             if VayneMenu.Combo.Q.Mode:Value() == 1 and VayneMenu.Combo.Q.Enabled:Value() then
+
 				local HeroPos = GetOrigin(myHero)
 				local mousePos = GetMousePos()
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
@@ -248,9 +268,9 @@ OnProcessSpell(function(unit, spell)
                                 if GoS:GetDistance(myHero, enemy) > 630 and DistanceAfterTumble < 630 then
                                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
-                           end
+                            end
                            
-                           if enemy ~= nil and IOW:Mode() == "Combo" and VayneMenu.Combo.Q.Mode:Value() == 2 and VayneMenu.Combo.Q.Enabled:Value() then
+                            if VayneMenu.Combo.Q.Mode:Value() == 2 and VayneMenu.Combo.Q.Enabled:Value() then
 	                        local HeroPos = GetOrigin(myHero)
 		                local mousePos = GetMousePos()
                                 local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
@@ -259,55 +279,63 @@ OnProcessSpell(function(unit, spell)
                                 if DistanceAfterTumble < 800 and DistanceAfterTumble > 200 then
                                 CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
                                 end
-                           end
+                            end
+
                         end
+
+                     end
                 end, GetWindUp(myHero)*1000)
 	end		
       end
   
-      if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
+      if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
  
-        if CHANELLING_SPELLS[GetObjectName(unit)] then
-                  if GoS:IsInDistance(unit, 715) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, CHANELLING_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
+        if CHANELLING_SPELLS[spell.name] then
+                  if GoS:IsInDistance(unit, 715) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and VayneMenu.Combo.E.Interrupt[GetObjectName(unit).."Inter"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
 
-        if GAPCLOSER_SPELLS[GetObjectName(unit)] then
-                  if spell.target == myHero and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, GAPCLOSER_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
+        if GAPCLOSER_SPELLS[spell.name] then
+                  if spell.target == myHero and GetObjectName(unit) == GAPCLOSER_SPELLS[spell.name].Name and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then 
                   CastTargetSpell(unit, _E)
                   end
         end
 
-        if NOTGAPCLOSER_SPELLS[GetObjectName(unit)] then
-	
+        if NOTGAPCLOSER_SPELLS[spell.name] and GoS:GetDistance(myHero, unit) < 2000 then
+
 		SpellsTable = {
-                SpellSource = unit,
-	        SpellTick = GetTickCount(),
-		SpellstartPos = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
-		SpellendPos = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
-		SpellRange = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Range,
-		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[GetObjectName(unit)].ProjectileSpeed
+	        SpellTick            = GetTickCount(),
+		SpellstartPos        = Point(spell.startPos.x, spell.startPos.y, spell.startPos.z),
+		SpellendPos          = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
+		SpellRange           = NOTGAPCLOSER_SPELLS[spell.name].Range,
+		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[spell.name].ProjectileSpeed
 		}
 										
-                if GoS:IsInDistance(unit, 2000) and CanUseSpell(myHero, _E) == READY and spell.name == GetCastName(unit, NOTGAPCLOSER_SPELLS[GetObjectName(unit)].Spellslot) and VayneMenu.Combo.E.AntiGap[GetObjectName(unit).."gap"]:Value() then										
-		        if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
-				local SpellDirection     = (Vector(SpellsTable.SpellendPos) - Vector(SpellsTable.SpellStartPos)):normalized()
-				local SpellStartPosition = SpellsTable.SpellStartPos + SpellDirection
-				local SpellEndPosition   = SpellsTable.SpellStartPos + SpellDirection * SpellsTable.SpellRange
-				local HeroPos            = Point(GetOrigin(myHero).x, GetOrigin(myHero).y, GetOrigin(myHero).z)
-				local lineSegment        = Line(Point(SpellStartPosition.x, SpellStartPosition.y, SpellStartPosition.z), Point(SpellEndPosition.x, SpellEndPosition.y, SpellEndPosition.z))
-
-				if GoS:GetDistance(myHero, line) <= 400 then
-				CastTargetSpell(unit, _E)
-				end
-
-			end
-                end
-          end
+         end
      end
   end
 end)
+
+function NotGapcloser()
+  for _,k in pairs(GoS:GetEnemyHeroes()) do
+    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(enemy).."gap"]:Value() then								
+        if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
+
+	local SpellDirection     = (SpellsTable.SpellendPos - SpellsTable.SpellStartPos):normalized()
+	local SpellStartPosition = SpellsTable.SpellStartPos + SpellDirection
+	local SpellEndPosition   = SpellsTable.SpellStartPos + SpellDirection * SpellsTable.SpellRange
+	local HeroPos            = Point(GetOrigin(myHero).x, GetOrigin(myHero).y, GetOrigin(myHero).z)
+	local lineSegment        = Line(Point(SpellStartPosition.x, SpellStartPosition.y, SpellStartPosition.z), Point(SpellEndPosition.x, SpellEndPosition.y, SpellEndPosition.z))
+
+	   if GoS:GetDistance(myHero, lineSegment) <= 400 then
+	   CastTargetSpell(enemy, _E)
+	   end
+
+	end
+    end
+  end
+end
 
 function StunThisPleb(unit)
  if GoS:ValidTarget(unit, 550) then
