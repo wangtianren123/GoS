@@ -1,7 +1,6 @@
 if GetObjectName(myHero) ~= "Syndra" then return end
 
 Balls = {}
-table.insert(Balls, 3)
 	
 local SyndraMenu = Menu("Syndra", "Syndra")
 SyndraMenu:SubMenu("Combo", "Combo")
@@ -99,7 +98,7 @@ OnLoop(function(myHero)
 		if GotBuff(myHero, "itemmagicshankcharge") == 100 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end	
-		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*table.getn(Balls) + ExtraDmg) then
+		if GetCurrentHP(target)+GetMagicShield(target)+GetDmgShield(target) < GoS:CalcDamage(myHero, target, 0, (45*GetCastLevel(myHero,_R)+45+.2*GetBonusAP(myHero))*(table.getn(Balls)+3) + ExtraDmg) then
 		CastTargetSpell(target, _R)
 	        end
         end
@@ -113,7 +112,7 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	end
 	
-	if table.getn(Balls) > 3 then
+	if table.getn(Balls) > 0 then
 	 for _,Ball in pairs(Balls) do
 	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Combo.E:Value() then
             local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
@@ -130,7 +129,7 @@ OnLoop(function(myHero)
 	  
        if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
 
-            if table.getn(Balls) > 3 then 
+            if table.getn(Balls) > 0 then 
               for _,Ball in pairs(Balls) do
                 if GoS:GetDistance(myHero, Ball) <= 925 then
                 CastTargetSpell(Ball, _W)
@@ -172,7 +171,7 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)   
 	end
 	
-        if table.getn(Balls) > 3 then
+        if table.getn(Balls) > 0 then
 	 for _,Ball in pairs(Balls) do
 	  if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Harass.E:Value() then
             local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), targetPos, GetOrigin(Ball))
@@ -189,7 +188,7 @@ OnLoop(function(myHero)
 	  
        if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Harass.W:Value() then
 
-            if table.getn(Balls) > 3 then 
+            if table.getn(Balls) > 0 then 
               for _,Ball in pairs(Balls) do
                 if GoS:GetDistance(myHero, Ball) <= 925 then
                 CastTargetSpell(Ball, _W)
@@ -258,7 +257,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  
                 if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(mob, 925) and SyndraMenu.JungleClear.W:Value() then
 
-                  if table.getn(Balls) > 3 then 
+                  if table.getn(Balls) > 0 then 
                    for _,Ball in pairs(Balls) do
                      if GoS:GetDistance(myHero, Ball) <= 925 then
                      CastTargetSpell(Ball, _W)
@@ -277,7 +276,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	           end
              end
 		
-	  if table.getn(Balls) > 3 then
+	  if table.getn(Balls) > 0 then
             for _,Ball in pairs(Balls) do
               if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(mob, 1250) and SyndraMenu.JungleClear.E:Value() then
                 local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), mobPos, GetOrigin(Ball))
@@ -308,7 +307,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	  
                 if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(minion, 925) and SyndraMenu.LaneClear.W:Value() then
 
-                  if table.getn(Balls) > 3 then 
+                  if table.getn(Balls) > 0 then 
                    for _,Ball in pairs(Balls) do
                      if GoS:GetDistance(myHero, Ball) <= 925 then
                      CastTargetSpell(Ball, _W)
@@ -327,7 +326,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	         end
              end
 		
-	  if table.getn(Balls) > 3 then
+	  if table.getn(Balls) > 0 then
             for _,Ball in pairs(Balls) do
               if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(minion, 1250) and SyndraMenu.LaneClear.E:Value() then
                 local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), minionPos, GetOrigin(Ball))
@@ -367,7 +366,7 @@ addInterrupterCallback(function(target, spellType)
   if GoS:IsInDistance(target, 700) and CanUseSpell(myHero, _E) == READY and EPred.HitChance == 1 and SyndraMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 
-  elseif table.getn(Balls) > 3 then
+  elseif table.getn(Balls) > 0 then
     for _,Ball in pairs(Balls) do
       if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1250) and SyndraMenu.Misc.Interrupt:Value() then
         local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), GetOrigin(Ball))
