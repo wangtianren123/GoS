@@ -136,9 +136,6 @@ GoS:DelayAction(function()
 end, 1)
   
 OnLoop(function(myHero)
-
-    NotGapcloser()
-
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
@@ -300,37 +297,9 @@ OnProcessSpell(function(unit, spell)
                   end
         end
 
-        if NOTGAPCLOSER_SPELLS[spell.name] then
-
-		SpellsTable = {
-                SpellSource          = unit,
-	        SpellTick            = GetTickCount(),
-		SpellendPos          = Vector(spell.endPos.x, spell.endPos.y, spell.endPos.z),
-		SpellRange           = NOTGAPCLOSER_SPELLS[spell.name].Range,
-		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[spell.name].ProjectileSpeed,
-                SpellRadius          = NOTGAPCLOSER_SPELLS[spell.name].Radius
-		}
-										
-         end
      end
   end
 end)
-
-function NotGapcloser()
-    if CanUseSpell(myHero, _E) == READY and VayneMenu.Combo.E.AntiGap[GetObjectName(SpellsTable.SpellSource).."gap"]:Value() then								
-        if (GetTickCount() - SpellsTable.SpellTick) <= (SpellsTable.SpellRange / SpellsTable.SpellProjectileSpeed) * 1000 then
-
-           local k                  = SpellsTable.SpellSource
-	   local SpellEndPosition   = SpellsTable.SpellendPos
-           local Radius             = SpellsTable.SpellRadius
-
-	   if GoS:GetDistance(myHero, SpellEndPosition + Radius) <= 100 then
-	   CastTargetSpell(k, _E)
-	   end
-
-	end
-    end
-end
 
 function StunThisPleb(unit)
  if GoS:ValidTarget(unit, 550) then
