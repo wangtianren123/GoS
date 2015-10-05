@@ -127,7 +127,7 @@ OnLoop(function(myHero)
         CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
         end
 	  
-       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
+       if CanUseSpell(myHero, _W) == READY and if GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
 
             if table.getn(Balls) > 0 then 
               for _,Ball in pairs(Balls) do
@@ -186,7 +186,7 @@ OnLoop(function(myHero)
         CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
         end
 	  
-       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(target, 925) and SyndraMenu.Harass.W:Value() then
+       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(target, 925) and SyndraMenu.Harass.W:Value() then
 
             if table.getn(Balls) > 0 then 
               for _,Ball in pairs(Balls) do
@@ -255,7 +255,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
                 CastSkillShot(_W, WPred.x, WPred.y, WPred.z)
                 end
 	  
-                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(mob, 925) and SyndraMenu.JungleClear.W:Value() then
+                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(mob, 925) and SyndraMenu.JungleClear.W:Value() then
 
                   if table.getn(Balls) > 0 then 
                    for _,Ball in pairs(Balls) do
@@ -305,7 +305,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
                 CastSkillShot(_W, WPred.x, WPred.y, WPred.z)
                 end
 	  
-                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) == "SyndraW" and GoS:ValidTarget(minion, 925) and SyndraMenu.LaneClear.W:Value() then
+                if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(minion, 925) and SyndraMenu.LaneClear.W:Value() then
 
                   if table.getn(Balls) > 0 then 
                    for _,Ball in pairs(Balls) do
