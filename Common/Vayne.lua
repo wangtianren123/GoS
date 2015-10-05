@@ -305,7 +305,7 @@ OnProcessSpell(function(unit, spell)
 		SpellsTable = {
                 SpellSource          = unit,
 	        SpellTick            = GetTickCount(),
-		SpellendPos          = Point(spell.endPos.x, spell.endPos.y, spell.endPos.z),
+		SpellendPos          = Vector(spell.endPos.x, spell.endPos.y, spell.endPos.z),
 		SpellRange           = NOTGAPCLOSER_SPELLS[spell.name].Range,
 		SpellProjectileSpeed = NOTGAPCLOSER_SPELLS[spell.name].ProjectileSpeed,
                 SpellRadius          = NOTGAPCLOSER_SPELLS[spell.name].Radius
