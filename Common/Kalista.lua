@@ -898,7 +898,7 @@ OnLoop(function(myHero)
 	for _, ally in pairs(GoS:GetAllyHeroes()) do
            if GetObjectName(ally) == "Blitzcrank" then
 		for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-  	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GetDistance(ally, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
+  	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and KalistaMenu.Ult.Balista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GetDistance(ally, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
                   CastSpell(_R)
                   end
                 end
@@ -906,7 +906,7 @@ OnLoop(function(myHero)
 	
             if GetObjectName(ally) == "Skarner" then
 	        for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-		  if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1750) and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "skarnerimpale") > 0 then
+		  if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1750) and KalistaMenu.Ult.Skarlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "skarnerimpale") > 0 then
                   CastSpell(_R)
                   end
                 end
@@ -914,7 +914,7 @@ OnLoop(function(myHero)
 			
 	    if GetObjectName(ally) == "TahmKench" then
 		for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1400) and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "tahmkenchwdevoured") > 0 then
+	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1400) and KalistaMenu.Ult.Tahmlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "tahmkenchwdevoured") > 0 then
                   CastSpell(_R)
                   end
                 end
