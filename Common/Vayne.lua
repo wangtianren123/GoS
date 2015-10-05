@@ -299,7 +299,7 @@ OnProcessSpell(function(unit, spell)
                   end
         end
 
-        if NOTGAPCLOSER_SPELLS[spell.name] and GoS:GetDistance(myHero, unit) < 2000 then
+        if NOTGAPCLOSER_SPELLS[spell.name] then
 
 		SpellsTable = {
                 SpellSource          = unit,
