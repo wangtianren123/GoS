@@ -16,13 +16,13 @@ AhriMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 AhriMenu:SubMenu("Killsteal", "Killsteal")
 AhriMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 AhriMenu.Killsteal:Boolean("W", "Killsteal with W", true)
-AhriMenu.Killsteal:Boolean("E", "Killsteal with E", false)
+AhriMenu.Killsteal:Boolean("E", "Killsteal with E", true)
+AhriMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 AhriMenu:SubMenu("Misc", "Misc")
 AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
-AhriMenu.Misc:Boolean("Interrupt", "Interrupt Spells (E)", true)
 
 AhriMenu:SubMenu("JungleClear", "JungleClear")
 AhriMenu.JungleClear:Boolean("Q", "Use Q", true)
@@ -36,36 +36,41 @@ AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
 AhriMenu.Drawings:Boolean("R", "Draw R Range", true)
 AhriMenu.Drawings:Boolean("Text", "Draw Text", true)
 
+local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
+
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Galio"]                       = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Karthus"]                     = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Xerath"]                      = {_R},
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-        if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-        local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
-	end
-end)
- 
-function addInterrupterCallback( callback0 )
-callback = callback0
-end
+GoS:DelayAction(function()
+
+  local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+
+  for i, spell in pairs(CHANELLING_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+            InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        else
+        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
+        end
+    end
+  end
+		
+end, 1)
 
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
@@ -219,34 +224,38 @@ function GetDrawText(enemy)
 	end
 end
 
-addInterrupterCallback(function(target, spellType)
-  local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,1000,100,true,true)
-  if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero,_E) == READY and AhriMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
-  CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+      if CHANELLING_SPELLS[spell.name] then
+        if GoS:IsInDistance(unit, 615) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
+        CastTargetSpell(unit, _E)
+        end
+      end
+    end
   end
 end)
 
 GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
 
-
-  function GetFarmPosition(range, width)
+function GetFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
     local objects = GoS:GetAllMinions(MINION_ENEMY)
-    for i, object in pairs( objects) do
+    for i, object in pairs(objects) do
       local hit = CountObjectsNearPos(GetOrigin(object) or object, range, width, objects)
-      if hit > BestHit and GetDistanceSqr(object) < range * range then
+      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
-          break
+        break
         end
       end
     end
     return BestPos, BestHit
-  end
+end
 
-  function GetLineFarmPosition(range, width, source)
+function GetLineFarmPosition(range, width, source)
     local BestPos 
     local BestHit = 0
     source = source or myHero
@@ -254,30 +263,30 @@ GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
     for i, object in pairs(objects) do
       local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
       local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
-      if hit > BestHit and GetDistanceSqr(object) < range * range then
+      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
-          break
+        break
         end
       end
     end
     return BestPos, BestHit
-  end
+end
 
-  function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
+function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     local n = 0
     for i, object in pairs(objects) do
       local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
       local w = width
-      if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+      if isOnSegment and GoS:GetDistanceSqr(pointSegment, object) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, object) then
         n = n + 1
       end
     end
     return n
-  end
+end
 
-  function CountObjectsNearPos(pos, range, radius, objects)
+function CountObjectsNearPos(pos, range, radius, objects)
     local n = 0
     for i, object in pairs(objects) do
       if GoS:GetDistance(pos, object) <= radius then
@@ -285,3 +294,4 @@ GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
       end
     end
     return n
+end
