@@ -227,3 +227,61 @@ addInterrupterCallback(function(target, spellType)
 end)
 
 GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
+
+
+  function GetFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    for i, object in pairs( objects) do
+      local hit = CountObjectsNearPos(GetOrigin(object) or object, range, width, objects)
+      if hit > BestHit and GetDistanceSqr(object) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
+    end
+    return BestPos, BestHit
+  end
+
+  function GetLineFarmPosition(range, width, source)
+    local BestPos 
+    local BestHit = 0
+    source = source or myHero
+    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    for i, object in pairs(objects) do
+      local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
+      local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
+      if hit > BestHit and GetDistanceSqr(object) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+          break
+        end
+      end
+    end
+    return BestPos, BestHit
+  end
+
+  function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
+    local n = 0
+    for i, object in pairs(objects) do
+      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+      local w = width
+      if isOnSegment and GetDistanceSqr(pointSegment, object) < w * w and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, object) then
+        n = n + 1
+      end
+    end
+    return n
+  end
+
+  function CountObjectsNearPos(pos, range, radius, objects)
+    local n = 0
+    for i, object in pairs(objects) do
+      if GoS:GetDistance(pos, object) <= radius then
+        n = n + 1
+      end
+    end
+    return n
