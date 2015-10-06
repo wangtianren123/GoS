@@ -17,7 +17,6 @@ AhriMenu:SubMenu("Killsteal", "Killsteal")
 AhriMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 AhriMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AhriMenu.Killsteal:Boolean("E", "Killsteal with E", true)
-AhriMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 AhriMenu:SubMenu("Misc", "Misc")
 AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
@@ -26,16 +25,19 @@ AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
 AhriMenu:SubMenu("Lasthit", "Lasthit")
 AhriMenu.Lasthit:Boolean("Q", "Use Q", true)
+AhriMenu.Lasthit:Slider("Mana", "if Mana % >", 50, 0, 80, 1)
 
 AhriMenu:SubMenu("LaneClear", "LaneClear")
 AhriMenu.LaneClear:Boolean("Q", "Use Q", true)
 AhriMenu.LaneClear:Boolean("W", "Use W", false)
 AhriMenu.LaneClear:Boolean("E", "Use E", false)
+AhriMenu.LaneClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AhriMenu:SubMenu("JungleClear", "JungleClear")
 AhriMenu.JungleClear:Boolean("Q", "Use Q", true)
 AhriMenu.JungleClear:Boolean("W", "Use W", true)
 AhriMenu.JungleClear:Boolean("E", "Use E", true)
+AhriMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AhriMenu:SubMenu("Drawings", "Drawings")
 AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
