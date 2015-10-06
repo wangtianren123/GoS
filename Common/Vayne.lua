@@ -255,3 +255,5 @@ function StunThisPleb(unit)
    end
  end
 end
+
+GoS:AddGapcloseEvent(_E, 550, true)
