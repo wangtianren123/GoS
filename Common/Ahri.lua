@@ -66,6 +66,13 @@ CHANELLING_SPELLS = {
     ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
+CopyData = {
+        [_Q] = { Mana = function () return 60+5*GetCastLevel(myHero,_Q) end, Dmg = function () return 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) end},
+        [_W] = { Mana = 50, Dmg = function () return 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) end},
+        [_E] = { Mana = 80, Dmg = function () return 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) end},
+        [_R] = { Mana = 100, Dmg = function () return 30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) end}
+        }
+
 GoS:DelayAction(function()
 
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
