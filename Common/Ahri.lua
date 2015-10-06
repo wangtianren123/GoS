@@ -24,6 +24,16 @@ AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
+AhriMenu:SubMenu("Lasthit", "Lasthit")
+AhriMenu.Lasthit:Boolean("Q", "Use Q", true)
+AhriMenu.Lasthit:Boolean("W", "Use W", false)
+AhriMenu.Lasthit:Boolean("E", "Use E", false)
+
+AhriMenu:SubMenu("LaneClear", "LaneClear")
+AhriMenu.LaneClear:Boolean("Q", "Use Q", true)
+AhriMenu.LaneClear:Boolean("W", "Use W", false)
+AhriMenu.LaneClear:Boolean("E", "Use E", false)
+
 AhriMenu:SubMenu("JungleClear", "JungleClear")
 AhriMenu.JungleClear:Boolean("Q", "Use Q", true)
 AhriMenu.JungleClear:Boolean("W", "Use W", true)
@@ -63,7 +73,7 @@ GoS:DelayAction(function()
   for i, spell in pairs(CHANELLING_SPELLS) do
     for _,k in pairs(GoS:GetEnemyHeroes()) do
         if spell["Name"] == GetObjectName(k) then
-            InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
         else
         InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
         end
@@ -72,55 +82,69 @@ GoS:DelayAction(function()
 		
 end, 1)
 
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+      if CHANELLING_SPELLS[spell.name] then
+      	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1550,250,1000,60,true,true)
+        if GoS:IsInDistance(unit, 615) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
+        CastSkillShot(_E, GetOrigin(unit).x, GetOrigin(unit).y, GetOrigin(unit).z)
+        end
+      end
+    end
+  end
+end)
+
 OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
         
-		        local target = GetCurrentTarget()
-		        local mousePos = GetMousePos()
-	                local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
-		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
+	local target = GetCurrentTarget()
+	local mousePos = GetMousePos()
+        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
+	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
-                        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
-                        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                        end
+        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        end
 			
-			if GotBuff(myHero, "ahritumble") > 0 and GoS:ValidTarget(target, 550) and AhriMenu.Combo.R:Value() then
-			local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
-                        local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
-				if DistanceAfterTumble < 550 then
-			        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-			        end
-		        elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 900) and AhriMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
-		        CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-		        end
+	if GotBuff(myHero, "ahritumble") > 0 and GoS:ValidTarget(target, 550) and AhriMenu.Combo.R:Value() then
+	local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
+        local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
+    	  if DistanceAfterTumble < 550 then
+	  CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+          end
+  
+	elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 900) and AhriMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
+	CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+	end
 				
-		        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Combo.W:Value() then
-		        CastSpell(_W)
-		        end
+	if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Combo.W:Value() then
+	CastSpell(_W)
+	end
 		
-	                if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Combo.Q:Value() then
-                        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                        end
+	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Combo.Q:Value() then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
 					
     end
 	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
-                        local target = GetCurrentTarget()
-		        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
-		        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
+        local target = GetCurrentTarget()
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
+	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
 		
-                        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Harass.E:Value() then
-                        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-                        end
+        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Harass.E:Value() then
+        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+        end
 				
-		        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
-		        CastSpell(_W)
-		        end
+        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
+	CastSpell(_W)
+	end
 		
-	                if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
-                        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-                        end
+	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        end
 		
     end
 	
@@ -146,7 +170,7 @@ OnLoop(function(myHero)
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
-	end
+	        end
 	
 	end
 	
@@ -224,37 +248,6 @@ function GetDrawText(enemy)
 	end
 end
 
-OnProcessSpell(function(unit, spell)
-  if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
-      if CHANELLING_SPELLS[spell.name] then
-        if GoS:IsInDistance(unit, 615) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
-        CastTargetSpell(unit, _E)
-        end
-      end
-    end
-  end
-end)
-
-GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
-
-function GetFarmPosition(range, width)
-    local BestPos 
-    local BestHit = 0
-    local objects = GoS:GetAllMinions(MINION_ENEMY)
-    for i, object in pairs(objects) do
-      local hit = CountObjectsNearPos(GetOrigin(object) or object, range, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
-        BestHit = hit
-        BestPos = Vector(object)
-        if BestHit == #objects then
-        break
-        end
-      end
-    end
-    return BestPos, BestHit
-end
-
 function GetLineFarmPosition(range, width, source)
     local BestPos 
     local BestHit = 0
@@ -286,12 +279,4 @@ function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     return n
 end
 
-function CountObjectsNearPos(pos, range, radius, objects)
-    local n = 0
-    for i, object in pairs(objects) do
-      if GoS:GetDistance(pos, object) <= radius then
-        n = n + 1
-      end
-    end
-    return n
-end
+GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
