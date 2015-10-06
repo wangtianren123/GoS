@@ -4,8 +4,8 @@ AutoIgniteMenu:Boolean("Enabled", "Enabled", true)
 local AutoSmiteMenu = Menu("AutoSmite", "Auto Smite")
 AutoSmiteMenu:Boolean("Enabled", "Enabled", true)
 
-ChillingSmite = (summonerNameOne:lower():find("s5_summonersmiteplayerganker") and SUMMONER_1 or (summonerNameTwo:lower():find("s5_summonersmiteplayerganker") and SUMMONER_2 or nil))
-DuelSmite = (summonerNameOne:lower():find("s5_summonersmiteduel") and SUMMONER_1 or (summonerNameTwo:lower():find("s5_summonersmiteduel") and SUMMONER_2 or nil))
+ChillingSmite = (GetCastName(myHero,SUMMONER_1):lower():find("s5_summonersmiteplayerganker") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("s5_summonersmiteplayerganker") and SUMMONER_2 or nil))
+DuelSmite = (GetCastName(myHero,SUMMONER_1):lower():find("s5_summonersmiteduel") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("s5_summonersmiteduel") and SUMMONER_2 or nil))
 
 for i,enemy in pairs(GoS:GetEnemyHeroes()) do
       if ChillingSmite and AutoSmiteMenu.Enabled:Value() then
