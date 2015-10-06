@@ -6,6 +6,7 @@ AhriMenu.Combo:Boolean("Q", "Use Q", true)
 AhriMenu.Combo:Boolean("W", "Use W", true)
 AhriMenu.Combo:Boolean("E", "Use E", true)
 AhriMenu.Combo:Boolean("R", "Use R", true)
+AhriMenu.Combo:List("RMode", "R Mode", 1, {"to target", "to mouse"})
 
 AhriMenu:SubMenu("Harass", "Harass")
 AhriMenu.Harass:Boolean("Q", "Use Q", true)
