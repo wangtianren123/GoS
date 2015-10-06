@@ -26,8 +26,6 @@ AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
 AhriMenu:SubMenu("Lasthit", "Lasthit")
 AhriMenu.Lasthit:Boolean("Q", "Use Q", true)
-AhriMenu.Lasthit:Boolean("W", "Use W", false)
-AhriMenu.Lasthit:Boolean("E", "Use E", false)
 
 AhriMenu:SubMenu("LaneClear", "LaneClear")
 AhriMenu.LaneClear:Boolean("Q", "Use Q", true)
@@ -44,7 +42,7 @@ AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AhriMenu.Drawings:Boolean("W", "Draw W Range", true)
 AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
 AhriMenu.Drawings:Boolean("R", "Draw R Range", true)
-AhriMenu.Drawings:Boolean("Text", "Draw Text", true)
+AhriMenu.Drawings:Boolean("Text", "Draw Killable Text", true)
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
 
@@ -94,7 +92,7 @@ OnProcessSpell(function(unit, spell)
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
       if CHANELLING_SPELLS[spell.name] then
       	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1550,250,1000,60,true,true)
-        if GoS:IsInDistance(unit, 615) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
+        if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
         CastSkillShot(_E, GetOrigin(unit).x, GetOrigin(unit).y, GetOrigin(unit).z)
         end
       end
@@ -113,18 +111,32 @@ OnLoop(function(myHero)
         if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
         CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
         end
-			
-	if GotBuff(myHero, "ahritumble") > 0 and GoS:ValidTarget(target, 550) and AhriMenu.Combo.R:Value() then
-	local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
-        local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
-    	  if DistanceAfterTumble < 550 then
-	  CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+	
+        if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
+          if GoS:ValidTarget(target, 550) then
+            local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
+	    if GotBuff(myHero, "ahritumble") > 0 then
+            CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
+	    elseif CanUseSpell(myHero, _R) == READY and CopyData[_Q].Dmg()+CopyData[_W].Dmg()+CopyData[_E].Dmg()+CopyData[_R].Dmg() then
+	    CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
+	    end
           end
-  
-	elseif CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 900) and AhriMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 then
-	CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
 	end
-				
+
+        if AhriMenu.Combo.RMode:Value() == 2 and AhriMenu.Combo.R:Value() then
+          if GoS:ValidTarget(target, 900) then
+            local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
+            local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
+   	    if GotBuff(myHero, "ahritumble") > 0 then
+              if DistanceAfterTumble < 550 then
+	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
+              elseif CanUseSpell(myHero, _R) == READY and CopyData[_Q].Dmg()+CopyData[_W].Dmg()+CopyData[_E].Dmg()+CopyData[_R].Dmg() then
+	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z) 
+              end
+            end
+          end
+	end
+			
 	if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Combo.W:Value() then
 	CastSpell(_W)
 	end
@@ -155,7 +167,7 @@ OnLoop(function(myHero)
 		
     end
 	
-	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		
 	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
 		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,1000,60,true,true)
@@ -179,19 +191,51 @@ OnLoop(function(myHero)
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 	        end
 	
-	end
-	
-if AhriMenu.Misc.Autolvl:Value() then  
-  if AhriMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _E, _W, _Q, _Q , _R, _Q , _E, _Q , _E, _R, _E, _E, _W, _W, _R, _W, _W}
-  elseif AhriMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
-  elseif AhriMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
-  end
-LevelSpell(leveltable[GetLevel(myHero)])
+end
+
+for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+
+		local ExtraDmg = 0
+		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
+		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
+		end
+                closestminion = GetClosestMinion(GetOrigin(myHero))
+                
+                if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
+
+		  if CanUseSpell(myHero,_Q) == READY and AhriMenu.LaneClear.Q:Value() then
+                    BestPos, BestHit = GetLineFarmPosition(880, 50)
+                    if BestPos and BestHit > 0 then 
+                    CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
+                    end
+	          end
+
+                  if CanUseSpell(myHero,_W) == READY and AhriMenu.LaneClear.W:Value() then
+                    if closestminion and GetCurrentHP(closestminion) < GoS:CalcDamage(myHero, closestminion, 0, CopyTable[_W].Dmg() + ExtraDmg) then
+                    CastSpell(_W)
+                    end
+                  end
+
+                  if CanUseSpell(myHero,_E) == READY and AhriMenu.LaneClear.E:Value() then
+                    if closestminion and GetCurrentHP(closestminion) < GoS:CalcDamage(myHero, closestminion, 0, CopyTable[_E].Dmg() + ExtraDmg) then
+                    CastSkillShot(_E, GetOrigin(closestminion).x, GetOrigin(closestminion).y, GetOrigin(closestminion).z)
+                    end
+                  end
+
+	        end
+
+	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
+	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, CopyTable[_Q].Dmg() + ExtraDmg) then
+                  CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
+       	          end
+
+                end
+	        
 end
 
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
-        if IOW:Mode() == "LaneClear" then
+        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 		
 		if CanUseSpell(myHero, _Q) == READY and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
@@ -207,6 +251,14 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		end
 		
         end
+end
+	
+if AhriMenu.Misc.Autolvl:Value() then  
+  if AhriMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _E, _W, _Q, _Q , _R, _Q , _E, _Q , _E, _R, _E, _E, _W, _W, _R, _W, _W}
+  elseif AhriMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+  elseif AhriMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
+  end
+LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
@@ -236,19 +288,19 @@ function GetDrawText(enemy)
 	ExtraDmg2 = ExtraDmg2 + 0.1*GetBonusAP(myHero) + 100
 	end
 	
-	if CanUseSpell(myHero,_Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + ExtraDmg2) then
+	if CanUseSpell(myHero,_Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + ExtraDmg2) then
 	return 'Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg2) then
+	elseif CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_W].Dmg() + ExtraDmg2) then
 	return 'W = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+	elseif CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_E].Dmg() + ExtraDmg2) then
 	return 'E = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + ExtraDmg2) then
-	return 'W + Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
-	return 'E + W = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg2) then
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + CopyData[_W].Dmg() + ExtraDmg2) then
+	return 'Q + W = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg2) then
+	return 'W + E = Kill!', ARGB(255, 200, 160, 0)
+	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg2) then
 	return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
-	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 30 + 50*GetCastLevel(myHero,_Q) + 0.70*GetBonusAP(myHero) + 24 + 40*GetCastLevel(myHero,_W) + 0.64*GetBonusAP(myHero) + 35*GetCastLevel(myHero,_E) + 25 + 0.50*GetBonusAP(myHero) + ExtraDmg + ExtraDmg2) then
+	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 3CopyData[_Q].Dmg() + CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg + ExtraDmg2) then
 	return 'Q + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
 	else
 	return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
