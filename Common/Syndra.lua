@@ -127,7 +127,7 @@ OnLoop(function(myHero)
         CastSkillShot(_W, WPred.PredPos.x, WPred.PredPos.y, WPred.PredPos.z)
         end
 	  
-       if CanUseSpell(myHero, _W) == READY and if GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
+       if CanUseSpell(myHero, _W) == READY and GetCastName(myHero, _W) ~= "syndrawcast" and GoS:ValidTarget(target, 925) and SyndraMenu.Combo.W:Value() then
 
             if table.getn(Balls) > 0 then 
               for _,Ball in pairs(Balls) do
