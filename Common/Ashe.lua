@@ -138,7 +138,7 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
         local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
-       if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() then
+       if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SumonnerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 
