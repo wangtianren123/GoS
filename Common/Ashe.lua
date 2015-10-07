@@ -27,6 +27,16 @@ AsheMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 
+AsheMenu:SubMenu("LaneClear", "LaneClear")
+AsheMenu.LaneClear:Boolean("Q", "Use Q", false)
+AsheMenu.LaneClear:Boolean("W", "Use W", false)
+AsheMenu.LaneClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
+
+AsheMenu:SubMenu("JungleClear", "JungleClear")
+AsheMenu.JungleClear:Boolean("Q", "Use Q", true)
+AsheMenu.JungleClear:Boolean("W", "Use W", true)
+AsheMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
+
 AsheMenu:SubMenu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
 
@@ -159,6 +169,40 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		
 end
 
+for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+
+                if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.LaneClear.Mana:Value() then
+
+		  if CanUseSpell(myHero,_Q) == READY and AsheMenu.LaneClear.Q:Value() and GoS:IsInDistanceand GotBuff(myHero, "asheqcastready") > 0 then
+                  CastSpell(_Q)
+                  end
+
+                  if CanUseSpell(myHero,_W) == READY and AhriMenu.LaneClear.W:Value() then
+                    local pos, hit = GetFarmPosition(self.spellData[_R].range, self.spellData[_R].radius)
+		    if pos and hit and hit >= self.Config.LaneClear.Whit:Value() then
+	            CastSkillShot(_W, pos.x, pos.y, pos.z)
+		    end
+                  end  
+
+	        end
+	        
+end
+
+for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+		
+        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
+		local mobPos = GetOrigin(mob)
+		
+		if CanUseSpell(myHero, _Q) == READY and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
+		CastSkillShot(_Q,mobPos.x, mobPos.y, mobPos.z)
+		end
+		
+		if CanUseSpell(myHero, _W) == READY and AhriMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 700) then
+		CastSpell(_W)
+		end
+		
+        end
+end
 if AsheMenu.Misc.Autolvl:Value() then  
     if AsheMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W , _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
     elseif AsheMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
@@ -171,3 +215,30 @@ if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 end)
 
 GoS:AddGapcloseEvent(_R, 1000, false)
+
+function GetFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    for i, object in pairs(objects) do
+      local hit = CountObjectsNearPos(GetOrigin(object) or object, range, width, objects)
+      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+        break
+        end
+      end
+    end
+    return BestPos, BestHit
+end
+
+function CountObjectsNearPos(pos, range, radius, objects)
+    local n = 0
+    for i, object in pairs(objects) do
+      if GoS:GetDistance(pos, object) <= radius then
+        n = n + 1
+      end
+    end
+    return n
+end
