@@ -5,6 +5,7 @@ AsheMenu:SubMenu("Combo", "Combo")
 AsheMenu.Combo:Boolean("Q", "Use Q", true)
 AsheMenu.Combo:Boolean("W", "Use W", true)
 AsheMenu.Combo:Boolean("R", "Use R", true)
+AsheMenu.Combo:Key("FireKey", "Ult Fire Key", string.byte("T"))
 AsheMenu.Combo:Boolean("Items", "Use Items", true)
 AsheMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
 AsheMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
@@ -134,11 +135,23 @@ OnLoop(function(myHero)
 		
     end
 
-    if AsheMenu.Harass.AutoW:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.WMana:Value() then 
+    if AsheMenu.Combo.FireKey:Value() then
+      
+      local target = GetCurrentTarget()
+      local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,3000,130,false,true)
+
+      if CanUseSpell(myHero,_R) == READY and GoS:ValidTarget(target, 3000) and RPred.HitChance == 1 then
+
+     CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
+      end  
+
+    end
+
+      if AsheMenu.Harass.AutoW:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.WMana:Value() then 
     
         local target = GetCurrentTarget()
         local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
-       if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SumonnerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
+        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SumonnerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 
