@@ -15,8 +15,8 @@ AsheMenu:SubMenu("Harass", "Harass")
 AsheMenu.Harass:Boolean("Q", "Use Q", true)
 AsheMenu.Harass:Boolean("W", "Use W", true)
 AsheMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
---AsheMenu.Harass:Boolean("AutoW", "Auto W", true)
---AsheMenu.Harass:Slider("WMana", "if Mana % >", 50, 0, 80, 1)
+AsheMenu.Harass:Boolean("AutoW", "Auto W", true)
+AsheMenu.Harass:Slider("WMana", "if Mana % >", 50, 0, 80, 1)
 
 AsheMenu:SubMenu("Killsteal", "Killsteal")
 AsheMenu.Killsteal:Boolean("W", "Killsteal with W", true)
@@ -133,6 +133,16 @@ OnLoop(function(myHero)
 	end
 		
     end
+
+    if AsheMenu.Harass.AutoW:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.WMana:Value() then 
+    
+        local target = GetCurrentTarget()
+        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
+       if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() then
+        CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+	end
+
+      end
 
 for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
