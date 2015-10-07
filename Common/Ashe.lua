@@ -24,41 +24,60 @@ AsheMenu:SubMenu("Misc", "Misc")
 AsheMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
-AsheMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with R", true)
 
 AsheMenu:SubMenu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
 
+
+local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
+
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Galio"]                       = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Karthus"]                     = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Xerath"]                      = {_R},
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
-	end
+
+GoS:DelayAction(function()
+
+  local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+
+  for i, spell in pairs(CHANELLING_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+        InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        else
+        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
+        end
+    end
+  end
+		
+end, 1)
+
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+      if CHANELLING_SPELLS[spell.name] then
+      	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1600,250,1000,130,false,true)
+        if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
+        CastSkillShot(_R, GetOrigin(unit).x, GetOrigin(unit).y, GetOrigin(unit).z)
+        end
+      end
+    end
+  end
 end)
- 
-function addInterrupterCallback( callback0 )
-callback = callback0
-end
 
 OnLoop(function(myHero)
 
@@ -104,7 +123,7 @@ OnLoop(function(myHero)
 		
     end
 
-    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 	local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),2000,250,1200,50,true,true)
 	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,3000,130,false,true)
@@ -137,7 +156,7 @@ OnLoop(function(myHero)
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 	end
 		
-    end
+end
 
 if AsheMenu.Misc.Autolvl:Value() then  
     if AsheMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W , _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
@@ -150,11 +169,4 @@ if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 
 end)
 
-addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,1000,130,false,true)
-  if GoS:IsInDistance(target, 1000) and CanUseSpell(myHero, _R) == READY and AsheMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
-  CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-  end
-end)
-
-GoS:AddGapcloseEvent(_R, 1000, false) -- hi Copy-Pasters ^^
+GoS:AddGapcloseEvent(_R, 1000, false)
