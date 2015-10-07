@@ -40,7 +40,7 @@ AsheMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 AsheMenu:SubMenu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
 
-local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
+local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
 
 CHANELLING_SPELLS = {
     ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
