@@ -228,7 +228,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, CopyTable[_Q].Dmg() + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, CopyTable[_Q].Dmg() + ExtraDmg) then
                   CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
        	          end
 
