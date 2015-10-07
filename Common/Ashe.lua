@@ -14,20 +14,21 @@ AsheMenu.Combo:Slider("QSSHP", "if HP % <", 75, 0, 100, 1)
 AsheMenu:SubMenu("Harass", "Harass")
 AsheMenu.Harass:Boolean("Q", "Use Q", true)
 AsheMenu.Harass:Boolean("W", "Use W", true)
-AsheMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
+AsheMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
+--AsheMenu.Harass:Boolean("AutoW", "Auto W", true)
+--AsheMenu.Harass:Slider("WMana", "if Mana % >", 50, 0, 80, 1)
 
 AsheMenu:SubMenu("Killsteal", "Killsteal")
 AsheMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 
 AsheMenu:SubMenu("Misc", "Misc")
-AsheMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+AsheMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 
 AsheMenu:SubMenu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
-
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
 
@@ -142,7 +143,7 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
         end	
       end
       
-	if Ignite and AsheMenu.Misc.Autoignite:Value() then
+	if Ignite and AsheMenu.Misc.AutoIgnite:Value() then
           if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
@@ -152,7 +153,7 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 		  
-	if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R) + 75 + GetBonusAP(myHero)) then
+	if CanUseSpell(myHero, _R) == READY and RPred.HitChance == 1 and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R)+75 + GetBonusAP(myHero)) then
         CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
 	end
 		
