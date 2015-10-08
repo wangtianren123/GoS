@@ -99,7 +99,6 @@ OnProcessSpell(function(unit, spell)
     end
 	
 	if unit == myHero and spell.name == "RocketGrab" then
-		SuccesfulGrabs = SuccesfulGrabs + 1
 		MissedGrabs = MissedGrabs + 1
 	end
   end
