@@ -237,6 +237,8 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         end
 end
 
+TotalGrabs = MissedGrabs + SuccesfulGrabs
+
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.Stats:Value() then 
