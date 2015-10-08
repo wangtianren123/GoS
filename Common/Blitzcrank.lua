@@ -31,23 +31,26 @@ BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 
 local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
+InterruptMenu:SubMenu("SupportedSpells", "Supported Spells")
+InterruptMenu.SupportedSpells:Boolean("Q", "Use Q", true)
+InterruptMenu.SupportedSpells:Boolean("R", "Use R", true)
 
 CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["CaitlynAceintheHole"]                   = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                                              = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                                    = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]                       = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                                      = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                                      = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                                         = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]                   = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]              = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                                = {Name = "Nunu",         Spellslot = _R},                        
     ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
+    ["ShenStandUnited"]                         = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                                           = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]                               = {Name = "Warwick",      Spellslot = _R} 
 }
 
 
@@ -69,12 +72,12 @@ end, 1)
 
 OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
       if CHANELLING_SPELLS[spell.name] then
       	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1500,250,975,100,true,true)
-        if GoS:IsInDistance(unit, 975) and CanUseSpell(myHero,_Q) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and QPred.HitChance == 1 then
+        if GoS:IsInDistance(unit, 975) and CanUseSpell(myHero,_Q) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and InterruptMenu.SupportedSpells.Q:Value() and QPred.HitChance == 1 then
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-        elseif GoS:IsInDistance(unit, 600) and CanUseSpell(myHero,_R) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then
+        elseif GoS:IsInDistance(unit, 600) and CanUseSpell(myHero,_R) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and InterruptMenu.SupportedSpells.Q:Value() then
         CastSpell(_R)
         end
       end
