@@ -26,7 +26,6 @@ BlitzcrankMenu:SubMenu("Misc", "Misc")
 BlitzcrankMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 BlitzcrankMenu.Misc:Boolean("Autolvl", "Auto level", true)
 BlitzcrankMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "W-Q-E"})
-BlitzcrankMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells with E", true)
 
 BlitzcrankMenu:SubMenu("Junglesteal", "Baron/Drake Steal")
 BlitzcrankMenu.Junglesteal:Boolean("Q", "Use Q", true)
