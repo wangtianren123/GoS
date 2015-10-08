@@ -119,7 +119,8 @@ OnWndMsg(function(msg,wParam)
 	if msg == WM_LBUTTONDOWN then
 		minD = 0
 		Target = nil
-		
+		local mousePos = GetMousePos()
+
 		for _, enemy in pairs(GoS:GetEnemyHeroes()) do
 			if GoS:ValidTarget(enemy) then
 				if GoS:GetDistance(enemy, mousePos) <= minD or Target == nil then
@@ -129,7 +130,7 @@ OnWndMsg(function(msg,wParam)
 			end
 		end
 
-		if Target and minD < 1800 then
+		if Target and minD < 115 then
 			if SelectedTarget and GetObjectName(Target) == GetObjectName(SelectedTarget) then
 				SelectedTarget = nil
 			else
@@ -237,10 +238,12 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 end
 
 TotalGrabs = MissedGrabs + SuccesfulGrabs
+Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.Stats:Value() then 
+DrawText("Percentage Grab done : " .. tostring(math.ceil(Percentage)) .. "%",12,0,30,0xff00ff00)
 DrawText("Grab Done : "..tostring(SuccesfulGrabs),12,0,40,0xff00ff00)
 DrawText("Grab Miss : "..tostring(MissedGrabs),12,0,50,0xff00ff00)
 DrawText("Total Grabs : "..tostring(TotalGrabs),12,0,60,0xff00ff00)
