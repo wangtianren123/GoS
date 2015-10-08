@@ -129,12 +129,12 @@ OnWndMsg(function(msg,wParam)
 			end
 		end
 
-		if Target and minD < 115 then
+		if Target and minD > 115 then
 			if SelectedTarget and GetObjectName(Target) == GetObjectName(SelectedTarget) then
 				SelectedTarget = nil
 			else
 				SelectedTarget = Target
-			        PrintChat("Selected Target : GetObjectName(Target)..")
+			        PrintChat("Selected Target : "..GetObjectName(Target).." ")
                         end
 		end
 	end
