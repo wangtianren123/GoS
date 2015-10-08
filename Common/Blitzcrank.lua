@@ -258,6 +258,15 @@ if BlitzcrankMenu.Drawings.Target:Value() then
      DrawText("Current Target", 20, drawpos.x-100, drawpos.y, 0xffffff00)
   end
 end
+
+if BlitzcrankMenu.Drawings.Circle:Value() then 
+  local Target = GetCustomTarget()
+  if GoS:ValidTarget(Target) then
+     local TargetPos = GetOrigin(Target)
+     DrawCircle(TargetPos.x, TargetPos.y, TargetPos.z,250,1,100,0xffff0000) 
+  end
+end
+
 end)
 
 function GetCustomTarget()
