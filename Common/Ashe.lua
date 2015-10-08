@@ -80,7 +80,7 @@ end, 1)
 
 OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
       if CHANELLING_SPELLS[spell.name] then
       	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1600,250,1000,130,false,true)
         if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
@@ -150,7 +150,7 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
         local WPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),2000,250,1200,50,true,true)
-        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200() and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SummonerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
+        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and WPred.HitChance == 1 and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SummonerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
         CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
 	end
 
