@@ -82,8 +82,6 @@ GoS:DelayAction(function()
     for _,k in pairs(GoS:GetEnemyHeroes()) do
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        else
-        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
         end
     end
   end
