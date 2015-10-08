@@ -46,7 +46,6 @@ InterruptMenu.SupportedSpells:Boolean("R", "Use R", true)
 Target = nil
 MissedGrabs = 0
 SuccesfulGrabs = 0
-Percentage = 0
 TotalGrabs = MissedGrabs + SuccesfulGrabs
 
 CHANELLING_SPELLS = {
@@ -81,7 +80,7 @@ GoS:DelayAction(function()
   end
   
   for _,k in pairs(GoS:GetEnemyHeroes()) do
-	BlitzcrankMenu.AutoGrab.Enemies:Boolean(GetObjectName(k).."AutoGrab", "On GetObjectName(k)..", true)
+	BlitzcrankMenu.AutoGrab.Enemies:Boolean(GetObjectName(k).."AutoGrab", "On "..GetObjectName(k).." ", true)
   end
 		
 end, 1)
@@ -102,7 +101,6 @@ OnProcessSpell(function(unit, spell)
 	if unit == myHero and spell.name == "RocketGrab" then
 		SuccesfulGrabs = SuccesfulGrabs + 1
 		MissedGrabs = MissedGrabs + 1
-		Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 	end
   end
 end)
@@ -111,7 +109,6 @@ OnUpdateBuff(function(Object,buffProc)
         if buffProc.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
 	    SuccesfulGrabs = SuccesfulGrabs + 1
 	    MissedGrabs = MissedGrabs - 1
-	    Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 		
 	    if BlitzcrankMenu.Combo.AutoE:Value() and GoS:ValidTarget(Object) then
 	    CastSpell(_E)
@@ -244,14 +241,14 @@ end
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.Stats:Value() then 
-DrawText("Percentage Grab done : " .. tostring(math.ceil(Percentage)) .. "%",12,0,30,0xff00ff00)
 DrawText("Grab Done : "..tostring(SuccesfulGrabs),12,0,40,0xff00ff00)
 DrawText("Grab Miss : "..tostring(MissedGrabs),12,0,50,0xff00ff00)
+DrawText("Total Grabs : "..tostring(TotalGrabs),12,0,60,0xff00ff00)
 end
 if BlitzcrankMenu.Drawings.Target:Value() then 
   local Target = GetCustomTarget()
   if GoS:ValidTarget(Target) then
-  DrawText("Current Target", GetOrigin(Target).x-100, GetOrigin(Target).y-50, GetOrigin(Target).z, 20, 0xffffff00)
+  DrawText("Current Target", GetOrigin(Target).x-100, 0, GetOrigin(Target).z, 0xff00ff00)
   end
 end
 end)
