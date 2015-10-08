@@ -11,7 +11,7 @@ BlitzcrankMenu.Combo:Boolean("R", "Use R", true)
 BlitzcrankMenu:SubMenu("AutoGrab", "Auto Grab")
 BlitzcrankMenu.AutoGrab:Slider("min", "Min Distance", 200, 100, 400, 1)
 BlitzcrankMenu.AutoGrab:Slider("max", "Max Distance", 975, 400, 975, 1)
-BlitzcrankMenu.AutoGrab:SubMenu("Enemies", "Enemies Auto-Grab")
+BlitzcrankMenu.AutoGrab:SubMenu("Enemies", "Enemies to Auto-Grab")
 
 BlitzcrankMenu:SubMenu("Harass", "Harass")
 BlitzcrankMenu.Harass:Boolean("Q", "Use Q", true)
@@ -36,6 +36,7 @@ BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 BlitzcrankMenu.Drawings:Boolean("Stats", "Draw Statistics", true)
 BlitzcrankMenu.Drawings:Boolean("Target", "Draw Current Target", true)
+BlitzcrankMenu.Drawings:Boolean("Circle", "Draw Circle on Target", true)
 
 local InterruptMenu = Menu("Interrupt", "Interrupt")
 InterruptMenu:SubMenu("SupportedSpells", "Supported Spells")
@@ -80,7 +81,7 @@ GoS:DelayAction(function()
   end
   
   for _,k in pairs(GoS:GetEnemyHeroes()) do
-	BlitzcrankMenu.AutoGrab.Enemies:Boolean(GetObjectName(k).."AutoGrab", "On "..GetObjectName(k).." ", true)
+	BlitzcrankMenu.AutoGrab.Enemies:Boolean(GetObjectName(k).."AutoGrab", "On "..GetObjectName(k).." ", false)
   end
 		
 end, 1)
@@ -104,8 +105,8 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnUpdateBuff(function(Object,buffProc)
-        if buffProc.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
+OnUpdateBuff(function(Object,buff)
+        if buff.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
 	    SuccesfulGrabs = SuccesfulGrabs + 1
 	    MissedGrabs = MissedGrabs - 1
 		
@@ -252,7 +253,9 @@ end
 if BlitzcrankMenu.Drawings.Target:Value() then 
   local Target = GetCustomTarget()
   if GoS:ValidTarget(Target) then
-  DrawText("Current Target", GetOrigin(Target).x-100, 0, GetOrigin(Target).z, 0xff00ff00)
+     local TargetPos = GetOrigin(Target)
+     local drawpos = WorldToScreen(1,TargetPos.x, TargetPos.y, TargetPos.z)
+     DrawText("Current Target", 20, drawpos.x-100, drawpos.y, 0xffffff00)
   end
 end
 end)
