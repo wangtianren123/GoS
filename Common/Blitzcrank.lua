@@ -11,7 +11,7 @@ BlitzcrankMenu.Combo:Boolean("R", "Use R", true)
 BlitzcrankMenu:SubMenu("AutoGrab", "Auto Grab")
 BlitzcrankMenu.AutoGrab:Slider("min", "Min Distance", 200, 100, 400, 1)
 BlitzcrankMenu.AutoGrab:Slider("max", "Max Distance", 975, 400, 975, 1)
-BlitzcrankMenu.AutoGrab:SubMenu("Enemies", "Enemies to Auto-Grab")
+BlitzcrankMenu.AutoGrab:SubMenu("Enemies", "Enemies Auto-Grab")
 
 BlitzcrankMenu:SubMenu("Harass", "Harass")
 BlitzcrankMenu.Harass:Boolean("Q", "Use Q", true)
@@ -169,7 +169,7 @@ OnLoop(function(myHero)
 	
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= BlitzcrankMenu.Harass.Mana:Value() then
 	
-		local Target = GetCurrentTarget()
+		local Target = GetCustomTarget()
 		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),Target,GetMoveSpeed(Target),1800,250,975,80,true,true)
 		
                 if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(Target, 975) and BlitzcrankMenu.Harass.Q:Value() then
@@ -191,7 +191,7 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-		if BlitzcrankMenu.AutoGrab.Enemies[GetObjectName(enemy).."AutoGrab"] and GoS:ValidTarget(enemy) then
+		if BlitzcrankMenu.AutoGrab.Enemies[GetObjectName(enemy).."AutoGrab"]:Value() and GoS:ValidTarget(enemy) then
 		  if CanUseSpell(myHero,_Q) == READY and GoS:GetDistance(enemy) <= BlitzcrankMenu.AutoGrab.max:Value() and GoS:GetDistance(enemy) >= BlitzcrankMenu.AutoGrab.min:Value() and QPred.HitChance == 1 then
 		  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		  end
