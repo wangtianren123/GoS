@@ -45,24 +45,25 @@ InterruptMenu.SupportedSpells:Boolean("R", "Use R", true)
 Target = nil
 MissedGrabs = 0
 SuccesfulGrabs = 0
+Percent = 0
 TotalGrabs = MissedGrabs + SuccesfulGrabs
 
 CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
-    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
+    ["CaitlynAceintheHole"]                   = {Name = "Caitlyn",              Spellslot = _R},
+    ["Drain"]                                              = {Name = "FiddleSticks",    Spellslot = _W},
+    ["Crowstorm"]                                    = {Name = "FiddleSticks",    Spellslot = _R},
+    ["GalioIdolOfDurand"]                       = {Name = "Galio",                Spellslot = _R},
+    ["FallenOne"]                                      = {Name = "Karthus",           Spellslot = _R},
+    ["KatarinaR"]                                      = {Name = "Katarina",          Spellslot = _R},
+    ["LucianR"]                                         = {Name = "Lucian",             Spellslot = _R},
+    ["AlZaharNetherGrasp"]                   = {Name = "Malzahar",        Spellslot = _R},
+    ["MissFortuneBulletTime"]              = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                                = {Name = "Nunu",               Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",       Spellslot = _R},
+    ["ShenStandUnited"]                         = {Name = "Shen",               Spellslot = _R},
+    ["UrgotSwap2"]                                  = {Name = "Urgot",              Spellslot = _R},
+    ["VarusQ"]                                           = {Name = "Varus",             Spellslot = _Q},
+    ["InfiniteDuress"]                               = {Name = "Warwick",         Spellslot = _R} 
 }
 
 
