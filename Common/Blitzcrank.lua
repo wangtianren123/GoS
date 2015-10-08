@@ -129,7 +129,7 @@ OnWndMsg(function(msg,wParam)
 			end
 		end
 
-		if Target and minD > 115 then
+		if Target and minD < 1800 then
 			if SelectedTarget and GetObjectName(Target) == GetObjectName(SelectedTarget) then
 				SelectedTarget = nil
 			else
