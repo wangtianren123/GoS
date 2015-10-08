@@ -5,7 +5,13 @@ BlitzcrankMenu:SubMenu("Combo", "Combo")
 BlitzcrankMenu.Combo:Boolean("Q", "Use Q", true)
 BlitzcrankMenu.Combo:Boolean("W", "Use W", true)
 BlitzcrankMenu.Combo:Boolean("E", "Use E", true)
+BlitzcrankMenu.Combo:Boolean("AutoE", "Auto E after Grab", true)
 BlitzcrankMenu.Combo:Boolean("R", "Use R", true)
+
+BlitzcrankMenu:SubMenu("AutoGrab", "Auto Grab")
+BlitzcrankMenu.AutoGrab:Slider("min", "Min Distance", 200, 100, 400, 1)
+BlitzcrankMenu.AutoGrab:Slider("max", "Max Distance", 975, 400, 975, 1)
+BlitzcrankMenu.AutoGrab:SubMenu("Enemies", "Enemies to Auto-Grab")
 
 BlitzcrankMenu:SubMenu("Harass", "Harass")
 BlitzcrankMenu.Harass:Boolean("Q", "Use Q", true)
@@ -29,11 +35,18 @@ BlitzcrankMenu.Junglesteal:Boolean("R", "Use R", true)
 BlitzcrankMenu:SubMenu("Drawings", "Drawings")
 BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
+BlitzcrankMenu.Drawings:Boolean("Stats", "Draw Statistics", true)
 
 local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
 InterruptMenu:SubMenu("SupportedSpells", "Supported Spells")
 InterruptMenu.SupportedSpells:Boolean("Q", "Use Q", true)
 InterruptMenu.SupportedSpells:Boolean("R", "Use R", true)
+
+Target = nil
+MissedGrabs = 0
+SuccesfulGrabs = 0
+Percentage = 0
+TotalGrabs = MissedGrabs + SuccesfulGrabs
 
 CHANELLING_SPELLS = {
     ["CaitlynAceintheHole"]                   = {Name = "Caitlyn",      Spellslot = _R},
@@ -62,10 +75,12 @@ GoS:DelayAction(function()
     for _,k in pairs(GoS:GetEnemyHeroes()) do
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        else
-        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
         end
     end
+  end
+  
+  for _,k in pairs(GoS:GetEnemyHeroes()) do
+	BlitzcrankMenu.AutoGrab.Enemies:Boolean(GetObjectName(k).."AutoGrab", "On GetObjectName(k)..", true)
   end
 		
 end, 1)
@@ -82,29 +97,73 @@ OnProcessSpell(function(unit, spell)
         end
       end
     end
+	
+	if unit == myHero and spell.name == "RocketGrab" then
+		SuccesfulGrabs = SuccesfulGrabs + 1
+		MissedGrabs = MissedGrabs + 1
+		Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
+	end
   end
+end)
+
+OnUpdateBuff(function(Object,buffProc)
+    if buffProc.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
+		SuccesfulGrabs = SuccesfulGrabs + 1
+		MissedGrabs = MissedGrabs - 1
+		Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
+		
+	    if BlitzcrankMenu.Combo.AutoE:Value() and GoS:ValidTarget(Object) then
+	    CastSpell(_E)
+	    AttackUnit(Object)
+		end
+	end
+end)
+
+OnWndMsg(function(msg,wParam)
+	if msg == WM_LBUTTONDOWN then
+		minD = 0
+		Target = nil
+		
+		for _, enemy in pairs(GoS:GetEnemyHeroes()) do
+			if GoS:ValidTarget(enemy) then
+				if GoS:GetDistance(enemy, mousePos) <= minD or Target == nil then
+					minD = GoS:GetDistance(enemy, mousePos)
+					Target = enemy
+				end
+			end
+		end
+
+		if Target and minD < 115 then
+			if SelectedTarget and GetObjectName(Target) == GetObjectName(SelectedTarget) then
+				SelectedTarget = nil
+			else
+				SelectedTarget = Target
+			PrintChat("selected")
+            end
+		end
+	end
 end)
 
 OnLoop(function(myHero)
 
     if IOW:Mode() == "Combo" then
 	
-	        local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1800,250,975,80,true,true)
+		local Target = GetCustomTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),Target,GetMoveSpeed(Target),1800,250,975,80,true,true)
 		
-                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Combo.Q:Value() then
+                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(Target, 975) and BlitzcrankMenu.Combo.Q:Value() then
                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	        end
                           
-                if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 800) and GoS:GetDistance(myHero, target) > 200 and BlitzcrankMenu.Combo.W:Value() then
+                if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(Target, 800) and GoS:GetDistance(myHero, Target) > 200 and BlitzcrankMenu.Combo.W:Value() then
                 CastSpell(_W)
 		end
 			
-                if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 250) and BlitzcrankMenu.Combo.E:Value() then
+                if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(Target, 250) and BlitzcrankMenu.Combo.E:Value() then
                 CastSpell(_E)
 		end
 		              
-		if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 600) and BlitzcrankMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) < 80 then
+		if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(Target, 600) and BlitzcrankMenu.Combo.R:Value() and 100*GetCurrentHP(Target)/GetMaxHP(Target) < 80 then
                 CastSpell(_R)
 	        end
 	                      
@@ -112,14 +171,14 @@ OnLoop(function(myHero)
 	
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= BlitzcrankMenu.Harass.Mana:Value() then
 	
-		local target = GetCurrentTarget()
-		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1800,250,975,80,true,true)
+		local Target = GetCurrentTarget()
+		local QPred = GetPredictionForPlayer(GoS:myHeroPos(),Target,GetMoveSpeed(Target),1800,250,975,80,true,true)
 		
-                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Harass.Q:Value() then
+                if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(Target, 975) and BlitzcrankMenu.Harass.Q:Value() then
                 CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 	        end
 		
-		if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 250) and BlitzcrankMenu.Harass.E:Value() then
+		if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(Target, 250) and BlitzcrankMenu.Harass.E:Value() then
                 CastSpell(_E)
 		end
 		
@@ -132,6 +191,12 @@ OnLoop(function(myHero)
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
+		end
+		
+		if BlitzcrankMenu.AutoGrab.max:Value() and GoS:ValidTarget(enemy) then
+			if CanUseSpell(myHero,_Q) == READY and GoS:GetDistance(enemy) <= BlitzcrankMenu.AutoGrab.max:Value() and GoS:GetDistance(enemy) >= BlitzcrankMenu.AutoGrab.min:Value() and QPred.HitChance == 1 then
+			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+			end
 		end
 		
 		if Ignite and BlitzcrankMenu.Misc.Autoignite:Value() then
@@ -177,5 +242,27 @@ end
 
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
-
+if BlitzcrankMenu.Drawings.Stats:Value() then 
+DrawText("Percentage Grab done : " .. tostring(math.ceil(Percentage)) .. "%",12,0,30,0xff00ff00)
+DrawText("Grab Done : "..tostring(SuccesfulGrabs),12,0,40,0xff00ff00)
+DrawText("Grab Miss : "..tostring(MissedGrabs),12,0,50,0xff00ff00)
+end
+if BlitzcrankMenu.Drawings.Target:Value() then 
+  local Target = GetCustomTarget()
+  if GoS:ValidTarget(Target) then
+  DrawText("Current Target", GetOrigin(Target).x-100, GetOrigin(Target).y-50, GetOrigin(Target).z, 20, 0xffffff00)
+  end
+end
 end)
+
+function GetCustomTarget()
+    local target = GetCurrentTarget()
+	if SelectedTarget ~= nil and GoS:ValidTarget(SelectedTarget, 2000) and GoS:GetDistance(SelectedTarget) < 1800 then
+		return SelectedTarget
+	end
+	if target then 
+	    return target
+	else
+		return nil
+	end
+end
