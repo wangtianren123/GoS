@@ -38,7 +38,7 @@ BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 BlitzcrankMenu.Drawings:Boolean("Stats", "Draw Statistics", true)
 BlitzcrankMenu.Drawings:Boolean("Target", "Draw Current Target", true)
 
-local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
+local InterruptMenu = Menu("Interrupt", "Interrupt")
 InterruptMenu:SubMenu("SupportedSpells", "Supported Spells")
 InterruptMenu.SupportedSpells:Boolean("Q", "Use Q", true)
 InterruptMenu.SupportedSpells:Boolean("R", "Use R", true)
