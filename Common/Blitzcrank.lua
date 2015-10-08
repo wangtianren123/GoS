@@ -36,6 +36,7 @@ BlitzcrankMenu:SubMenu("Drawings", "Drawings")
 BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 BlitzcrankMenu.Drawings:Boolean("Stats", "Draw Statistics", true)
+BlitzcrankMenu.Drawings:Boolean("Target", "Draw Current Target", true)
 
 local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
 InterruptMenu:SubMenu("SupportedSpells", "Supported Spells")
@@ -49,21 +50,21 @@ Percentage = 0
 TotalGrabs = MissedGrabs + SuccesfulGrabs
 
 CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]                   = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                                              = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                                    = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]                       = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                                      = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                                      = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                                         = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]                   = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]              = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                                = {Name = "Nunu",         Spellslot = _R},                        
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
     ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]                         = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                                           = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]                               = {Name = "Warwick",      Spellslot = _R} 
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
 
@@ -107,15 +108,15 @@ OnProcessSpell(function(unit, spell)
 end)
 
 OnUpdateBuff(function(Object,buffProc)
-    if buffProc.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
-		SuccesfulGrabs = SuccesfulGrabs + 1
-		MissedGrabs = MissedGrabs - 1
-		Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
+        if buffProc.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
+	    SuccesfulGrabs = SuccesfulGrabs + 1
+	    MissedGrabs = MissedGrabs - 1
+	    Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 		
 	    if BlitzcrankMenu.Combo.AutoE:Value() and GoS:ValidTarget(Object) then
 	    CastSpell(_E)
 	    AttackUnit(Object)
-		end
+	    end
 	end
 end)
 
@@ -138,8 +139,8 @@ OnWndMsg(function(msg,wParam)
 				SelectedTarget = nil
 			else
 				SelectedTarget = Target
-			PrintChat("selected")
-            end
+			        PrintChat("Selected Target : GetObjectName(Target)..")
+                        end
 		end
 	end
 end)
@@ -193,10 +194,10 @@ OnLoop(function(myHero)
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
 		
-		if BlitzcrankMenu.AutoGrab.max:Value() and GoS:ValidTarget(enemy) then
-			if CanUseSpell(myHero,_Q) == READY and GoS:GetDistance(enemy) <= BlitzcrankMenu.AutoGrab.max:Value() and GoS:GetDistance(enemy) >= BlitzcrankMenu.AutoGrab.min:Value() and QPred.HitChance == 1 then
-			CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-			end
+		if BlitzcrankMenu.AutoGrab.Enemies[GetObjectName(enemy).."AutoGrab"] and GoS:ValidTarget(enemy) then
+		  if CanUseSpell(myHero,_Q) == READY and GoS:GetDistance(enemy) <= BlitzcrankMenu.AutoGrab.max:Value() and GoS:GetDistance(enemy) >= BlitzcrankMenu.AutoGrab.min:Value() and QPred.HitChance == 1 then
+		  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+		  end
 		end
 		
 		if Ignite and BlitzcrankMenu.Misc.Autoignite:Value() then
