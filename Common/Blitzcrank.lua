@@ -30,36 +30,57 @@ BlitzcrankMenu:SubMenu("Drawings", "Drawings")
 BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 
+local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
+
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Galio"]                       = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Karthus"]                     = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Xerath"]                      = {_R},
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
-	end
+
+GoS:DelayAction(function()
+
+  local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+
+  for i, spell in pairs(CHANELLING_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+        InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        else
+        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
+        end
+    end
+  end
+		
+end, 1)
+
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
+      if CHANELLING_SPELLS[spell.name] then
+      	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1500,250,975,100,true,true)
+        if GoS:IsInDistance(unit, 975) and CanUseSpell(myHero,_Q) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and QPred.HitChance == 1 then
+        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        elseif GoS:IsInDistance(unit, 600) and CanUseSpell(myHero,_R) == READY and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then
+        CastSpell(_R)
+        end
+      end
+    end
+  end
 end)
- 
-function addInterrupterCallback( callback0 )
-callback = callback0
-end
 
 OnLoop(function(myHero)
 
@@ -154,13 +175,4 @@ end
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 
-end)
-
-addInterrupterCallback(function(target, spellType)
-  local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1500,250,975,100,true,true)
-  if GoS:IsInDistance(target, 975) and CanUseSpell(myHero,_Q) == READY and BlitzcrankMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
-  CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-  elseif GoS:IsInDistance(target, 600) and CanUseSpell(myHero,_R) == READY and BlitzcrankMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
-  CastSpell(_R)
-  end
 end)
