@@ -303,7 +303,7 @@ function GetDrawText(enemy)
 	return 'W + E = Kill!', ARGB(255, 200, 160, 0)
 	elseif CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg2) then
 	return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
-	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 3CopyData[_Q].Dmg() + CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg + ExtraDmg2) then
+	elseif ExtraDmg > 0 and CanUseSpell(myHero,_Q) == READY and CanUseSpell(myHero,_W) == READY and CanUseSpell(myHero,_E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + CopyData[_W].Dmg() + CopyData[_E].Dmg() + ExtraDmg + ExtraDmg2) then
 	return 'Q + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
 	else
 	return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
