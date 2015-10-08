@@ -60,7 +60,7 @@ CHANELLING_SPELLS = {
     ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
     ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
     ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["ShenStandUnited"]                         = {Name = "Shen",         Spellslot = _R},
     ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
     ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
     ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
@@ -74,8 +74,6 @@ GoS:DelayAction(function()
     for _,k in pairs(GoS:GetEnemyHeroes()) do
         if spell["Name"] == GetObjectName(k) then
             InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        else
-        InterruptMenu:Info("nil", "No enemy to Interrupt found", true)
         end
     end
   end
