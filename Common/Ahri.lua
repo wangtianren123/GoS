@@ -200,7 +200,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
-                closestminion = GetClosestMinion(GetOrigin(myHero))
+                closestminion = GetClosestMinion(GetOrigin(myHero), MINION_ENEMY)
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 
