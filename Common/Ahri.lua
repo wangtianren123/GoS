@@ -200,7 +200,6 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
 		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
 		end
-                closestminion = GoS:GetClosestMinion(GetOrigin(myHero), MINION_ENEMY)
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 
@@ -212,21 +211,21 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	          end
 
                   if CanUseSpell(myHero,_W) == READY and AhriMenu.LaneClear.W:Value() then
-                    if closestminion and GetCurrentHP(closestminion) < GoS:CalcDamage(myHero, closestminion, 0, CopyTable[_W].Dmg() + ExtraDmg) then
+                    if minion and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
                     CastSpell(_W)
                     end
                   end
 
                   if CanUseSpell(myHero,_E) == READY and AhriMenu.LaneClear.E:Value() then
-                    if closestminion and GetCurrentHP(closestminion) < GoS:CalcDamage(myHero, closestminion, 0, CopyTable[_E].Dmg() + ExtraDmg) then
-                    CastSkillShot(_E, GetOrigin(closestminion).x, GetOrigin(closestminion).y, GetOrigin(closestminion).z)
+                    if minion and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
+                    CastSkillShot(_E, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
                     end
                   end
 
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, CopyTable[_Q].Dmg() + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
                   CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
        	          end
 
@@ -320,7 +319,7 @@ function GetLineFarmPosition(range, width, source)
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
-        break
+          break
         end
       end
     end
