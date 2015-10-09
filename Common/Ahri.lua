@@ -312,7 +312,7 @@ function GetLineFarmPosition(range, width, source)
     local BestPos 
     local BestHit = 0
     source = source or myHero
-    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    local objects = minionManager.objects
     for i, object in pairs(objects) do
       local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
       local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
