@@ -313,9 +313,10 @@ function GetLineFarmPosition(range, width, source)
     source = source or myHero
     local objects = minionManager.objects
     for i, object in pairs(objects) do
+    if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
       local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
       local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
+      if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -323,15 +324,16 @@ function GetLineFarmPosition(range, width, source)
         end
       end
     end
+    end
     return BestPos, BestHit
 end
 
 function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     local n = 0
     for i, object in pairs(objects) do
-      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, object)
+      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, Vector(object))
       local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, object) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, object) then
+      if isOnSegment and GoS:GetDistanceSqr(pointSegment, Vector(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, Vector(object)) then
         n = n + 1
       end
     end
