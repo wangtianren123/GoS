@@ -240,7 +240,7 @@ GoS:AddGapcloseEvent(_R, 1000, false)
 function GetFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    local objects = minionManager.objects
     for i, object in pairs(objects) do
       local hit = CountObjectsNearPos(GetOrigin(object) or object, range, width, objects)
       if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
