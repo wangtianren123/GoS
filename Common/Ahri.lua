@@ -6,7 +6,7 @@ AhriMenu.Combo:Boolean("Q", "Use Q", true)
 AhriMenu.Combo:Boolean("W", "Use W", true)
 AhriMenu.Combo:Boolean("E", "Use E", true)
 AhriMenu.Combo:Boolean("R", "Use R", true)
-AhriMenu.Combo:List("RMode", "R Mode", 1, {"to target", "to mouse"})
+AhriMenu.Combo:List("RMode", "R Mode", 1, {"Logic", "to mouse"})
 
 AhriMenu:SubMenu("Harass", "Harass")
 AhriMenu.Harass:Boolean("Q", "Use Q", true)
@@ -307,16 +307,15 @@ function GetDrawText(enemy)
 	end
 end
 
-function GetLineFarmPosition(range, width, source)
+function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    source = source or myHero
     local objects = minionManager.objects
     for i, object in pairs(objects) do
     if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
-      local EndPos = Vector(source) + range * (Vector(object) - Vector(source)):normalized()
-      local hit = CountObjectsOnLineSegment(source, EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
+      local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
+      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -333,7 +332,7 @@ function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     for i, object in pairs(objects) do
       local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, Vector(object))
       local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, Vector(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, Vector(object)) then
+      if isOnSegment and GoS:GetDistanceSqr(pointSegment, object) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, object) then
         n = n + 1
       end
     end
