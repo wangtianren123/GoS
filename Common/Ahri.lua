@@ -67,13 +67,6 @@ CHANELLING_SPELLS = {
     ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
-CopyData = {
-        [_Q] = { Mana = function () return 60+5*GetCastLevel(myHero,_Q) end, Dmg = function () return 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) end},
-        [_W] = { Mana = 50, Dmg = function () return 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) end},
-        [_E] = { Mana = 80, Dmg = function () return 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) end},
-        [_R] = { Mana = 100, Dmg = function () return 30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) end}
-        }
-
 GoS:DelayAction(function()
 
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
@@ -226,7 +219,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
 	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
-                  CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
+                  CastSkillShot(_Q, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
        	          end
 
                 end
