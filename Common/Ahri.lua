@@ -177,11 +177,11 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
                   end
                 end
                 
-		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_W].Dmg() + ExtraDmg) then
+		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
 		CastSpell(_W)
-		elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_Q].Dmg() + ExtraDmg) then 
+		elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then 
 		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, CopyData[_E].Dmg() + ExtraDmg) then
+		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
 		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
 	        end
 	
