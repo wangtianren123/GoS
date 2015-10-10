@@ -44,7 +44,12 @@ VayneMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 VayneMenu:SubMenu("Drawings", "Drawings")
 VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
+
+local mapID = GetMapID()
+
+if mapID == SUMMONERS_RIFT then
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
+end
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
 
@@ -60,7 +65,7 @@ CHANELLING_SPELLS = {
     ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
     ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
     ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]                         = {Name = "Shen",         Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
     ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
     ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
     ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
@@ -105,7 +110,18 @@ OnLoop(function(myHero)
         end
 		
 	if VayneMenu.Combo.E.stuntarget:Value() and VayneMenu.Combo.E.Enabled:Value() then
-	StunThisPleb(target)
+	  if GoS:ValidTarget(target, 710) then
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),2200,0,750,0,false,true)
+            local PredPos = Vector(EPred.PredPos)
+            local HeroPos = Vector(myHero)
+            local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
+            local shootLine = Line(Point(PredPos.x, PredPos.y, PredPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
+            for i, Pos in pairs(shootLine:__getPoints()) do
+              if MapPosition:inWall(Pos) then
+              CastTargetSpell(target, _E) 
+              end
+            end
+          end
         end
 
         if CanUseSpell(myHero, _R) == READY and IOW:Mode() == "Combo" and GoS:ValidTarget(target, VayneMenu.Combo.R.Renemyrange:Value()) and 100*GetCurrentHP(target)/GetMaxHP(target) <= VayneMenu.Combo.R.Rifthp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= VayneMenu.Combo.R.Rifhp:Value() and GoS:EnemiesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Renemyrange:Value()) >= VayneMenu.Combo.R.Rminenemy:Value() and GoS:AlliesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Rallyrange:Value()) >= VayneMenu.Combo.R.Rminally:Value() then
@@ -145,7 +161,18 @@ OnLoop(function(myHero)
 	  end
         
 	if VayneMenu.Combo.E.AutoE:Value() then
-	StunThisPleb(enemy)
+	  if GoS:ValidTarget(enemy, 710) then
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,0,false,true)
+            local PredPos = Vector(EPred.PredPos)
+            local HeroPos = Vector(myHero)
+            local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
+            local shootLine = Line(Point(PredPos.x, PredPos.y, PredPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
+            for i, Pos in pairs(shootLine:__getPoints()) do
+              if MapPosition:inWall(Pos) then
+              CastTargetSpell(enemy, _E) 
+              end
+            end
+          end
         end
 
         if VayneMenu.Combo.E.lowhp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= 15 and GoS:EnemiesAround(GoS:myHeroPos(), 375) >= 1 then
@@ -153,7 +180,18 @@ OnLoop(function(myHero)
         end
 
         if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
-        StunThisPleb(enemy)
+          if GoS:ValidTarget(enemy, 710) then
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,0,false,true)
+            local PredPos = Vector(EPred.PredPos)
+            local HeroPos = Vector(myHero)
+            local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
+            local shootLine = Line(Point(PredPos.x, PredPos.y, PredPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
+            for i, Pos in pairs(shootLine:__getPoints()) do
+              if MapPosition:inWall(Pos) then
+              CastTargetSpell(enemy, _E) 
+              end
+            end
+          end
         end
    end
 
@@ -178,9 +216,11 @@ end
 		
 if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
 if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
+if mapID == SUMMONERS_RIFT then
 if VayneMenu.Drawings.WT:Value() then
 DrawCircle(6962, 51, 8952,80,0,0,0xffffffff)
 DrawCircle(12060, 51, 4806,80,0,0,0xffffffff)
+end
 end
 end)
 
@@ -239,19 +279,5 @@ OnProcessSpell(function(unit, spell)
      end
   end
 end)
-
-function StunThisPleb(unit)
- if GoS:ValidTarget(unit, 550) then
-   local TargetPos = Vector(GetOrigin(unit))
-   local HeroPos = Vector(GetOrigin(myHero))
-   local maxERange = TargetPos - (TargetPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(unit))
-   local shootLine = Line(Point(TargetPos.x, TargetPos.y, TargetPos.z), Point(maxERange.x, maxERange.y, maxERange.z))
-   for i, Pos in pairs(shootLine:__getPoints()) do
-     if MapPosition:inWall(Pos) then
-     CastTargetSpell(unit, _E) 
-     end
-   end
- end
-end
 
 GoS:AddGapcloseEvent(_E, 550, true)
