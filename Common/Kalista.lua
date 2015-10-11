@@ -3,9 +3,11 @@ if GetObjectName(myHero) ~= "Kalista" then return end
 local KalistaMenu = Menu("Kalista", "Kalista")
 KalistaMenu:SubMenu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
+KalistaMenu.Combo:Boolean("E", "E if reset + slow target", true)
 KalistaMenu.Combo:Boolean("Items", "Use Items", true)
 KalistaMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
 KalistaMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
+KalistaMenu.Combo:Boolean("AA", "AA minions if you can't reach the target", true)
 KalistaMenu.Combo:Boolean("QSS", "Use QSS", true)
 KalistaMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 KalistaMenu.Combo:Key("WallJump", "WallJump", string.byte("G"))
@@ -47,7 +49,7 @@ KalistaMenu.Farm:Boolean("ECanon", "Always E Big Minions", true)
 KalistaMenu.Farm:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 KalistaMenu.Farm:SubMenu("LaneClear", "LaneClear")
 KalistaMenu.Farm.LaneClear:Slider("Farmkills", "E if X Can Be Killed", 2, 0, 10, 1)
---KalistaMenu.Farm.LaneClear:Boolean("E", "E if can kill minion + poke", true)
+KalistaMenu.Farm.LaneClear:Boolean("E", "E if reset + slow", true)
 
 KalistaMenu:SubMenu("JungleClear", "Jungle Clear")
 KalistaMenu.JungleClear:SubMenu("Junglesteal", "Junglesteal (E)")
@@ -366,8 +368,8 @@ end
 	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
     local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
-    if GoS:IsInDistance(mob, GetCastRange(myHero,_E)) then  
-	  if CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() and GetCurrentHP(mob) < Damage then
+    if GoS:ValidTargrt(mob, 1000) and CanUseSpell(myHero, _E) == READY then  
+	  if GetObjectName(mob) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
 	  elseif CanUseSpell(myHero, _E) == READY and GetObjectName(mob) == "SRU_Dragon" and KalistaMenu.JungleClear.Junglesteal.dragon:Value() and GetCurrentHP(mob) < Damage then
 	  CastSpell(_E)
@@ -387,7 +389,18 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	  CastSpell(_E)
 	  end
     end
-       
+   
+        if Gos:ValidTarget(mob, 1200) and KalistaMenu.Drawings.Edmg:Value() then
+	local mobPos = GetOrigin(mob)
+        local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
+          if Damage > GetCurrentHP(mob) then
+	  DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
+	  elseif Damage > 0 then
+          DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
+          end
+        end
+end
+
         local HeroPos = GetOrigin(myHero)
         local mousePos = GetMousePos()
         if KalistaMenu.Combo.WallJump:Value() then
@@ -1008,17 +1021,6 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		MoveToXYZ(10122, 91.429840087891, 12406)
 		end
 	end
-   
-        if Gos:ValidTarget(mob, 1200) and KalistaMenu.Drawings.Edmg:Value() then
-	local mobPos = GetOrigin(mob)
-        local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
-          if Damage > GetCurrentHP(mob) then
-	  DrawText("100%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
-	  elseif Damage > 0 then
-          DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",32,drawPos.x+40,drawPos.y+30,0xffffffff)
-          end
-        end
-end
   
 if KalistaMenu.Combo.WallJump:Value() then
 DrawCircle(pos1,80,0,0,0xffffffff)
