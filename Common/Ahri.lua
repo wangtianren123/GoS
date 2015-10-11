@@ -43,6 +43,7 @@ AhriMenu.JungleClear:Boolean("E", "Use E", true)
 AhriMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AhriMenu:SubMenu("Drawings", "Drawings")
+AhriMenu.Drawings:Boolean("Orb", "Draw the Orb (Q)", true)
 AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AhriMenu.Drawings:Boolean("W", "Draw W Range", true)
 AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
