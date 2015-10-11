@@ -71,7 +71,7 @@ OnProcessSpell(function(unit, spell)
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
       if CHANELLING_SPELLS[spell.name] then
       	local RPred = GetPredictionForPlayer(GetOrigin(myHero),unit,GetMoveSpeed(unit),1400,500,950,700,false,true)
-        if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
+        if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
         CastSkillShot(_R,GetOrigin(unit).x,GetOrigin(unit).y,GetOrigin(unit).z)
         end
       end
