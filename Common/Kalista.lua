@@ -364,9 +364,7 @@ end
       if Damage > 0 and Damage > GetCurrentHP(minion) and GoS:ValidTarget(minion, 1000) then 
       killableminions = killableminions + 1
       end
-	
-    end
-	
+
       if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then
       	 local target = GetCurrentTarget()
       	 
@@ -378,6 +376,8 @@ end
          CastSpell(_E)
 	 end
       end
+	
+    end
 	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
     local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
