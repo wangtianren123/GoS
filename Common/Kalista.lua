@@ -1144,7 +1144,7 @@ function CalcDamage(source, target, addmg)
     local ArmorPenPercent = GetObjectType(source) == Obj_AI_Minion and 1 or math.floor(GetArmorPenPercent(source)*100)/100
     local Armor = GetArmor(target)*ArmorPenPercent-ArmorPen
     local ArmorPercent = (GetObjectType(source) == Obj_AI_Minion and Armor < 0) and 0 or Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
-    return (GotBuff(target, "ferocioushowl") > 0 and 0.7 or GotBuff(target, "galioidolofdurand") > 0 and 0.5 or GotBuff(target, "meditate") > 0 and 0.45+0.05*GetCastLevel(target,_W) or GotBuff(source,"exhausted")  > 0 and 0.4 or 1) * math.floor(ADDmg*(1-ArmorPercent)
+    return (GotBuff(target, "ferocioushowl") > 0 and 0.7 or GotBuff(target, "galioidolofdurand") > 0 and 0.5 or GotBuff(target, "meditate") > 0 and 0.45+0.05*GetCastLevel(target,_W) or GotBuff(source,"exhausted")  > 0 and 0.4 or 1) * math.floor(ADDmg*(1-ArmorPercent))
 end
 
 function Edmg(unit)
