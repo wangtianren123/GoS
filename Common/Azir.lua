@@ -19,51 +19,65 @@ AzirMenu.Harass:Boolean("AA", "Use AA", true)
 
 AzirMenu:SubMenu("Killsteal", "Killsteal")
 AzirMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
---AzirMenu.Killsteal:Boolean("E", "Killsteal with E", true)
+AzirMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 AzirMenu:SubMenu("Misc", "Misc")
 AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AzirMenu.Misc:Boolean("Autolvl", "Auto level", true)
---AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
-AzirMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells (R)", true)
+AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 
 AzirMenu:SubMenu("Drawings", "Drawings")
 AzirMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AzirMenu.Drawings:Boolean("W", "Draw W Range", true)
 AzirMenu.Drawings:Boolean("E", "Draw E Range", true)
---AzirMenu.Drawings:Boolean("R", "Draw R Range", true)
+AzirMenu.Drawings:Boolean("R", "Draw R Range", true)
  
+local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
 
 CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["FiddleSticks"]                = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Karthus"]                     = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Warwick"]                     = {_R},
-    ["Xerath"]                      = {_R},
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
+GoS:DelayAction(function()
+
+  local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
+
+  for i, spell in pairs(CHANELLING_SPELLS) do
+    for _,k in pairs(GoS:GetEnemyHeroes()) do
+        if spell["Name"] == GetObjectName(k) then
+        InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
         end
+    end
+  end
+		
+end, 1)
+
+OnProcessSpell(function(unit, spell)
+  if unit and spell and spell.name then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
+      if CHANELLING_SPELLS[spell.name] then
+      	local RPred = GetPredictionForPlayer(GetOrigin(myHero),unit,GetMoveSpeed(unit),1400,500,950,700,false,true)
+        if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
+        CastSkillShot(_R,GetOrigin(unit).x,GetOrigin(unit).y,GetOrigin(unit).z)
+        end
+      end
+    end
+  end
 end)
- 
-function addInterrupterCallback( callback0 )
-        callback = callback0
-end
 
 OnLoop(function(myHero)
 	
@@ -71,23 +85,23 @@ OnLoop(function(myHero)
 	
 	    local target = GetCurrentTarget()
 	    local WPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),math.huge,0,850,100,false,true)
-	    --local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
+	    local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
 		
-		if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,850) and WPred.HitChance == 1 and AzirMenu.Combo.W:Value() then
-		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+	    if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,850) and WPred.HitChance == 1 and AzirMenu.Combo.W:Value() then
+	    CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+	    end
+		
+	    if table.getn(AzirSoldiers) > 0 then 
+	      for _,Soldier in pairs(AzirSoldiers) do
+	         	
+	        local QPred = GetPredictionForPlayer(GetOrigin(Soldier),target,GetMoveSpeed(target),1600,0,950,80,false,true)
+		   
+	        if GoS:ValidTarget(target, 1500) then
+	        SoldierRange = GoS:GetDistance(Soldier, target)
 		end
 		
-		if table.getn(AzirSoldiers) > 0 then 
-	         for _,Soldier in pairs(AzirSoldiers) do
-	         	
-		   local QPred = GetPredictionForPlayer(GetOrigin(Soldier),target,GetMoveSpeed(target),1600,0,950,80,false,true)
-		   
-	           if GoS:ValidTarget(target, 1500) then
-		   SoldierRange = GoS:GetDistance(Soldier, target)
-		   end
-		
-		   if CanUseSpell(myHero,_E) and GoS:ValidTarget(target, 1300) and table.getn(AzirSoldiers) > 0 and AzirMenu.Combo.E:Value() then 
-		     local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(Soldier), GetOrigin(target))
+		if CanUseSpell(myHero,_E) and GoS:ValidTarget(target, 1300) and table.getn(AzirSoldiers) > 0 and AzirMenu.Combo.E:Value() then 
+		  local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(Soldier), GetOrigin(target))
                      if isOnSegment and GoS:GetDistance(target, pointSegment) < 100 then
 		     CastTargetSpell(Soldier, _E)
 		     end
@@ -219,22 +233,17 @@ if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
 end
 	
 if AzirMenu.Misc.Autolvl:Value() then  
-local leveltable = {_W, _Q, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E} 
+  if AzirMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _Q, _Q , _R, _Q , _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
+  elseif AzirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+  end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
 if AzirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,1,128,0xff00ff00) end
-if AzirMenu.Drawings.W:Value()  then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,1,128,0xff00ff00) end
-if AzirMenu.Drawings.E:Value()  then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1300,1,128,0xff00ff00) end
---if AzirMenu.Drawings.R:Value()  then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,1,128,0xff00ff00) end
+if AzirMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,1,128,0xff00ff00) end
+if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1300,1,128,0xff00ff00) end
+if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,1,128,0xff00ff00) end
 
-end)
-
-addInterrupterCallback(function(target, spellType)
-  local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
-  if GoS:IsInDistance(target, 450) and CanUseSpell(myHero,_R) == READY and spellType == CHANELLING_SPELLS and AzirMenu.Misc.Interrupt:Value() then
-  CastSkillShot(_R,RPred.PredPos.x,RPred.PredPos.y,RPred.PredPos.z)
-  end
 end)
 
 OnCreateObj(function(Object) 
