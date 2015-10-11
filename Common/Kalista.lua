@@ -1148,20 +1148,8 @@ function CalcDamage(source, target, addmg)
 end
 
 function Edmg(unit)
-  dmg = {
-    10,
-    14,
-    19,
-    25,
-    32
-  }
-  scaling = {
-    0.2,
-    0.225,
-    0.25,
-    0.275,
-    0.3
-  }
+  dmg = {10,14,19,25,32}
+  scaling = {0.2,0.225,0.25,0.275,0.3}
   
   local Stacks = GetBuffData(unit, "kalistaexpungemarker")
   local dmg = CalcDamage(myHero, unit, Stacks.Count > 0 and (10 + 10 * GetCastLevel(myHero,_E) + 0.6 * (GetBaseDamage(myHero) + GetBonusDmg(myHero)) + (Stacks.Count - 1) * (dmg[GetCastLevel(myHero,_E)] + scaling[GetCastLevel(myHero,_E)] * (GetBaseDamage(myHero) + GetBonusDmg(myHero))) or 0))
