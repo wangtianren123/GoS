@@ -140,7 +140,7 @@ end
        local WPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),math.huge,700,GetCastRange(myHero,_W),125,false,true)
        local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1400,250,975,60,true,true)
 	   
-        if Ignite and XerathMenu.Misc.Autoignite:Value() then
+        if Ignite and XerathMenu.Misc.AutoIgnite:Value() then
           if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
