@@ -308,7 +308,7 @@ function GetLineFarmPosition(range, width)
     if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(object) < range * range then
+      if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
