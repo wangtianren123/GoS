@@ -1,7 +1,5 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
-local Orb = nil
-
 local AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
@@ -43,7 +41,6 @@ AhriMenu.JungleClear:Boolean("E", "Use E", true)
 AhriMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AhriMenu:SubMenu("Drawings", "Drawings")
-AhriMenu.Drawings:Boolean("Orb", "Draw the Orb (Q)", true)
 AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AhriMenu.Drawings:Boolean("W", "Draw W Range", true)
 AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
@@ -114,7 +111,7 @@ OnLoop(function(myHero)
             local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
 	    if GotBuff(myHero, "ahritumble") > 0 then
             CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
-	    elseif CanUseSpell(myHero, _R) == READY and CopyData[_Q].Dmg()+CopyData[_W].Dmg()+CopyData[_E].Dmg()+CopyData[_R].Dmg() then
+	    elseif CanUseSpell(myHero, _R) == READY and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
 	    CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
 	    end
           end
@@ -127,7 +124,7 @@ OnLoop(function(myHero)
    	    if GotBuff(myHero, "ahritumble") > 0 then
               if DistanceAfterTumble < 550 then
 	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
-              elseif CanUseSpell(myHero, _R) == READY and CopyData[_Q].Dmg()+CopyData[_W].Dmg()+CopyData[_E].Dmg()+CopyData[_R].Dmg() then
+              elseif CanUseSpell(myHero, _R) == READY and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
 	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z) 
               end
             end
@@ -256,10 +253,7 @@ if AhriMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if Orb and AhriMenu.Drawings.Orb:Value() then 
-DrawCircle(GetOrigin(Orb).x, GetOrigin(Orb).y, GetOrigin(Orb).z,GetHitBox(myHero),2,100,0xffff0000) 
-DrawLine(GetOrigin(Orb).x,GetOrigin(Orb).y,GoS:myHeroPos().x,GoS:myHeroPos().y,1,ARGB(255,255,255,255))
-end
+
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
 if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
 if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
@@ -306,27 +300,15 @@ function GetDrawText(enemy)
 	end
 end
 
-OnCreateObj(function(Object)
-  if GetTeam(Object) == GetTeam(myHero) and GetObjectBaseName(Object) == "missile" and GoS:GetDistance(Object) > 175 then
-  Orb = Object
-  end
-end)
-
-OnDeleteObj(function(Object)
-  if Orb and GetTeam(Object) == GetTeam(myHero) and GetNetworkID(Object) == GetNetworkID(Orb) then
-  Orb = nil
-  end
-end)
-
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
     local objects = GoS:GetAllMinions(MINION_ENEMY)
     for i, object in pairs(objects) do
-    if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
+    if GoS:GetDistance(object) < 880 then
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -341,9 +323,9 @@ end
 function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     local n = 0
     for i, object in pairs(objects) do
-      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, Vector(object))
+      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
       local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, Vector(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, Vector(object)) then
+      if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
         n = n + 1
       end
     end
