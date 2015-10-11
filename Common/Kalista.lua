@@ -165,14 +165,12 @@ OnLoop(function(myHero)
         end
 
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-
           local MinionPos = GetOrigin(minion)
           local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
           if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
-         CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
-         end
-
-       end
+          CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
+          end
+        end
 		
 	if GetItemSlot(myHero,3140) > 0 and KalistaMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
@@ -194,13 +192,11 @@ OnLoop(function(myHero)
         end
 		
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-
            local MinionPos = GetOrigin(minion)
            local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
            if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
-          CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
-          end
-
+           CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
+           end
         end
 
 	end
@@ -216,31 +212,31 @@ OnLoop(function(myHero)
 	end
 	
 	if KalistaMenu.Misc.Edie:Value() then 
-		if CanUseSpell(myHero, _E) and GetLevel(myHero) < 6 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 3 then
-		CastSpell(_E)
-		elseif CanUseSpell(myHero, _E) and GetLevel(myHero) > 5 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 5 then
-		CastSpell(_E)
-		end
+	  if CanUseSpell(myHero, _E) and GetLevel(myHero) < 6 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 3 then
+	  CastSpell(_E)
+	  elseif CanUseSpell(myHero, _E) and GetLevel(myHero) > 5 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < 5 then
+	  CastSpell(_E)
+	  end
 	end
 		
 	if CanUseSpell(myHero,_W) and KalistaMenu.Combo.SentinelBug:Value() then
-		if GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) and GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
-                CastSkillShot(_W,9882.892, -71.24, 4438.446)	
-                elseif GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
-                CastSkillShot(_W,5087.77, -71.24, 10471.3808)
-                end
+	  if GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) and GoS:GetDistance(Vector(9882.892, -71.24, 4438.446)) < 5200 then
+          CastSkillShot(_W,9882.892, -71.24, 4438.446)	
+          elseif GoS:GetDistance(Vector(5087.77, -71.24, 10471.3808)) < 5200 then
+          CastSkillShot(_W,5087.77, -71.24, 10471.3808)
+          end
 	end
 			
 	if KalistaMenu.Ult.AutoR:Value() then 
-	    for _, ally in pairs(GoS:GetAllyHeroes()) do
-                for i,enemy in pairs(GoS:GetEnemyHeroes()) do 
-			local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
-			if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:ValidTarget(ally, 1450) and GoS:GetDistance(ally, enemy) <= 600 then
-                        CastSpell(_R)
-		        PrintChat("Rescuing low health "..GetObjectName(ally).."")
-			end
-		end
+	  for _, ally in pairs(GoS:GetAllyHeroes()) do
+	  local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
+            for i,enemy in pairs(GoS:GetEnemyHeroes()) do 
+	      if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:ValidTarget(ally, 1450) and GoS:GetDistance(ally, enemy) <= 600 then
+              CastSpell(_R)
+	      PrintChat("Rescuing low health "..GetObjectName(ally).."")
+	      end
 	    end
+	  end
 	end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
@@ -280,7 +276,7 @@ OnLoop(function(myHero)
                CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
                end
              end
-          end
+           end
 	   
 	   if KalistaMenu.Drawings.Edmg:Value() then
 	     local targetPos = GetOrigin(enemy)
