@@ -178,14 +178,14 @@ OnLoop(function(myHero)
         end
 
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-          local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+        
           local MinionPos = GetOrigin(minion)
           local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
           if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
           CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
           end
            
-          if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(minion) < Damage then
+          if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(minion) < Edmg(minion) then
           CastSpell(_E)
           end
   
@@ -232,7 +232,7 @@ OnLoop(function(myHero)
 	if KalistaMenu.Misc.E:Value() then
 	   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
                 if 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Misc.Mana:Value() and GetLevel(myHero) <= KalistaMenu.Misc.Elvl:Value() then
-		   if GotBuff(enemy, "kalistaexpungemarker") >= KalistaMenu.Misc.minE:Value() and GoS:ValidTarget(target, 1000) and GoS:GetDistance(enemy) > 850 then
+		   if GotBuff(enemy, "kalistaexpungemarker") >= KalistaMenu.Misc.minE:Value() and GoS:ValidTarget(target, 1100) and GoS:GetDistance(enemy) >= 1000 then
 		   CastSpell(_E)
 		   end
 		end
@@ -269,7 +269,6 @@ OnLoop(function(myHero)
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
-	   local Damage = GoS:CalcDamage(myHero, enemy, GotBuff(enemy,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(enemy,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
            local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1700,250,1150,50,true,true)
 	
 	if IOW:Mode() == "Combo" then
@@ -292,7 +291,7 @@ OnLoop(function(myHero)
              end
 	   end
 	   
-           if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and KalistaMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < Damage then
+           if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(enemy, 1000) and KalistaMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < Edmg(enemy) then
 	   CastSpell(_E)
 	   elseif CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(enemy, 1150) and KalistaMenu.Killsteal.Q:Value() and QPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
            CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
@@ -309,10 +308,10 @@ OnLoop(function(myHero)
 	   if KalistaMenu.Drawings.Edmg:Value() then
 	     local targetPos = GetOrigin(enemy)
              local drawPos = WorldToScreen(1,targetPos.x,targetPos.y,targetPos.z)
-	     if Damage > GetCurrentHP(enemy) then
+	     if Edmg(enemy) > GetCurrentHP(enemy) then
 	     DrawText("100%",20,drawPos.x,drawPos.y,0xffffffff)
-	     elseif Damage > 0 then
-             DrawText(math.floor(Damage/GetCurrentHP(enemy)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
+	     elseif Edmg(enemy) > 0 then
+             DrawText(math.floor(Edmg(enemy)/GetCurrentHP(enemy)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
              end
 	   end
 	   
@@ -354,21 +353,20 @@ LevelSpell(leveltable[GetLevel(myHero)])
 end
 	
     local killableminions = 0
-    for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-      local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+    for _,unit in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
    
-      if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion) == "Siege" or GetObjectName(minion) == "super") and GoS:ValidTarget(minion, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
+      if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and (GetObjectName(unit) == "Siege" or GetObjectName(unit) == "super") and GoS:ValidTarget(unit, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
       CastSpell(_E)
       end
 
-      if Damage > 0 and Damage > GetCurrentHP(minion) and GoS:ValidTarget(minion, 1000) then 
+      if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and GoS:ValidTarget(unit, 1000) then 
       killableminions = killableminions + 1
       end
 
       if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then
       	 local target = GetCurrentTarget()
       	 
-         if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Farm.LaneClear.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(minion) < Damage then
+         if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Farm.LaneClear.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(unit) < Edmg(unit) then
          CastSpell(_E)
          end
  
@@ -379,37 +377,37 @@ end
 	
     end
 	
-for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-    local Damage = GoS:CalcDamage(myHero, mob, GotBuff(mob,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(mob,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
-    if GoS:ValidTarget(mob, 1000) and CanUseSpell(myHero, _E) == READY and GetCurrentHP(mob) < Damage then  
-	  if GetObjectName(mob) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() then
+for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+   
+    if GoS:ValidTarget(unit, 1000) and CanUseSpell(myHero, _E) == READY and GetCurrentHP(unit) < Edmg(unit) then  
+	  if GetObjectName(unit) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Dragon" and KalistaMenu.JungleClear.Junglesteal.dragon:Value() then
+	  elseif GetObjectName(unit) == "SRU_Dragon" and KalistaMenu.JungleClear.Junglesteal.dragon:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Blue" and KalistaMenu.JungleClear.Junglesteal.blue:Value() then
+	  elseif GetObjectName(unit) == "SRU_Blue" and KalistaMenu.JungleClear.Junglesteal.blue:Value() then
 	  CastSpell(_E)
-          elseif GetObjectName(mob) == "SRU_Red" and KalistaMenu.JungleClear.Junglesteal.red:Value() then
+          elseif GetObjectName(unit) == "SRU_Red" and KalistaMenu.JungleClear.Junglesteal.red:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Krug" and KalistaMenu.JungleClear.Junglesteal.krug:Value() then
+	  elseif GetObjectName(unit) == "SRU_Krug" and KalistaMenu.JungleClear.Junglesteal.krug:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Murkwolf" and KalistaMenu.JungleClear.Junglesteal.wolf:Value() then
+	  elseif GetObjectName(unit) == "SRU_Murkwolf" and KalistaMenu.JungleClear.Junglesteal.wolf:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Razorbeak" and KalistaMenu.JungleClear.Junglesteal.wraiths:Value() then
+	  elseif GetObjectName(unit) == "SRU_Razorbeak" and KalistaMenu.JungleClear.Junglesteal.wraiths:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "SRU_Gromp" and KalistaMenu.JungleClear.Junglesteal.gromp:Value() then
+	  elseif GetObjectName(unit) == "SRU_Gromp" and KalistaMenu.JungleClear.Junglesteal.gromp:Value() then
 	  CastSpell(_E)
-	  elseif GetObjectName(mob) == "Sru_Crab" and KalistaMenu.JungleClear.Junglesteal.crab:Value() then
+	  elseif GetObjectName(unit) == "Sru_Crab" and KalistaMenu.JungleClear.Junglesteal.crab:Value() then
 	  CastSpell(_E)
 	  end
     end
    
-        if Gos:ValidTarget(mob, 2000) and KalistaMenu.Drawings.Edmg:Value() then
-	local mobPos = GetOrigin(mob)
+        if Gos:ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
+	local mobPos = GetOrigin(unit)
         local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
-          if Damage > GetCurrentHP(mob) then
+          if Edmg(unit) > GetCurrentHP(unit) then
 	  DrawText("100%",20,drawPos.x,drawPos.y,0xffffffff)
-	  elseif Damage > 0 then
-          DrawText(math.floor(Damage/GetCurrentHP(mob)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
+	  elseif Edmg(unit) > 0 then
+          DrawText(math.floor(Edmg(unit)/GetCurrentHP(unit)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
           end
         end
 end
@@ -1140,6 +1138,15 @@ OnProcessSpell(function(unit, spell)
  end
 end)
 
+function CalcDamage(source, target, addmg)
+    local ADDmg = addmg or 0
+    local ArmorPen = GetObjectType(source) == Obj_AI_Minion and 0 or math.floor(GetArmorPenFlat(source))
+    local ArmorPenPercent = GetObjectType(source) == Obj_AI_Minion and 1 or math.floor(GetArmorPenPercent(source)*100)/100
+    local Armor = GetArmor(target)*ArmorPenPercent-ArmorPen
+    local ArmorPercent = (GetObjectType(source) == Obj_AI_Minion and Armor < 0) and 0 or Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    return (GotBuff(target, "ferocioushowl") > 0 and 0.7 or GotBuff(target, "galioidolofdurand") > 0 and 0.5 or GotBuff(target, "meditate") > 0 and 0.45+0.05*GetCastLevel(target,_W) or GotBuff(source,"exhausted")  > 0 and 0.4 or 1) * math.floor(ADDmg*(1-ArmorPercent)
+end
+
 function Edmg(unit)
   dmg = {
     10,
@@ -1157,12 +1164,7 @@ function Edmg(unit)
   }
   
   local Stacks = GetBuffData(unit, "kalistaexpungemarker")
-  local dmg = CalcDamage(myHero, unit, Stacks.Count > 0 and (10 + 10 * GetCastLevel(myHero,_E) + 0.6 * (GetBaseDamage(myHero) + GetBonusDmg(myHero)) + (Stacks.Count - 1) * (dmg[GetCastLevel(myHero,_E)] + scaling[GetCastLevel(myHero,_E)] * (GetBaseDamage(myHero) + GetBonusDmg(myHero))) or 0), 0)
+  local dmg = CalcDamage(myHero, unit, Stacks.Count > 0 and (10 + 10 * GetCastLevel(myHero,_E) + 0.6 * (GetBaseDamage(myHero) + GetBonusDmg(myHero)) + (Stacks.Count - 1) * (dmg[GetCastLevel(myHero,_E)] + scaling[GetCastLevel(myHero,_E)] * (GetBaseDamage(myHero) + GetBonusDmg(myHero))) or 0))
 
   return dmg
 end
-
-function kalE(x) -- too smart for you inspired, thanks for this anyway :3, lazycat
-if x <= 1 then return 10 else return kalE(x-1) + 2 + x
-end 
-end 
