@@ -204,13 +204,13 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	          end
 
                   if CanUseSpell(myHero,_W) == READY and AhriMenu.LaneClear.W:Value() then
-                    if minion and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
+                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
                     CastSpell(_W)
                     end
                   end
 
                   if CanUseSpell(myHero,_E) == READY and AhriMenu.LaneClear.E:Value() then
-                    if minion and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
+                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
                     CastSkillShot(_E, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
                     end
                   end
@@ -218,7 +218,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
                   CastSkillShot(_Q, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
        	          end
 
@@ -325,7 +325,7 @@ function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     for i, object in pairs(objects) do
       local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, Vector(object))
       local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, object) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, object) then
+      if isOnSegment and GoS:GetDistanceSqr(pointSegment, Vector(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, Vector(object)) then
         n = n + 1
       end
     end
