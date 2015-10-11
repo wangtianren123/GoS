@@ -221,7 +221,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and GoS:ValidTarge(minion, 880) and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and GoS:ValidTarget(minion, 880) and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
                   CastSkillShot(_Q, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
        	          end
                 end
@@ -313,7 +313,7 @@ OnCreateObj(function(Object)
 end)
 
 OnDeleteObj(function(Object)
-  if GetTeam(Object) == GetTeam(myHero) and GetNetworkID(Object) == GetNetworkID(Orb) then
+  if Orb and GetTeam(Object) == GetTeam(myHero) and GetNetworkID(Object) == GetNetworkID(Orb) then
   Orb = nil
   end
 end)
@@ -321,7 +321,7 @@ end)
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = minionManager.objects
+    local objects = GoS:GetAllMinions(MINION_ENEMY)
     for i, object in pairs(objects) do
     if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
