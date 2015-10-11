@@ -20,9 +20,6 @@ KalistaMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 KalistaMenu:SubMenu("Ult", "Ult")
 KalistaMenu.Ult:Boolean("AutoR", "Save Ally with R", true)
 KalistaMenu.Ult:Slider("AutoRHP", "min Ally HP %", 5, 1, 100, 1)
-KalistaMenu.Ult:Boolean("Balista", "Balista Combo", true)
-KalistaMenu.Ult:Boolean("Skarlista", "Skarlista Combo", true)
-KalistaMenu.Ult:Boolean("Tahmlista", "Tahmlista Combo", true)
 
 KalistaMenu:SubMenu("Killsteal", "Killsteal")
 KalistaMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
@@ -62,6 +59,20 @@ KalistaMenu.JungleClear.Junglesteal:Boolean("wolf", "Wolf", true)
 KalistaMenu.JungleClear.Junglesteal:Boolean("wraiths", "Wraiths", true)
 KalistaMenu.JungleClear.Junglesteal:Boolean("gromp", "Gromp", false)
 KalistaMenu.JungleClear.Junglesteal:Boolean("crab", "Crab", true)
+
+GoS:DelayAction(function()
+  for _,k in pairs(GoS:GetAllyHeroes()) do
+    if GetObjectName(k) == "Blitzcrank" then
+    KalistaMenu.Ult:Boolean("Balista", "Balista Combo", true)
+    end
+    if GetObjectName(k) == "Skarner" then
+    KalistaMenu.Ult:Boolean("Skarlista", "Skarlista Combo", true)
+    end
+    if GetObjectName(k) == "TahmKench" then
+    KalistaMenu.Ult:Boolean("Tahmlista", "Tahmlista Combo", true)
+    end
+  end
+end, 1)
 
 do
 	pos1 = Vector(2894, 95.748046875, 4648)
@@ -155,8 +166,10 @@ do
 end
 
 OnLoop(function(myHero)
+
+    local mousePos = GetMousePos()
     if IOW:Mode() == "Combo" then
-	
+	        
 	local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,true,true)
 		
@@ -165,13 +178,28 @@ OnLoop(function(myHero)
         end
 
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+          local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
           local MinionPos = GetOrigin(minion)
           local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
           if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
           CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
           end
+           
+          if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(minion) < Damage then
+          CastSpell(_E)
+          end
+  
         end
-		
+
+        if KalistaMenu.Combo.AA:Value() and GoS:GetDistance(myHero, target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) then
+          for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+            if GoS:ValidTarget(minion) then
+            AttackUnit(minion)
+            MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+            end
+          end
+	end
+	
 	if GetItemSlot(myHero,3140) > 0 and KalistaMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
@@ -180,9 +208,9 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	end
+   end
 	
-	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
+   if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
 	
 	local target = GetCurrentTarget()
 	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,true,true)
@@ -199,7 +227,7 @@ OnLoop(function(myHero)
            end
         end
 
-	end
+    end
     
 	if KalistaMenu.Misc.E:Value() then
 	   for i,enemy in pairs(GoS:GetEnemyHeroes()) do
@@ -290,26 +318,26 @@ OnLoop(function(myHero)
 	   
     end
 	
-	for _, ally in pairs(GoS:GetAllyHeroes()) do
-           if GetObjectName(ally) == "Blitzcrank" then
+	for _,k in pairs(GoS:GetAllyHeroes()) do
+           if GetObjectName(k) == "Blitzcrank" then
 		for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-  	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and KalistaMenu.Ult.Balista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GetDistance(ally, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
+  	          if GotBuff(k, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 2450) and KalistaMenu.Ult.Balista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GoS:GetDistance(k, enemy) > 450 and GotBuff(enemy, "rocketgrab2") > 0 then
                   CastSpell(_R)
                   end
                 end
 	    end
 	
-            if GetObjectName(ally) == "Skarner" then
+            if GetObjectName(k) == "Skarner" then
 	        for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-		  if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1750) and KalistaMenu.Ult.Skarlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "skarnerimpale") > 0 then
+		  if GotBuff(k, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1750) and KalistaMenu.Ult.Skarlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "skarnerimpale") > 0 then
                   CastSpell(_R)
                   end
                 end
             end
 			
-	    if GetObjectName(ally) == "TahmKench" then
+	    if GetObjectName(k) == "TahmKench" then
 		for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	          if GotBuff(ally, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1400) and KalistaMenu.Ult.Tahmlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "tahmkenchwdevoured") > 0 then
+	          if GotBuff(k, "kalistacoopstrikeally") > 0 and GoS:ValidTarget(enemy, 1400) and KalistaMenu.Ult.Tahmlista:Value() and GetCurrentHP(enemy) > 200 and GetCurrentHP(myHero) > 400 and GotBuff(enemy, "tahmkenchwdevoured") > 0 then
                   CastSpell(_R)
                   end
                 end
@@ -327,7 +355,7 @@ end
 	
     local killableminions = 0
     for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-    local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
+      local Damage = GoS:CalcDamage(myHero, minion, GotBuff(minion,"kalistaexpungemarker") > 0 and (10 + (10 * GetCastLevel(myHero,_E)) + ((GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.6)) + (GotBuff(minion,"kalistaexpungemarker")-1) * (kalE(GetCastLevel(myHero,_E)) + (0.175 + 0.025 * GetCastLevel(myHero,_E))*(GetBonusDmg(myHero)+GetBaseDamage(myHero))) or 0)
    
       if Damage > 0 and Damage > GetCurrentHP(minion) and (GetObjectName(minion) == "Siege" or GetObjectName(minion) == "super") and GoS:ValidTarget(minion, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
       CastSpell(_E)
@@ -339,10 +367,16 @@ end
 	
     end
 	
-      if 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then
-        if IOW:Mode() == "LaneClear" and killableminions >= KalistaMenu.Farm.LaneClear.Farmkills:Value() then
-        CastSpell(_E)
-	end
+      if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then
+      	 local target = GetCurrentTarget()
+      	 
+         if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and KalistaMenu.Farm.LaneClear.E:Value() and GotBuff(target, "kalistaexpungemarker") > 0 and GetCurrentHP(minion) < Damage then
+         CastSpell(_E)
+         end
+ 
+         if killableminions >= KalistaMenu.Farm.LaneClear.Farmkills:Value() then
+         CastSpell(_E)
+	 end
       end
 	
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
@@ -381,7 +415,6 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 end
 
         local HeroPos = GetOrigin(myHero)
-        local mousePos = GetMousePos()
         if KalistaMenu.Combo.WallJump:Value() then
 		--pos1
 		if GoS:GetDistance(Vector(2894, 95.748046875, 4648)) < 5 then
