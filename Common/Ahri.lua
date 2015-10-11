@@ -260,7 +260,7 @@ if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
 if AhriMenu.Drawings.Text:Value() then
 	for _, enemy in pairs(Gos:GetEnemyHeroes()) do
-		if GoS:ValidTarget(enemy) then
+		if GoS:ValidTarget(enemy, 1500) then
 		    local enemyPos = GetOrigin(enemy)
 		    local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
 		    local enemyText, color = GetDrawText(enemy)
