@@ -1,5 +1,7 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
+local Orb = nil
+
 local AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
@@ -218,10 +220,9 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and GoS:ValidTarge(minion, 880) and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
                   CastSkillShot(_Q, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
        	          end
-
                 end
 	        
 end
@@ -254,6 +255,10 @@ if AhriMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
+if Orb and AhriMenu.Drawings.Orb:Value() then 
+DrawCircle(GetOrigin(Orb).x, GetOrigin(Orb).y, GetOrigin(Orb).z,GetHitBox(myHero),2,100,0xffff0000) 
+DrawLine(GetOrigin(Orb).x,GetOrigin(Orb).y,GoS:myHeroPos().x,GoS:myHeroPos().y,1,ARGB(255,255,255,255))
+end
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
 if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
 if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
@@ -299,6 +304,18 @@ function GetDrawText(enemy)
 	return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
 end
+
+OnCreateObj(function(Object)
+  if GetTeam(Object) == GetTeam(myHero) and GetObjectBaseName(Object) == "missile" and GoS:GetDistance(Object) > 175 then
+  Orb = Object
+  end
+end)
+
+OnDeleteObj(function(Object)
+  if GetTeam(Object) == GetTeam(myHero) and GetNetworkID(Object) == GetNetworkID(Orb) then
+  Orb = nil
+  end
+end)
 
 function GetLineFarmPosition(range, width)
     local BestPos 
