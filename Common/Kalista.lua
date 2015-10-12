@@ -370,7 +370,7 @@ end
          CastSpell(_E)
          end
  
-         if killableminions >q KalistaMenu.Farm.LaneClear.Farmkills:Value() then
+         if killableminions > KalistaMenu.Farm.LaneClear.Farmkills:Value() then
          CastSpell(_E)
 	 end
       end
