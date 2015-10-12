@@ -249,16 +249,7 @@ OnLoop(function(myHero)
                   end
                 end
             end
-	end
-	
-if KalistaMenu.Misc.Autolvl:Value() then  
-      if KalistaMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_E, _W, _Q, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
-      elseif KalistaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
-      elseif KalistaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
-      elseif KalistaMenu.Misc.Autolvltable:Value() == 4 then leveltable = {_W, _E, _Q, _W, _W, _R, _W, _E, _W, _E, _R, _E, _E, _Q, _Q, _R, _Q, _Q}
-      end
-LevelSpell(leveltable[GetLevel(myHero)]) 
-end
+	end	
 	
     local killableminions = 0
     for _,unit in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
@@ -288,10 +279,12 @@ end
 for _,spot in pairs(WallSpots) do
   if KalistaMenu.Combo.WallJump:Value() then 
   
-    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) > 125 then                DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 255, 255, 0))
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) > 125 then                
+    DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 255, 255, 0))
     end
     
-    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) <= 125 then                DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 0, 255, 0))
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) <= 125 then 
+    DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 0, 255, 0))
     end
     
     if GoS:GetDistance(spot, mousePos) <= 125 then
@@ -337,6 +330,15 @@ for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
           DrawText(math.floor(Edmg(unit)/GetCurrentHP(unit)*100).."%",20,drawPos.x,drawPos.y,0xffffffff)
           end
         end
+end
+
+if KalistaMenu.Misc.Autolvl:Value() then  
+      if KalistaMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_E, _W, _Q, _E, _E, _R, _E, _Q, _E, _Q, _R, _Q, _Q, _W, _W, _R, _W, _W}
+      elseif KalistaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
+      elseif KalistaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
+      elseif KalistaMenu.Misc.Autolvltable:Value() == 4 then leveltable = {_W, _E, _Q, _W, _W, _R, _W, _E, _W, _E, _R, _E, _E, _Q, _Q, _R, _Q, _Q}
+      end
+LevelSpell(leveltable[GetLevel(myHero)]) 
 end
 
 if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1150,1,128,0xff00ff00) end
