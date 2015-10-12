@@ -74,6 +74,8 @@ GoS:DelayAction(function()
   end
 end, 1)
 
+local mousePos = GetMousePos()
+
 OnLoop(function(myHero)
 
     if IOW:Mode() == "Combo" then
@@ -101,7 +103,7 @@ OnLoop(function(myHero)
 
         if KalistaMenu.Combo.AA:Value() and GoS:GetDistance(myHero, target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) then
           for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-            if GoS:ValidTarget(minion) then
+            if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
             AttackUnit(minion)
             MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
             end
