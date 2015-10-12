@@ -284,6 +284,25 @@ end
       end
 	
     end
+    
+for _,spot in pairs(WallSpots) do
+  if KalistaMenu.Combo.WallJump:Value() then 
+  
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) > 125 then                DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 255, 255, 0))
+    end
+    
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) <= 125 then                DrawCircle(spot.x,spot.y,spot.z,66,2,0,ARGB(255, 0, 255, 0))
+    end
+    
+    if GoS:GetDistance(spot, mousePos) <= 125 then
+    MoveToXYZ(spot.x, spot.y, spot.z)
+    end
+    
+    if GoS:GetDistance(spot) <= 22 then
+    CastSkillShot(_Q, (Vector(spot)+(Vector((Vector(spot.x2, spot.y2, spot.z2)))-Vector(spot)):normalized()*100).x+110, (Vector(spot)+(Vector((Vector(spot.x2, spot.y2, spot.z2)))- Vector(spot)):normalized()* 100).y+110, (Vector(spot)+ (Vector((Vector(spot.x2, spot.y2, spot.z2)))-Vector(spot)):normalized()*100).z+110)
+    end
+  end
+end
 	
 for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
    
