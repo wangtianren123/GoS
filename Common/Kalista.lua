@@ -1129,13 +1129,11 @@ if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroP
 end)
 
 OnProcessSpell(function(unit, spell)
- for _, ally in pairs(GoS:GetAllyHeroes()) do
-  if unit and unit == myHero and spell then
-    if spell.name:lower():find("kalistapspellcast") then
-    PrintChat("You are now pledged to "..GetObjectName(spell.target).."")
-    end
+if unit and unit == myHero and spell then
+  if spell.name:lower():find("kalistapspellcast") then
+  PrintChat("You are now pledged to "..GetObjectName(spell.target).."")
   end
- end
+end
 end)
 
 function CalcDamage(source, target, addmg)
