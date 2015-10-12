@@ -1153,4 +1153,55 @@ function Edmg(unit)
   local dmg = CalcDamage(myHero, unit, Stacks.Count > 0 and (10 + 10 * GetCastLevel(myHero,_E) + 0.6 * (GetBaseDamage(myHero) + GetBonusDmg(myHero)) + (Stacks.Count - 1) * (dmg[GetCastLevel(myHero,_E)] + scaling[GetCastLevel(myHero,_E)] * (GetBaseDamage(myHero) + GetBonusDmg(myHero))) or 0))
 
   return dmg
-end
+end+
+
+WallSpots = {
+   {
+   x =  2894,  
+   y =  95.748046875,
+   z =  4648,
+   x2 = 2924,
+   y2 = 53.499828338623,
+   z2 = 4958
+   },
+   {
+   x =  2474,    
+   y =  93.368385314941,
+   z =  4708,
+   x2 = 2524,
+   y2 = 52.793956756592,
+   z2 = 5008
+   },
+   {
+   x =  2524,  
+   y =  52.793956756592,
+   z =  5008,  
+   x2 = 4924,  
+   y2 = 52.793956756592,
+   z2 = 3058
+   },
+   {
+   x =  4674,
+   y =  96.089622497559,
+   z =  260, 
+   x2 = 4974,
+   y2 = 52.284427642822,
+   z2 = 2658  
+   },
+   {
+   x =  8222,  
+   y =  51.648384094238,
+   z =  3158,  
+   x2 = 8260,
+   y2 = 51.130001068115,
+   z2 = 2890
+   },
+   {
+   x =  9630,
+   y =  49.2229227093506,
+   z =  2794, 
+   x2 = 9654,  
+   y2 = 63.591632843018,
+   z2 = 3052
+   },
+}
