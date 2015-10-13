@@ -10,7 +10,6 @@ KalistaMenu.Combo:Boolean("E", "E if reset + slow target", true)
 KalistaMenu.Combo:Boolean("Items", "Use Items", true)
 KalistaMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
 KalistaMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
-KalistaMenu.Combo:Boolean("AA", "AA minions if you can't reach the target", true)
 KalistaMenu.Combo:Boolean("QSS", "Use QSS", true)
 KalistaMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 KalistaMenu.Combo:Key("WallJump", "WallJump", string.byte("G"))
@@ -181,15 +180,6 @@ OnLoop(function(myHero)
            CastTargetSpell(myHero, GetItemSlot(myHero,3142))
            end
 		   
-	   if KalistaMenu.Combo.AA:Value() and GoS:GetDistance(myHero, enemy) > GetRange(myHero)+GetHitBox(myHero)+(enemy and GetHitBox(enemy) or GetHitBox(myHero)) then
-             for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-               if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
-               AttackUnit(minion)
-               MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
-               end
-             end
-           end
-		  
         end
         
 	   if Ignite and KalistaMenu.Misc.AutoIgnite:Value() then
