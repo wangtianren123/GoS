@@ -89,20 +89,6 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         end
 
-        if KalistaMenu.Combo.AA:Value() then 
-
-          local target2 = IOW:GetTarget()
-          if GoS:GetDistance(myHero, target2) > GetRange(myHero)+GetHitBox(myHero)+(target2 and GetHitBox(target2) or GetHitBox(myHero)) then
-            for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-              if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
-              AttackUnit(minion)
-              MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
-              end
-            end
-          end
-
-	end
-
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
         
           local MinionPos = GetOrigin(minion)
@@ -200,6 +186,16 @@ OnLoop(function(myHero)
            if GetItemSlot(myHero,3142) > 0 and KalistaMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
            CastTargetSpell(myHero, GetItemSlot(myHero,3142))
            end
+		   
+	   if KalistaMenu.Combo.AA:Value() and GoS:GetDistance(myHero, enemy) > GetRange(myHero)+GetHitBox(myHero)+(enemy and GetHitBox(enemy) or GetHitBox(myHero)) then
+             for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+               if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
+               AttackUnit(minion)
+               MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+               end
+             end
+           end
+		  
         end
         
 	   if Ignite and KalistaMenu.Misc.AutoIgnite:Value() then
