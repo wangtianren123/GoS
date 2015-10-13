@@ -112,7 +112,6 @@ OnUpdateBuff(function(Object,buff)
 		
 	    if BlitzcrankMenu.Combo.AutoE:Value() and GoS:ValidTarget(Object) then
 	    CastSpell(_E)
-	    AttackUnit(Object)
 	    end
 	end
 end)
