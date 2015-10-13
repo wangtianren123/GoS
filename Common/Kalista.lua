@@ -51,7 +51,7 @@ KalistaMenu.Farm.LaneClear:Slider("Farmkills", "E if X Can Be Killed", 2, 0, 10,
 KalistaMenu.Farm.LaneClear:Boolean("E", "E if reset + slow", true)
 KalistaMenu.Farm:SubMenu("Jungle", "Jungle Clear")
 KalistaMenu.Farm.Jungle:Boolean("firstmins", "Don't E jungle first 2 minutes", true)
-KalistaMenu.Farm.Jungle:List("jungle", "Jungle Execute:", 3, {"OFF", "Epic Only", "Large & Epic Only", "Everything"})
+KalistaMenu.Farm.Jungle:List("je", "Jungle Execute:", 3, {"OFF", "Epic Only", "Large & Epic Only", "Everything"})
 
 GoS:DelayAction(function()
   for _,k in pairs(GoS:GetAllyHeroes()) do
@@ -289,8 +289,8 @@ end
 	
 for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
    
-    if GoS:ValidTarget(unit, 1000) and CanUseSpell(myHero, _E) == READY and KalistaMenu.Farm.Jungle:Value() ~= 1 then
-      if KalistaMenu.Farm.Jungle:Value() == 2 then
+    if GoS:ValidTarget(unit, 1000) and CanUseSpell(myHero, _E) == READY and KalistaMenu.Farm.Jungle.je:Value() ~= 1 then
+      if KalistaMenu.Farm.Jungle.je:Value() == 2 then
         for i,Epic in pairs(Epics) do
           if GetObjectName(unit) == Epic and GetCurrentHP(unit) < Edmg(unit) then  
           CastSpell(_E)
@@ -298,7 +298,7 @@ for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         end
       end 
       
-      if KalistaMenu.Farm.Jungle:Value() == 3 then
+      if KalistaMenu.Farm.Jungle.je:Value() == 3 then
         for i,Mob in pairs(Mobs) do
           if GetObjectName(unit) == Mob and GetCurrentHP(unit) < Edmg(unit) then  
           CastSpell(_E)
@@ -306,7 +306,7 @@ for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         end
       end 
       
-      if KalistaMenu.Farm.Jungle:Value() == 4 then
+      if KalistaMenu.Farm.Jungle.je:Value() == 4 then
         if GetCurrentHP(unit) < Edmg(unit) then  
         CastSpell(_E)
         end
