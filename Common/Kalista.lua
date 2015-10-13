@@ -87,6 +87,20 @@ OnLoop(function(myHero)
         CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
         end
 
+        if KalistaMenu.Combo.AA:Value() then 
+
+          local target = IOW:GetTarget()
+          if GoS:GetDistance(myHero, target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) then
+            for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+              if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
+              AttackUnit(minion)
+              MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+              end
+            end
+          end
+
+	end
+
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
         
           local MinionPos = GetOrigin(minion)
@@ -100,15 +114,6 @@ OnLoop(function(myHero)
           end
   
         end
-
-        if KalistaMenu.Combo.AA:Value() and GoS:GetDistance(myHero, target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) then
-          for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-            if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
-            AttackUnit(minion)
-            MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
-            end
-          end
-	end
 	
 	if GetItemSlot(myHero,3140) > 0 and KalistaMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
@@ -169,7 +174,7 @@ OnLoop(function(myHero)
 	  for _, ally in pairs(GoS:GetAllyHeroes()) do
 	  local soulboundhero = GotBuff(ally, "kalistacoopstrikeally") > 0
             for i,enemy in pairs(GoS:GetEnemyHeroes()) do 
-	      if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:ValidTarget(ally, 1450) and GoS:GetDistance(ally, enemy) <= 600 then
+	      if CanUseSpell(myHero,_R) == READY and soulboundhero and 100*GetCurrentHP(ally)/GetMaxHP(ally) <= KalistaMenu.Ult.AutoRHP:Value() and GoS:ValidTarget(ally, 1450) and GoS:GetDistance(ally, enemy) <= 1000 then
               CastSpell(_R)
 	      PrintChat("Rescuing low health "..GetObjectName(ally).."")
 	      end
