@@ -1,5 +1,8 @@
 if GetObjectName(myHero) ~= "Kalista" then return end
 
+local Epic = {"SRU_Baron", "SRU_Dragon", "TT_Spiderboss"}
+local Mobs = {"SRU_Baron", "SRU_Dragon", "SRU_Red", "SRU_Blue", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Gromp", "Sru_Crab"}
+
 local KalistaMenu = Menu("Kalista", "Kalista")
 KalistaMenu:SubMenu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
@@ -47,18 +50,9 @@ KalistaMenu.Farm:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 KalistaMenu.Farm:SubMenu("LaneClear", "LaneClear")
 KalistaMenu.Farm.LaneClear:Slider("Farmkills", "E if X Can Be Killed", 2, 0, 10, 1)
 KalistaMenu.Farm.LaneClear:Boolean("E", "E if reset + slow", true)
-
-KalistaMenu:SubMenu("JungleClear", "Jungle Clear")
-KalistaMenu.JungleClear:SubMenu("Junglesteal", "Junglesteal (E)")
-KalistaMenu.JungleClear.Junglesteal:Boolean("baron", "Baron", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("dragon", "Dragon", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("red", "Red", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("blue", "Blue", false)
-KalistaMenu.JungleClear.Junglesteal:Boolean("krug", "Krug", false)
-KalistaMenu.JungleClear.Junglesteal:Boolean("wolf", "Wolf", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("wraiths", "Wraiths", true)
-KalistaMenu.JungleClear.Junglesteal:Boolean("gromp", "Gromp", false)
-KalistaMenu.JungleClear.Junglesteal:Boolean("crab", "Crab", true)
+KalistaMenu.Farm:SubMenu("Jungle", "Jungle Clear")
+KalistaMenu.Farm.Jungle:Boolean("firstmins", "Don't E jungle first 2 minutes", true)
+KalistaMenu.Farm.Jungle:List("jungle", "Jungle Execute:", 3, {"OFF", "Epic Only", "Large & Epic Only", "Everything"})
 
 GoS:DelayAction(function()
   for _,k in pairs(GoS:GetAllyHeroes()) do
@@ -305,26 +299,29 @@ end
 	
 for _,unit in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
    
-    if GoS:ValidTarget(unit, 1000) and CanUseSpell(myHero, _E) == READY and GetCurrentHP(unit) < Edmg(unit) then  
-	  if GetObjectName(unit) == "SRU_Baron" and KalistaMenu.JungleClear.Junglesteal.baron:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Dragon" and KalistaMenu.JungleClear.Junglesteal.dragon:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Blue" and KalistaMenu.JungleClear.Junglesteal.blue:Value() then
-	  CastSpell(_E)
-          elseif GetObjectName(unit) == "SRU_Red" and KalistaMenu.JungleClear.Junglesteal.red:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Krug" and KalistaMenu.JungleClear.Junglesteal.krug:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Murkwolf" and KalistaMenu.JungleClear.Junglesteal.wolf:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Razorbeak" and KalistaMenu.JungleClear.Junglesteal.wraiths:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "SRU_Gromp" and KalistaMenu.JungleClear.Junglesteal.gromp:Value() then
-	  CastSpell(_E)
-	  elseif GetObjectName(unit) == "Sru_Crab" and KalistaMenu.JungleClear.Junglesteal.crab:Value() then
-	  CastSpell(_E)
-	  end
+    if GoS:ValidTarget(unit, 1000) and CanUseSpell(myHero, _E) == READY and KalistaMenu.Farm.Jungle:Value() ~= 1 then
+      if KalistaMenu.Farm.Jungle:Value() == 2 then
+        for i,Epic in pairs(Epics) do
+          if GetObjectName(unit) == Epic and GetCurrentHP(unit) < Edmg(unit) then  
+          CastSpell(_E)
+          end
+        end
+      end 
+      
+      if KalistaMenu.Farm.Jungle:Value() == 3 then
+        for i,Mob in pairs(Mobs) do
+          if GetObjectName(unit) == Mob and GetCurrentHP(unit) < Edmg(unit) then  
+          CastSpell(_E)
+          end
+        end
+      end 
+      
+      if KalistaMenu.Farm.Jungle:Value() == 4 then
+        if GetCurrentHP(unit) < Edmg(unit) then  
+        CastSpell(_E)
+        end
+      end
+      
     end
    
         if Gos:ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
@@ -1102,7 +1099,7 @@ WallSpots = {
       },
       {
         x = 9632,
-        y = 52.6557,
+        y = 52.65,
         z = 9160,
         x2 = 9192,
         y2 = 52.01,
@@ -1110,7 +1107,7 @@ WallSpots = {
       },
       {
         x2 = 9632,
-        y2 = 52.6557,
+        y2 = 52.65,
         z2 = 9160,
         x = 9192,
         y = 52.01,
