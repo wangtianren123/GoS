@@ -6,3 +6,5 @@ return {
 		[_R] = { Name = "AhriTumble", Range = 550}
 	}
 }
+
+-- Damage Lib soon(tm)
