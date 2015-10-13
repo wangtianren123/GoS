@@ -89,8 +89,8 @@ OnLoop(function(myHero)
 
         if KalistaMenu.Combo.AA:Value() then 
 
-          local target = IOW:GetTarget()
-          if GoS:GetDistance(myHero, target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) then
+          local target2 = IOW:GetTarget()
+          if GoS:GetDistance(myHero, target2) > GetRange(myHero)+GetHitBox(myHero)+(target2 and GetHitBox(target2) or GetHitBox(myHero)) then
             for _, minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
               if GoS:ValidTarget(minion, GetRange(myHero)+GetHitBox(myHero)*2) then
               AttackUnit(minion)
