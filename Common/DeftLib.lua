@@ -5,14 +5,25 @@ SpellData = {
 	        [_R]  = { Name = "AatroxR", Range = 300}
 	}
   ["Ahri"] = {
-		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, type = "linear", IsDangerous = false}
- 	        [_Q2] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, type = "linear", IsDangerous = false}
+		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false}
+ 	        [_Q2] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false}
 		[_W]  = { Name = "AhriFoxFire", Range = 700},
-		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, type = "linear", IsDangerous = true},
+		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = true},
 		[_R]  = { Name = "AhriTumble", Range = 550}
 	}
+  ["Ashe"] = {
+		[_Q]  = { Name = GetCastName(myHero,_Q), Range = 700},
+		[_W]  = { Name = "Volley", ProjectileName = "", Range = 1250, Speed = 1500, Delay = 250, Width = 60, collision = true, aoe = false, type = "cone", IsDangerous = false},
+		[_E]  = { Name = GetCastName(myHero,_E), Range = 20000, Speed = 1500, Delay = 500, Width = 1400, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 20000, Speed = 1600, Delay = 500, Width = 100, collision = true, aoe = false, type = "linear", IsDangerous = true}
+        }
+  ["Azir"] = {
+		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_W] = { Name = "AzirW", Range = 850, Speed = math.huge, Width = 100, collision = false, aoe = false, type = "circular"},
+		[_E] = { Name = "AzirE", Range = 1100, delay = 0.25, speed = 1200, width = 60, collision = true, aoe = false, type = "linear",},
+		[_R] = { Name = "AzirR", speed = 1300, delay = 0.2, range = 520, width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
+	},
 }
-
 CHANELLING_SPELLS = {
     ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
     ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
