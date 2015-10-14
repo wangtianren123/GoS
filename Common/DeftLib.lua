@@ -204,6 +204,18 @@ function CountObjectsNearPos(pos, range, radius, objects)
   return n
 end
 
+function HeroCollision(pos, spell, range, width) 
+    for i, enemy in ipairs(GoS:GetEnemyHeroes()) do
+        if GoS:ValidTarget(enemy) and GoS:GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), pos, Vector(enemy))
+            if (GoS:GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 width, 2)) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 priorityTable = {
 		AP = {
 	        	"Ahri", "Akali", "Anivia", "Annie", "Brand", "Cassiopeia", "Diana", "Evelynn", "FiddleSticks", "Fizz", "Gragas", "Heimerdinger", "Karthus",
@@ -230,5 +242,17 @@ priorityTable = {
         		"Renekton", "Rengar", "Riven", "Rumble", "Shyvana", "Trundle", "Udyr", "Vi", "MonkeyKing", "XinZhao"
 		}
 	}
-    
+
+Items = {
+		BRK = { id = 3153, range = 550, reqTarget = true, slot = nil },
+		BWC = { id = 3144, range = 400, reqTarget = true, slot = nil },
+		HGB = { id = 3146, range = 400, reqTarget = true, slot = nil },
+		RSH = { id = 3074, range = 350, reqTarget = false, slot = nil },
+		STD = { id = 3131, range = 350, reqTarget = false, slot = nil },
+		TMT = { id = 3077, range = 350, reqTarget = false, slot = nil },
+		YGB = { id = 3142, range = 350, reqTarget = false, slot = nil },
+		BFT = { id = 3188, range = 750, reqTarget = true, slot = nil },
+		RND = { id = 3143, range = 275, reqTarget = false, slot = nil }
+	}
+
 -- Damage Lib soon(tm)
