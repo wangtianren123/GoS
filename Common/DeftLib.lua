@@ -204,11 +204,11 @@ function CountObjectsNearPos(pos, range, radius, objects)
   return n
 end
 
-function HeroCollision(pos, spell, range, width) 
+function HeroCollision(target, spell, range, width) 
     for i, enemy in ipairs(GoS:GetEnemyHeroes()) do
         if GoS:ValidTarget(enemy) and GoS:GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
-            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), pos, Vector(enemy))
-            if (GoS:GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 width, 2)) then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), Vector(target), Vector(enemy))
+            if (GoS:GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 + width, 2)) then
                 return true
             end
         end
