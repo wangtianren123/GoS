@@ -23,7 +23,19 @@ SpellData = {
 		[_E] = { Name = "AzirE", Range = 1100, Speed = 1200, Delay = 250, Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = false},
 		[_R] = { Name = "AzirR", Range = 520, Speed = 1300, Delay = 250, Width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
 	},
+  ["Blitzcrank"] = {
+		[_Q] = { name = "RocketGrabMissile", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, type = "linear", IsDangerous = true},
+		[_E] = { name = "", Range = 225},
+		[_R] = { name = "StaticField", Range = 0, Speed = math.huge, Width = 500, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
+	},
+  ["Cassiopeia"] = {
+		[_Q] = { name = "CassiopeiaNoxiousBlast", ProjectileName = "", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_W] = { name = "CassiopeiaMiasma", ProjectileName = "", Range = 925, Speed = 2500, Delay = 500, Width = 90, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_E] = { name = "CassiopeiaTwinFang", Range = 700},
+		[_R] = { name = "CassiopeiaPetrifyingGaze",  ProjectileName = "", Range = 825, Speed = math.huge, Delay = 600, Width = 80, collision = false, aoe = true, type = "cone", IsDangerous = true}
+	},
 }
+
 CHANELLING_SPELLS = {
     ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
     ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
@@ -227,7 +239,7 @@ end
 function CountObjectsNearPos(pos, range, radius, objects)
   local n = 0
   for i, object in pairs(objects) do
-    if Vector(object)) <= radius^2 then
+    if Vector(object) <= radius^2 then
     n = n + 1
     end
   end
