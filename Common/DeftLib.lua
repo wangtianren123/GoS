@@ -1,4 +1,4 @@
-return {
+SpellData = {
   ["Aatrox"] = {
 		[_Q]  = { Name = "AatroxQ", ProjectileName = "AatroxQ.troy", Range = 650, Speed = 2000, Delay = 600, Width = 250, collision = false, type = "circular", IsDangerous = true}
 		[_E]  = { Name = "AatroxE", ProjectileName = "AatroxBladeofTorment_mis.troy" , Range = 1075, Speed = 1250, Delay = 250, Width = 35, collision = false, type = "linear", IsDangerous = false}
@@ -13,7 +13,7 @@ return {
 	}
 }
 
-Spellbook = [GetObjectName(myHero())]
+Spellbook = SpellData[GetObjectName(myHero())]
 
 myHero = GetMyHero()
 mapID = GetMapID()
@@ -164,6 +164,44 @@ CHANELLING_SPELLS = {
     ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
     ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
     ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
+}
+
+GAPCLOSER_SPELLS = {
+    ["AkaliShadowDance"]            = {Name = "Akali",      Spellslot = _R},
+    ["Headbutt"]                    = {Name = "Alistar",    Spellslot = _W},
+    ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
+    ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
+    ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
+    ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
+    ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
+    ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
+    ["MaokaiUnstableGrowth"]        = {Name = "Maokai",     Spellslot = _W},
+    ["MonkeyKingNimbus"]            = {Name = "MonkeyKing", Spellslot = _E},
+    ["Pantheon_LeapBash"]           = {Name = "Pantheon",   Spellslot = _W},
+    ["PoppyHeroicCharge"]           = {Name = "Poppy",      Spellslot = _E},
+    ["QuinnE"]                      = {Name = "Quinn",      Spellslot = _E},
+    ["RengarLeap"]                  = {Name = "Rengar",     Spellslot = _R},
+    ["XenZhaoSweep"]                = {Name = "XinZhao",    Spellslot = _E}
+}
+
+GAPCLOSER2_SPELLS = {
+    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
+    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
+    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
+    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
 }
 
 -- Damage Lib soon(tm)
