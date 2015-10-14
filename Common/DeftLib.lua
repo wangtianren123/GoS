@@ -20,8 +20,8 @@ SpellData = {
   ["Azir"] = {
 		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
 		[_W] = { Name = "AzirW", Range = 850, Speed = math.huge, Width = 100, collision = false, aoe = false, type = "circular"},
-		[_E] = { Name = "AzirE", Range = 1100, delay = 0.25, speed = 1200, width = 60, collision = true, aoe = false, type = "linear",},
-		[_R] = { Name = "AzirR", speed = 1300, delay = 0.2, range = 520, width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
+		[_E] = { Name = "AzirE", Range = 1100, Speed = 1200, Delay = 250, Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = false},
+		[_R] = { Name = "AzirR", Range = 520, Speed = 1300, Delay = 250, Width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
 	},
 }
 CHANELLING_SPELLS = {
@@ -104,8 +104,8 @@ Teleport = (GetCastName(myHero,SUMMONER_1):lower():find("summonerteleport") and 
 
 function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       hitchance = hitchance or 1
-      speed = speed or Spellbook.Speed
-      delay = delay or Spellbook.Delay
+      speed = speed or Spellbook.Speed or math.huge
+      delay = delay or Spellbook.Delay or 0
       range = range or Spellbook.Range
       width = width or Spellbook.Width
       coll = coll or Spellbook.collision
