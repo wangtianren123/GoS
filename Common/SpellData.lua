@@ -44,7 +44,7 @@ function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       coll = coll or Spellbook.collision
       local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
       if Predicted.HitChance > hitchance then
-        CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
+      CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
       end
 end
 
@@ -67,7 +67,7 @@ function GetLineFarmPosition(range, width)
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
-          break
+        break
         end
       end
     end
@@ -79,14 +79,14 @@ function GetFarmPosition(range, width)
   local BestHit = 0
   local objects = GoS:GetAllMinions(MINION_ENEMY)
   for i, object in pairs(objects) do
-	  	local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-	    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range^2 then
-	      BestHit = hit
-	      BestPos = Vector(object)
-	      if BestHit == #objects then
-	        break
-	      end
-	    end
+    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range^2 then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+      break
+      end
+    end
   end
   return BestPos, BestHit
 end
@@ -102,7 +102,7 @@ function GetJLineFarmPosition(range, width)
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
-          break
+        break
         end
       end
     end
@@ -114,56 +114,56 @@ function GetJFarmPosition(range, width)
   local BestHit = 0
   local objects = GoS:GetAllMinions(MINION_JUNGLE)
   for i, object in pairs(objects) do
-	  	local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-	    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
-	      BestHit = hit
-	      BestPos = Vector(object)
-	      if BestHit == #objects then
-	        break
-	      end
-	    end
+    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+      break
+      end
+    end
   end
   return BestPos, BestHit
 end
 
 function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-    local n = 0
-    for i, object in pairs(objects) do
-      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
-      local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
-        n = n + 1
-      end
+  local n = 0
+  for i, object in pairs(objects) do
+    local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
+    local w = width
+    if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
+    n = n + 1
     end
-    return n
+  end
+  return n
 end
 
 function CountObjectsNearPos(pos, range, radius, objects)
   local n = 0
   for i, object in pairs(objects) do
     if Vector(object)) <= radius^2 then
-      n = n + 1
+    n = n + 1
     end
   end
   return n
 end
 
 CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]                   = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                                              = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                                    = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]                       = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                                      = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                                      = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                                         = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]                   = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]              = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                                = {Name = "Nunu",         Spellslot = _R},                        
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
     ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]                         = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                                           = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]                               = {Name = "Warwick",      Spellslot = _R} 
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
 }
 
 -- Damage Lib soon(tm)
