@@ -13,6 +13,62 @@ SpellData = {
 	}
 }
 
+CHANELLING_SPELLS = {
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
+}
+
+GAPCLOSER_SPELLS = {
+    ["AkaliShadowDance"]            = {Name = "Akali",      Spellslot = _R},
+    ["Headbutt"]                    = {Name = "Alistar",    Spellslot = _W},
+    ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
+    ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
+    ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
+    ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
+    ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
+    ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
+    ["MaokaiUnstableGrowth"]        = {Name = "Maokai",     Spellslot = _W},
+    ["MonkeyKingNimbus"]            = {Name = "MonkeyKing", Spellslot = _E},
+    ["Pantheon_LeapBash"]           = {Name = "Pantheon",   Spellslot = _W},
+    ["PoppyHeroicCharge"]           = {Name = "Poppy",      Spellslot = _E},
+    ["QuinnE"]                      = {Name = "Quinn",      Spellslot = _E},
+    ["RengarLeap"]                  = {Name = "Rengar",     Spellslot = _R},
+    ["XenZhaoSweep"]                = {Name = "XinZhao",    Spellslot = _E}
+}
+
+GAPCLOSER2_SPELLS = {
+    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
+    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
+    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
+    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
+}
+
 Spellbook = SpellData[GetObjectName(myHero())]
 
 myHero = GetMyHero()
@@ -147,61 +203,5 @@ function CountObjectsNearPos(pos, range, radius, objects)
   end
   return n
 end
-
-CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
-    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
-}
-
-GAPCLOSER_SPELLS = {
-    ["AkaliShadowDance"]            = {Name = "Akali",      Spellslot = _R},
-    ["Headbutt"]                    = {Name = "Alistar",    Spellslot = _W},
-    ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
-    ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
-    ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
-    ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
-    ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
-    ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
-    ["MaokaiUnstableGrowth"]        = {Name = "Maokai",     Spellslot = _W},
-    ["MonkeyKingNimbus"]            = {Name = "MonkeyKing", Spellslot = _E},
-    ["Pantheon_LeapBash"]           = {Name = "Pantheon",   Spellslot = _W},
-    ["PoppyHeroicCharge"]           = {Name = "Poppy",      Spellslot = _E},
-    ["QuinnE"]                      = {Name = "Quinn",      Spellslot = _E},
-    ["RengarLeap"]                  = {Name = "Rengar",     Spellslot = _R},
-    ["XenZhaoSweep"]                = {Name = "XinZhao",    Spellslot = _E}
-}
-
-GAPCLOSER2_SPELLS = {
-    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
-    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
-    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
-    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
-    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
-    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
-    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
-    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
-    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
-    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
-    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
-}
 
 -- Damage Lib soon(tm)
