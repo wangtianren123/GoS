@@ -1,5 +1,7 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
+require('Deftlib')
+
 local AhriMenu = Menu("Ahri", "Ahri")
 AhriMenu:SubMenu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
@@ -49,24 +51,6 @@ AhriMenu.Drawings:Boolean("Text", "Draw Killable Text", true)
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
 
-CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
-    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
-}
-
 GoS:DelayAction(function()
 
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
@@ -98,12 +82,9 @@ OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
         
 	local target = GetCurrentTarget()
-	local mousePos = GetMousePos()
-        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
-	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
-		
-        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Combo.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+
+        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1050) then
+        Cast(_E,target)
         end
 	
         if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
@@ -125,7 +106,7 @@ OnLoop(function(myHero)
               if DistanceAfterTumble < 550 then
 	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z)
               elseif CanUseSpell(myHero, _R) == READY and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
-	      CastSkillShot(_R,mousePos.x,mousePos.y,mousePos.z) 
+	      CastSkillShot(_R,mousePos().x,mousePos().y,mousePos().z) 
               end
             end
           end
@@ -135,8 +116,8 @@ OnLoop(function(myHero)
 	CastSpell(_W)
 	end
 		
-	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Combo.Q:Value() then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and AhriMenu.Combo.Q:Value() then
+        Cast(_Q,target)
         end
 					
     end
@@ -144,27 +125,22 @@ OnLoop(function(myHero)
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 	
         local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1600,250,880,50,false,true)
-	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1550,250,1000,60,true,true)
-		
-        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and EPred.HitChance == 1 and AhriMenu.Harass.E:Value() then
-        CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+
+        if CanUseSpell(myHero, _E) == READY and GoS:ValidTarget(target, 1000) and AhriMenu.Harass.E:Value() then
+        Cast(_E,target)
         end
 				
         if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
 	CastSpell(_W)
 	end
 		
-	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and QPred.HitChance == 1 and AhriMenu.Harass.Q:Value() then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+	if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 880) and AhriMenu.Harass.Q:Value() then
+        Cast(_Q,target)
         end
 		
     end
 	
 for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-		
-	        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1600,250,880,50,false,true)
-		local EPred = GetPredictionForPlayer(GoS:myHeroPos(),enemy,GetMoveSpeed(enemy),1550,250,1000,60,true,true)
 		
 		local ExtraDmg = 0
 		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
@@ -180,9 +156,9 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
 		CastSpell(_W)
 		elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then 
-		CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+		Cast(_Q,enemy)
 		elseif CanUseSpell(myHero, _E) and EPred.HitChance == 1 and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
-		CastSkillShot(_E,EPred.PredPos.x,EPred.PredPos.y,EPred.PredPos.z)
+		Cast(_E,enemy)
 	        end
 	
 end
@@ -253,7 +229,6 @@ if AhriMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
 if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
 if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
@@ -300,36 +275,4 @@ function GetDrawText(enemy)
 	end
 end
 
-function GetLineFarmPosition(range, width)
-    local BestPos 
-    local BestHit = 0
-    local objects = GoS:GetAllMinions(MINION_ENEMY)
-    for i, object in pairs(objects) do
-    if GoS:GetDistance(object) < 880 then
-      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
-      local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range * range then
-        BestHit = hit
-        BestPos = Vector(object)
-        if BestHit == #objects then
-          break
-        end
-      end
-    end
-    end
-    return BestPos, BestHit
-end
-
-function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-    local n = 0
-    for i, object in pairs(objects) do
-      local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
-      local w = width
-      if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w * w and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
-        n = n + 1
-      end
-    end
-    return n
-end
-
-GoS:AddGapcloseEvent(_E, 1000, false) -- hi Copy-Pasters ^^
+GoS:AddGapcloseEvent(_E, 1000, false)
