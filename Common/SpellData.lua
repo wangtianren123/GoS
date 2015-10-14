@@ -13,4 +13,18 @@ return {
 	}
 }
 
+Spellbook = [GetObjectName(GetMyHero())]
+
+function Cast(spell, target, speed, delay, range, width, coll)
+      speed = speed or Spellbook.Speed
+      delay = delay or Spellbook.Delay
+      range = range or Spellbook.Range
+      width = width or Spellbook.Width
+      coll = coll or Spellbook.collision
+      local Predicted = GetPredictionForPlayer(GetMyHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
+      if Predicted.HitChance > 0 then
+        CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
+      end
+end
+
 -- Damage Lib soon(tm)
