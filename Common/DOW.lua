@@ -13,7 +13,7 @@ local pluginMinion
 local minionInfo = {}
 local incomingDamage = {}
 local jungleMobs = {}
-local turretMinion = {timeToHit = 0, obj = nil}
+local turretMinion = {timeToHit = 0, Object = nil}
 local isMelee = GetRange(myHero) < 300
 local movementStopped = false
 local TimedMode = false
@@ -32,5 +32,5 @@ DOW.shotFired = false
 DOW.CurrentlyShooting = false
  
 function getTrueRange()
-    return GetRange(myHero + GoS:GetDistance(GetHitBox(myHero))
+return GetRange(myHero + GoS:GetDistance(GetHitBox(myHero))
 end
