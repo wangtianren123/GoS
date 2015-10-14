@@ -1,6 +1,5 @@
 local index_table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-
 function to_binary(integer)
     local remaining = tonumber(integer)
     local bin_bits = ''
@@ -32,9 +31,6 @@ function SSLDecode(to_decode)
     for i = 1, string.len(unpadded) do
         local char = string.sub(to_decode, i, i)
         local offset, _ = string.find(index_table, char)
-        if offset == nil then
-            PrintChat("Invalid character '" .. char .. "' found.")
-        end
 
         bit_pattern = bit_pattern .. string.sub(to_binary(offset-1), 3)
     end
