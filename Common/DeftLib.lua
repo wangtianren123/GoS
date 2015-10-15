@@ -15,7 +15,7 @@ SpellData = {
 		[_Q]  = { Name = GetCastName(myHero,_Q), Range = 700},
 		[_W]  = { Name = "Volley", ProjectileName = "TODO", Range = 1250, Speed = 1500, Delay = 250, Width = 60, collision = true, aoe = false, type = "cone", IsDangerous = false},
 		[_E]  = { Name = GetCastName(myHero,_E), Range = 20000, Speed = 1500, Delay = 500, Width = 1400, collision = false, aoe = false, type = "linear", IsDangerous = false},
-		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 3000, Speed = 1600, Delay = 500, Width = 100, collision = true, aoe = false, type = "linear", IsDangerous = true}
+		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 3000, Speed = 1600, Delay = 500, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = true}
         },
   ["Azir"] = {
 		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
@@ -24,15 +24,19 @@ SpellData = {
 		[_R] = { Name = "AzirR", Range = 520, Speed = 1300, Delay = 250, Width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
 	},
   ["Blitzcrank"] = {
-		[_Q] = { name = "RocketGrabMissile", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, type = "linear", IsDangerous = true},
-		[_E] = { name = "", Range = 225},
-		[_R] = { name = "StaticField", Range = 0, Speed = math.huge, Width = 500, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
+		[_Q] = { Name = "RocketGrabMissile", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, type = "linear", IsDangerous = true},
+		[_E] = { Name = "", Range = 225},
+		[_R] = { Name = "StaticField", Range = 0, Speed = math.huge, Width = 500, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
 	},
   ["Cassiopeia"] = {
-		[_Q] = { name = "CassiopeiaNoxiousBlast", ProjectileName = "", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
-		[_W] = { name = "CassiopeiaMiasma", ProjectileName = "", Range = 925, Speed = 2500, Delay = 500, Width = 90, collision = false, aoe = true, type = "circular", IsDangerous = false},
-		[_E] = { name = "CassiopeiaTwinFang", Range = 700},
-		[_R] = { name = "CassiopeiaPetrifyingGaze",  ProjectileName = "", Range = 825, Speed = math.huge, Delay = 600, Width = 80, collision = false, aoe = true, type = "cone", IsDangerous = true}
+		[_Q] = { Name = "CassiopeiaNoxiousBlast", ProjectileName = "", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_W] = { Name = "CassiopeiaMiasma", ProjectileName = "", Range = 925, Speed = 2500, Delay = 500, Width = 90, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_E] = { Name = "CassiopeiaTwinFang", Range = 700},
+		[_R] = { Name = "CassiopeiaPetrifyingGaze",  ProjectileName = "", Range = 825, Speed = math.huge, Delay = 600, Width = 80, collision = false, aoe = true, type = "cone", IsDangerous = true}
+	},
+  ["Jinx"] = {
+		[_W] = { Name = "JinxW", ProjectileName = "", Range = 1500, Speed = 3300, Delay = 600, Width = 60, collision = true, aoe = true, type = "circular", IsDangerous = true},
+		[_R] = { Name = "JinxR",  ProjectileName = "", Range = 20000, Speed = 1700, Delay = 600, Width = 140, collision = false, aoe = true, type = "cone", IsDangerous = true}
 	}
 }
 
