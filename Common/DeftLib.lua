@@ -161,29 +161,24 @@ function GetDmg(spell, source, target)
     local ADDmg  = 0
     local APDmg  = 0
     local TRUEDmg  = 0
-    local AP     = source.ap
-    local Level  = source.level
-    local TotalDmg   = source.totalDamage
-    local crit     = source.critChance
-    local crdm     = source.critDmg
-    local ArmorPen   = floor(source.armorPen)
-    local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
-    local MagicPen   = floor(source.magicPen)
-    local MagicPenPercent  = floor(source.magicPenPercent*100)/100
-
-    local Armor   = target.armor*ArmorPenPercent-ArmorPen
-    local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
-    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
-    local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
+    local AP     = GetBonusAP(myHero)
+    local Level  = GetLevel(myHero)
+    local TotalDmg   = GetBaseDamage(myHero)+GetBonusDmg(myHero)
+    local ArmorPen = GetObjectType(source) == Obj_AI_Minion and 0 or math.floor(GetArmorPenFlat(source))
+    local ArmorPenPercent = GetObjectType(source) == Obj_AI_Minion and 1 or math.floor(GetArmorPenPercent(source)*100)/100
+    local Armor = GetArmor(target)*ArmorPenPercent-ArmorPen
+    local ArmorPercent = (GetObjectType(source) == Obj_AI_Minion and Armor < 0) and 0 or Armor > 0 and math.floor(Armor*100/(100+Armor))/100 or math.ceil(Armor*100/(100-Armor))/100
+    local MagicPen = math.floor(GetMagicPenFlat(source))
+    local MagicPenPercent = math.floor(GetMagicPenPercent(source)*100)/100
+    local MagicArmor = GetMagicResist(target)*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and math.floor(MagicArmor*100/(100+MagicArmor))/100 or math.ceil(MagicArmor*100/(100-MagicArmor))/100
     if spell == "IGNITE" then
       return 50+20*Level
-    elseif spell == "Tiamat" then
-      ADDmg = (GetHydraSlot() and CanUseSpell(myHero,GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
     elseif spell == "AD" then
     ADDmg = TotalDmg
     end
-    dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
-    return floor(dmg
+    dmg = math.floor(ADDmg*(1-ArmorPercent))+math.floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    return math.floor(dmg)
 end
 
 function GetLineFarmPosition(range, width)
