@@ -78,7 +78,9 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnLoop(function(myHero)
+UltOn = false
+
+OnTick(function(myHero)
     if IOW:Mode() == "Combo" then
         
 	local target = GetCurrentTarget()
@@ -90,7 +92,7 @@ OnLoop(function(myHero)
         if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
           if GoS:ValidTarget(target, 550) then
             local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
-	    if GotBuff(myHero, "ahritumble") > 0 then
+	    if UltOn then
             CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
 	    elseif CanUseSpell(myHero, _R) == READY and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
 	    CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
@@ -102,7 +104,7 @@ OnLoop(function(myHero)
           if GoS:ValidTarget(target, 900) then
             local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
             local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
-   	    if GotBuff(myHero, "ahritumble") > 0 then
+   	    if UltOn then
               if DistanceAfterTumble < 550 then
 	      CastSkillShot(_R,mousePos().x,mousePos().y,mousePos().z)
               elseif CanUseSpell(myHero, _R) == READY and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
@@ -225,12 +227,26 @@ if AhriMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-GetBuffData(myHero,"ahritumble")
+end)
+
+OnDraw(function(myHero)
 
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
 if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
 if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
+end)
+ 
+OnUpdateBuff(function(Object,buff)
+  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
+  UltOn = true
+  end
+end)
+
+OnRemoveBuff(function(Object,buff)
+  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
+  UltOn = false
+  end
 end)
 
 GoS:AddGapcloseEvent(_E, 1000, false)
