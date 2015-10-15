@@ -236,8 +236,8 @@ function GetFarmPosition(range, width)
   local BestHit = 0
   local objects = GoS:GetAllMinions(MINION_ENEMY)
   for i, object in pairs(objects) do
-    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range^2 then
+    local hit = CountObjectsNearPos(GetOrigin(object), range, width, objects)
+    if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range^2 then
       BestHit = hit
       BestPos = Vector(object)
       if BestHit == #objects then
