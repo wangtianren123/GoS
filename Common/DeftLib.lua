@@ -111,7 +111,7 @@ Dashes = {
     ["Corki"]              = {Spellslot = _W, Range = 800, Delay = 250},
 }
 
-Spellbook = SpellData[GetObjectName(myHero())]
+Spellbook = SpellData[GetObjectName(myHero)]
 
 myHero = GetMyHero()
 mapID = GetMapID()
