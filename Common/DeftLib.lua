@@ -112,6 +112,9 @@ Dashes = {
 }
 
 Spellbook = SpellData[GetObjectName(myHero)]
+LudensStacks = 0
+IsRecalling = false
+IsCCed = false
 
 myHero = GetMyHero()
 mapID = GetMapID()
@@ -153,6 +156,23 @@ end
 function mousePos()
     return GetMousePos()
 end
+
+OnUpdateBuff(function(Object,buff)
+  if Object = myHero then
+    if buff.Name == "itemmagicshankcharge" then 
+    LudensStacks = buff.Count
+    end
+    if buff.Name == "itemmagicshankcharge" then 
+    LudensStacks = buff.Count
+    end
+  end
+end)
+
+OnRemoveBuff(function(Object,buff)
+  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
+  UltOn = false
+  end
+end)
 
 function GetLineFarmPosition(range, width)
     local BestPos 
