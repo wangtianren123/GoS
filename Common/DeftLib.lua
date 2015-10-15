@@ -141,7 +141,7 @@ function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       width = width or Spellbook.Width
       coll = coll or Spellbook.collision
       local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
-      if Predicted.HitChance > hitchance then
+      if Predicted.HitChance >= hitchance then
       CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
       end
 end
