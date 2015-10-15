@@ -317,6 +317,155 @@ function HeroCollision(target, spell, range, width)
     return false
 end
 
+--Credits to Maxxxel For IsFacing
+local lastattackposition={true,true,true}
+
+function IsFacing(targetFace,range,unit) 
+	range=range or 99999
+	unit=unit or myHero
+	targetFace=targetFace
+	if (targetFace and unit)~=nil and (GoS:ValidTarget(targetFace,range,unit)) and GoS:GetDistance(targetFace,unit)<=range then
+		local unitXYZ= GetOrigin(unit)
+		local targetFaceXYZ=GetOrigin(targetFace)
+		local lastwalkway={true,true,true}
+		local walkway = GetPredictionForPlayer(GetOrigin(unit),targetFace,GetMoveSpeed(targetFace),0,1000,2000,0,false,false)
+
+		if walkway.PredPos.x==targetFaceXYZ.x then
+
+		if lastwalkway.x~=nil then
+
+		local d1 = GoS:GetDistance(targetFace,unit)
+    		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
+    		return d2 < d1
+
+
+    	elseif lastwalkway.x==nil then
+    		if lastattackposition.x~=nil and lastattackposition.name==GetObjectName(targetFace) then
+			local d1 = GoS:GetDistance(targetFace,unit)
+    			local d2 = GetDistance2XYZ(lastattackposition.x,lastattackposition.z,unitXYZ.x,unitXYZ.z)
+    			return d2 < d1
+    		end
+    	end
+    elseif walkway.PredPos.x~=targetFaceXYZ.x then
+    	lastwalkway={x=walkway.PredPos.x,y=walkway.PredPos.y,z=walkway.PredPos.z} 
+
+    	if lastwalkway.x~=nil then
+		local d1 = GoS:GetDistance(targetFace,unit)
+    		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
+    		return d2 < d1
+    	end
+    end
+	end
+end
+
+function GetDistance2XYZ(x,z,x2,z2)
+	if (x and z and x2 and z2)~=nil then
+		a=x2-x
+		b=z2-z
+		if (a and b)~=nil then
+			a2=a*a
+			b2=b*b
+			if (a2 and b2)~=nil then
+				return math.sqrt(a2+b2)
+			else
+				return 99999
+			end
+		else
+			return 99999
+		end
+	end	
+end
+
+OnProcessSpell(function(unit,spell)
+	if unit and spell and GetObjectType(unit) == Obj_AI_Hero then
+			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+				if GoS:ValidTarget(enemy,25000) then
+					local targetFaceXYZ=GetOrigin(enemy)
+					if (spell.name:find("Attack")) then 
+						if spell.startPos.x == targetFaceXYZ.x and spell.startPos.y == targetFaceXYZ.y and spell.startPos.z == targetFaceXYZ.z then 
+							if spell.endPos.x ~= targetFaceXYZ.x and spell.endPos.y ~= targetFaceXYZ.y and spell.endPos.z ~= targetFaceXYZ.z then 
+								lastattackposition = {x=spell.endPos.x,y=spell.endPos.y,z=spell.endPos.z,Name=GetObjectName(enemy)}
+								break
+							else
+								break
+							end
+						else
+							break
+						end
+					else
+						break
+					end
+				else
+					break
+				end
+			end
+		end
+	end
+end)
+
+-- Credits To Inferno for MEC
+local SQRT = math.sqrt
+
+function TargetDist(point, target)
+    local origin = GetOrigin(target)
+    local dx, dz = origin.x-point.x, origin.z-point.z
+    return SQRT( dx*dx + dz*dz )
+end
+
+function ExcludeFurthest(point, tbl)
+    local removalId = 1
+    for i=2, #tbl do
+        if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
+            removalId = i
+        end
+    end
+    
+    local newTable = {}
+    for i=1, #tbl do
+        if i ~= removalId then
+            newTable[#newTable+1] = tbl[i]
+        end
+    end
+    return newTable
+end
+
+function GetMEC(aoe_radius, listOfEntities, starTarget)
+    local average = {x=0, y=0, z=0, count = 0}
+    for i=1, #listOfEntities do
+        local ori = GetOrigin(listOfEntities[i])
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    if starTarget then
+        local ori = GetOrigin(starTarget)
+        average.x = average.x + ori.x
+        average.y = average.y + ori.y
+        average.z = average.z + ori.z
+        average.count = average.count + 1
+    end
+    average.x = average.x / average.count
+    average.y = average.y / average.count
+    average.z = average.z / average.count
+    
+    local targetsInRange = 0
+    for i=1, #listOfEntities do
+        if TargetDist(average, listOfEntities[i]) <= aoe_radius then
+            targetsInRange = targetsInRange + 1
+        end
+    end
+    if starTarget and TargetDist(average, starTarget) <= aoe_radius then
+        targetsInRange = targetsInRange + 1
+    end
+    
+    if targetsInRange == average.count then
+        return average
+    else
+        return GetMEC(aoe_radius, ExcludeFurthest(average, listOfEntities), starTarget)
+    end
+end
+
 priorityTable = {
 		AP = {
 	        	"Ahri", "Akali", "Anivia", "Annie", "Brand", "Cassiopeia", "Diana", "Evelynn", "FiddleSticks", "Fizz", "Gragas", "Heimerdinger", "Karthus",
