@@ -158,6 +158,8 @@ function mousePos()
     return GetMousePos()
 end
 
+poisonTable = {}
+
 OnUpdateBuff(function(Object,buff)
   if Object == myHero then
     if buff.Name == "itemmagicshankcharge" then 
@@ -176,6 +178,11 @@ OnUpdateBuff(function(Object,buff)
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
   IsSpellShielded = true
   end
+
+  if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
+  poisonTable[GetNetworkID(unit)] = buff.Count
+  end
+
 end)
 
 OnRemoveBuff(function(Object,buff)
@@ -195,7 +202,16 @@ OnRemoveBuff(function(Object,buff)
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
   IsSpellShielded = false
   end
+
+  if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
+  poisonTable[GetNetworkID(unit)] = nil
+  end
+
 end)
+
+function IsPoisoned(unit)
+return (poisonTable[GetNetworkID(unit)] or 0) > 0
+end
 
 function GetLineFarmPosition(range, width)
     local BestPos 
