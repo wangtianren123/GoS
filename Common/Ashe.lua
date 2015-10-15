@@ -72,13 +72,13 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnLoop(function(myHero)
+OnTick(function(myHero)
 
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
 
-	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
+	if CanUseSpell(myHero, _Q) == READY and QStacks == 5 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
         CastSpell(_Q)
         end
 						
@@ -90,11 +90,11 @@ OnLoop(function(myHero)
         Cast(_R,target)
 	end
 		
-	if GetItemSlot(myHero,3140) > 0 and AsheMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+	if GetItemSlot(myHero,3140) > 0 and AsheMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and AsheMenu.Combo.QSS:Value() and GotBuff(myHero, "rocketgrab2") > 0 or GotBuff(myHero, "charm") > 0 or GotBuff(myHero, "fear") > 0 or GotBuff(myHero, "flee") > 0 or GotBuff(myHero, "snare") > 0 or GotBuff(myHero, "taunt") > 0 or GotBuff(myHero, "suppression") > 0 or GotBuff(myHero, "stun") > 0 or GotBuff(myHero, "zedultexecute") > 0 or GotBuff(myHero, "summonerexhaust") > 0 and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+        if GetItemSlot(myHero,3139) > 0 and AsheMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
     end
@@ -103,11 +103,11 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
       
-	if CanUseSpell(myHero, _Q) == READY and GotBuff(myHero, "asheqcastready") > 0 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
+	if CanUseSpell(myHero, _Q) == READY and QStacks == 5 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if CanUseSpell(myHero, _W) == READY and WPred.HitChance == 1 and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
+        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
         Cast(_W,target)
 	end
 		
@@ -127,7 +127,7 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
    
-        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and GotBuff(myHero, "Recall") < 1 and GotBuff(myHero, "SummonerTeleport") < 1 and GotBuff(myHero, "RecallImproved") < 1 then
+        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and not IsRecalling then
         Cast(_W,target)
 	end
 
@@ -169,7 +169,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.LaneClear.Mana:Value() then
 
-		  if CanUseSpell(myHero,_Q) == READY and AsheMenu.LaneClear.Q:Value() and GoS:ValidTarget(minion, 700) and GotBuff(myHero, "asheqcastready") > 0 then
+		  if CanUseSpell(myHero,_Q) == READY and AsheMenu.LaneClear.Q:Value() and QStacks == 5 and GoS:ValidTarget(minion, 700) then
                   CastSpell(_Q)
                   end
 
@@ -189,7 +189,7 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 
-                if CanUseSpell(myHero,_Q) == READY and AsheMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 700) and GotBuff(myHero, "asheqcastready") > 0 then
+                if CanUseSpell(myHero,_Q) == READY and AsheMenu.JungleClear.Q:Value() and QStacks == 5 and GoS:ValidTarget(mob, 700) then
                 CastSpell(_Q)
                 end		
 
@@ -207,8 +207,34 @@ if AsheMenu.Misc.Autolvl:Value() then
 LevelSpell(leveltable[GetLevel(myHero)])
 end
 
-if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1200,1,128,0xff00ff00) end
+end)
 
+OnDraw(function(myHero)
+if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1200,1,128,0xff00ff00) end
+end)
+
+OnUpdateBuff(function(Object,buff)
+  if Object == myHero and buff.Name == "asheqcastready" then 
+  QStacks = 5
+  end
+end)
+
+OnRemoveBuff(function(Object,buff)
+  if Object == myHero and buff.Name == "asheqcastready" then 
+  QStacks = 0
+  end
+end)
+
+OnCreateObj(function(Object) 
+  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
+  QStacks = 5
+  end
+end)
+
+OnDeleteObj(function(Object) 
+  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
+  QStacks = 0
+  end
 end)
 
 GoS:AddGapcloseEvent(_R, 1000, false)
