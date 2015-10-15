@@ -170,7 +170,7 @@ OnUpdateBuff(function(Object,buff)
     IsRecalling = true
     end
 
-    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 then 
+    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
     IsCCed = true
     end
   end
@@ -190,7 +190,7 @@ OnRemoveBuff(function(Object,buff)
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = 0
     end
-    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 then 
+    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust" then 
     IsCCed = false
     end
   end
