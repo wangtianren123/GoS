@@ -15,7 +15,7 @@ SpellData = {
 		[_Q]  = { Name = GetCastName(myHero,_Q), Range = 700},
 		[_W]  = { Name = "Volley", ProjectileName = "TODO", Range = 1250, Speed = 1500, Delay = 250, Width = 60, collision = true, aoe = false, type = "cone", IsDangerous = false},
 		[_E]  = { Name = GetCastName(myHero,_E), Range = 20000, Speed = 1500, Delay = 500, Width = 1400, collision = false, aoe = false, type = "linear", IsDangerous = false},
-		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 20000, Speed = 1600, Delay = 500, Width = 100, collision = true, aoe = false, type = "linear", IsDangerous = true}
+		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 3000, Speed = 1600, Delay = 500, Width = 100, collision = true, aoe = false, type = "linear", IsDangerous = true}
         },
   ["Azir"] = {
 		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
