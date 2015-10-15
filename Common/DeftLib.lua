@@ -154,10 +154,9 @@ function mousePos()
     return GetMousePos()
 end
 
-function GetDmg(spell, source, target)
-    if target == nil or source == nil then
-      return
-    end
+function GetDmg(spell, target, source)
+
+    source = source or myHero
     local ADDmg  = 0
     local APDmg  = 0
     local TRUEDmg  = 0
