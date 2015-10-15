@@ -155,7 +155,6 @@ function mousePos()
 end
 
 function GetDmg(spell, target, source)
-
     source = source or myHero
     local ADDmg  = 0
     local APDmg  = 0
