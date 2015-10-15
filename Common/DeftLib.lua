@@ -398,8 +398,6 @@ OnProcessSpell(function(unit,spell)
 				else
 					break
 				end
-			end
-		end
 	end
 end)
 
