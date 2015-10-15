@@ -238,13 +238,13 @@ if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos(
 end)
  
 OnUpdateBuff(function(Object,buff)
-  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
+  if GetTeam(Object) == GetTeam(myHero) and buff.Name == "ahritumble" then 
   UltOn = true
   end
 end)
 
 OnRemoveBuff(function(Object,buff)
-  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
+  if GetTeam(Object) == GetTeam(myHero) and buff.Name == "ahritumble" then 
   UltOn = false
   end
 end)
