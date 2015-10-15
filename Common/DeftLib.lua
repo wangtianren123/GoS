@@ -115,6 +115,7 @@ Spellbook = SpellData[GetObjectName(myHero)]
 LudensStacks = 0
 IsRecalling = false
 IsCCed = false
+IsSpellShielded = false
 
 myHero = GetMyHero()
 mapID = GetMapID()
@@ -158,19 +159,41 @@ function mousePos()
 end
 
 OnUpdateBuff(function(Object,buff)
-  if Object = myHero then
+  if Object == myHero then
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = buff.Count
     end
-    if buff.Name == "itemmagicshankcharge" then 
-    LudensStacks = buff.Count
+    
+    if buff.Name == "Recall" or buff.Name == "RecallImproved" then 
+    IsRecalling = true
     end
+
+    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 then 
+    IsCCed = true
+    end
+  end
+
+  if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
+  IsSpellShielded = true
   end
 end)
 
 OnRemoveBuff(function(Object,buff)
-  if GetTeam(Object) = GetTeam(myHero) and buff.Name == "ahritumble" then 
-  UltOn = false
+  if Object == myHero then
+    if buff.Name == "itemmagicshankcharge" then 
+    LudensStacks = 0
+    end
+    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 then 
+    IsCCed = false
+    end
+  end
+
+  if buff.Name == "Recall" or buff.Name == "RecallImproved" then 
+  IsRecalling = false
+  end
+
+  if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
+  IsSpellShielded = false
   end
 end)
 
