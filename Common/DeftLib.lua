@@ -1,465 +1,1032 @@
-local index_table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+SpellData = {
+  ["Aatrox"] = {
+		[_Q]  = { Name = "AatroxQ", ProjectileName = "AatroxQ.troy", Range = 650, Speed = 2000, Delay = 600, Width = 250, collision = false, type = "circular", IsDangerous = true},
+		[_E]  = { Name = "AatroxE", ProjectileName = "AatroxBladeofTorment_mis.troy" , Range = 1075, Speed = 1250, Delay = 250, Width = 35, collision = false, type = "linear", IsDangerous = false},
+	        [_R]  = { Name = "AatroxR", Range = 300}
+	},
+  ["Ahri"] = {
+		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
+ 	        [_Q2] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_W]  = { Name = "AhriFoxFire", Range = 700},
+		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = true},
+		[_R]  = { Name = "AhriTumble", Range = 550}
+	},
+  ["Ashe"] = {
+		[_Q]  = { Name = GetCastName(myHero,_Q), Range = 700},
+		[_W]  = { Name = "Volley", ProjectileName = "", Range = 1250, Speed = 1500, Delay = 250, Width = 60, collision = true, aoe = false, type = "cone", IsDangerous = false},
+		[_E]  = { Name = GetCastName(myHero,_E), Range = 20000, Speed = 1500, Delay = 500, Width = 1400, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 20000, Speed = 1600, Delay = 500, Width = 100, collision = true, aoe = false, type = "linear", IsDangerous = true}
+        },
+  ["Azir"] = {
+		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_W] = { Name = "AzirW", Range = 850, Speed = math.huge, Width = 100, collision = false, aoe = false, type = "circular"},
+		[_E] = { Name = "AzirE", Range = 1100, Speed = 1200, Delay = 250, Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = false},
+		[_R] = { Name = "AzirR", Range = 520, Speed = 1300, Delay = 250, Width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
+	},
+  ["Blitzcrank"] = {
+		[_Q] = { name = "RocketGrabMissile", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, type = "linear", IsDangerous = true},
+		[_E] = { name = "", Range = 225},
+		[_R] = { name = "StaticField", Range = 0, Speed = math.huge, Width = 500, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
+	},
+  ["Cassiopeia"] = {
+		[_Q] = { name = "CassiopeiaNoxiousBlast", ProjectileName = "", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_W] = { name = "CassiopeiaMiasma", ProjectileName = "", Range = 925, Speed = 2500, Delay = 500, Width = 90, collision = false, aoe = true, type = "circular", IsDangerous = false},
+		[_E] = { name = "CassiopeiaTwinFang", Range = 700},
+		[_R] = { name = "CassiopeiaPetrifyingGaze",  ProjectileName = "", Range = 825, Speed = math.huge, Delay = 600, Width = 80, collision = false, aoe = true, type = "cone", IsDangerous = true}
+	}
+}
 
-function to_binary(integer)
-    local remaining = tonumber(integer)
-    local bin_bits = ''
+CHANELLING_SPELLS = {
+    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
+    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
+    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
+    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
+    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
+    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
+    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
+    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
+    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
+    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
+    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
+    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
+    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
+    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
+    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
+}
 
-    for i = 7, 0, -1 do
-        local current_power = math.pow(2, i)
+GAPCLOSER_SPELLS = {
+    ["AkaliShadowDance"]            = {Name = "Akali",      Spellslot = _R},
+    ["Headbutt"]                    = {Name = "Alistar",    Spellslot = _W},
+    ["DianaTeleport"]               = {Name = "Diana",      Spellslot = _R},
+    ["FizzPiercingStrike"]          = {Name = "Fizz",       Spellslot = _Q},
+    ["IreliaGatotsu"]               = {Name = "Irelia",     Spellslot = _Q},
+    ["JaxLeapStrike"]               = {Name = "Jax",        Spellslot = _Q},
+    ["JayceToTheSkies"]             = {Name = "Jayce",      Spellslot = _Q},
+    ["blindmonkqtwo"]               = {Name = "LeeSin",     Spellslot = _Q},
+    ["MaokaiUnstableGrowth"]        = {Name = "Maokai",     Spellslot = _W},
+    ["MonkeyKingNimbus"]            = {Name = "MonkeyKing", Spellslot = _E},
+    ["Pantheon_LeapBash"]           = {Name = "Pantheon",   Spellslot = _W},
+    ["PoppyHeroicCharge"]           = {Name = "Poppy",      Spellslot = _E},
+    ["QuinnE"]                      = {Name = "Quinn",      Spellslot = _E},
+    ["RengarLeap"]                  = {Name = "Rengar",     Spellslot = _R},
+    ["XenZhaoSweep"]                = {Name = "XinZhao",    Spellslot = _E}
+}
 
-        if remaining >= current_power then
-            bin_bits = bin_bits .. '1'
-            remaining = remaining - current_power
-        else
-            bin_bits = bin_bits .. '0'
+GAPCLOSER2_SPELLS = {
+    ["AatroxQ"]                     = {Name = "Aatrox",     Range = 1000, ProjectileSpeed = 1200, Spellslot = _Q},
+    ["GragasE"]                     = {Name = "Gragas",     Range = 600,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["GravesMove"]                  = {Name = "Graves",     Range = 425,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["HecarimUlt"]                  = {Name = "Hecarim",    Range = 1000, ProjectileSpeed = 1200, Spellslot = _R},
+    ["JarvanIVDragonStrike"]        = {Name = "JarvanIV",   Range = 770,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["JarvanIVCataclysm"]           = {Name = "JarvanIV",   Range = 650,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["KhazixE"]                     = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["khazixelong"]                 = {Name = "Khazix",     Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["LeblancSlide"]                = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["LeblancSlideM"]               = {Name = "Leblanc",    Range = 600,  ProjectileSpeed = 2000, Spellslot = _R},
+    ["LeonaZenithBlade"]            = {Name = "Leona",      Range = 900,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["UFSlash"]                     = {Name = "Malphite",   Range = 1000, ProjectileSpeed = 1800, Spellslot = _R},
+    ["RenektonSliceAndDice"]        = {Name = "Renekton",   Range = 450,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["SejuaniArcticAssault"]        = {Name = "Sejuani",    Range = 650,  ProjectileSpeed = 2000, Spellslot = _Q},
+    ["ShenShadowDash"]              = {Name = "Shen",       Range = 575,  ProjectileSpeed = 2000, Spellslot = _E},
+    ["RocketJump"]                  = {Name = "Tristana",   Range = 900,  ProjectileSpeed = 2000, Spellslot = _W},
+    ["slashCast"]                   = {Name = "Tryndamere", Range = 650,  ProjectileSpeed = 1450, Spellslot = _E}
+}
+
+Dashes = {
+    ["Vayne"]          = {Spellslot = _Q, Range = 300, Delay = 250},
+    ["Riven"]           = {Spellslot = _E, Range = 325, Delay = 250},
+    ["Ezreal"]          = {Spellslot = _E, Range = 450, Delay = 250},
+    ["Caitlyn"]         = {Spellslot = _E, Range = 400, Delay = 250},
+    ["Kassadin"]     = {Spellslot = _R, Range = 700, Delay = 250},
+    ["Graves"]         = {Spellslot = _E, Range = 425, Delay = 250},
+    ["Renekton"]     = {Spellslot = _E, Range = 450, Delay = 250},
+    ["Aatrox"]          = {Spellslot = _Q, Range = 650, Delay = 250},
+    ["Gragas"]         = {Spellslot = _E, Range = 600, delay = 250},
+    ["Khazix"]          = {Spellslot = _E, Range = 600, Delay = 250},
+    ["Lucian"]          = {Spellslot = _E, Range = 425, Delay = 250},
+    ["Sejuani"]        = {Spellslot = _Q, Range = 650, Delay = 250},
+    ["Shen"]             = {Spellslot = _E, Range = 575, Delay = 250},
+    ["Tryndamere"] = {Spellslot = _E, Range = 660, Delay = 250},
+    ["Tristana"]        = {Spellslot = _W, Range = 900, Delay = 250},
+    ["Corki"]              = {Spellslot = _W, Range = 800, Delay = 250},
+}
+
+Spellbook = SpellData[GetObjectName(myHero())]
+
+myHero = GetMyHero()
+mapID = GetMapID()
+Barrier = (GetCastName(myHero,SUMMONER_1):lower():find("summonerbarrier") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerbarrier") and SUMMONER_2 or nil))
+ClairVoyance = (GetCastName(myHero,SUMMONER_1):lower():find("summonerclairvoyance") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerclairvoyance") and SUMMONER_2 or nil)) 
+Clarity = (GetCastName(myHero,SUMMONER_1):lower():find("summonermana") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonermana") and SUMMONER_2 or nil)) 
+Cleanse = (GetCastName(myHero,SUMMONER_1):lower():find("summonerboost") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerboost") and SUMMONER_2 or nil)) 
+Exhaust = (GetCastName(myHero,SUMMONER_1):lower():find("summonerexhaust") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerexhaust") and SUMMONER_2 or nil))
+Flash = (GetCastName(myHero,SUMMONER_1):lower():find("summonerflash") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerflash") and SUMMONER_2 or nil)) 
+Garrison = (GetCastName(myHero,SUMMONER_1):lower():find("summonerodingarrison") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerodingarrison") and SUMMONER_2 or nil))
+Ghost = (GetCastName(myHero,SUMMONER_1):lower():find("summonerhaste") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerhaste") and SUMMONER_2 or nil))
+Heal = (GetCastName(myHero,SUMMONER_1):lower():find("summonerheal") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerheal") and SUMMONER_2 or nil))
+Ignite = (GetCastName(myHero,SUMMONER_1):lower():find("summonerdot") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerdot") and SUMMONER_2 or nil))
+Smite = (GetCastName(myHero,SUMMONER_1):lower():find("summonersmite") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonersmite") and SUMMONER_2 or nil))
+SmiteBlue = (GetCastName(myHero,SUMMONER_1):lower():find("s5_summonersmiteplayerganker") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("s5_summonersmiteplayerganker") and SUMMONER_2 or nil))
+SmiteGrey = (GetCastName(myHero,SUMMONER_1):lower():find("s5_summonersmitequick") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("s5_summonersmitequick") and SUMMONER_2 or nil))
+SmitePurple = (GetCastName(myHero,SUMMONER_1):lower():find("itemsmiteaoe") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("itemsmiteaoe") and SUMMONER_2 or nil)) 
+SmiteRed = (GetCastName(myHero,SUMMONER_1):lower():find("s5_summonersmiteduel") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("s5_summonersmiteduel") and SUMMONER_2 or nil))
+Snowball = (GetCastName(myHero,SUMMONER_1):lower():find("summonersnowball") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonersnowball") and SUMMONER_2 or nil))
+Teleport = (GetCastName(myHero,SUMMONER_1):lower():find("summonerteleport") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerteleport") and SUMMONER_2 or nil))
+
+function Cast(spell, target, hitchance, speed, delay, range, width, coll)
+      hitchance = hitchance or 1
+      speed = speed or Spellbook.Speed or math.huge
+      delay = delay or Spellbook.Delay or 0
+      range = range or Spellbook.Range
+      width = width or Spellbook.Width
+      coll = coll or Spellbook.collision
+      local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
+      if Predicted.HitChance > hitchance then
+      CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
+      end
+end
+
+function myHeroPos()
+    return GetOrigin(myHero) 
+end
+
+function mousePos()
+    return GetMousePos()
+end
+
+function GetLineFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    for i, object in pairs(objects) do
+      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
+      local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
+      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range^2 then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+        break
+        end
+      end
+    end
+    return BestPos, BestHit
+end
+
+function GetFarmPosition(range, width)
+  local BestPos 
+  local BestHit = 0
+  local objects = GoS:GetAllMinions(MINION_ENEMY)
+  for i, object in pairs(objects) do
+    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range^2 then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+      break
+      end
+    end
+  end
+  return BestPos, BestHit
+end
+
+function GetJLineFarmPosition(range, width)
+    local BestPos 
+    local BestHit = 0
+    local objects = GoS:GetAllMinions(MINION_JUNGLE)
+    for i, object in pairs(objects) do
+      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
+      local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
+      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range * range then
+        BestHit = hit
+        BestPos = Vector(object)
+        if BestHit == #objects then
+        break
+        end
+      end
+    end
+    return BestPos, BestHit
+end
+
+function GetJFarmPosition(range, width)
+  local BestPos 
+  local BestHit = 0
+  local objects = GoS:GetAllMinions(MINION_JUNGLE)
+  for i, object in pairs(objects) do
+    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+      BestHit = hit
+      BestPos = Vector(object)
+      if BestHit == #objects then
+      break
+      end
+    end
+  end
+  return BestPos, BestHit
+end
+
+function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
+  local n = 0
+  for i, object in pairs(objects) do
+    local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
+    local w = width
+    if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
+    n = n + 1
+    end
+  end
+  return n
+end
+
+function CountObjectsNearPos(pos, range, radius, objects)
+  local n = 0
+  for i, object in pairs(objects) do
+    if Vector(object) <= radius^2 then
+    n = n + 1
+    end
+  end
+  return n
+end
+
+function HeroCollision(target, spell, range, width) 
+    for i, enemy in ipairs(GoS:GetEnemyHeroes()) do
+        if GoS:ValidTarget(enemy) and GoS:GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
+            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), Vector(target), Vector(enemy))
+            if (GoS:GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 + width, 2)) then
+                return true
+            end
         end
     end
-
-    return bin_bits
+    return false
 end
 
-function from_binary(bin_bits)
-    return tonumber(bin_bits, 2)
-end
+priorityTable = {
+		AP = {
+	        	"Ahri", "Akali", "Anivia", "Annie", "Brand", "Cassiopeia", "Diana", "Evelynn", "FiddleSticks", "Fizz", "Gragas", "Heimerdinger", "Karthus",
+	        	"Kassadin", "Katarina", "Kayle", "Kennen", "Leblanc", "Lissandra", "Lux", "Malzahar", "Mordekaiser", "Morgana", "Nidalee", "Orianna",
+	        	"Ryze", "Sion", "Swain", "Syndra", "Teemo", "TwistedFate", "Veigar", "Viktor", "Velkoz", "Vladimir", "Xerath", "Ziggs", "Zyra"
+		},
+			
+		Support = {
+	        	"Alistar", "Blitzcrank", "Janna", "Karma", "Leona", "Lulu", "Nami", "Nunu", "Sona", "Soraka", "Taric", "Thresh", "Zilean", "Braum"
+		},
+			
+		Tank = {
+	        	"Amumu", "Chogath", "DrMundo", "Galio", "Hecarim", "Malphite", "Maokai", "Nasus", "Rammus", "Sejuani", "Nautilus", "Shen", "Singed", "Skarner", "Volibear",
+	        	"Warwick", "Yorick", "Zac"
+		},
+			
+	        AD_Carry = {
+        		"Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jayce", "Jinx", "KogMaw", "Lucian", "MasterYi", "MissFortune", "Pantheon", "Quinn", "Shaco", "Sivir",
+         		"Talon","Tryndamere", "Tristana", "Twitch", "Urgot", "Varus", "Vayne", "Yasuo", "Zed"
+		},
+			
+  		Bruiser = {
+        		"Aatrox", "Darius", "Elise", "Fiora", "Gangplank", "Garen", "Irelia", "JarvanIV", "Jax", "Khazix", "LeeSin", "Nocturne", "Olaf", "Poppy",
+        		"Renekton", "Rengar", "Riven", "Rumble", "Shyvana", "Trundle", "Udyr", "Vi", "MonkeyKing", "XinZhao"
+		}
+	}
 
-function SSLDecode(to_decode)
-    local padded = to_decode:gsub("%s", "")
-    local unpadded = padded:gsub("=", "")
-    local bit_pattern = ''
-    local decoded = ''
+Items = {
+		BRK = { id = 3153, range = 550, reqTarget = true, slot = nil },
+		BWC = { id = 3144, range = 400, reqTarget = true, slot = nil },
+		HGB = { id = 3146, range = 400, reqTarget = true, slot = nil },
+		RSH = { id = 3074, range = 350, reqTarget = false, slot = nil },
+		STD = { id = 3131, range = 350, reqTarget = false, slot = nil },
+		TMT = { id = 3077, range = 350, reqTarget = false, slot = nil },
+		YGB = { id = 3142, range = 350, reqTarget = false, slot = nil },
+		BFT = { id = 3188, range = 750, reqTarget = true, slot = nil },
+		RND = { id = 3143, range = 275, reqTarget = false, slot = nil }
+	}
+	
 
-    for i = 1, string.len(unpadded) do
-        local char = string.sub(to_decode, i, i)
-        local offset, _ = string.find(index_table, char)
+WallSpots = {
+      {
+        x = 8260,
+        y = 51,
+        z = 2890,
+        x2 = 8210,
+        y2 = 51.75,
+        z2 = 3165
+      },
+      {
+        x = 4630,
+        y = 95.7,
+        z = 3020,
+        x2 = 4924,
+        y2 = 50.98,
+        z2 = 3058
+      },
+      {
+        x = 4924,
+        y = 51,
+        z = 3058,
+        x2 = 4594,
+        y2 = 95,
+        z2 = 2964
+      },
+      {
+        x = 8222,
+        y = 51,
+        z = 3158,
+        x2 = 8300,
+        y2 = 51,
+        z2 = 2888
+      },
+      {
+        x = 11872,
+        y = -72,
+        z = 4358,
+        x2 = 12072,
+        y2 = 51,
+        z2 = 4608
+      },
+      {
+        x = 12072,
+        y = 51,
+        z = 4608,
+        x2 = 11818,
+        y2 = -71,
+        z2 = 4456
+      },
+      {
+        x = 10772,
+        y = 51,
+        z = 7208,
+        x2 = 10738,
+        y2 = 52,
+        z2 = 7450
+      },
+      {
+        x = 10738,
+        y = 52,
+        z = 7450,
+        x2 = 10772,
+        y2 = 51,
+        z2 = 7208
+      },
+      {
+        x = 11572,
+        y = 52,
+        z = 8706,
+        x2 = 11768,
+        y2 = 51,
+        z2 = 8904
+      },
+      {
+        x = 11768,
+        y = 51,
+        z = 8904,
+        x2 = 11572,
+        y2 = 52,
+        z2 = 8706
+      },
+      {
+        x = 7972,
+        y = 51,
+        z = 5908,
+        x2 = 8002,
+        y2 = 52,
+        z2 = 6208
+      },
+      {
+        x = 7194,
+        y = 51,
+        z = 5630,
+        x2 = 7372,
+        y2 = 52,
+        z2 = 5858
+      },
+      {
+        x = 7372,
+        y = 52,
+        z = 5858,
+        x2 = 7194,
+        y2 = 51,
+        z2 = 5630
+      },
+      {
+        x = 7572,
+        y = 51,
+        z = 6158,
+        x2 = 7718,
+        y2 = 52,
+        z2 = 6420
+      },
+      {
+        x = 7024,
+        y = -71,
+        z = 8406,
+        x2 = 7224,
+        y2 = 53,
+        z2 = 8556
+      },
+      {
+        x = 7224,
+        y = 53,
+        z = 8556,
+        x2 = 7088,
+        y2 = -71,
+        z2 = 8378
+      },
+      {
+        x = 8204,
+        y = -71,
+        z = 6080,
+        x2 = 8058,
+        y2 = 51,
+        z2 = 5838
+      },
+      {
+        x = 7772,
+        y = -49,
+        z = 6358,
+        x2 = 7610,
+        y2 = 52,
+        z2 = 6128
+      },
+      {
+        x = 5774,
+        y = 55,
+        z = 10656,
+        x2 = 5430,
+        y2 = -71,
+        z2 = 10640
+      },
+      {
+        x = 5474,
+        y = -71.2406,
+        z = 10665,
+        x2 = 5754,
+        y2 = 55.9,
+        z2 = 10718
+      },
+      {
+        x = 3666,
+        y = 51.8,
+        z = 7430,
+        x2 = 3674,
+        y2 = 51.7,
+        z2 = 7706
+      },
+      {
+        x = 3672,
+        y = 51.7,
+        z = 7686,
+        x2 = 3774,
+        y2 = 51.8,
+        z2 = 7408
+      },
+      {
+        x = 3274,
+        y = 52.46,
+        z = 6208,
+        x2 = 3086,
+        y2 = 57,
+        z2 = 6032
+      },
+      {
+        x = 3086,
+        y = 57,
+        z = 6032,
+        x2 = 3274,
+        y2 = 52.46,
+        z2 = 6208
+      },
+      {
+        x = 5126,
+        y = -71,
+        z = 9988,
+        x2 = 5130,
+        y2 = -70,
+        z2 = 9664
+      },
+      {
+        x2 = 5126,
+        y2 = -71,
+        z2 = 9988,
+        x = 5018,
+        y = -70,
+        z = 9734
+      },
+      {
+        x = 10462,
+        y = -71,
+        z = 4352,
+        x2 = 10660,
+        y2 = -72,
+        z2 = 4488
+      },
+      {
+        x = 6582,
+        y = 53.8,
+        z = 11694,
+        x2 = 6516,
+        y2 = 56.4,
+        z2 = 11990
+      },
+      {
+        x = 6516,
+        y = 56.4,
+        z = 11990,
+        x2 = 6582,
+        y2 = 53.8,
+        z2 = 11694
+      },
+      {
+        x = 5231,
+        y = 56.4,
+        z = 12092,
+        x2 = 5212,
+        y2 = 56.8,
+        z2 = 11794
+      },
+      {
+        x = 5212,
+        y = 56.8,
+        z = 11794,
+        x2 = 5231,
+        y2 = 56.4,
+        z2 = 12092
+      },
+      {
+        x = 9654,
+        y = 64,
+        z = 3052,
+        x2 = 9630,
+        y2 = 49.2,
+        z2 = 2794
+      },
+      {
+        x = 9630,
+        y = 49.2,
+        z = 2794,
+        x2 = 9654,
+        y2 = 64,
+        z2 = 3052
+      },
+      {
+        x = 3324,
+        y = -64,
+        z = 10160,
+        x2 = 3124,
+        y2 = 53,
+        z2 = 9956
+      },
+      {
+        x = 3124,
+        y = 53,
+        z = 9956,
+        x2 = 3324,
+        y2 = -64,
+        z2 = 10160
+      },
+      {
+        x = 9314,
+        y = -71.24,
+        z = 4518,
+        x2 = 9022,
+        y2 = 52.44,
+        z2 = 4508
+      },
+      {
+        x = 4424,
+        y = 49.11,
+        z = 8056,
+        x2 = 4134,
+        y2 = 50.53,
+        z2 = 7986
+      },
+      {
+        x = 4134,
+        y = 50.53,
+        z = 7986,
+        x2 = 4424,
+        y2 = 49.11,
+        z2 = 8056
+      },
+      {
+        x = 2596,
+        y = 51.7,
+        z = 9228,
+        x2 = 2874,
+        y2 = 50.6,
+        z2 = 9256
+      },
+      {
+        x = 2874,
+        y = 50.6,
+        z = 9256,
+        x2 = 2596,
+        y2 = 51.7,
+        z2 = 9228
+      },
+      {
+        x = 11722,
+        y = 51.7,
+        z = 5024,
+        x2 = 11556,
+        y2 = -71.24,
+        z2 = 4870
+      },
+      {
+        x = 11556,
+        y = -71.24,
+        z = 4870,
+        x2 = 11722,
+        y2 = 51.7,
+        z2 = 5024
+      },
+      {
+        x = 2924,
+        y = 53.5,
+        z = 4958,
+        x2 = 2894,
+        y2 = 95.7,
+        z2 = 4648
+      },
+      {
+        x2 = 2924,
+        y2 = 53.5,
+        z2 = 4958,
+        x = 2894,
+        y = 95.7,
+        z = 4648
+      },
+      {
+        x = 11922,
+        y = 51.7,
+        z = 4758,
+        x2 = 11772,
+        y2 = -71.24,
+        z2 = 4608
+      },
+      {
+        x = 11772,
+        y = -71.24,
+        z = 4608,
+        x2 = 11922,
+        y2 = 51.7,
+        z2 = 4758
+      },
+      {
+        x = 11592,
+        y = 52.8,
+        z = 5316,
+        x2 = 11342,
+        y2 = -61,
+        z2 = 5274
+      },
+      {
+        x2 = 11592,
+        y2 = 52.8,
+        z2 = 5316,
+        x = 11342,
+        y = -61,
+        z = 5274
+      },
+      {
+        x = 10694,
+        y = -70.24,
+        z = 4526,
+        x2 = 10472,
+        y2 = -71.24,
+        z2 = 4408
+      },
+      {
+        x = 9722,
+        y = -71.24,
+        z = 4908,
+        x2 = 9700,
+        y2 = -72.5,
+        z2 = 5198
+      },
+      {
+        x2 = 9722,
+        y2 = -71.24,
+        z2 = 4908,
+        x = 9700,
+        y = -72.5,
+        z = 5198
+      },
+      {
+        x = 6126,
+        y = 48.5,
+        z = 5304,
+        x2 = 6090,
+        y2 = 51.7,
+        z2 = 5572
+      },
+      {
+        x2 = 6126,
+        y2 = 48.5,
+        z2 = 5304,
+        x = 6090,
+        y = 51.7,
+        z = 5572
+      },
+      {
+        x = 3388,
+        y = 95.7,
+        z = 4414,
+        x2 = 3524,
+        y2 = 54.15,
+        z2 = 4708
+      },
+      {
+        x = 3108,
+        y = 51.5,
+        z = 6428,
+        x2 = 2924,
+        y2 = 57,
+        z2 = 6208
+      },
+      {
+        x2 = 3108,
+        y2 = 51.5,
+        z2 = 6428,
+        x = 2924,
+        y = 57,
+        z = 6208
+      },
+      {
+        x2 = 2824,
+        y2 = 56.4,
+        z2 = 6708,
+        x = 3074,
+        y = 51.5,
+        z = 6758
+      },
+      {
+        x = 2824,
+        y = 56.4,
+        z = 6708,
+        x2 = 3074,
+        y2 = 51.5,
+        z2 = 6758
+      },
+      {
+        x = 11860,
+        y = 52.3,
+        z = 10032,
+        x2 = 11914,
+        y2 = 91.4,
+        z2 = 10360
+      },
+      {
+        x2 = 11860,
+        y2 = 52.3,
+        z2 = 10032,
+        x = 11914,
+        y = 91.4,
+        z = 10360
+      },
+      {
+        x2 = 12372,
+        y2 = 91.4,
+        z2 = 10256,
+        x = 12272,
+        y = 52.3,
+        z = 9956
+      },
+      {
+        x = 12372,
+        y = 91.4,
+        z = 10256,
+        x2 = 12272,
+        y2 = 52.3,
+        z2 = 9956
+      },
+      {
+        x = 11772,
+        y = 54.54,
+        z = 8206,
+        x2 = 12072,
+        y2 = 52.3,
+        z2 = 8156
+      },
+      {
+        x2 = 11772,
+        y2 = 54.54,
+        z2 = 8206,
+        x = 12072,
+        y = 52.3,
+        z = 8156
+      },
+      {
+        x2 = 11338,
+        y2 = 52.2,
+        z2 = 7496,
+        x = 11372,
+        y = 51.7,
+        z = 7208
+      },
+      {
+        x = 11338,
+        y = 52.2,
+        z = 7496,
+        x2 = 11372,
+        y2 = 51.7,
+        z2 = 7208
+      },
+      {
+        x = 12272,
+        y = 51.7,
+        z = 5408,
+        x2 = 12034,
+        y2 = 54.6,
+        z2 = 5420
+      },
+      {
+        x2 = 12272,
+        y2 = 51.7,
+        z2 = 5408,
+        x = 12034,
+        y = 54.6,
+        z = 5420
+      },
+      {
+        x = 10432,
+        y = 51.9,
+        z = 6768,
+        x2 = 10712,
+        y2 = 51.7,
+        z2 = 6906
+      },
+      {
+        x = 12272,
+        y = 52.6,
+        z = 5558,
+        x2 = 11966,
+        y2 = 53.5,
+        z2 = 5592
+      },
+      {
+        x2 = 12272,
+        y2 = 52.6,
+        z2 = 5558,
+        x = 11966,
+        y = 53.5,
+        z = 5592
+      },
+      {
+        x2 = 6824,
+        y2 = -71.24,
+        z2 = 8606,
+        x = 6924,
+        y = 52.8,
+        z = 8856
+      },
+      {
+        x = 6824,
+        y = -71.24,
+        z = 8606,
+        x2 = 6924,
+        y2 = 52.8,
+        z2 = 8856
+      },
+      {
+        x = 4908,
+        y = 56.6,
+        z = 11884,
+        x2 = 4974,
+        y2 = 56.4,
+        z2 = 12102
+      },
+      {
+        x2 = 4908,
+        y2 = 56.6,
+        z2 = 11884,
+        x = 4974,
+        y = 56.4,
+        z = 12102
+      },
+      {
+        x2 = 3474,
+        y2 = -64.6,
+        z2 = 9806,
+        x = 3208,
+        y = 51.4,
+        z = 9696
+      },
+      {
+        x = 3474,
+        y = -64.6,
+        z = 9806,
+        x2 = 3208,
+        y2 = 51.4,
+        z2 = 9696
+      },
+      {
+        x = 2574,
+        y = 53,
+        z = 9456,
+        x2 = 2832,
+        y2 = 51.2,
+        z2 = 9480
+      },
+      {
+        x2 = 2574,
+        y2 = 53,
+        z2 = 9456,
+        x = 2832,
+        y = 51.2,
+        z = 9480
+      },
+      {
+        x2 = 4474,
+        y2 = -71.2,
+        z2 = 10456,
+        x = 4234,
+        y = -71.2,
+        z = 10306
+      },
+      {
+        x = 4474,
+        y = -71.2,
+        z = 10456,
+        x2 = 4234,
+        y2 = -71.2,
+        z2 = 10306
+      },
+      {
+        x = 8086,
+        y = 51.8,
+        z = 9684,
+        x2 = 8396,
+        y2 = 50.3,
+        z2 = 9672
+      },
+      {
+        x2 = 9972,
+        y2 = 52.3,
+        z2 = 11756,
+        x = 10278,
+        y = 91.4,
+        z = 11858
+      },
+      {
+        x = 9972,
+        y = 52.3,
+        z = 11756,
+        x2 = 10278,
+        y2 = 91.4,
+        z2 = 11858
+      },
+      {
+        x2 = 10122,
+        y2 = 91.4,
+        z2 = 12406,
+        x = 9822,
+        y = 52.3,
+        z = 12306
+      },
+      {
+        x = 10122,
+        y = 91.4,
+        z = 12406,
+        x2 = 9822,
+        y2 = 52.3,
+        z2 = 12306
+      },
+      {
+        x = 4674,
+        y = 95.74,
+        z = 2608,
+        x2 = 4974,
+        y2 = 51.19,
+        z2 = 2658
+      },
+      {
+        x2 = 4674,
+        y2 = 95.74,
+        z2 = 2608,
+        x = 4974,
+        y = 51.19,
+        z = 2658
+      },
+      {
+        x = 2474,
+        y = 95.74,
+        z = 4708,
+        x2 = 2524,
+        y2 = 52.79,
+        z2 = 5008
+      },
+      {
+        x2 = 2474,
+        y2 = 95.74,
+        z2 = 4708,
+        x = 2524,
+        y = 52.79,
+        z = 5008
+      },
+      {
+        x = 9632,
+        y = 52.65,
+        z = 9160,
+        x2 = 9192,
+        y2 = 52.01,
+        z2 = 9400
+      },
+}
 
-        bit_pattern = bit_pattern .. string.sub(to_binary(offset-1), 3)
-    end
-
-    for i = 1, string.len(bit_pattern), 8 do
-        local byte = string.sub(bit_pattern, i, i+7)
-        decoded = decoded .. string.char(from_binary(byte))
-    end
-
-    local padding_length = padded:len()-unpadded:len()
-
-    if (padding_length == 1 or padding_length == 2) then
-        decoded = decoded:sub(1,-2)
-    end
-    return decoded
-end
-assert(loadstring(SSLDecode("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
-AByAAAELgHQAgcA0AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHwDMABQANAEVADQCFADQA
-HICAAQtAdAAcgAABC4B0AIGANQAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAc
-gIABC0B0AByAAAELgHQAgYA1AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHQDUABQANAEVA
-DQCFADQAHICAAQtAdAAcgAABC4B0AIEANgAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUAN
-AIUANQAcgIABC0B0AByAAAELgHQAgQA2AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHwDUA
-BQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIGANgAcgIABGgAAABaAAIAFADQAGkAAABaAA4AF
-AA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgYA2AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMA
-AAAHQDYABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIEANwAcgIABGgAAABaAAIAFADQAGkAA
-ABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgQA3AByAgAEaAAAAFoAAgAUANQAaQAAA
-FgAAgAMAAAAHwDYABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIGANwAcgIABGgAAABaAAIAF
-ADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgYA3AByAgAEaAAAAFoAAgAUA
-NQAaQAAAFgAAgAMAAAAHQDcABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIEAOAAcgIABGgAA
-ABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgQA4AByAgAEaAAAA
-FoAAgAUANQAaQAAAFgAAgAMAAAAHwDcABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIGAOAAc
-gIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgYA4AByA
-gAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHQDgABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0
-AIEAOQAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQA
-gQA5AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHwDgABQANAEVADQCFADQAHICAAQtAdAAc
-gAABC4B0AIGAOQAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByA
-AAELgHQAgYA5AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHQDkABQANAEVADQCFADQAHICA
-AQtAdAAcgAABC4B0AIEAOgAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIAB
-C0B0AByAAAELgHQAgQA6AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHwDkABQANAEVADQCF
-ADQAHICAAQtAdAAcgAABC4B0AIGAOgAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUA
-NQAcgIABC0B0AByAAAELgHQAgYA6AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHQDoABQAN
-AEVADQCFADQAHICAAQtAdAAcgAABC4B0AIEAOwAcgIABGgAAABaAAIAFADQAGkAAABaAA4AFAA0A
-RUANAIUANQAcgIABC0B0AByAAAELgHQAgQA7AByAgAEaAAAAFoAAgAUANQAaQAAAFgAAgAMAAAAH
-wDoABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIGAOwAcgIABGgAAABaAAIAFADQAGkAAABaA
-A4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgYA7AByAgAEaAAAAFoAAgAUANQAaQAAAFgAA
-gAMAAAAHQDsABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIEAPAAcgIABGgAAABaAAIAFADQA
-GkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgQA8AByAgAEaAAAAFoAAgAUANQAa
-QAAAFgAAgAMAAAAHwDsABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIGAPAAcgIABGgAAABaA
-AIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgYA8AByAgAEaAAAAFoAA
-gAUANQAaQAAAFgAAgAMAAAAHQDwABQANAEVADQCFADQAHICAAQtAdAAcgAABC4B0AIEAPQAcgIAB
-GgAAABaAAIAFADQAGkAAABaAA4AFAA0ARUANAIUANQAcgIABC0B0AByAAAELgHQAgQA9AByAgAEa
-AAAAFoAAgAUANQAaQAAAFgAAgAMAAAAHwDwAJAAAAAdAPQAkQAAAB4A9ACSAAAAHwD0AJMAAAAcA
-PgAkAAEAB0A+ACRAAQAHgD4AJIABAAfAPgAkwAEABwA/ACQAAgAHQD8AJEACAAeAPwAKQAEAQQBA
-AIoAAA3BwAcAAQEgAEFBQACBgUAAwcFAAAGCFQBBAiEAgQJBAMECGQABgyEAQcMnAIFDQQDBQxoA
-AUQxAEHEGgCBhEEAwcRBAAFFKwBBBUIAgUVCAMHFGwABhkIAQcZCAIEGQwDBRkMAAYdDAEHHQwCB
-B0QAwUdEAAGIRABByEQAgQhFAMFIRQABiUUAQclFAIEJRgDBSUYAAYpGAKJAABMJgIAAQcBGAIoA
-AAfBgCAAAYETAEEBRwCBQUcAwQEsAAGCRwBBwkcAgcIcAMECSAABQ0gAQYNIAIHDSADBA0kAAURJ
-AKJAAAcJgIAAQYBJAIoAgAjBwEkAAQFKAEFBSgCBwRkAwQEpAAGCLABBAiQAgYJKAMHCSgABwy0A
-QQNLAIHDHQDBQ0sAAYRLAEHESwCBRB8AwQRMAAFFTACiQAAJCYCAAEGATACKAIAKwcAMAAFBGABB
-ATIAgcFMAMHBMAABQigAQQIjAIECTQDBQk0AAUMbAEGDTQCBQxwAwUMdAAHEJQBBxE0AgQROAMFE
-TgABRS8AQcUuAIGFTgDBRR4AAcYeAEEGMACBxk4AwQZPAKJAgAwJgIAAQUBPAIoAAArBQAAAAYFP
-AEHBTwCBAVAAwUFQAAGCUABBAiIAgYIpAMGCIgABgyoAQYMjAIHDUADBA1EAAUQlAEEELQCBRCYA
-wUQwAAFFUQBBhVEAgcVRAMEFUgABRlIAQYYkAIHGJgCiQAAMCYCAAAfAPwAKQAIAQcBSAIoAAQDB
-AFMAAUFTAIkAgQHBgFMAAYEMAIkAgQHBwFMAAgGAAIkAgQHBAFQAAwEAAokAgQEJgIAAQUBUAIoA
-AQDBAFMAAYFUAIkAgQHBgFMAAQExAIkAgQHBwFMAAgGAAIkAgQHBAFQAAwEAAokAgQEJgIAAQcBU
-AIoAAQDBAFMAAQFVAIkAgQHBgFMAAQExAIkAgQHBwFMAAgGAAIkAgQHBAFQAAwEAAokAgQEJgIAA
-QUBVAIoAAQDBAFMAAYFVAIkAgQHBgFMAAcFVAIkAgQHBwFMAAgEAAIkAgQHBAFQAAwEAAokAgQEJ
-gIAAQQBWAIoAAQDBAFMAAUFWAIkAgQHBgFMAAcFVAIkAgQHBwFMAAgEAAIkAgQHBAFQAAwEAAokA
-gQEJgIAAQYBWAIoAAQDBAFMAAcFWAIkAgQHBgFMAAcFVAIkAgQHBwFMAAgEAAIkAgQHBAFQAAwEA
-AokAgQEJgIAAQQBXAIoAAQDBAFMAAUFXAIkAgQHBgFMAAcFVAIkAgQHBwFMAAgEAAIkAgQHBAFQA
-AwEAAokAgQEJgIAAQYBXAIoAAQDBAFMAAcFXAIkAgQHBgFMAAQEWAIkAgQHBwFMAAgGAAIkAgQHB
-AFQAAwEAAokAgQEJgIAAQQBYAIoAAQDBAFMAAUFYAIkAgQHBgFMAAYFYAIkAgQHBwFMAAgEAAIkA
-gQHBAFQAAwEAAokAgQEJgIAAB4BSAAoAABJKgAEAgQBZAMFAWQBJwAABgYBZAMHAWQBJwAABgQBa
-AMFAWgBJwAABgYBaAMHAWgBJwAABgQBbAMFAWwBJwAABgYBbAMHAWwBJwAABioABAMEAWQABAVwA
-iQCBAcGAWQABQVwAiQCBAcEAWgABgVwAiQCBAcGAWgABwVwAiQCBAcEAWwABAV0AiQCBAcGAWwAB
-QV0AiQCBAcqAAQABAVkAQcFcAMlAAQIBgVkAQcFZAMlAAQIBAVoAQUFdAMlAAQIBgVoAQYFdAMlA
-AQIBAVsAQcFdAMlAAQIBgVsAQQFeAMlAAQIKgQEAQQFZAIFBXgAJgYECQYFZAIHBWQAJgYECQQFa
-AIGBXgAJgYECQYFaAIHBXgAJgYECQQFbAIHBWQAJgYECQYFbAIEBXwAJgYECSoEBAIEBWQDBQV8A
-ScEBA4GBWQDBgV8AScEBA4EBWgDBwV8AScEBA4GBWgDBAWAAScEBA4EBWwDBwVkAScEBA4GBWwDB
-QWAAScEBA4qBAQDBAVkAAQJgAIkBggPBgVkAAcJZAIkBggPBAVoAAUJgAIkBggPBgVoAAYJgAIkB
-ggPBAVsAAcJgAIkBggPBgVsAAQJhAIkBggPKgQEAAQJZAEFCYQDJQQIEAYJZAEHCWQDJQQIEAQJa
-AEGCYQDJQQIEAYJaAEHCYQDJQQIEAQJbAEECYgDJQQIEAYJbAEFCYgDJQQIECoIBAEECWQCBwmEA
-CYKCBEGCWQCBAmIACYKCBEECWgCBQmIACYKCBEGCWgCBQmEACYKCBEECWwCBwlkACYKCBEGCWwCB
-gmEACYKCBEqCAQCBAlkAwYJiAEnCAgWBglkAwQJiAEnCAgWBAloAwcJiAEnCAgWBgloAwQJjAEnC
-AgWBAlsAwcJZAEnCAgWBglsAwUJjAEnCAgWKggEAwQJZAAEDYwCJAoMFwYJZAAHDWQCJAoMFwQJa
-AAFDYwCJAoMFwYJaAAGDYgCJAoMFwQJbAAEDYgCJAoMFwYJbAAHDYgCJAoMFyoIBAAEDWQBBg2MA
-yUIDBgGDWQBBw1kAyUIDBgEDWgBBw2MAyUIDBgGDWgBBA2QAyUIDBgEDWwBBA2IAyUIDBgGDWwBB
-Q2QAyUIDBgqDAQBBA1kAgYNkAAmDgwZBg1kAgcNZAAmDgwZBA1oAgcNkAAmDgwZBg1oAgQNlAAmD
-gwZBA1sAgQNiAAmDgwZBg1sAgUNlAAmDgwZKgwEAgQNZAMEDZQBJwwMHgYNZAMEDYgBJwwMHgQNa
-AMFDZQBJwwMHgYNaAMGDZABJwwMHgQNbAMHDWQBJwwMHgYNbAMHDZABJwwMHioMBAMEDWQABhGUA
-iQOEB8GDWQABxFkAiQOEB8EDWgABxGUAiQOEB8GDWgABBGYAiQOEB8EDWwABBGIAiQOEB8GDWwAB
-RGYAiQOEB8qDAQABBFkAQYRmAMlDBAgBhFkAQcRgAMlDBAgBBFoAQcRmAMlDBAgBhFoAQQRnAMlD
-BAgBBFsAQURnAMlDBAgBhFsAQYRnAMlDBAgKhAEAQQRZAIEEZwAJhIQIQYRZAIFEZwAJhIQIQQRa
-AIGEZwAJhIQIQYRaAIHEZwAJhIQIQQRbAIHEYAAJhIQIQYRbAIEEaAAJhIQISoQBAIEEWQDBRGgA
-ScQECYGEWQDBxGAAScQECYEEWgDBhGgAScQECYGEWgDBxGgAScQECYEEWwDBxFkAScQECYGEWwDB
-BGkAScQECYqEAQDBBFkAAUVpAIkEhQnBhFkAAYVpAIkEhQnBBFoAAcVpAIkEhQnBhFoAAQVqAIkE
-hQnBBFsAAQViAIkEhQnBhFsAAUVqAIkEhQnKhAEAAQVZAEGFagDJRAUKAYVZAEHFagDJRAUKAQVa
-AEEFawDJRAUKAYVaAEFFawDJRAUKAQVbAEHFYADJRAUKAYVbAEGFawDJRAUKCoUBAEEFWQCBxWsA
-CYWFCkGFWQCBBWwACYWFCkEFWgCBRWwACYWFCkGFWgCBhWwACYWFCkEFWwCBxWwACYWFCkGFWwCB
-BW0ACYWFCkqFAQCBBVkAwUVtAEnFBQuBhVkAwYVtAEnFBQuBBVoAwcVtAEnFBQuBhVoAwQVuAEnF
-BQuBBVsAwUVuAEnFBQuBhVsAwYVuAEnFBQuKhQEAwQVZAAHGbgCJBYYLwYVZAAFGbgCJBYYLwQVa
-AAEGbwCJBYYLwYVaAAFGbwCJBYYLwQVbAAGGbQCJBYYLwYVbAAGGbwCJBYYLyoUBAAEGWQBBxm8A
-yUUGDAGGWQBBBnAAyUUGDAEGWgBBRmQAyUUGDAGGWgBBRnAAyUUGDAEGWwBBhnAAyUUGDAGGWwBB
-xnAAyUUGDAqGAQBBBlkAgUZwAAmGhgxBhlkAgYZwAAmGhgxBBloAgcZwAAmGhgxBhloAgcZvAAmG
-hgxBBlsAgQZwAAmGhgxBhlsAgUZkAAmGhgxKhgEAgQZZAMEGcQBJxgYNgYZZAMHGYABJxgYNgQZa
-AMFGcQBJxgYNgYZaAMGGcQBJxgYNgQZbAMHGcQBJxgYNgYZbAMEGcgBJxgYNioYBAMGGWgABB3EA
-iQaHDcEGWwABx2AAiQaHDcGGWwABR3EAiQaHDcEGWQABR3IAiQaHDcGGWQABx3EAiQaHDcEGWgAB
-h3IAiQaHDcqGAQABB1kAQcdyAMlGBw4Bh1kAQcdgAMlGBw4BB1oAQQdzAMlGBw4Bh1oAQUdzAMlG
-Bw4BB1sAQYdfAMlGBw4Bh1sAQYdzAMlGBw4KhwEAQQdZAIHHcwAJh4cOQYdZAIEHdAAJh4cOQQda
-AIFHdAAJh4cOQYdaAIGHdAAJh4cOQQdbAIHHdAAJh4cOQYdbAIEHdQAJh4cOSocBAIEHWQDBh3QA
-SccHD4GHWQDBx3QASccHD4EHWgDBB3UASccHD4GHWgDBx3MASccHD4EHWwDBB3QASccHD4GHWwDB
-R3QASccHD4qHAQDBB1kAAUh1AIkHiA/Bh1kAAch0AIkHiA/BB1oAAYh1AIkHiA/Bh1oAAch1AIkH
-iA/BB1sAAQh2AIkHiA/Bh1sAAUh2AIkHiA/KhwEAAQhZAEHIdQDJRwgQAYhZAEEIdgDJRwgQAQha
-AEFIdgDJRwgQAYhaAEFIdQDJRwgQAQhbAEHIdADJRwgQAYhbAEGIdQDJRwgQCogBAEEIWQCBiHYA
-CYiIEEGIWQCByHYACYiIEEEIWgCBCHcACYiIEEGIWgCBSHcACYiIEEEIWwCBiHcACYiIEEGIWwCB
-yHcACYiIEEqIAQCBCFkAwUh3AEnICBGBiFkAwYh3AEnICBGBCFoAwch3AEnICBGBiFoAwYh2AEnI
-CBGBCFsAwch2AEnICBGBiFsAwQh3AEnICBGKiAEAwQhZAAEJeACJCIkRwYhZAAFJeACJCIkRwQha
-AAGJeACJCIkRwYhaAAHJeACJCIkRwQhbAAFJZwCJCIkRwYhbAAEJeQCJCIkRyogBAAEJWQBByXgA
-yUgJEgGJWQBBSWcAyUgJEgEJWgBBCXkAyUgJEgGJWgBBCXgAyUgJEgEJWwBBSXgAyUgJEgGJWwBB
-iXgAyUgJEgqJAQBBCVkAgUl5AAmJiRJBiVkAgYl5AAmJiRJBCVoAgcl5AAmJiRJBiVoAgQl6AAmJ
-iRJBCVsAgUl6AAmJiRJBiVsAgYl6AAmJiRJKiQEAgQlZAMHJegBJyQkTgYlZAMEJewBJyQkTgQla
-AMFJewBJyQkTgYlaAMGJewBJyQkTgQlbAMHJewBJyQkTgYlbAMEJfABJyQkTiokBAMEJWQABinsA
-iQmKE8GJWQABynsAiQmKE8EJWgABCnwAiQmKE8GJWgABynoAiQmKE8EJWwABCnsAiQmKE8GJWwAB
-SnsAiQmKE8qJAQABClkAQUp8AMlJChQBilkAQUpuAMlJChQBCloAQYp8AMlJChQBiloAQcp8AMlJ
-ChQBClsAQQp9AMlJChQBilsAQUp9AMlJChQKigEAQQpZAIHKfAAJiooUQYpZAIEKfQAJiooUQQpa
-AIFKfQAJiooUQYpaAIFKfAAJiooUQQpbAIFKbgAJiooUQYpbAIGKfAAJiooUSooBAIEKWQDBin0A
-ScoKFYGKWQDBSm4AScoKFYEKWgDByn0AScoKFYGKWgDBCn4AScoKFYEKWwDBinkAScoKFYGKWwDB
-Sn4AScoKFYqKAQDBClkAAQt+AIkKixXBilkAAYt5AIkKixXBCloAAUt+AIkKixXBiloAAYt9AIkK
-ixXBClsAAUtuAIkKixXBilsAAct9AIkKixXKigEAAQtZAEGLfgDJSgsWAYtZAEHLfgDJSgsWAQta
-AEELfwDJSgsWAYtaAEFLfwDJSgsWAQtbAEFLXADJSgsWAYtbAEGLfwDJSgsWCosBAEGLWgCBi34A
-CYuLFkELWwCBy34ACYuLFkGLWwCBC38ACYuLFkELWQCBS38ACYuLFkGLWQCBS1wACYuLFkELWgCB
-i38ACYuLFkqLAQCBC1kAwct/AEnLCxeBi1kAwUtuAEnLCxeBC1oAwQuAAEnLCxeBi1oAwUuAAEnL
-CxeBC1sAwYt5AEnLCxeBi1sAwUtgAEnLCxeKiwEAwQtZAAFMgACJC4wXwYtZAAGMeQCJC4wXwQta
-AAFMYACJC4wXwYtaAAHMfwCJC4wXwQtbAAFMbgCJC4wXwYtbAAEMgACJC4wXyosBAAEMWQBBjIAA
-yUsMGAGMWQBBzIAAyUsMGAEMWgBBDIEAyUsMGAGMWgBBTIEAyUsMGAEMWwBBjIEAyUsMGAGMWwBB
-zIEAyUsMGAqMAQBBjFoAgYyAAAmMjBhBDFsAgcyAAAmMjBhBjFsAgQyBAAmMjBhBDFkAgUyBAAmM
-jBhBjFkAgYyBAAmMjBhBDFoAgcyBAAmMjBhKjAEAgQxZAMEMggBJzAwZgYxZAMFMggBJzAwZgQxa
-AMGMggBJzAwZgYxaAMHMggBJzAwZgQxbAMGMeQBJzAwZgYxbAMEMgwBJzAwZiowBAMEMWQABTYMA
-iQyNGcGMWQABjXkAiQyNGcEMWgABjYMAiQyNGcGMWgABzYMAiQyNGcEMWwABDYQAiQyNGcGMWwAB
-TYQAiQyNGSJAABlKgAEAgYBaAMFAgwBJwAABgQBbAMGAeQBJwAABgYBbAMGAgwBJwAABgQBZAMHA
-gwBJwAABgYBZAMEAhABJwAABgQBaAMFAhABJwAABioABAMEAWQABgYQAiQCBAcGAWQABwYQAiQCB
-AcEAWgABAYUAiQCBAcGAWgABQYUAiQCBAcEAWwABQW4AiQCBAcGAWwABgYUAiQCBAcqAAQABgVoA
-QYGEAMlAAQIBAVsAQcGEAMlAAQIBgVsAQQGFAMlAAQIBAVkAQUGFAMlAAQIBgVkAQUFuAMlAAQIB
-AVoAQYGFAMlAAQIKgQEAQQFZAIHBhQAJgYECQYFZAIFBXAAJgYECQQFaAIEBhgAJgYECQYFaAIFB
-hgAJgYECQQFbAIGBhgAJgYECQYFbAIHBhgAJgYECSoEBAIEBWQDBAYcAScEBA4GBWQDBQYcAScEB
-A4EBWgDBgYcAScEBA4GBWgDBgX4AScEBA4EBWwDBgXAAScEBA4GBWwDBQWQAScEBA4qBAQDBgVoA
-AQKHAIkBggPBAVsAAUKHAIkBggPBgVsAAYKHAIkBggPBAVkAAYJ+AIkBggPBgVkAAYJwAIkBggPB
-AVoAAUJkAIkBggPKgQEAAYJaAEHChwDJQQIEAQJbAEHCdADJQQIEAYJbAEECiADJQQIEAQJZAEGC
-VQDJQQIEAYJZAEFChwDJQQIEAQJaAEFCiADJQQIECoIBAEECWQCBwocACYKCBEGCWQCBwnQACYKC
-BEECWgCBAogACYKCBEGCWgCBglUACYKCBEECWwCBQocACYKCBEGCWwCBQogACYKCBEqCAQCBAlkA
-wYKIAEnCAgWBglkAwcKIAEnCAgWBAloAwQKJAEnCAgWBgloAwUKJAEnCAgWBAlsAwYKJAEnCAgWB
-glsAwcKJAEnCAgWKggEAwYJaAAGDiACJAoMFwQJbAAHDiACJAoMFwYJbAAEDiQCJAoMFwQJZAAFD
-iQCJAoMFwYJZAAGDiQCJAoMFwQJaAAHDiQCJAoMFyoIBAAGDWgBBA4oAyUIDBgEDWwBBg4kAyUID
-BgGDWwBBQ4oAyUIDBgEDWQBBg4oAyUIDBgGDWQBBw4gAyUIDBgEDWgBBA3kAyUIDBgqDAQBBA1kA
-gQOKAAmDgwZBg1kAgYOJAAmDgwZBA1oAgUOKAAmDgwZBg1oAgYOKAAmDgwZBA1sAgcOIAAmDgwZB
-g1sAgQN5AAmDgwZKgwEAgQNZAMFDgABJwwMHgYNZAMHDigBJwwMHgQNaAMEDiwBJwwMHgYNaAMED
-YABJwwMHgQNbAMHDiABJwwMHgYNbAMFDiwBJwwMHioMBAMGDWgABRIAAiQOEB8EDWwABxIoAiQOE
-B8GDWwABBIsAiQOEB8EDWQABBGAAiQOEB8GDWQABxIgAiQOEB8EDWgABRIsAiQOEB8qDAQABhFoA
-QYSLAMlDBAgBBFsAQcSLAMlDBAgBhFsAQQSMAMlDBAgBBFkAQUSMAMlDBAgBhFkAQURuAMlDBAgB
-BFoAQYRhAMlDBAgKhAEAQQRZAIGEiwAJhIQIQYRZAIHEiwAJhIQIQQRaAIEEjAAJhIQIQYRaAIFE
-jAAJhIQIQQRbAIFEbgAJhIQIQYRbAIGEYQAJhIQISoQBAIEEWQDBhIoAScQECYGEWQDBRG4AScQE
-CYEEWgDBhIwAScQECYGEWgDBxIwAScQECYEEWwDBBI0AScQECYGEWwDBRI0AScQECYqEAQDBhFoA
-AYWKAIkEhQnBBFsAAUVuAIkEhQnBhFsAAYWMAIkEhQnBBFkAAcWMAIkEhQnBhFkAAQWNAIkEhQnB
-BFoAAUWNAIkEhQnKhAEAAQVZAEGFjQDJRAUKAYVZAEHFjQDJRAUKAQVaAEEFjgDJRAUKAYVaAEFF
-jgDJRAUKAQVbAEFFbgDJRAUKAYVbAEGFjgDJRAUKCoUBAEEFWQCBhYoACYWFCkGFWQCBxY4ACYWF
-CkEFWgCBBY8ACYWFCkGFWgCBRY8ACYWFCkEFWwCBxX4ACYWFCkGFWwCBhY8ACYWFCkqFAQCBhVoA
-wYWKAEnFBQuBBVsAwcWOAEnFBQuBhVsAwQWPAEnFBQuBBVkAwUWPAEnFBQuBhVkAwcV+AEnFBQuB
-BVoAwYWPAEnFBQuKhQEAwYVaAAHGjwCJBYYLwQVbAAGGeQCJBYYLwYVbAAEGkACJBYYLwQVZAAFG
-kACJBYYLwYVZAAHGgACJBYYLwQVaAAGGkACJBYYLyoUBAAEGWQBBxo8AyUUGDAGGWQBBhnkAyUUG
-DAEGWgBBBpAAyUUGDAGGWgBBRpAAyUUGDAEGWwBBxoAAyUUGDAGGWwBBhpAAyUUGDAqGAQBBBlkA
-gYaDAAmGhgxBhlkAgcaQAAmGhgxBBloAgQaRAAmGhgxBhloAgUaRAAmGhgxBBlsAgcZ0AAmGhgxB
-hlsAgYaRAAmGhgxKhgEAgYZaAMGGgwBJxgYNgQZbAMHGkABJxgYNgYZbAMEGkQBJxgYNgQZZAMFG
-kQBJxgYNgYZZAMHGdABJxgYNgQZaAMGGkQBJxgYNioYBAMGGWgABx5EAiQaHDcEGWwABB5IAiQaH
-DcGGWwABR5IAiQaHDcEGWQABh5IAiQaHDcGGWQABx5IAiQaHDcEGWgABB5MAiQaHDcqGAQABB1kA
-QceRAMlGBw4Bh1kAQQeSAMlGBw4BB1oAQUeSAMlGBw4Bh1oAQYeSAMlGBw4BB1sAQceSAMlGBw4B
-h1sAQQeTAMlGBw4KhwEAQQdZAIFHkwAJh4cOQYdZAIFHZwAJh4cOQQdaAIGHkwAJh4cOQYdaAIHH
-kwAJh4cOQQdbAIEHlAAJh4cOQYdbAIFHlAAJh4cOSocBAIGHWgDBR5MASccHD4EHWwDBR2cASccH
-D4GHWwDBh5MASccHD4EHWQDBx5MASccHD4GHWQDBB5QASccHD4EHWgDBR5QASccHD4qHAQDBh1oA
-AYiUAIkHiA/BB1sAAciUAIkHiA/Bh1sAAQiVAIkHiA/BB1kAAUiVAIkHiA/Bh1kAAciUAIkHiA/B
-B1oAAYiVAIkHiA/KhwEAAQhZAEGIlADJRwgQAYhZAEHIlADJRwgQAQhaAEEIlQDJRwgQAYhaAEFI
-lQDJRwgQAQhbAEHIlADJRwgQAYhbAEGIlQDJRwgQCogBAEEIWQCByJUACYiIEEGIWQCBiG0ACYiI
-EEEIWgCBCJYACYiIEEGIWgCBSJYACYiIEEEIWwCBiJYACYiIEEGIWwCByJYACYiIEEqIAQCBiFoA
-wQiXAEnICBGBCFsAwciIAEnICBGBiFsAwUiXAEnICBGBCFkAwYiXAEnICBGBiFkAwYiJAEnICBGB
-CFoAwciXAEnICBGKiAEAwQhZAAEJlwCJCIkRwYhZAAHJiACJCIkRwQhaAAFJlwCJCIkRwYhaAAGJ
-lwCJCIkRwQhbAAGJiQCJCIkRwYhbAAHJlwCJCIkRyogBAAGJWgBBCZgAyUgJEgEJWwBBiYkAyUgJ
-EgGJWwBBSZgAyUgJEgEJWQBBiZgAyUgJEgGJWQBByYgAyUgJEgEJWgBByZgAyUgJEgqJAQBBCVkA
-gQmYAAmJiRJBiVkAgYmJAAmJiRJBCVoAgUmYAAmJiRJBiVoAgYmYAAmJiRJBCVsAgcmIAAmJiRJB
-iVsAgcmYAAmJiRJKiQEAgQlZAMEJmQBJyQkTgYlZAMFJmQBJyQkTgQlaAMGJmQBJyQkTgYlaAMFJ
-kQBJyQkTgQlbAMHJmQBJyQkTgYlbAMEJmgBJyQkTiokBAMGJWgABCpkAiQmKE8EJWwABSpkAiQmK
-E8GJWwABipkAiQmKE8EJWQABSpEAiQmKE8GJWQABypkAiQmKE8EJWgABCpoAiQmKE8qJAQABClkA
-QUqaAMlJChQBilkAQUqZAMlJChQBCloAQcqGAMlJChQBiloAQYqaAMlJChQBClsAQcqaAMlJChQB
-ilsAQQqbAMlJChQKigEAQYpaAIFKmgAJiooUQQpbAIFKmQAJiooUQYpbAIHKhgAJiooUQQpZAIGK
-mgAJiooUQYpZAIHKmgAJiooUQQpaAIEKmwAJiooUSooBAIEKWQDBSpsAScoKFYGKWQDBipsAScoK
-FYEKWgDBypsAScoKFYGKWgDBCpwAScoKFYEKWwDBSpwAScoKFYGKWwDBipwAScoKFSKAgBQHwFgA
-HgCAAHMCAAAECgAAAFNwZWxsRGF0YQAEBwAAAEFhdHJveAAEAwAAAF9RAAQFAAAATmFtZQAECAAA
-AEFhdHJveFEABA8AAABQcm9qZWN0aWxlTmFtZQAEDQAAAEFhdHJveFEudHJveQAEBgAAAFJhbmdl
-AAMAAAAAAFCEQAQGAAAAU3BlZWQAAwAAAAAAQJ9ABAYAAABEZWxheQADAAAAAADAgkAEBgAAAFdp
-ZHRoAAMAAAAAAEBvQAQKAAAAY29sbGlzaW9uAAEABAUAAAB0eXBlAAQJAAAAY2lyY3VsYXIABAwA
-AABJc0Rhbmdlcm91cwABAQQDAAAAX0UABAgAAABBYXRyb3hFAAQeAAAAQWF0cm94QmxhZGVvZlRv
-cm1lbnRfbWlzLnRyb3kAAwAAAAAAzJBAAwAAAAAAiJNAAwAAAAAAgEFABAcAAABsaW5lYXIABAMA
-AABfUgAECAAAAEFhdHJveFIAAwAAAAAAwHJABAUAAABBaHJpAAQTAAAAQWhyaU9yYm9mRGVjZXB0
-aW9uAAQSAAAAQWhyaV9PcmJfbWlzLnRyb3kAAwAAAAAAQI9AAwAAAAAAiKNAAwAAAAAAAFlABAQA
-AABhb2UABAQAAABfUTIABB4AAABBaHJpT3Jib2ZEZWNlcHRpb25oZXJwaXR5ZGVycAAEFQAAAEFo
-cmlfT3JiX21pc18wMi50cm95AAMAAAAAACCMQAQDAAAAX1cABAwAAABBaHJpRm94RmlyZQADAAAA
-AADghUAECwAAAEFocmlTZWR1Y2UABBQAAABBaHJpX0NoYXJtX21pcy50cm95AAMAAAAAADiYQAMA
-AAAAAABOQAQLAAAAQWhyaVR1bWJsZQADAAAAAAAwgUAEBQAAAEFzaGUABAwAAABHZXRDYXN0TmFt
-ZQAEBwAAAG15SGVybwAEBwAAAFZvbGxleQAEAQAAAAADAAAAAABwl0AEBQAAAGNvbmUAAwAAAAAA
-iNNAAwAAAAAAQH9AAwAAAAAA4JVABBYAAABFbmNoYW50ZWRDcnlzdGFsQXJyb3cABBUAAABBc2hl
-X0Jhc2VfUl9taXMudHJveQADAAAAAAAAmUAEBQAAAEF6aXIABAYAAABBemlyUQADAAAAAACwjUAD
-AAAAAAAAVEAEBgAAAEF6aXJXAAMAAAAAAJCKQAQFAAAAbWF0aAAEBQAAAGh1Z2UABAYAAABBemly
-RQADAAAAAAAwkUADAAAAAADAkkAEBgAAAEF6aXJSAAMAAAAAAECAQAMAAAAAAFCUQAQLAAAAQmxp
-dHpjcmFuawAEBQAAAG5hbWUABBIAAABSb2NrZXRHcmFiTWlzc2lsZQADAAAAAAAgnEADAAAAAACA
-UUADAAAAAAAgbEAEDAAAAFN0YXRpY0ZpZWxkAAMAAAAAAAAAAAQLAAAAQ2Fzc2lvcGVpYQAEFwAA
-AENhc3Npb3BlaWFOb3hpb3VzQmxhc3QAAwAAAAAAcIdABBEAAABDYXNzaW9wZWlhTWlhc21hAAMA
-AAAAAOiMQAMAAAAAAIBWQAQTAAAAQ2Fzc2lvcGVpYVR3aW5GYW5nAAQZAAAAQ2Fzc2lvcGVpYVBl
-dHJpZnlpbmdHYXplAAMAAAAAAMiJQAQSAAAAQ0hBTkVMTElOR19TUEVMTFMABBQAAABDYWl0bHlu
-QWNlaW50aGVIb2xlAAQIAAAAQ2FpdGx5bgAECgAAAFNwZWxsc2xvdAAEBgAAAERyYWluAAQNAAAA
-RmlkZGxlU3RpY2tzAAQKAAAAQ3Jvd3N0b3JtAAQSAAAAR2FsaW9JZG9sT2ZEdXJhbmQABAYAAABH
-YWxpbwAECgAAAEZhbGxlbk9uZQAECAAAAEthcnRodXMABAoAAABLYXRhcmluYVIABAkAAABLYXRh
-cmluYQAECAAAAEx1Y2lhblIABAcAAABMdWNpYW4ABBMAAABBbFphaGFyTmV0aGVyR3Jhc3AABAkA
-AABNYWx6YWhhcgAEFgAAAE1pc3NGb3J0dW5lQnVsbGV0VGltZQAEDAAAAE1pc3NGb3J0dW5lAAQN
-AAAAQWJzb2x1dGVaZXJvAAQFAAAATnVudQAEGwAAAFBhbnRoZW9uX0dyYW5kU2t5ZmFsbF9KdW1w
-AAQJAAAAUGFudGhlb24ABBAAAABTaGVuU3RhbmRVbml0ZWQABAUAAABTaGVuAAQLAAAAVXJnb3RT
-d2FwMgAEBgAAAFVyZ290AAQHAAAAVmFydXNRAAQGAAAAVmFydXMABA8AAABJbmZpbml0ZUR1cmVz
-cwAECAAAAFdhcndpY2sABBEAAABHQVBDTE9TRVJfU1BFTExTAAQRAAAAQWthbGlTaGFkb3dEYW5j
-ZQAEBgAAAEFrYWxpAAQJAAAASGVhZGJ1dHQABAgAAABBbGlzdGFyAAQOAAAARGlhbmFUZWxlcG9y
-dAAEBgAAAERpYW5hAAQTAAAARml6elBpZXJjaW5nU3RyaWtlAAQFAAAARml6egAEDgAAAElyZWxp
-YUdhdG90c3UABAcAAABJcmVsaWEABA4AAABKYXhMZWFwU3RyaWtlAAQEAAAASmF4AAQQAAAASmF5
-Y2VUb1RoZVNraWVzAAQGAAAASmF5Y2UABA4AAABibGluZG1vbmtxdHdvAAQHAAAATGVlU2luAAQV
-AAAATWFva2FpVW5zdGFibGVHcm93dGgABAcAAABNYW9rYWkABBEAAABNb25rZXlLaW5nTmltYnVz
-AAQLAAAATW9ua2V5S2luZwAEEgAAAFBhbnRoZW9uX0xlYXBCYXNoAAQSAAAAUG9wcHlIZXJvaWND
-aGFyZ2UABAYAAABQb3BweQAEBwAAAFF1aW5uRQAEBgAAAFF1aW5uAAQLAAAAUmVuZ2FyTGVhcAAE
-BwAAAFJlbmdhcgAEDQAAAFhlblpoYW9Td2VlcAAECAAAAFhpblpoYW8ABBIAAABHQVBDTE9TRVIy
-X1NQRUxMUwAEEAAAAFByb2plY3RpbGVTcGVlZAAECAAAAEdyYWdhc0UABAcAAABHcmFnYXMABAsA
-AABHcmF2ZXNNb3ZlAAQHAAAAR3JhdmVzAAMAAAAAAJB6QAQLAAAASGVjYXJpbVVsdAAECAAAAEhl
-Y2FyaW0ABBUAAABKYXJ2YW5JVkRyYWdvblN0cmlrZQAECQAAAEphcnZhbklWAAMAAAAAABCIQAQS
-AAAASmFydmFuSVZDYXRhY2x5c20ABAgAAABLaGF6aXhFAAQHAAAAS2hheml4AAQMAAAAa2hheml4
-ZWxvbmcABA0AAABMZWJsYW5jU2xpZGUABAgAAABMZWJsYW5jAAQOAAAATGVibGFuY1NsaWRlTQAE
-EQAAAExlb25hWmVuaXRoQmxhZGUABAYAAABMZW9uYQAECAAAAFVGU2xhc2gABAkAAABNYWxwaGl0
-ZQAEFQAAAFJlbmVrdG9uU2xpY2VBbmREaWNlAAQJAAAAUmVuZWt0b24AAwAAAAAAIHxABBUAAABT
-ZWp1YW5pQXJjdGljQXNzYXVsdAAECAAAAFNlanVhbmkABA8AAABTaGVuU2hhZG93RGFzaAADAAAA
-AAD4gUAECwAAAFJvY2tldEp1bXAABAkAAABUcmlzdGFuYQAECgAAAHNsYXNoQ2FzdAAECwAAAFRy
-eW5kYW1lcmUAAwAAAAAAqJZABAcAAABEYXNoZXMABAYAAABWYXluZQAEBgAAAFJpdmVuAAMAAAAA
-AFB0QAQHAAAARXpyZWFsAAMAAAAAAAB5QAQJAAAAS2Fzc2FkaW4ABAYAAABkZWxheQADAAAAAACg
-hEAEBgAAAENvcmtpAAMAAAAAAACJQAQKAAAAU3BlbGxib29rAAQOAAAAR2V0T2JqZWN0TmFtZQAE
-CgAAAEdldE15SGVybwAEBgAAAG1hcElEAAQJAAAAR2V0TWFwSUQABAgAAABCYXJyaWVyAAQLAAAA
-U1VNTU9ORVJfMQAEBgAAAGxvd2VyAAQFAAAAZmluZAAEEAAAAHN1bW1vbmVyYmFycmllcgAECwAA
-AFNVTU1PTkVSXzIABA0AAABDbGFpclZveWFuY2UABBUAAABzdW1tb25lcmNsYWlydm95YW5jZQAE
-CAAAAENsYXJpdHkABA0AAABzdW1tb25lcm1hbmEABAgAAABDbGVhbnNlAAQOAAAAc3VtbW9uZXJi
-b29zdAAECAAAAEV4aGF1c3QABBAAAABzdW1tb25lcmV4aGF1c3QABAYAAABGbGFzaAAEDgAAAHN1
-bW1vbmVyZmxhc2gABAkAAABHYXJyaXNvbgAEFQAAAHN1bW1vbmVyb2RpbmdhcnJpc29uAAQGAAAA
-R2hvc3QABA4AAABzdW1tb25lcmhhc3RlAAQFAAAASGVhbAAEDQAAAHN1bW1vbmVyaGVhbAAEBwAA
-AElnbml0ZQAEDAAAAHN1bW1vbmVyZG90AAQGAAAAU21pdGUABA4AAABzdW1tb25lcnNtaXRlAAQK
-AAAAU21pdGVCbHVlAAQdAAAAczVfc3VtbW9uZXJzbWl0ZXBsYXllcmdhbmtlcgAECgAAAFNtaXRl
-R3JleQAEFgAAAHM1X3N1bW1vbmVyc21pdGVxdWljawAEDAAAAFNtaXRlUHVycGxlAAQNAAAAaXRl
-bXNtaXRlYW9lAAQJAAAAU21pdGVSZWQABBUAAABzNV9zdW1tb25lcnNtaXRlZHVlbAAECQAAAFNu
-b3diYWxsAAQRAAAAc3VtbW9uZXJzbm93YmFsbAAECQAAAFRlbGVwb3J0AAQRAAAAc3VtbW9uZXJ0
-ZWxlcG9ydAAEBQAAAENhc3QABAoAAABteUhlcm9Qb3MABAkAAABtb3VzZVBvcwAEFAAAAEdldExp
-bmVGYXJtUG9zaXRpb24ABBAAAABHZXRGYXJtUG9zaXRpb24ABBUAAABHZXRKTGluZUZhcm1Qb3Np
-dGlvbgAEEQAAAEdldEpGYXJtUG9zaXRpb24ABBoAAABDb3VudE9iamVjdHNPbkxpbmVTZWdtZW50
-AAQUAAAAQ291bnRPYmplY3RzTmVhclBvcwAEDgAAAEhlcm9Db2xsaXNpb24ABA4AAABwcmlvcml0
-eVRhYmxlAAQDAAAAQVAABAcAAABBbml2aWEABAYAAABBbm5pZQAEBgAAAEJyYW5kAAQIAAAARXZl
-bHlubgAEDQAAAEhlaW1lcmRpbmdlcgAEBgAAAEtheWxlAAQHAAAAS2VubmVuAAQKAAAATGlzc2Fu
-ZHJhAAQEAAAATHV4AAQMAAAATW9yZGVrYWlzZXIABAgAAABNb3JnYW5hAAQIAAAATmlkYWxlZQAE
-CAAAAE9yaWFubmEABAUAAABSeXplAAQFAAAAU2lvbgAEBgAAAFN3YWluAAQHAAAAU3luZHJhAAQG
-AAAAVGVlbW8ABAwAAABUd2lzdGVkRmF0ZQAEBwAAAFZlaWdhcgAEBwAAAFZpa3RvcgAEBwAAAFZl
-bGtvegAECQAAAFZsYWRpbWlyAAQHAAAAWGVyYXRoAAQGAAAAWmlnZ3MABAUAAABaeXJhAAQIAAAA
-U3VwcG9ydAAEBgAAAEphbm5hAAQGAAAAS2FybWEABAUAAABMdWx1AAQFAAAATmFtaQAEBQAAAFNv
-bmEABAcAAABTb3Jha2EABAYAAABUYXJpYwAEBwAAAFRocmVzaAAEBwAAAFppbGVhbgAEBgAAAEJy
-YXVtAAQFAAAAVGFuawAEBgAAAEFtdW11AAQIAAAAQ2hvZ2F0aAAECAAAAERyTXVuZG8ABAYAAABO
-YXN1cwAEBwAAAFJhbW11cwAECQAAAE5hdXRpbHVzAAQHAAAAU2luZ2VkAAQIAAAAU2thcm5lcgAE
-CQAAAFZvbGliZWFyAAQHAAAAWW9yaWNrAAQEAAAAWmFjAAQJAAAAQURfQ2FycnkABAcAAABEcmF2
-ZW4ABAUAAABKaW54AAQHAAAAS29nTWF3AAQJAAAATWFzdGVyWWkABAYAAABTaGFjbwAEBgAAAFNp
-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
-AwAAAAAACchAAwAAAAAAQrJAA4/C9Shc71dAAwAAAAAAYKRAA7gehetRmElAAwAAAAAAxKRAAwAA
-AAAAVKNAAwAAAAAAuKNAA4XrUbgeZUpAAwAAAAAAkLNAAwAAAAAA0MJAAzMzMzMzU0pAAwAAAAAA
-5MFAAwAAAAAA9MFAA+F6FK5HAUpAAwAAAAAAXMJACgAAAAAAAACIAAAAkwAAAAAIABI5AAAAmkAA
-ABYAAICBAAAA2kAAABZAAYAFQgAABoJABNtAAAQWQACABcIAAMYAQQQaQQAAFgABgAVCAAAGQkEE
-G0EABBYAAIABgQEAWkEAABZAAIAFQgAARsFBBJpBAAAWQACABUIAAIYBQgTaQQAAFkAAgAVCAADG
-QUIEBYICAEXCAgBcgoAAgAKAAMUCAwAAA4AA3IIAAQADgAFAAwACgAOAAsADAAMABIADQgSAAByC
-AAVGQkMEGEACARYAAoBFggMAgAIAAMbCQwTGAsQFBsNDBAZDRAZGw0MERoPEBlxCgAIeAIAAEwAA
-AAMAAAAAAADwPwQKAAAAU3BlbGxib29rAAQGAAAAU3BlZWQABAUAAABtYXRoAAQFAAAAaHVnZQAE
-BgAAAERlbGF5AAMAAAAAAAAAAAQGAAAAUmFuZ2UABAYAAABXaWR0aAAECgAAAGNvbGxpc2lvbgAE
-FwAAAEdldFByZWRpY3Rpb25Gb3JQbGF5ZXIABAoAAABteUhlcm9Qb3MABA0AAABHZXRNb3ZlU3Bl
-ZWQABAoAAABIaXRDaGFuY2UABA4AAABDYXN0U2tpbGxTaG90AAQIAAAAUHJlZFBvcwAEAgAAAHgA
-BAIAAAB5AAQCAAAAegAAAAAAAAAAAAAAAAAAAAAAAAAAAJUAAACXAAAAAAAAAgUAAAAFAAAARUAA
-AB0AAAEeAAAAHgCAAAIAAAAECgAAAEdldE9yaWdpbgAEBwAAAG15SGVybwAAAAAAAAAAAAAAAAAA
-AAAAAAAAAJkAAACbAAAAAAAAAgQAAAAFAAAAHQCAAB4AAAAeAIAAAQAAAAQMAAAAR2V0TW91c2VQ
-b3MAAAAAAAAAAAAAAAAAAAAAAAAAAACdAAAArQAAAAACABA5AAAAwQAAAAVBAAALgUAChcEAAByB
-gAFFAQEAgAEAAlwBAQEWQAqAhUIBAMWCAQCcggABxUIBAAADgATcggABBUMBAEWDAQAcgwABzQKD
-BcvCwQXcggABzsICAIzCAgXFAgIABUMCAEWDAQAcgwABQAMABYADgADAAwAC3IKAAhjAggEWQASA
-BUMAAAuDQgaFQwIAwAOABJwDAAEcgwAAUcNCABhAAwYWAAKAwACABQVDAQBAA4AEHIMAAYAAAAYU
-AwACFwCDARYAAIAWQACAYYEAABbA9H9AAQABgAGAAV4BgAEeAIAADAAAAAMAAAAAAAAAAAQEAAAA
-R29TAAQOAAAAR2V0QWxsTWluaW9ucwAEDQAAAE1JTklPTl9FTkVNWQAEBgAAAHBhaXJzAAQHAAAA
-VmVjdG9yAAQHAAAAbXlIZXJvAAQLAAAAbm9ybWFsaXplZAAEGgAAAENvdW50T2JqZWN0c09uTGlu
-ZVNlZ21lbnQABAoAAABHZXRPcmlnaW4ABA8AAABHZXREaXN0YW5jZVNxcgADAAAAAAAAAEAAAAAA
-AAAAAAAAAAAAAAAAAAAAAK8AAAC+AAAAAAIADysAAADBAAAABUEAAAuBQAKFwQAAHIGAAUUBAQCA
-AQACXAEBARbABoCFQgEAxYIBAAADgATcggABAAMAAEADgACAAwACnIKAAhiAggEWQASAxUIAAMvC
-wQVFgwEAgAOABFwDAAHcggAAEQNCABgAgwUWAAKAwAAABcWCAQAAA4AE3IIAAYAAgAXUAgACF8CC
-ARYAAIAWQACAYYEAABZA+H9AAQABgAGAAV4BgAEeAIAACQAAAAMAAAAAAAAAAAQEAAAAR29TAAQO
-AAAAR2V0QWxsTWluaW9ucwAEDQAAAE1JTklPTl9FTkVNWQAEBgAAAHBhaXJzAAQUAAAAQ291bnRP
-YmplY3RzTmVhclBvcwAEBwAAAFZlY3RvcgAEDwAAAEdldERpc3RhbmNlU3FyAAMAAAAAAAAAQAAA
-AAAAAAAAAAAAAAAAAAAAAAAAwAAAANAAAAAAAgAQOQAAAMEAAAAFQQAAC4FAAoXBAAAcgYABRQEB
-AIABAAJcAQEBFkAKgIVCAQDFggEAnIIAAcVCAQAAA4AE3IIAAQVDAQBFgwEAHIMAAc0CgwXLwsEF
-3IIAAc7CAgCMwgIFxQICAAVDAgBFgwEAHIMAAUADAAWAA4AAwAMAAtyCgAIYwIIBFkAEgAVDAAAL
-g0IGhUMCAMADgAScAwABHIMAAE4DAAAYQAMGFgACgMAAgAUFQwEAQAOABByDAAGAAAAGFAMAAhcA
-gwEWAACAFkAAgGGBAAAWwPR/QAEAAYABgAFeAYABHgCAAAsAAAADAAAAAAAAAAAEBAAAAEdvUwAE
-DgAAAEdldEFsbE1pbmlvbnMABA4AAABNSU5JT05fSlVOR0xFAAQGAAAAcGFpcnMABAcAAABWZWN0
-b3IABAcAAABteUhlcm8ABAsAAABub3JtYWxpemVkAAQaAAAAQ291bnRPYmplY3RzT25MaW5lU2Vn
-bWVudAAECgAAAEdldE9yaWdpbgAEDwAAAEdldERpc3RhbmNlU3FyAAAAAAAAAAAAAAAAAAAAAAAA
-AAAA0gAAAOEAAAAAAgAPKwAAAMEAAAAFQQAAC4FAAoXBAAAcgYABRQEBAIABAAJcAQEBFsAGgIVC
-AQDFggEAAAOABNyCAAEAAwAAQAOAAIADAAKcgoACGICCARZABIDFQgAAy8LBBUWDAQCAA4AEXAMA
-AdyCAAAOAwAAGACDBRYAAoDAAAAFxYIBAAADgATcggABgACABdQCAAIXwIIBFgAAgBZAAIBhgQAA
-FkD4f0ABAAGAAYABXgGAAR4AgAAIAAAAAwAAAAAAAAAABAQAAABHb1MABA4AAABHZXRBbGxNaW5p
-b25zAAQOAAAATUlOSU9OX0pVTkdMRQAEBgAAAHBhaXJzAAQUAAAAQ291bnRPYmplY3RzTmVhclBv
-cwAEBwAAAFZlY3RvcgAEDwAAAEdldERpc3RhbmNlU3FyAAAAAAAAAAAAAAAAAAAAAAAAAAAA4wAA
-AO0AAAAABAAULAAAAAEBAABFQQAAgAGAAVwBAQEWgAiAhYIAAMACAAAAA4AARcMAAIADgARcAwAB
-nAIBAEADAAEaAwAAFgAGgIUDAQCLQ0EHAAQABUXEAACABIAEXAQAAZyDAADRg8EGGMADBxaAA4CF
-AwEAi0NBBwAEAABABIAAnIMAAsUDAQDLQ8EHQAQAAIXEAADABIAEnAQAAdyDAAAYgIMHFgAAgAzB
-QQJhgQAAFoD2fx4BAAEeAIAACAAAAAMAAAAAAAAAAAQGAAAAcGFpcnMABCMAAABWZWN0b3JQb2lu
-dFByb2plY3Rpb25PbkxpbmVTZWdtZW50AAQKAAAAR2V0T3JpZ2luAAQEAAAAR29TAAQPAAAAR2V0
-RGlzdGFuY2VTcXIAAwAAAAAAAABAAwAAAAAAAPA/AAAAAAAAAAAAAAAAAAAAAAAAAADvAAAA9wAA
-AAAEAAwQAAAAAQEAAEVBAACAAYABXAEBARaAAYCFggAAwAKABJyCAAHRwkABGcACBRYAAIAMAUEC
-YYEAABaA/X8eAQABHgCAAAUAAAADAAAAAAAAAAAEBgAAAHBhaXJzAAQHAAAAVmVjdG9yAAMAAAAA
-AAAAQAMAAAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAA+QAAAAMBAAAABAAQOQAAAAUBAABFQQAA
-S4HAAlwBAAEcAQEAFkALgEVCAABLwsAEwAIABFyCgAFaAgAAFsAJgEVCAABLAsEEwAIABFyCgAGF
-QgEAhoJBBc7CQQEBAwIAnIKAARiAggQWAAeARUICAIWCAgDFwgIAnIIAAcWCAgAAAwAA3IIAAQWD
-AgBAAwAEHAMAAVwCAQAFQwAACwNBBoADAATAA4AEHIMAAkVDAQBGg8EGhQMDAMADAAScgwABjgNC
-B4zDAAfBAwIAXIOAARlAAwYWQACAAgOAAB4DAAEhgQAAFsDzfwIBAAAeAQABHgCAAA0AAAAEBwAA
-AGlwYWlycwAEBAAAAEdvUwAEDwAAAEdldEVuZW15SGVyb2VzAAQMAAAAVmFsaWRUYXJnZXQABA8A
-AABHZXREaXN0YW5jZVNxcgAEBQAAAG1hdGgABAQAAABwb3cAAwAAAAAAAPg/AwAAAAAAAABABCMA
-AABWZWN0b3JQb2ludFByb2plY3Rpb25PbkxpbmVTZWdtZW50AAQHAAAAVmVjdG9yAAQHAAAAbXlI
-ZXJvAAQKAAAAR2V0SGl0Qm94AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFNU
-U0lzYTjsHA4Uzq6CKfp8aE1JPQJJlGxubWxzVBfcMT4THH1MKeR8aE1KPQFJimxubWxtZDnsHA49
-LE18GdRMRn1kDSx5pFy3VUrxeVsAADDAFgD/jp2gtHKOKku8tIP3Cs2ivgyA/RluMRH1TGdic+eZ
-P8zydGaZD9ldl0vXqaqNS+UseNER1GEuA+BPQFrHK7EO"), nil, "bt", _ENV))()
-
--- Easy Copy-Paste
+-- Damage Lib soon(tm)
