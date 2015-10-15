@@ -154,6 +154,38 @@ function mousePos()
     return GetMousePos()
 end
 
+function GetDmg(spell, source, target)
+    if target == nil or source == nil then
+      return
+    end
+    local ADDmg  = 0
+    local APDmg  = 0
+    local TRUEDmg  = 0
+    local AP     = source.ap
+    local Level  = source.level
+    local TotalDmg   = source.totalDamage
+    local crit     = source.critChance
+    local crdm     = source.critDmg
+    local ArmorPen   = floor(source.armorPen)
+    local ArmorPenPercent  = floor(source.armorPenPercent*100)/100
+    local MagicPen   = floor(source.magicPen)
+    local MagicPenPercent  = floor(source.magicPenPercent*100)/100
+
+    local Armor   = target.armor*ArmorPenPercent-ArmorPen
+    local ArmorPercent = Armor > 0 and floor(Armor*100/(100+Armor))/100 or 0--ceil(Armor*100/(100-Armor))/100
+    local MagicArmor   = target.magicArmor*MagicPenPercent-MagicPen
+    local MagicArmorPercent = MagicArmor > 0 and floor(MagicArmor*100/(100+MagicArmor))/100 or ceil(MagicArmor*100/(100-MagicArmor))/100
+    if spell == "IGNITE" then
+      return 50+20*Level
+    elseif spell == "Tiamat" then
+      ADDmg = (GetHydraSlot() and CanUseSpell(myHero,GetHydraSlot()) == READY) and TotalDmg*0.8 or 0 
+    elseif spell == "AD" then
+    ADDmg = TotalDmg
+    end
+    dmg = floor(ADDmg*(1-ArmorPercent))+floor(APDmg*(1-MagicArmorPercent))+TRUEDmg
+    return floor(dmg
+end
+
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
