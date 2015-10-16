@@ -115,8 +115,7 @@ Dashes = {
     ["Corki"]              = {Spellslot = _W, Range = 800, Delay = 250},
 }
 
-SpellDataTable = SpellData[GetObjectName(myHero)]
-Spellbook = SpellDataTable[spell]
+Spellbook = SpellData[GetObjectName(myHero)[spell]]
 LudensStacks = 0
 IsRecalling = false
 IsCCed = false
