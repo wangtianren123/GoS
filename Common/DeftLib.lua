@@ -115,7 +115,6 @@ Dashes = {
     ["Corki"]              = {Spellslot = _W, Range = 800, Delay = 250},
 }
 
-Spellbook = SpellData[GetObjectName(myHero)[spell]]
 LudensStacks = 0
 IsRecalling = false
 IsCCed = false
@@ -142,12 +141,13 @@ Snowball = (GetCastName(myHero,SUMMONER_1):lower():find("summonersnowball") and 
 Teleport = (GetCastName(myHero,SUMMONER_1):lower():find("summonerteleport") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerteleport") and SUMMONER_2 or nil))
 
 function Cast(spell, target, hitchance, speed, delay, range, width, coll)
+      
       hitchance = hitchance or 1
-      speed = speed or Spellbook.Speed or math.huge
-      delay = delay or Spellbook.Delay or 0
-      range = range or Spellbook.Range
-      width = width or Spellbook.Width
-      coll = coll or Spellbook.collision
+      speed = speed or  SpellData[GetObjectName(myHero)[spell]].Speed or math.huge
+      delay = delay or  SpellData[GetObjectName(myHero)[spell]].Delay or 0
+      range = range or  SpellData[GetObjectName(myHero)[spell]].Range
+      width = width or  SpellData[GetObjectName(myHero)[spell]].Width
+      coll = coll or  SpellData[GetObjectName(myHero)[spell]].collision
       local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
       if Predicted.HitChance >= hitchance then
       CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
