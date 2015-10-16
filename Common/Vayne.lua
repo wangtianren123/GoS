@@ -111,7 +111,7 @@ OnLoop(function(myHero)
 		
 	if VayneMenu.Combo.E.stuntarget:Value() and VayneMenu.Combo.E.Enabled:Value() then
 	  if GoS:ValidTarget(target, 710) then
-            local EPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),2200,0,750,0,false,true)
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
             local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
@@ -162,7 +162,7 @@ OnLoop(function(myHero)
         
 	if VayneMenu.Combo.E.AutoE:Value() then
 	  if GoS:ValidTarget(enemy, 710) then
-            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,0,false,true)
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
             local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
@@ -181,7 +181,7 @@ OnLoop(function(myHero)
 
         if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
           if GoS:ValidTarget(enemy, 710) then
-            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,0,false,true)
+            local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
             local maxERange = PredPos - (PredPos - HeroPos) * ( - VayneMenu.Combo.E.pushdistance:Value() / GoS:GetDistance(EPred.PredPos))
