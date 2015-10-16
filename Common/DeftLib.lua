@@ -238,16 +238,18 @@ end
 function GetFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = GoS:GetAllMinions(MINION_ENEMY)
+  local objects = minionManager.objects
   for i, object in pairs(objects) do
-    local hit = CountObjectsNearPos(GetOrigin(object), range, width, objects)
-    if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range^2 then
-      BestHit = hit
-      BestPos = Vector(object)
-      if BestHit == #objects then
-      break
-      end
-    end
+  	if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
+	  	local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+	    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+	      BestHit = hit
+	      BestPos = Vector(object)
+	      if BestHit == #objects then
+	        break
+	      end
+	    end
+	end
   end
   return BestPos, BestHit
 end
@@ -302,8 +304,8 @@ end
 function CountObjectsNearPos(pos, range, radius, objects)
   local n = 0
   for i, object in pairs(objects) do
-    if Vector(object) <= radius^2 then
-    n = n + 1
+    if IsObjectAlive(object) and GoS:GetDistanceSqr(pos, Vector(object)) <= radius^2 then
+      n = n + 1
     end
   end
   return n
