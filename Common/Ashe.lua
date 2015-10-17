@@ -72,7 +72,7 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnTick(function(myHero)
+OnLoop(function(myHero)
 
     if IOW:Mode() == "Combo" then
 	
