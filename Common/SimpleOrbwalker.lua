@@ -14,7 +14,6 @@ NoCancelChamps = { "Kalista" }
   self.Config:List("lcm", "Lane Clear method", GetObjectName(myHero) == "Vayne" and 2 or 1, {"Focus Highest", "Stick to 1"})
  
 LastAA = 0
-DisableNextAttack
 Attack = true
 Move = true
 ProjectileSpeed = GetRange(myHero) > 300 and GetProjectileSpeed(myHero) or math.huge
@@ -232,4 +231,12 @@ OnProcessSpell(function(unit, spell)
 	elseif unit == myHero and spell.name == AAResets[spell.name:lower()] then
 		GoS:DelayAction(function() resetAA() end, 250)
 	end
+end)
+
+OnLoop(function(myHero)
+  local mousePos = GetMousePos()
+  local target = GetTarget()
+  if SOWMenu.h.Combo:Value() and target then
+  OrbWalk(target)
+  end
 end)
