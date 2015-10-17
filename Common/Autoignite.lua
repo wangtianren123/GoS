@@ -5,7 +5,7 @@ local AutoIgniteMenu = Menu("AutoIgnite", "Auto Ignite")
 AutoIgniteMenu:Boolean("Enabled", "Enabled", true)
 end
 
-if Smite -= nil then 
+if Smite ~= nil then 
 local AutoSmiteMenu = Menu("AutoSmite", "Auto Smite")
 AutoSmiteMenu:Boolean("Enabled", "Enabled", true)
 end
