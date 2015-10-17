@@ -101,7 +101,6 @@ end
 function GetDmg(unit)
   return GoS:CalcDamage(myHero, unit, GetBonusDmg(myHero)+GetBaseDamage(myHero)) * 0.95
 end
-end
 
 function MyRange(target)
 	local myRange = GetRange(myHero) + GetHitBox(myHero)
