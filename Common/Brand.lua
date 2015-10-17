@@ -1,5 +1,7 @@
 if GetObjectName(myHero) ~= "Brand" then return end
 
+require('Deftlib')
+
 local BrandMenu = Menu("Brand", "Brand")
 BrandMenu:SubMenu("Combo", "Combo")
 BrandMenu.Combo:Boolean("Q", "Use Q", true)
@@ -29,41 +31,6 @@ BrandMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BrandMenu.Drawings:Boolean("W", "Draw W Range", true)
 BrandMenu.Drawings:Boolean("E", "Draw E Range", true)
 BrandMenu.Drawings:Boolean("R", "Draw R Range", true)
-
-CHANELLING_SPELLS = {
-    ["Caitlyn"]                     = {_R},
-    ["Katarina"]                    = {_R},
-    ["MasterYi"]                    = {_W},
-    ["FiddleSticks"]                = {_W, _R},
-    ["Galio"]                       = {_R},
-    ["Lucian"]                      = {_R},
-    ["MissFortune"]                 = {_R},
-    ["VelKoz"]                      = {_R},
-    ["Nunu"]                        = {_R},
-    ["Shen"]                        = {_R},
-    ["Karthus"]                     = {_R},
-    ["Malzahar"]                    = {_R},
-    ["Pantheon"]                    = {_R},
-    ["Warwick"]                     = {_R},
-    ["Brand"]                      = {_R},
-}
-
-local callback = nil
- 
-OnProcessSpell(function(unit, spell)    
-    if not callback or not unit or GetObjectType(unit) ~= Obj_AI_Hero  or GetTeam(unit) == GetTeam(GetMyHero()) then return end
-    local unitChanellingSpells = CHANELLING_SPELLS[GetObjectName(unit)]
- 
-        if unitChanellingSpells then
-            for _, spellSlot in pairs(unitChanellingSpells) do
-                if spell.name == GetCastName(unit, spellSlot) then callback(unit, CHANELLING_SPELLS) end
-            end
-		end
-end)
- 
-function addInterrupterCallback( callback0 )
-        callback = callback0
-end
 
 OnLoop(function(myHero)
 
@@ -133,67 +100,3 @@ if BrandMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos(
 if BrandMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,750,1,128,0xff00ff00) end
 
 end)
-
--- Huge Credits To Inferno for MEC
-local GetOrigin = GetOrigin
-local SQRT = math.sqrt
-
-function TargetDist(point, target)
-    local origin = GetOrigin(target)
-    local dx, dz = origin.x-point.x, origin.z-point.z
-    return SQRT( dx*dx + dz*dz )
-end
-
-function ExcludeFurthest(point, tbl)
-    local removalId = 1
-    for i=2, #tbl do
-        if TargetDist(point, tbl[i]) > TargetDist(point, tbl[removalId]) then
-            removalId = i
-        end
-    end
-    
-    local newTable = {}
-    for i=1, #tbl do
-        if i ~= removalId then
-            newTable[#newTable+1] = tbl[i]
-        end
-    end
-    return newTable
-end
-
-function GetMEC(aoe_radius, listOfEntities, starTarget)
-    local average = {x=0, y=0, z=0, count = 0}
-    for i=1, #listOfEntities do
-        local ori = GetOrigin(listOfEntities[i])
-        average.x = average.x + ori.x
-        average.y = average.y + ori.y
-        average.z = average.z + ori.z
-        average.count = average.count + 1
-    end
-    if starTarget then
-        local ori = GetOrigin(starTarget)
-        average.x = average.x + ori.x
-        average.y = average.y + ori.y
-        average.z = average.z + ori.z
-        average.count = average.count + 1
-    end
-    average.x = average.x / average.count
-    average.y = average.y / average.count
-    average.z = average.z / average.count
-    
-    local targetsInRange = 0
-    for i=1, #listOfEntities do
-        if TargetDist(average, listOfEntities[i]) <= aoe_radius then
-            targetsInRange = targetsInRange + 1
-        end
-    end
-    if starTarget and TargetDist(average, starTarget) <= aoe_radius then
-        targetsInRange = targetsInRange + 1
-    end
-    
-    if targetsInRange == average.count then
-        return average
-    else
-        return GetMEC(aoe_radius, ExcludeFurthest(average, listOfEntities), starTarget)
-    end
-end
