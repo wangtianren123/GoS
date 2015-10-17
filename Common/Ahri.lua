@@ -80,7 +80,7 @@ end)
 
 UltOn = false
 
-OnTick(function(myHero)
+OnLoop(function(myHero)
     if IOW:Mode() == "Combo" then
         
 	local target = GetCurrentTarget()
