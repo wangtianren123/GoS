@@ -184,7 +184,7 @@ OnUpdateBuff(function(Object,buff)
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
-  poisonTable[GetNetworkID(unit)] = buff.Count
+  poisonTable[GetNetworkID(Object)] = buff.Count
   end
 
 end)
@@ -208,7 +208,7 @@ OnRemoveBuff(function(Object,buff)
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
-  poisonTable[GetNetworkID(unit)] = nil
+  poisonTable[GetNetworkID(Object)] = 0
   end
 
 end)
