@@ -130,7 +130,7 @@ function Attack(target)
 end
 
 function WindUpTime()
-	return (1 / (GetAttackSpeed(myHero) * BaseWindupTime)
+	return (1 / (GetAttackSpeed(myHero) * BaseWindupTime))
 end
 
 function AnimationTime()
