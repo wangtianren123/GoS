@@ -216,6 +216,10 @@ function IsPoisoned(unit)
 return (poisonTable[GetNetworkID(unit)] or 0) > 0
 end
 
+function IsLudensReady()
+return LudensStacks == 100
+end
+
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
