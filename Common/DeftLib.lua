@@ -143,11 +143,11 @@ Teleport = (GetCastName(myHero,SUMMONER_1):lower():find("summonerteleport") and 
 function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       
       hitchance = hitchance or 1
-      speed = speed or  SpellData[GetObjectName(myHero)[spell]].Speed or math.huge
-      delay = delay or  SpellData[GetObjectName(myHero)[spell]].Delay or 0
-      range = range or  SpellData[GetObjectName(myHero)[spell]].Range
-      width = width or  SpellData[GetObjectName(myHero)[spell]].Width
-      coll = coll or  SpellData[GetObjectName(myHero)[spell]].collision
+      speed = speed or  SpellData[GetObjectName(myHero)][spell].Speed or math.huge
+      delay = delay or  SpellData[GetObjectName(myHero)][spell].Delay or 0
+      range = range or  SpellData[GetObjectName(myHero)][spell].Range
+      width = width or  SpellData[GetObjectName(myHero)][spell].Width
+      coll = coll or  SpellData[GetObjectName(myHero)][spell].collision
       local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
       if Predicted.HitChance >= hitchance then
       CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
