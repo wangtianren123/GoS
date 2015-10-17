@@ -11,7 +11,7 @@ NoCancelChamps = { "Kalista" }
   SOWMenu.h:Key("LastHit", "LastHit", string.byte("X"))
   SOWMenu.h:Key("LaneClear", "LaneClear", string.byte("V"))
  -- SOWMenu:Slider("wup", "Extra WindUp", 0, 0, 100, 1)
-  self.Config:List("lcm", "Lane Clear method", GetObjectName(myHero) == "Vayne" and 2 or 1, {"Focus Highest", "Stick to 1"})
+  SOWMenu:List("lcm", "Lane Clear method", GetObjectName(myHero) == "Vayne" and 2 or 1, {"Focus Highest", "Stick to 1"})
  
 LastAA = 0
 Attack = true
