@@ -95,7 +95,7 @@ function GetTime()
 end
 
 function GetProjectileSpeed(unit)
-  return projectilespeeds[GetObjectName(unit)] and projectilespeeds[GetObjectName(unit)]
+  return projectilespeeds[GetObjectName(unit)] and projectilespeeds[GetObjectName(unit)] or math.huge
 end
 
 function GetDmg(unit)
