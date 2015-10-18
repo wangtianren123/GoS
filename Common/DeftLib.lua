@@ -6,27 +6,31 @@ SpellData = {
 	},
   ["Ahri"] = {
 		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
- 	        --[_Q2] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
+ 	        [_Qr] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
 		[_W]  = { Name = "AhriFoxFire", Range = 700},
 		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = true},
 		[_R]  = { Name = "AhriTumble", Range = 550}
 	},
+  ["Alistar"] = {
+		[_Q]  = { Name = "Pulverize", Range = 250, Delay = 250},
+		[_W]  = { Name = "Headbutt", Range = 650},
+	},
   ["Ashe"] = {
-		[_Q]  = { Name = GetCastName(myHero,_Q), Range = 700},
+		[_Q]  = { Name = "FrostShot", Range = 600},
 		[_W]  = { Name = "Volley", ProjectileName = "TODO", Range = 1250, Speed = 1500, Delay = 250, Width = 60, collision = true, aoe = false, type = "cone", IsDangerous = false},
 		[_E]  = { Name = GetCastName(myHero,_E), Range = 20000, Speed = 1500, Delay = 500, Width = 1400, collision = false, aoe = false, type = "linear", IsDangerous = false},
 		[_R]  = { Name = "EnchantedCrystalArrow", ProjectileName = "Ashe_Base_R_mis.troy", Range = 20000, Speed = 1600, Delay = 500, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = true}
         },
   ["Azir"] = {
-		[_Q] = { Name = "AzirQ", ProjectileName = "", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
+		[_Q] = { Name = "AzirQ", Range = 950,  Speed = 1600, Width = 80, collision = false, aoe = false, type = "linear", IsDangerous = false},
 		[_W] = { Name = "AzirW", Range = 850, Speed = math.huge, Width = 100, collision = false, aoe = false, type = "circular"},
 		[_E] = { Name = "AzirE", Range = 1100, Speed = 1200, Delay = 250, Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = false},
 		[_R] = { Name = "AzirR", Range = 520, Speed = 1300, Delay = 250, Width = 600, collision = false, aoe = true, type = "linear", IsDangerous = true}
 	},
   ["Blitzcrank"] = {
-		[_Q] = { Name = "RocketGrabMissile", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, type = "linear", IsDangerous = true},
-		[_E] = { Name = "", Range = 225},
-		[_R] = { Name = "StaticField", Range = 0, Speed = math.huge, Width = 500, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
+		[_Q] = { Name = "RocketGrabMissile", ProjectileName = "FistGrab_mis.troy", Range = 1000, Speed = 1800, Width = 70, Delay = 250, collision = true, aoe = false, type = "linear", IsDangerous = true},
+		[_E] = { Name = "PowerFist", Range = 225},
+		[_R] = { Name = "StaticField", Range = 0, Speed = math.huge, Width = 600, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
 	},
   ["Cassiopeia"] = {
 		[_Q] = { Name = "CassiopeiaNoxiousBlast", ProjectileName = "", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
