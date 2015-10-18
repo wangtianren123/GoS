@@ -326,6 +326,190 @@ function HeroCollision(target, spell, range, width)
     return false
 end
 
+        Config = nil
+	EnemyConfig = nil
+	Target = nil
+	SelectedTarget = nil
+	Mode = 1
+	Range = 1
+	SelectorModes = { }
+	AllyCount = #GoS:GetAllyHeroes()
+	EnemyCount = #GoS:GetEnemyHeroes()
+	Callbacks = {
+		TargetSelected = { },
+		TargetDeselected = { },
+		TargetLost = { },
+	}
+	EnemyPriorityOrder = {
+		[1] = { 1, 1, 1, 1, 1 },
+		[2] = { 1, 1, 2, 2, 2 },
+		[3] = { 1, 1, 2, 2, 3 },
+		[4] = { 1, 1, 2, 3, 4 },
+		[5] = { 1, 2, 3, 4, 5 },
+	}
+	AllyPriorityOrder = {
+		[1] = { 2, 2, 2, 2, 2 },
+		[2] = { 2, 2, 3, 3, 3 },
+		[3] = { 2, 2, 3, 3, 4 },
+		[4] = { 2, 2, 4, 3, 5 },
+	}
+	PriorityTable = {
+		["ADC"] = { "Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Jayce", "Jinx", "KogMaw", "Lucian", "MasterYi", "MissFortune", "Pantheon", "Quinn", "Shaco", "Sivir", "Talon","Tryndamere", "Tristana", "Twitch", "Urgot", "Varus", "Vayne", "Yasuo","Zed" },
+		["APC"] = { "Annie", "Ahri", "Akali", "Anivia", "Annie", "Brand", "Cassiopeia", "Diana", "Evelynn", "FiddleSticks", "Fizz", "Gragas", "Heimerdinger", "Karthus", "Kassadin", "Katarina", "Kayle", "Kennen", "Leblanc", "Lissandra", "Lux", "Malzahar", "Mordekaiser", "Morgana", "Nidalee", "Orianna", "Ryze", "Sion", "Swain", "Syndra", "Teemo", "TwistedFate", "VelKoz", "Veigar", "Viktor", "Vladimir", "Xerath", "Ziggs", "Zyra" },
+		["Support"] = { "Alistar", "Blitzcrank", "Janna", "Karma", "Leona", "Lulu", "Nami", "Nunu", "Sona", "Soraka", "Taric", "Thresh", "Zilean", "Braum", "TahmKench" },
+		["Bruiser"] = { "Aatrox", "Darius", "Elise", "Fiora", "Gangplank", "Garen", "Gnar", "Irelia", "JarvanIV", "Jax", "Khazix", "LeeSin", "Nocturne", "Olaf", "Poppy", "Renekton", "Rengar", "Riven", "Rumble", "Shyvana", "Trundle", "Udyr", "Vi", "MonkeyKing", "XinZhao" },
+		["Tank"] = { "Amumu", "Chogath", "DrMundo", "Galio", "Hecarim", "Malphite", "Maokai", "Nasus", "Rammus", "Sejuani", "Nautilus", "Shen", "Singed", "Skarner", "Volibear", "Warwick", "Yorick", "Zac" }
+	}
+	PriorityIndex = {
+		["ADC"] = 1,
+		["APC"] = 2,
+		["Support"] = 3,
+		["Bruiser"] = 4,
+		["Tank"] = 5,
+	}
+	RegisterMode("LessCastMagic", "Less Cast (Magic)", function(a, b) return (GoS:CalcDamage(myHero,a,0,100) / GetCurrentHP(a)) > (GoS:CalcDamage(myHero,b,0,100) / GetCurrentHP(b)) end)
+	RegisterMode("LessCastPhysical", "Less Cast (Physical)", function(a, b) return (GoS:CalcDamage(myHero,a,100,0) / GetCurrentHP(a)) > (GoS:CalcDamage(myHero,b,100,0) / GetCurrentHP(b)) end)
+	RegisterMode("LessCastMixed", "Less Cast (Mixed)", function(a, b) return (GoS:CalcDamage(myHero,a,50,50) / GetCurrentHP(a)) > (GoS:CalcDamage(myHero,b,50,50) / GetCurrentHP(b)) end)
+	RegisterMode("PriorityLessCastMagic", "Priority Less Cast (Magic)", function(a, b) return (GetPriority(a) * GoS:CalcDamage(myHero,a,0,100) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,0,100) / GetCurrentHP(b)) end)
+	RegisterMode("PriorityLessCastPhysical", "Priority Less Cast (Physical)", function(a, b) return (GetPriority(a) * GoS:CalcDamage(myHero,a,100,0) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,100,0) / GetCurrentHP(b)) end)
+	RegisterMode("PriorityLessCastMixed", "Priority Less Cast (Mixed)", function(a, b) return (GetPriority(a) * (GetPriority(a) * GoS:CalcDamage(myHero,a,50,50) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,50,50) / GetCurrentHP(b)) end)
+	RegisterMode("LessHealth", "Less Health", function(a, b) return GetCurrentHP(a) < GetCurrentHP(b) end)
+	RegisterMode("Priority", "Priority", function(a, b) return GetPriority(a) > GetPriority(b) end)
+	RegisterMode("NearMouse", "Near Mouse", function(a, b) return GoS:GetDistanceSqr(mousePos(), a) < GoS:GetDistanceSqr(mousePos(), b) end)
+end
+function OnTargetSelected(target)
+	PrintChat("Selected target: "..GetObjectName(target).." ")
+	for i = 1, #Callbacks.TargetSelected do
+		Callbacks.TargetSelected[i](target)
+	end
+end
+function OnTargetDeselected(target)
+	PrintChat("De-selected target: "..GetObjectName(target).." ")
+	for i = 1, #Callbacks.TargetDeselected do
+		Callbacks.TargetDeselected[i](target)
+	end
+end
+function OnTargetLost(target)
+	PrintChat("Lost selected target: "..GetObjectName(target).." ")
+	for i = 1, #Callbacks.TargetLost do
+		Callbacks.TargetLost[i](target)
+	end
+end
+
+OnWndMsg(function(msg, key)
+	if (not Config.Selected or (msg ~= WM_LBUTTONDOWN)) then return  end
+	local closestDist = 0
+	local unit = nil
+	local enemies = GoS:EnemiesAround(MousePos(), 115)
+	for i = 1, #enemies do
+		local enemy = enemies[i]
+		local distance = GoS:GetDistance(enemy, mousePos)
+		if (GoS:ValidTarget(enemy) and (not unit or (closestDist < distance))) then
+			unit = enemy
+			closestDist = distance
+		end
+	end
+	if (unit) then
+		if (SelectedTarget and (GetObjectName(SelectedTarget) == GetObjecName(unit))) then
+			SelectedTarget = nil
+			OnTargetDeselected(unit)
+		else
+			if (SelectedTarget) then OnTargetLost(SelectedTarget) end
+			SelectedTarget = unit
+			OnTargetSelected(unit)
+		end
+	end
+end)
+
+OnLoop(
+	if (SelectedTarget and (IsDead(SelectedTarget) or not Gos:ValidTarget(SelectedTarget))) then
+		OnTargetLost(SelectedTarget)
+		SelectedTarget = nil
+	end
+	if (IsDead(myHero)) then
+		Target = nil
+		Orbwalker:ForceTarget(nil)
+	else
+		Target = GetTarget(Range)
+		Orbwalker:ForceTarget(Target)
+	end
+end)
+
+function Initialize(mainMode, mainRange)
+	Mode = mainMode or 1
+	Range = mainRange or Orbwalker:GetRange()
+end
+
+function RegisterMode(id, name, sort)
+	table.insert(SelectorModes, {
+		ID = id,
+		Name = name,
+		Sort = sort,
+	})
+	SelectorMode[id] = #SelectorModes
+end
+
+function LoadToConfig(config)
+	local config = Menu("Selector", "Target Selector")
+	local modes = { }
+	for i = 1, #SelectorModes do
+		table.insert(modes, SelectorModes[i].Name)
+	end
+	config:List("Mode", "Selector Mode", Mode, modes)
+	config:Boolean("Selected", "Focus Selected Target", true)
+	local enemyFound = false
+	for i = 1, #GoS:GetEnemyHeroes() do
+		local enemy = GetEnemyHeroes()[i]
+		enemyFound = true
+		config:Slider(GetObjectName(enemy), GetObjectName(enemy), GetPriority(enemy), 1, 5)
+	end
+	if (not enemyFound) then
+		config:Info("No enemies found.")
+	end
+	Config = config
+end
+
+function GetPriority(unit, ally)
+	local name = GetObjectName(unit)
+	local ally = ally or false
+	local count = ally and AllyCount or EnemyCount
+	local order = ally and AllyPriorityOrder or EnemyPriorityOrder
+	if (table.contains(PriorityTable.ADC, name)) then
+		return order[count][PriorityIndex.ADC]
+	end
+	if (table.contains(PriorityTable.APC, name)) then
+		return order[count][PriorityIndex.APC]
+	end
+	if (table.contains(PriorityTable.Support, name)) then
+		return order[count][PriorityIndex.Support]
+	end
+	if (table.contains(PriorityTable.Bruiser, name)) then
+		return order[count][PriorityIndex.Bruiser]
+	end
+	if (table.contains(PriorityTable.Tank, name)) then
+		return order[count][PriorityIndex.Tank]
+	end
+	PrintChat("Could not find enemy in priority table, please manually set it for this champion! : "..name.." ")
+	return 1
+end
+
+function GetTarget(range, index, mode, enemies)
+	if (Config and Config.Selected and SelectedTarget and GoS:ValidTarget(SelectedTarget, range)) then return SelectedTarget end
+	return GetTargets(range, mode, enemies)[index or 1]
+end
+
+function GetTargets(range, mode, enemies)
+	local targets = { }
+	local enemies = enemies or GoS:EnemiesAround(myHeroPos(), range)
+	for i = 1, #enemies do
+		if (GoS:ValidTarget(enemies[i], range)) then
+			table.insert(targets, enemies[i])
+		end
+	end
+	table.sort(targets, self.SelectorModes[mode or (Config and Config.Mode) or Mode].Sort)
+	return targets
+end
+
 --Credits to Maxxxel For IsFacing
 local lastattackposition={true,true,true}
 
