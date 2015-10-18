@@ -5,10 +5,8 @@ local AutoIgniteMenu = Menu("AutoIgnite", "Auto Ignite")
 AutoIgniteMenu:Boolean("Enabled", "Enabled", true)
 end
 
-if Smite ~= nil then 
 local AutoSmiteMenu = Menu("AutoSmite", "Auto Smite")
 AutoSmiteMenu:Boolean("Enabled", "Enabled", true)
-end
 
 for i,enemy in pairs(GoS:GetEnemyHeroes()) do
       if SmiteBlue and AutoSmiteMenu.Enabled:Value() then
