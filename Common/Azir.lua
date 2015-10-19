@@ -52,9 +52,8 @@ OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
       if CHANELLING_SPELLS[spell.name] then
-      	local RPred = GetPredictionForPlayer(GetOrigin(myHero),unit,GetMoveSpeed(unit),1400,450,950,700,false,true)
-        if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
-        CastSkillShot(_R,GetOrigin(unit).x,GetOrigin(unit).y,GetOrigin(unit).z)
+        if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
+        Cast(_R,unit)
         end
       end
     end
@@ -75,14 +74,11 @@ OnTick(function(myHero)
        if IOW:Mode() == "Combo" then
 	
 	    local target = GetCurrentTarget()
-	    local WPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),math.huge,0,850,100,false,true)
-	    local RPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),1400,500,950,700,false,true)
 		
-	    if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,850) and WPred.HitChance == 1 and AzirMenu.Combo.W:Value() then
-	    CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+	    if IsReady(_W) and GoS:ValidTarget(target,850) and AzirMenu.Combo.W:Value() then
+	    Cast(_W,target)
 	    end
 		
-	    if table.getn(AzirSoldiers) > 0 then 
 	      for _,Soldier in pairs(AzirSoldiers) do
 	         	
 	        local QPred = GetPredictionForPlayer(GetOrigin(Soldier),target,GetMoveSpeed(target),1600,0,950,80,false,true)
@@ -91,14 +87,14 @@ OnTick(function(myHero)
 	        SoldierRange = GoS:GetDistance(Soldier, target)
 		end
 		
-		if CanUseSpell(myHero,_E) and GoS:ValidTarget(target, 1300) and table.getn(AzirSoldiers) > 0 and AzirMenu.Combo.E:Value() then 
+		if IsReady(_E) and GoS:ValidTarget(target, 1300) and GoS:EnemiesAround(GetOrigin(target), 666) < 2 and AzirMenu.Combo.E:Value() then 
 		  local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(Soldier), GetOrigin(target))
-                     if isOnSegment and GoS:GetDistance(target, pointSegment) < 100 then
-		     CastTargetSpell(Soldier, _E)
-		     end
+                   if isOnSegment and GoS:GetDistance(target, pointSegment) < 100 then
+		   CastTargetSpell(Soldier, _E)
 		   end
+	         end
 		   
-		   if CanUseSpell(myHero,_Q) and SoldierRange > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and AzirMenu.Combo.Q:Value() then
+		   if IsReady(_Q) and SoldierRange > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and AzirMenu.Combo.Q:Value() then
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		   end
 		   
@@ -107,20 +103,16 @@ OnTick(function(myHero)
 	           end
 	   
 	         end
-	       end
 	
         end
 	
 	if IOW:Mode() == "Harass"  then
 	local target = GetCurrentTarget()
-	    
-		local WPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),math.huge,0,850,100,false,true)
 		
-		if CanUseSpell(myHero,_W) == READY and GoS:ValidTarget(target,850) and WPred.HitChance == 1 and AzirMenu.Harass.W:Value() then
-		CastSkillShot(_W,WPred.PredPos.x,WPred.PredPos.y,WPred.PredPos.z)
+		if IsReady(_W) and GoS:ValidTarget(target,850) and AzirMenu.Harass.W:Value() then
+		Cast(_W,target)
 		end	
 		
-		if table.getn(AzirSoldiers) > 0 then
 	          for _,Soldier in pairs(AzirSoldiers) do
 	          	
 		   local QPred = GetPredictionForPlayer(GetOrigin(Soldier),target,GetMoveSpeed(target),1600,0,950,80,false,true)
@@ -129,7 +121,7 @@ OnTick(function(myHero)
 		   SoldierRange = GoS:GetDistance(Soldier, target)
 		   end
 		   
-		   if CanUseSpell(myHero,_Q) and GoS:GetDistance(target) > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and AzirMenu.Harass.Q:Value()then
+		   if IsReady(_Q) and GoS:GetDistance(target) > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and AzirMenu.Harass.Q:Value()then
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		   end
 		   
@@ -138,30 +130,27 @@ OnTick(function(myHero)
 	           end
 	   
 	          end
-		end
-		
-			
-		
+	
 	end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-	
-                local ExtraDmg = 0
-		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		end
 
-	     if table.getn(AzirSoldiers) > 0 then 
-		for _,Soldier in pairs(AzirSoldiers) do
+               for _,Soldier in pairs(AzirSoldiers) do
 		   local QPred = GetPredictionForPlayer(GetOrigin(Soldier),enemy,GetMoveSpeed(enemy),1600,0,950,80,false,true)
-		   if CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 950) and AzirMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q)+45+.5*GetBonusAP(myHero) + ExtraDmg) then 
+		   if IsReady(_Q) and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 950) and AzirMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 20*GetCastLevel(myHero,_Q)+45+.5*GetBonusAP(myHero) + Ludens()) then 
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+		 end
+
+               if IsReady(_E) and GoS:ValidTarget(enemy, 1300) and GoS:EnemiesAround(GetOrigin(enemy), 666) < 2 and AzirMenu.Killsteal.E:Value() then 
+		  local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(Soldier), GetOrigin(enemy))
+                   if isOnSegment and GoS:GetDistance(enemy, pointSegment) < 100 then
+		   CastTargetSpell(Soldier, _E)
 		   end
-		end
+		 end
               end
 
 		if Ignite and AzirMenu.Misc.AutoIgnite:Value() then
-                  if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
                 end
@@ -170,57 +159,46 @@ OnTick(function(myHero)
 	
 if AzirMenu.Combo.Flee:Value() then
 	
-        local HeroPos = GetOrigin(myHero)
-	local mousePos = GetMousePos()
-	
-	MoveToXYZ(GetMousePos())
-        if table.getn(AzirSoldiers) < 1 then 
-        local movePos = HeroPos + (Vector(mousePos) - HeroPos):normalized()*450
+	MoveToXYZ(mousePos())
+        if IsReady(_W) and table.getn(AzirSoldiers) < 1 then 
+        local movePos = myHeroPos() + (Vector(mousePos()) - myHeroPos()):normalized()*450
 	CastSkillShot(_W, movePos.x, movePos.y, movePos.z) 
 	end
-
-	if table.getn(AzirSoldiers) > 0 then	
+	
 	for _,Soldier in pairs(AzirSoldiers) do
-	  local movePos = HeroPos + (Vector(mousePos) - HeroPos):normalized()*950
+	  local movePos = myHeroPos() + (Vector(mousePos()) - myHeroPos()):normalized()*950
 	  if movePos then
           CastTargetSpell(Soldier, _E)
           GoS:DelayAction(function() CastSkillShot(_Q, movePos.x, movePos.y, movePos.z) end, 150)
           end
         end
-        end
-		
-		
+			
 end
 	
-if AzirMenu.Combo.Insec:Value() then -- Thanks nebel kappa
-	
-    local HeroPos = GetOrigin(myHero)
-    local mousePos = GetMousePos()
+if AzirMenu.Combo.Insec:Value() then
 	
     local enemy = GoS:ClosestEnemy(mousePos)
     if not enemy or GoS:GetDistance(enemy) > 750 then
-    MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+    MoveToXYZ(mousePos())
     return 
     end
 
-    if table.getn(AzirSoldiers) < 1 and CanUseSpell(myHero, _W) == READY then
+    if table.getn(AzirSoldiers) < 1 and IsReady(_W) then
     CastSkillShot(_W, HeroPos.x, HeroPos.y, HeroPos.z)
     end
      
-    if table.getn(AzirSoldiers) > 0 then
       for _,Soldier in pairs(AzirSoldiers) do
       	
         local movePos = HeroPos + (Vector(enemy) - HeroPos):normalized() * 950
         if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
         GoS:DelayAction(function() CastTargetSpell(Soldier, _E) end, 250)
-          if GoS:ValidTarget(enemy) and GoS:GetDistance(myHero, enemy) < 250 then
+          if GoS:GetDistance(myHero, enemy) < 250 then
           CastSkillShot(_R, GetOrigin(enemy).x, GetOrigin(enemy).y, GetOrigin(enemy).z)
           end
         end
       end
-    end
-
+   
 end
 	
 if AzirMenu.Misc.Autolvl:Value() then  
