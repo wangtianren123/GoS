@@ -141,7 +141,7 @@ OnTick(function(myHero)
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
 		 end
 
-               if IsReady(_E) and GoS:ValidTarget(enemy, 1300) and GoS:EnemiesAround(GetOrigin(enemy), 666) < 2 and AzirMenu.Killsteal.E:Value() then 
+               if IsReady(_E) and GoS:ValidTarget(enemy, 1300) and GoS:EnemiesAround(GetOrigin(enemy), 666) < 2 and AzirMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35*GetCastLevel(myHero,_Q)+25+.5*GetBonusAP(myHero) + Ludens()) then 
 		  local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(Soldier), GetOrigin(enemy))
                    if isOnSegment and GoS:GetDistance(enemy, pointSegment) < 100 then
 		   CastTargetSpell(Soldier, _E)
