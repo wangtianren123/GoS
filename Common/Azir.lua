@@ -177,7 +177,7 @@ end
 	
 if AzirMenu.Combo.Insec:Value() then
 	
-    local enemy = GoS:ClosestEnemy(mousePos)
+    local enemy = GoS:ClosestEnemy(mousePos())
     if not enemy or GoS:GetDistance(enemy) > 750 then
     MoveToXYZ(mousePos())
     return 
@@ -189,7 +189,7 @@ if AzirMenu.Combo.Insec:Value() then
      
       for _,Soldier in pairs(AzirSoldiers) do
       	
-        local movePos = HeroPos + (Vector(enemy) - HeroPos):normalized() * 950
+        local movePos = myHeroPos() + (Vector(enemy) - myHeroPos()):normalized() * 950
         if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
         GoS:DelayAction(function() CastTargetSpell(Soldier, _E) end, 250)
