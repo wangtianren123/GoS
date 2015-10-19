@@ -68,7 +68,7 @@ OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _E) == READY then
       if CHANELLING_SPELLS[spell.name] then
-      	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1550,250,1000,60,true,true)
+      	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,0,1550,250,1000,60,true,true)
         if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
         CastSkillShot(_E, GetOrigin(unit).x, GetOrigin(unit).y, GetOrigin(unit).z)
         end
@@ -80,10 +80,10 @@ end)
 UltOn = false
 
 OnDraw(function(myHero)
-if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
-if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
-if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
-if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
+if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),880,1,0,0xff00ff00) end
+if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,0xff00ff00) end
+if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),975,1,0,0xff00ff00) end
+if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,0xff00ff00) end
 end)
 
 OnTick(function(myHero)
