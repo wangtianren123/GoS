@@ -165,6 +165,10 @@ function mousePos()
     return GetMousePos()
 end
 
+function ludens()
+    return LudensStacks == 100 and 100+0.1*GetBonusAP(myHero) or 0
+end
+
 poisonTable = {}
 ccbuffsTable = {5,9,21,22,28,29,30}
 ccnameTable = {"zedultexecute", "summonerexhaust"}
