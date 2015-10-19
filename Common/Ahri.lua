@@ -47,7 +47,6 @@ AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AhriMenu.Drawings:Boolean("W", "Draw W Range", true)
 AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
 AhriMenu.Drawings:Boolean("R", "Draw R Range", true)
-AhriMenu.Drawings:Boolean("Text", "Draw Killable Text", true)
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
 
@@ -80,7 +79,14 @@ end)
 
 UltOn = false
 
-OnLoop(function(myHero)
+OnDraw(function(myHero)
+if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
+if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
+if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
+if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
+end)
+
+OnTick(function(myHero)
     if IOW:Mode() == "Combo" then
         
 	local target = GetCurrentTarget()
@@ -143,11 +149,6 @@ OnLoop(function(myHero)
     end
 	
 for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-		
-		local ExtraDmg = 0
-		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-	        end
 	
 		if Ignite and AhriMenu.Misc.Autoignite:Value() then
                   if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
@@ -155,22 +156,17 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
                   end
                 end
                 
-		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
+		if CanUseSpell(myHero, _W) and GoS:ValidTarget(enemy, 700) and AhriMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + Ludens()) then
 		CastSpell(_W)
-		elseif CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then 
+		elseif CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(enemy, 880) and AhriMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + Ludens()) then 
 		Cast(_Q,enemy)
-		elseif CanUseSpell(myHero, _E) and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
+		elseif CanUseSpell(myHero, _E) and GoS:ValidTarget(enemy, 975) and AhriMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + Ludens()) then
 		Cast(_E,enemy)
 	        end
 	
 end
 
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-
-		local ExtraDmg = 0
-		if GotBuff(myHero, "itemmagicshankcharge") > 99 then
-		ExtraDmg = ExtraDmg + 0.1*GetBonusAP(myHero) + 100
-		end
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 		  if CanUseSpell(myHero,_Q) == READY and AhriMenu.LaneClear.Q:Value() then
@@ -181,20 +177,20 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	          end
 
                   if CanUseSpell(myHero,_W) == READY and AhriMenu.LaneClear.W:Value() then
-                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + ExtraDmg) then
+                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero) + Ludens()) then
                     CastSpell(_W)
                     end
                   end
 
                   if CanUseSpell(myHero,_E) == READY and AhriMenu.LaneClear.E:Value() then
-                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + ExtraDmg) then
+                    if GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero) + Ludens()) then
                     CastSkillShot(_E, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
                     end
                   end
 	        end
 
 	        if IOW:Mode() == "LastHit" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Lasthit.Mana:Value() then
-	          if CanUseSpell(myHero,_Q) == READY and GoS:ValidTarget(minion, 880) and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + ExtraDmg) then
+	          if CanUseSpell(myHero,_Q) == READY and GoS:ValidTarget(minion, 880) and AhriMenu.Lasthit.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero) + Ludens()) then
                   CastSkillShot(_Q, GetOrigin(minion).x, GetOrigin(minion).y, GetOrigin(minion).z)
        	          end
                 end
@@ -226,12 +222,6 @@ if AhriMenu.Misc.Autolvl:Value() then
   end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
-
-if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,880,1,128,0xff00ff00) end
-if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
-if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
-if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,550,1,128,0xff00ff00) end
-
 end)
  
 OnUpdateBuff(function(Object,buff)
