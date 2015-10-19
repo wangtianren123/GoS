@@ -376,7 +376,7 @@ end
 	RegisterMode("LessCastMixed", "Less Cast (Mixed)", function(a, b) return (GoS:CalcDamage(myHero,a,50,50) / GetCurrentHP(a)) > (GoS:CalcDamage(myHero,b,50,50) / GetCurrentHP(b)) end)
 	RegisterMode("PriorityLessCastMagic", "Priority Less Cast (Magic)", function(a, b) return (GetPriority(a) * GoS:CalcDamage(myHero,a,0,100) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,0,100) / GetCurrentHP(b)) end)
 	RegisterMode("PriorityLessCastPhysical", "Priority Less Cast (Physical)", function(a, b) return (GetPriority(a) * GoS:CalcDamage(myHero,a,100,0) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,100,0) / GetCurrentHP(b)) end)
-	RegisterMode("PriorityLessCastMixed", "Priority Less Cast (Mixed)", function(a, b) return (GetPriority(a) * (GetPriority(a) * GoS:CalcDamage(myHero,a,50,50) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,50,50) / GetCurrentHP(b)) end)
+	RegisterMode("PriorityLessCastMixed", "Priority Less Cast (Mixed)", function(a, b) return (GetPriority(a) * GoS:CalcDamage(myHero,a,50,50) / GetCurrentHP(a)) > (GetPriority(b) * GoS:CalcDamage(myHero,b,50,50) / GetCurrentHP(b)) end)
 	RegisterMode("LessHealth", "Less Health", function(a, b) return GetCurrentHP(a) < GetCurrentHP(b) end)
 	RegisterMode("Priority", "Priority", function(a, b) return GetPriority(a) > GetPriority(b) end)
 	RegisterMode("NearMouse", "Near Mouse", function(a, b) return GoS:GetDistanceSqr(mousePos(), a) < GoS:GetDistanceSqr(mousePos(), b) end)
