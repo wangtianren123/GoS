@@ -6,7 +6,7 @@ SpellData = {
 	},
   ["Ahri"] = {
 		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
- 	    [-1] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
+ 	        [-1] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
 		[_W]  = { Name = "AhriFoxFire", Range = 700},
 		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = true},
 		[_R]  = { Name = "AhriTumble", Range = 550}
@@ -169,8 +169,8 @@ function mousePos()
     return GetMousePos()
 end
 
-function ludens()
-    return LudensStacks == 100 and 100+0.1*GetBonusAP(myHero) or 0
+function Ludens()
+    return IsLudensReady() and 100+0.1*GetBonusAP(myHero) or 0
 end
 
 poisonTable = {}
