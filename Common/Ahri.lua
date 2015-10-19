@@ -225,13 +225,13 @@ end
 end)
  
 OnUpdateBuff(function(Object,buff)
-  if GetTeam(Object) == GetTeam(myHero) and buff.Name == "ahritumble" then 
+  if buff.Name == "ahritumble" then 
   UltOn = true
   end
 end)
 
 OnRemoveBuff(function(Object,buff)
-  if GetTeam(Object) == GetTeam(myHero) and buff.Name == "ahritumble" then 
+  if buff.Name == "ahritumble" then 
   UltOn = false
   end
 end)
