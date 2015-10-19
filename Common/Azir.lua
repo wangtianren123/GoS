@@ -68,6 +68,8 @@ if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1300,1,0,0xff00ff
 if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,0xff00ff00) end
 end)
 
+local AzirSoldiers = {}
+
 OnTick(function(myHero)
 	
        if IOW:Mode() == "Combo" then
