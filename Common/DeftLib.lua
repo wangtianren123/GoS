@@ -120,10 +120,6 @@ Dashes = {
 }
 
 LudensStacks = 0
-IsRecalling = false
-IsCCed = false
-IsSpellShielded = false
-
 myHero = GetMyHero()
 mapID = GetMapID()
 Barrier = (GetCastName(myHero,SUMMONER_1):lower():find("summonerbarrier") and SUMMONER_1 or (GetCastName(myHero,SUMMONER_2):lower():find("summonerbarrier") and SUMMONER_2 or nil))
@@ -170,13 +166,16 @@ function mousePos()
 end
 
 function Ludens()
-    return IsLudensReady() and 100+0.1*GetBonusAP(myHero) or 0
+    return LudensStacks == 100 and 100+0.1*GetBonusAP(myHero) or 0
 end
 
+IsRecalling = false
+IsCCed = false
 poisonTable = {}
+SpellShieldTable = {}
 ccbuffsTable = {5,9,21,22,28,29,30}
 ccnameTable = {"zedultexecute", "summonerexhaust"}
-RecallTable = {"Recall", "RecallImproved"}
+RecallTable = {"Recall", "RecallImproved", "OdinRecall"}
 
 OnUpdateBuff(function(Object,buff)
   if Object == myHero then
@@ -184,17 +183,21 @@ OnUpdateBuff(function(Object,buff)
     LudensStacks = buff.Count
     end
     
-    if buff.Name == "Recall" or buff.Name == "RecallImproved" then 
-    IsRecalling = true
+    for i = 1, #RecallTable do
+      if buff.Name == RecallTable[i] then 
+      IsRecalling = true
+      end
     end
-
-    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
-    IsCCed = true
+    
+    for i = 1, #ccbuffsTable do
+      if buff.Type == ccbuffsTable[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
+      IsCCed = true
+      end
     end
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
-  IsSpellShielded = true
+  SpellShieldTable[GetNetworkID(Object)] = buff.Count
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
@@ -208,17 +211,22 @@ OnRemoveBuff(function(Object,buff)
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = 0
     end
-    if buff.Type == 5 or buff.Type == 9 or buff.Type == 21 or buff.Type == 22 or buff.Type == 24 or buff.Type == 28 or buff.Type == 29 or buff.Type == 30 or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust" then 
-    IsCCed = false
+
+    for i = 1, #ccbuffsTable do
+      if buff.Type == ccbuffsTable[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
+      IsCCed = false
+      end
     end
   end
 
-  if buff.Name == "Recall" or buff.Name == "RecallImproved" then 
-  IsRecalling = false
+  for i = 1, #RecallTable do
+    if buff.Name == RecallTable[i] then 
+    IsRecalling = false
+    end
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
-  IsSpellShielded = false
+  SpellShieldTable[GetNetworkID(Object)] = 0
   end
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
@@ -227,12 +235,12 @@ OnRemoveBuff(function(Object,buff)
 
 end)
 
-function IsPoisoned(unit)
-return (poisonTable[GetNetworkID(unit)] or 0) > 0
+function IsSpellShielded(unit)
+   return (SpellShieldTable[GetNetworkID(unit)] or 0) > 0
 end
 
-function IsLudensReady()
-return LudensStacks == 100
+function IsPoisoned(unit)
+   return (poisonTable[GetNetworkID(unit)] or 0) > 0
 end
 
 function GetLineFarmPosition(range, width)
