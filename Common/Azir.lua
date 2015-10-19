@@ -2,8 +2,6 @@ if GetObjectName(myHero) ~= "Azir" then return end
 
 require('Deftlib')
 
-local AzirSoldiers = {}
-
 local AzirMenu = Menu("Azir", "Azir")
 AzirMenu:SubMenu("Combo", "Combo")
 AzirMenu.Combo:Boolean("Q", "Use Q", true)
@@ -54,7 +52,7 @@ OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
       if CHANELLING_SPELLS[spell.name] then
-      	local RPred = GetPredictionForPlayer(GetOrigin(myHero),unit,GetMoveSpeed(unit),1400,500,950,700,false,true)
+      	local RPred = GetPredictionForPlayer(GetOrigin(myHero),unit,GetMoveSpeed(unit),1400,450,950,700,false,true)
         if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
         CastSkillShot(_R,GetOrigin(unit).x,GetOrigin(unit).y,GetOrigin(unit).z)
         end
@@ -63,7 +61,14 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnLoop(function(myHero)
+OnDraw(function(myHero)
+if AzirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,0xff00ff00) end
+if AzirMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),450,1,0,0xff00ff00) end
+if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1300,1,0,0xff00ff00) end
+if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,0xff00ff00) end
+end)
+
+OnTick(function(myHero)
 	
        if IOW:Mode() == "Combo" then
 	
@@ -222,11 +227,6 @@ if AzirMenu.Misc.Autolvl:Value() then
   end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
-
-if AzirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,1,128,0xff00ff00) end
-if AzirMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,450,1,128,0xff00ff00) end
-if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,1300,1,128,0xff00ff00) end
-if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,950,1,128,0xff00ff00) end
 
 end)
 
