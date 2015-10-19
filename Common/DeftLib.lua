@@ -166,6 +166,9 @@ function mousePos()
 end
 
 poisonTable = {}
+ccbuffsTable = {5,9,21,22,28,29,30}
+ccnameTable = {"zedultexecute", "summonerexhaust"}
+RecallTable = {"Recall", "RecallImproved"}
 
 OnUpdateBuff(function(Object,buff)
   if Object == myHero then
