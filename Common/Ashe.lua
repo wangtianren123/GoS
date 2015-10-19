@@ -61,7 +61,7 @@ end, 1)
 
 OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
       	local RPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,GetMoveSpeed(unit),1600,250,1000,130,false,true)
         if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and RPred.HitChance == 1 then 
@@ -72,21 +72,27 @@ OnProcessSpell(function(unit, spell)
   end
 end)
 
-OnLoop(function(myHero)
+OnDraw(function(myHero)
+if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1200,1,0,0xff00ff00) end
+end)
+
+QReady = false
+
+OnTick(function(myHero)
 
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
 
-	if CanUseSpell(myHero, _Q) == READY and QStacks == 5 and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
+	if IsReady(_Q) and QReady and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
+        if IsReady(_W) and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
         Cast(_W,target)
         end
 						
-        if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
+        if IsReady(_R) and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
         Cast(_R,target)
 	end
 		
@@ -103,11 +109,11 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
       
-	if CanUseSpell(myHero, _Q) == READY and QStacks == 5 and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
+	if IsReady(_Q) and QReady and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
+        if IsReady(_W) and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
         Cast(_W,target)
 	end
 		
@@ -117,7 +123,7 @@ OnLoop(function(myHero)
       
       local target = GetCurrentTarget()
      
-      if CanUseSpell(myHero,_R) == READY and GoS:ValidTarget(target, 3000) then 
+      if IsReady(_R) and GoS:ValidTarget(target, 3000) then 
       Cast(_R,target)
       end  
 
@@ -127,7 +133,7 @@ OnLoop(function(myHero)
     
         local target = GetCurrentTarget()
    
-        if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(target, 1200) and not IsRecalling then
+        if IsReady(_W) and GoS:ValidTarget(target, 1200) and not IsRecalling then
         Cast(_W,target)
 	end
 
@@ -150,16 +156,16 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
       end
       
 	if Ignite and AsheMenu.Misc.AutoIgnite:Value() then
-          if CanUseSpell(myHero, Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+          if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
 	end
 	
-	if CanUseSpell(myHero, _W) == READY and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
+	if IsReady(_W) and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
 	Cast(_W,enemy)
 	end
 		  
-	if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R)+75 + GetBonusAP(myHero)) then
+	if IsReady(_R) and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R)+75 + GetBonusAP(myHero)) then
         Cast(_R,enemy)
 	end
 		
@@ -169,11 +175,11 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.LaneClear.Mana:Value() then
 
-		  if CanUseSpell(myHero,_Q) == READY and AsheMenu.LaneClear.Q:Value() and QStacks == 5 and GoS:ValidTarget(minion, 700) then
+		  if IsReady(_Q) and AsheMenu.LaneClear.Q:Value() and QReady and GoS:ValidTarget(minion, 700) then
                   CastSpell(_Q)
                   end
 
-                  if CanUseSpell(myHero,_W) == READY and AsheMenu.LaneClear.W:Value() then
+                  if IsReady(_W) and AsheMenu.LaneClear.W:Value() then
                     local BestPos, BestHit = GetFarmPosition(1200, 300)
 		    if BestPos and BestHit > 0 then
 	            CastSkillShot(_W, BestPos.x, BestPos.y, BestPos.z)
@@ -189,11 +195,11 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
         if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 
-                if CanUseSpell(myHero,_Q) == READY and AsheMenu.JungleClear.Q:Value() and QStacks == 5 and GoS:ValidTarget(mob, 700) then
+                if IsReady(_Q) and AsheMenu.JungleClear.Q:Value() and QReady and GoS:ValidTarget(mob, 700) then
                 CastSpell(_Q)
                 end		
 
-		if CanUseSpell(myHero, _W) == READY and AsheMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) then
+		if IsReady(_W) and AsheMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) then
 		CastSkillShot(_W,mobPos.x, mobPos.y, mobPos.z)
 		end
 		
@@ -209,31 +215,27 @@ end
 
 end)
 
-OnDraw(function(myHero)
-if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1200,1,128,0xff00ff00) end
-end)
-
 OnUpdateBuff(function(Object,buff)
   if Object == myHero and buff.Name == "asheqcastready" then 
-  QStacks = 5
+  QReady = true
   end
 end)
 
 OnRemoveBuff(function(Object,buff)
   if Object == myHero and buff.Name == "asheqcastready" then 
-  QStacks = 0
+  QReady = false
   end
 end)
 
 OnCreateObj(function(Object) 
   if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
-  QStacks = 5
+  QReady = true
   end
 end)
 
 OnDeleteObj(function(Object) 
   if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
-  QStacks = 0
+  QReady = false
   end
 end)
 
