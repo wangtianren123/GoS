@@ -176,7 +176,10 @@ function InspiredsOrbWalker:GetDmg(to) -- thanks to Sir Deftsu for this :3
   addmg = addmg + (GotBuff(myHero, "JinxQ") > 0 and .1*(GetBonusDmg(myHero)+GetBaseDamage(myHero)) or 0)
   elseif myHeroName == "Kassadin" then
   apdmg = apdmg + (GotBuff(myHero, "netherbladebuff") > 0 and 20+.1*GetBonusAP(myHero) or 0) + (GotBuff(myHero, "NetherBlade") > 0 and 25*GetCastLevel(myHero,_W)+15+.6*GetBonusAP(myHero) or 0)
+  elseif myHeroName == "Kalista" then
+  addmg = addmg - 0.1*(GetBonusDmg(myHero)+GetBaseDamage(myHero))
   elseif myHeroName == "Kayle" then
+  apdmg = apdmg + (GotBuff(myHero, "kaylerighteousfurybuff") > 0 and 5*GetCastLevel(myHero,_E)+5+.15*GetBonusAP(myHero) or 0) + (GotBuff(myHero, "JudicatorRighteousFury") > 0 and 5*GetCastLevel(myHero,_E)+5+.15*GetBonusAP(myHero) or 0)
   apdmg = apdmg + (GotBuff(myHero, "kaylerighteousfurybuff") > 0 and 5*GetCastLevel(myHero,_E)+5+.15*GetBonusAP(myHero) or 0) + (GotBuff(myHero, "JudicatorRighteousFury") > 0 and 5*GetCastLevel(myHero,_E)+5+.15*GetBonusAP(myHero) or 0)
   elseif myHeroName == "Leona" then
   apdmg = apdmg + (GotBuff(myHero, "LeonaShieldOfDaybreak") > 0 and 30*GetCastLevel(myHero,_Q)+10+.3*GetBonusAP(myHero) or 0)
