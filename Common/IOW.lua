@@ -16,6 +16,7 @@ function InspiredsOrbWalker:__init()
   self.tick = 0
   self:MakeMenu()
   OnTick(function() self:OnTick() end)
+  OnDraw(function() self:OnDraw() end)
   OnProcessSpell(function(x,y) self:ProcessSpell(x,y) end)
   OnProcessWaypoint(function(x,y) self:ProcessWaypoint(x,y) end)
   return self
@@ -71,9 +72,12 @@ function InspiredsOrbWalker:Mode()
 end
 
 function InspiredsOrbWalker:OnTick()
-  if not self.loaded or self.tick > GetTickCount() then return end
-  self.tick = GetTickCount() + 60
+  if not self.loaded then return end
   self.rangeCircle.Draw(self.Config.drawcircle:Value())
+end
+
+function InspiredsOrbWalker:OnTick()
+  if not self.loaded then return end
   self.myRange = GetRange(myHero)+GetHitBox(myHero)+(self.Target and GetHitBox(self.Target) or GetHitBox(myHero))
   self.Target = self:GetTarget()
   self:Orb(self:GetTarget())
