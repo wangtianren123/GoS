@@ -17,7 +17,7 @@ function InspiredsOrbWalker:__init()
   self:MakeMenu()
   OnTick(function() self:OnTick() end)
   OnDraw(function() self:OnDraw() end)
-  OnProcessSpell(function(x,y) self:ProcessSpell(x,y) end)
+  OnProcessSpellComplete(function(x,y) self:ProcessSpell(x,y) end)
   OnProcessWaypoint(function(x,y) self:ProcessWaypoint(x,y) end)
   return self
 end
@@ -71,7 +71,7 @@ function InspiredsOrbWalker:Mode()
   end
 end
 
-function InspiredsOrbWalker:OnTick()
+function InspiredsOrbWalker:OnDraw()
   if not self.loaded then return end
   self.rangeCircle.Draw(self.Config.drawcircle:Value())
 end
@@ -252,7 +252,7 @@ function InspiredsOrbWalker:ProcessSpell(unit, spell)
         if self.Config.items:Value() and (self.Config.h.Combo:Value() or self.Config.h.Harass:Value()) then
           GoS:CastOffensiveItems(self.Target) 
         end
-      end, GetWindUp(myHero)*1000)
+      end, spell.windUpTime*1000)
     end
     if self.resetAttacks[spell.name:lower()] then
       self.lastAttack = GetTickCount() + spell.windUpTime * 1000 + 70 + GetLatency() - 1000/self:GetFullAttackSpeed()
