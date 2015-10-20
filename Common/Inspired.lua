@@ -598,7 +598,7 @@ function goslib:SetupMenu()
   self.Menu:Boolean("s", "Show always", false)
   self.Menu:List("w", "Menu width", 2, {150, 200, 250, 300})
   self.Menu:List("l", "Language", 1, {"English", })
-  OnLoop(function()
+  OnDraw(function()
     __Menu__Draw()
     _SC.width = self.Menu.w:Value() * 50 + 100
   end)
@@ -666,7 +666,7 @@ end
 
 function goslib:SetupLocalCallbacks()
   OnObjectLoop(function(object) self:ObjectLoop(object) end)
-  OnLoop(function() self:Loop() end)
+  OnTick(function() self:OnTick() end)
   OnProcessSpell(function(x, y) self:ProcessSpell(x, y) end)
 end
 
@@ -680,7 +680,7 @@ function goslib:ObjectLoop(object)
   end
 end
 
-function goslib:Loop()
+function goslib:OnTick()
   if self.afterObjectLoopEvents then
     for _, func in pairs(self.afterObjectLoopEvents) do
       if func then
@@ -794,7 +794,7 @@ function goslib:MakeMinionManager()
       end
     end
   end
-  OnLoop(function()
+  OnTick(function()
     if minionManager.tick > GetTickCount() then return end
     minionManager.tick = GetTickCount() + 125
     for i, object in pairs(minionManager.unsorted) do
@@ -843,7 +843,7 @@ function goslib:AddGapcloseEvent(spell, range, targeted)
         self.GapcloseUnit = unit
       end
     end)
-    OnLoop(function(myHero)
+    OnTick(function(myHero)
       if CanUseSpell(myHero, self.GapcloseSpell) == READY and self.GapcloseTime and self.GapcloseUnit and self.GapcloseTime >GetTickCount() then
         local pos = GetOrigin(self.GapcloseUnit)
         if self.GapcloseTargeted then
@@ -994,7 +994,7 @@ function goslib:DelayAction(func, delay, args)
                 end
             end
         end
-        OnLoop(function() self:delayedActionsExecuter() end)
+        OnTick(function() self:delayedActionsExecuter() end)
     end
     local t = GetTickCount() + (delay or 0)
     if self.delayedActions[t] then 
