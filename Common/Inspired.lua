@@ -239,7 +239,7 @@ local _SC = { menuKey = 16, width = 200, menuIndex = -1, instances = {}, keySwit
 local _SCP = {x = 15, y = -5}
 
 function __Menu__Draw()
-  if IsGameOnTop() and KeyIsDown(_SC.menuKey) or _SC.keySwitch or _SC.listSwitch or _SC.sliderSwitch or GoS.Menu.s.Value() then
+  if KeyIsDown(_SC.menuKey) or _SC.keySwitch or _SC.listSwitch or _SC.sliderSwitch or GoS.Menu.s.Value() then
     __Menu__Browse()
     __Menu__WndTick()
     FillRect(_SCP.x-2,_SCP.y+18,_SC.width+4,4+20*#_SC.instances,ARGB(55, 255, 255, 255))
