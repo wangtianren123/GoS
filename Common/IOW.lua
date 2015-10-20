@@ -1,6 +1,6 @@
 -- By Inspired, Continued by Deftsu.. RIP Inspired Zypppy 2015
 
-local IOWversion = 1.98
+local IOWversion = 1.99
 local myHeroName = GetObjectName(GetMyHero())
 
 class "InspiredsOrbWalker"
