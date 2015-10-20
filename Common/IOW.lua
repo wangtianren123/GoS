@@ -8,12 +8,12 @@ class "InspiredsOrbWalker"
 function InspiredsOrbWalker:__init()
   self.lastAttack = 0
   self.lastCooldown = 0
+  self.WindUp = 3
   self.attacksEnabled = true
   self.movementEnabled = true
   self.altAttacks = Set { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3" }
   self.resetAttacks = Set { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane", "lucianq", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq", "riventricleave", "itemtitanichydracleave", "itemtiamatcleave" }
   self.rangeCircle = GoS:Circle(GoS.White)
-  self.tick = 0
   self:MakeMenu()
   OnTick(function() self:OnTick() end)
   OnDraw(function() self:OnDraw() end)
@@ -225,7 +225,7 @@ function InspiredsOrbWalker:Orb(target)
 end
 
 function InspiredsOrbWalker:TimeToMove()
-  return (self.lastAttack + GetWindUp(myHero)*1000 + self.Config.cad:Value() < GetTickCount() - GetLatency()/2) or (myHeroName == "Kalista")
+  return (self.lastAttack + self.WindUp*1000 + self.Config.cad:Value() < GetTickCount() - GetLatency()/2) or (myHeroName == "Kalista")
 end
 
 function InspiredsOrbWalker:TimeToAttack()
@@ -248,6 +248,7 @@ function InspiredsOrbWalker:ProcessSpell(unit, spell)
   if unit and unit == myHero and spell and spell.name then
     if spell.name:lower():find("attack") or self.altAttacks[spell.name:lower()] then
       self.lastAttack = GetTickCount() - GetLatency()/2
+      self.WindUp = spell.windUpTime
       GoS:DelayAction(function() 
         if self.Config.items:Value() and (self.Config.h.Combo:Value() or self.Config.h.Harass:Value()) then
           GoS:CastOffensiveItems(self.Target) 
