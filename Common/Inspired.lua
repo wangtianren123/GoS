@@ -2013,7 +2013,8 @@ function Menu:Boolean(id, name, val)
 end
 
 function Menu:Key(id, name, key, isToggle)
-  local id2 = #self.__params+1
+ if IsGameOnTop() then
+ local id2 = #self.__params+1
   if isToggle then
     OnTick(function() 
       if self.__params[id2].__lastSwitch < GetTickCount() and KeyIsDown(self.__params[id2].__key) then 
@@ -2026,6 +2027,7 @@ function Menu:Key(id, name, key, isToggle)
     self.__params[id2] = {__id = id, __name = name, __type = "key", __key = key, __isToggle = isToggle, __head = self, Value = function() return KeyIsDown(self.__params[id2].__key) end}
   end
   self[id] = self.__params[id2]
+ end
 end
 
 function Menu:Slider(id, name, starVal, minVal, maxVal, incrVal)
@@ -2922,3 +2924,4 @@ end
 -- }
 
 Msg("Loaded.")
+`
