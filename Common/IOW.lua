@@ -15,7 +15,7 @@ function InspiredsOrbWalker:__init()
   self.rangeCircle = GoS:Circle(GoS.White)
   self.tick = 0
   self:MakeMenu()
-  OnLoop(function() self:Loop() end)
+  OnTick(function() self:OnTick() end)
   OnProcessSpell(function(x,y) self:ProcessSpell(x,y) end)
   OnProcessWaypoint(function(x,y) self:ProcessWaypoint(x,y) end)
   return self
@@ -70,7 +70,7 @@ function InspiredsOrbWalker:Mode()
   end
 end
 
-function InspiredsOrbWalker:Loop()
+function InspiredsOrbWalker:OnTick()
   if not self.loaded or self.tick > GetTickCount() then return end
   self.tick = GetTickCount() + 60
   self.rangeCircle.Draw(self.Config.drawcircle:Value())
