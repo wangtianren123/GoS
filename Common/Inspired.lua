@@ -1,4 +1,4 @@
--- By Inspired, Continued by Deftsu.. RIP Inspired Zypppy 2015
+-- By Inspired, Continued by Deftsu.. RIP Inspired, by Zypppy 2015
 
 _G.InspiredVersion = 31
 
