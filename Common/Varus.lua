@@ -47,7 +47,7 @@ OnTick(function(myHero)
     Qon = true
     local Qrange = 925 + 0.35*GetTickCount()
     GoS:DelayAction(function() Qon = false end, 4000)
-    local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
+    QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
     end
 
     if Qon and GoS:ValidTarget(target, 1625) and VarusMenu.Combo.Q:Value() then
