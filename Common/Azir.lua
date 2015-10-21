@@ -7,7 +7,7 @@ AzirMenu:SubMenu("Combo", "Combo")
 AzirMenu.Combo:Boolean("Q", "Use Q", true)
 AzirMenu.Combo:Boolean("W", "Use W", true)
 AzirMenu.Combo:Boolean("E", "Use E", true)
---AzirMenu.Combo:Boolean("R", "Use R", true)
+AzirMenu.Combo:Boolean("R", "Use R", true)
 AzirMenu.Combo:Boolean("AA", "Use AA", true)
 AzirMenu.Combo:Key("Flee", "Flee", string.byte("G"))
 AzirMenu.Combo:Key("Insec", "Insec", string.byte("T"))
@@ -25,6 +25,9 @@ AzirMenu:SubMenu("Misc", "Misc")
 AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AzirMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
+AzirMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
+AzirMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
+AzirMenu.Misc.AutoUlt:Slider("Push", "if Can Push X Enemies", 3, 0, 5, 1)
 
 AzirMenu:SubMenu("Drawings", "Drawings")
 AzirMenu.Drawings:Boolean("Q", "Draw Q Range", true)
@@ -92,7 +95,7 @@ OnTick(function(myHero)
                    if isOnSegment and GoS:GetDistance(target, pointSegment) < 100 then
 		   CastTargetSpell(Soldier, _E)
 		   end
-	         end
+	        end
 		   
 		   if IsReady(_Q) and SoldierRange > 400 and GoS:ValidTarget(target, 950) and QPred.HitChance == 1 and AzirMenu.Combo.Q:Value() then
 		   CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
@@ -102,7 +105,11 @@ OnTick(function(myHero)
 		   AttackUnit(target)
 	           end
 	   
-	         end
+              end
+         
+                if IsReady(_R) and GoS:ValidTarget(target, 500) and AzirMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
+		Cast(_R,target)
+	        end
 	
         end
 	
@@ -155,6 +162,11 @@ OnTick(function(myHero)
                   end
                 end
 	        
+	end
+	
+	local RThrowPos = GetMEC(600,GoS:GetEnemyHeroes()) 
+	if IsReady(_R) and AzirMenu.Misc.AutoUlt.Enabled:Value() and RThrowPos.Count >= AzirMenu.Misc.AutoUlt.Push:Value() then
+	CastSkillShot(_R, RThrowPos.x, RThrowPos.y, RThrowPos.z)
 	end
 	
 if AzirMenu.Combo.Flee:Value() then
