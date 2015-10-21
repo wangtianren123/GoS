@@ -35,6 +35,10 @@ if VarusMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,0xff00ff
 if VarusMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),1075,1,0,0xff00ff00) end
 end)
 
+local Qrange = 0
+local Qon = false
+local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
+    
 OnTick(function(myHero)
 
   if IOW:Mode() == "Combo" then
@@ -45,7 +49,7 @@ OnTick(function(myHero)
     if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1625) and VarusMenu.Combo.Q:Value() then
     CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
     Qon = true
-    local Qrange = 925 + 0.35*GetTickCount()
+    Qrange = 925 + 0.35*GetTickCount()
     GoS:DelayAction(function() Qon = false end, 4000)
     QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
     end
