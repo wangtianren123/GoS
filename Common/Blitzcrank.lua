@@ -121,6 +121,9 @@ end)
 
 OnDraw(function(myHero)
 	
+TotalGrabs = MissedGrabs + SuccesfulGrabs
+Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
+
 if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
 if BlitzcrankMenu.Drawings.Stats:Value() then 
@@ -132,7 +135,7 @@ end
 
 if BlitzcrankMenu.Drawings.Target:Value() then 
   local target = GetCustomTarget()
-  if target then
+  if GoS:ValidTarget(target) then
      local TargetPos = GetOrigin(target)
      local drawpos = WorldToScreen(1,TargetPos.x, TargetPos.y, TargetPos.z)
      DrawText("Current Target", 20, drawpos.x-100, drawpos.y, 0xffffff00)
@@ -141,7 +144,7 @@ end
 
 if BlitzcrankMenu.Drawings.Circle:Value() then 
   local target = GetCustomTarget()
-  if target then
+  if GoS:ValidTarget(target) then
      local TargetPos = GetOrigin(target)
      DrawCircle(TargetPos.x, TargetPos.y, TargetPos.z,250,1,100,0xffff0000) 
   end
@@ -218,9 +221,6 @@ if BlitzcrankMenu.Misc.Autolvl:Value() then
    end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
-
-TotalGrabs = MissedGrabs + SuccesfulGrabs
-Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 
 end)
 
