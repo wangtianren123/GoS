@@ -1,26 +1,26 @@
 local SpellData = {
 	
         ["Ashe"] = {
-	Delay = 250
-	MissileSpeed = 1600
+	Delay = 250,
+	MissileSpeed = 1600,
 	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
         },
         
         ["Draven"] = {
-	Delay = 400
-	MissileSpeed = 2000
+	Delay = 400,
+	MissileSpeed = 2000,
 	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 75 + 100*GetCastLevel(myHero,_R) + 1.1*GetBonusDmg(myHero)) end
         },
         
         ["Ezreal"] = {
-	Delay = 1000
-	MissileSpeed = 2000
+	Delay = 1000,
+	MissileSpeed = 2000,
 	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 0, 200 + 150*GetCastLevel(myHero,_R) + .9*GetBonusAP(myHero)+GetBonusDmg(myHero)) end
         },
         
         ["Jinx"] = {
-	Delay = 600
-        MissileSpeed = (GoS:GetDistance(enemyBasePos) / (1 + (GoS:GetDistance(enemyBasePos)-1500)/2500)) -- thanks Noddy
+	Delay = 600,
+        MissileSpeed = (GoS:GetDistance(enemyBasePos) / (1 + (GoS:GetDistance(enemyBasePos)-1500)/2500)), -- thanks Noddy
 	Damage = function(unit) return GoS:CalcDamage(myHero, unit, (GetMaxHP(unit)-GetCurrentHP(unit))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
         }
 }
