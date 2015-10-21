@@ -197,8 +197,8 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 	        
 end
 
-for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
-        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
+if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
+        for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		local mobPos = GetOrigin(mob)
 		
 		if IsReady(_Q) and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
