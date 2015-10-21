@@ -28,6 +28,13 @@ VarusMenu.Drawings:Boolean("Qmax", "Draw Q Max Range", true)
 VarusMenu.Drawings:Boolean("E", "Draw E Range", true)
 VarusMenu.Drawings:Boolean("R", "Draw R Range", true)
 
+OnDraw(function(myHero)
+if VarusMenu.Drawings.Qmin:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,0xff00ff00) end
+if VarusMenu.Drawings.Qmax:Value() then DrawCircle(GoS:myHeroPos(),1625,1,0,0xff00ff00) end
+if VarusMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,0xff00ff00) end
+if VarusMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),1075,1,0,0xff00ff00) end
+end)
+
 OnTick(function(myHero)
 
   if IOW:Mode() == "Combo" then
