@@ -1,6 +1,7 @@
 if GetObjectName(myHero) ~= "Vayne" then return end
 
 require('MapPositionGOS')
+require('Deftlib')
 
 local VayneMenu = Menu("Vayne", "Vayne")
 VayneMenu:SubMenu("Combo", "General")
@@ -85,7 +86,7 @@ GoS:DelayAction(function()
 		
 end, 1)
   
-OnLoop(function(myHero)
+OnTick(function(myHero)
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
@@ -109,8 +110,7 @@ OnLoop(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	if VayneMenu.Combo.E.stuntarget:Value() and VayneMenu.Combo.E.Enabled:Value() then
-	  if GoS:ValidTarget(target, 710) then
+	if IsReady(_E) and VayneMenu.Combo.E.stuntarget:Value() and VayneMenu.Combo.E.Enabled:Value() and GoS:ValidTarget(target, 710) then
             local EPred = GetPredictionForPlayer(GetOrigin(myHero),target,GetMoveSpeed(target),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
@@ -121,7 +121,6 @@ OnLoop(function(myHero)
               CastTargetSpell(target, _E) 
               end
             end
-          end
         end
 
         if CanUseSpell(myHero, _R) == READY and IOW:Mode() == "Combo" and GoS:ValidTarget(target, VayneMenu.Combo.R.Renemyrange:Value()) and 100*GetCurrentHP(target)/GetMaxHP(target) <= VayneMenu.Combo.R.Rifthp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= VayneMenu.Combo.R.Rifhp:Value() and GoS:EnemiesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Renemyrange:Value()) >= VayneMenu.Combo.R.Rminenemy:Value() and GoS:AlliesAround(GoS:myHeroPos(), VayneMenu.Combo.R.Rallyrange:Value()) >= VayneMenu.Combo.R.Rminally:Value() then
@@ -160,8 +159,7 @@ OnLoop(function(myHero)
             end
 	  end
         
-	if VayneMenu.Combo.E.AutoE:Value() then
-	  if GoS:ValidTarget(enemy, 710) then
+	if IsReady(_E) and VayneMenu.Combo.E.AutoE:Value() and GoS:ValidTarget(enemy, 710) then
             local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
@@ -172,15 +170,13 @@ OnLoop(function(myHero)
               CastTargetSpell(enemy, _E) 
               end
             end
-          end
         end
 
-        if VayneMenu.Combo.E.lowhp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= 15 and GoS:EnemiesAround(GoS:myHeroPos(), 375) >= 1 then
+        if IsReady(_E) and VayneMenu.Combo.E.lowhp:Value() and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) <= 15 and GoS:EnemiesAround(GoS:myHeroPos(), 375) >= 1 then
         CastTargetSpell(enemy, _E)
         end
 
-        if VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
-          if GoS:ValidTarget(enemy, 710) then
+        if IsReady(_E) and GoS:ValidTarget(enemy, 710) and VayneMenu.Combo.E.Enabled:Value() and IOW:Mode() == "Combo" and VayneMenu.Combo.E.stuntarget:Value() == false then
             local EPred = GetPredictionForPlayer(GetOrigin(myHero),enemy,GetMoveSpeed(enemy),2200,0,750,10,false,true)
             local PredPos = Vector(EPred.PredPos)
             local HeroPos = Vector(myHero)
@@ -191,7 +187,6 @@ OnLoop(function(myHero)
               CastTargetSpell(enemy, _E) 
               end
             end
-          end
         end
    end
 
@@ -224,7 +219,7 @@ end
 end
 end)
 
-OnProcessSpell(function(unit, spell)
+OnProcessSpellComplete(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
         if spell.name:lower():find("attack") and CanUseSpell(myHero, _Q) == READY then 
@@ -264,7 +259,7 @@ OnProcessSpell(function(unit, spell)
                         end
 
                      end
-                end, GetWindUp(myHero)*1000)
+                end, spell.windUpTime*1000)
 	end		
       end
   
