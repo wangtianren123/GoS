@@ -23,7 +23,6 @@ CassiopeiaMenu:SubMenu("Misc", "Misc")
 CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 CassiopeiaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
-CassiopeiaMenu.Misc:Boolean("Interrupt", "Interrupt Spells with R", true)
 
 CassiopeiaMenu:SubMenu("Farm", "Farm")
 CassiopeiaMenu.Misc:Boolean("AutoE", "Auto E if pois", true)
