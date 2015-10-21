@@ -170,7 +170,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 		  if IsReady(_Q) and AhriMenu.LaneClear.Q:Value() then
-                    BestPos, BestHit = GetLineFarmPosition(880, 50)
+                    local BestPos, BestHit = GetLineFarmPosition(880, 50)
                     if BestPos and BestHit > 0 then 
                     CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
                     end
