@@ -156,7 +156,7 @@ OnTick(function(myHero)
 		local target = GetCustomTarget()
 		
                 if IsReady(_Q) and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Combo.Q:Value() then
-                CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+                Cast(_Q,target)
 	        end
                           
                 if target and GetCurrentMana(myHero) >= 200 and IsReady(_W) and IsReady(_Q) and GoS:GetDistance(target) <= 1275 and GoS:GetDistance(target) >= 975 and BlitzcrankMenu.Combo.W:Value() then
