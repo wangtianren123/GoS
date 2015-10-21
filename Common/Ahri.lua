@@ -96,11 +96,11 @@ OnTick(function(myHero)
         end
 	
         if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
-          if GoS:ValidTarget(target, 550) then
+          if GoS:ValidTarget(target, 900) then
             local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
-	    if UltOn then
+	    if UltOn and BestPos then
             CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
-	    elseif IsReady(_R) and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
+	    elseif IsReady(_R) and BestPos and 25+15*GetCastLevel(myHero,_Q)+.35*GetBonusAP(myHero)+24+40*GetCastLevel(myHero,_W)+.64*GetBonusAP(myHero)+25+35*GetCastLevel(myHero,_E)+.5*GetBonusAP(myHero)+30+40*GetCastLevel(myHero,_R)+.3*GetBonusAP(myHero) > GetCurrentHP(target) then
 	    CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
 	    end
           end
