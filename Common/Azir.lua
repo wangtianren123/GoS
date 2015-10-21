@@ -165,7 +165,7 @@ OnTick(function(myHero)
 	end
 	
 	local RThrowPos = GetMEC(600,GoS:GetEnemyHeroes()) 
-	if IsReady(_R) and AzirMenu.Misc.AutoUlt.Enabled:Value() and RThrowPos.Count >= AzirMenu.Misc.AutoUlt.Push:Value() then
+	if IsReady(_R) and AzirMenu.Misc.AutoUlt.Enabled:Value() and RThrowPos.count >= AzirMenu.Misc.AutoUlt.Push:Value() then
 	CastSkillShot(_R, RThrowPos.x, RThrowPos.y, RThrowPos.z)
 	end
 	
