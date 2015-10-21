@@ -108,7 +108,7 @@ OnTick(function(myHero)
 
         if AhriMenu.Combo.RMode:Value() == 2 and AhriMenu.Combo.R:Value() then
           if GoS:ValidTarget(target, 900) then
-            local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos) - GetOrigin(myHero)):normalized() * 550
+            local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos()) - GetOrigin(myHero)):normalized() * 550
             local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
    	    if UltOn then
               if DistanceAfterTumble < 550 then
