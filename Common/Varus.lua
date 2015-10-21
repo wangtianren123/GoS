@@ -45,16 +45,17 @@ OnTick(function(myHero)
     if CanUseSpell(myHero, _Q) == READY and GoS:ValidTarget(target, 1625) and VarusMenu.Combo.Q:Value() then
       CastSkillShot(_Q, mousePos.x, mousePos.y, mousePos.z)
       Qon = true
-      GoS:DelayAction(function() Qon = false end, 4000)
-    elseif Qon then
-      GoS:DelayAction(function()
       local Qrange = 925 + 0.35*GetTickCount()
-      local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
-        if QPred.HitChance == 1 then
-        CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
-        Qon = false
+      GoS:DelayAction(function() Qon = false end, 4000)
+        local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1900,250,Qrange,70,false,true)
+        if Qon and GoS:ValidTarget(target, 1625) and VarusMenu.Combo.Q:Value() then
+        GoS:DelayAction(function()
+          if QPred.HitChance == 1 then
+          CastSkillShot2(_Q, QPred.PredPos.x, QPred.PredPos.y, QPred.PredPos.z)
+          Qon = false
+          end
+        end, 10)
         end
-      end, 10)
     end 
   end
 end)
