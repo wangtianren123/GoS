@@ -46,31 +46,11 @@ VayneMenu:SubMenu("Drawings", "Drawings")
 VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
 
-local mapID = GetMapID()
-
 if mapID == SUMMONERS_RIFT then
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
 end
 
 local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
-
-CHANELLING_SPELLS = {
-    ["CaitlynAceintheHole"]         = {Name = "Caitlyn",      Spellslot = _R},
-    ["Drain"]                       = {Name = "FiddleSticks", Spellslot = _W},
-    ["Crowstorm"]                   = {Name = "FiddleSticks", Spellslot = _R},
-    ["GalioIdolOfDurand"]           = {Name = "Galio",        Spellslot = _R},
-    ["FallenOne"]                   = {Name = "Karthus",      Spellslot = _R},
-    ["KatarinaR"]                   = {Name = "Katarina",     Spellslot = _R},
-    ["LucianR"]                     = {Name = "Lucian",       Spellslot = _R},
-    ["AlZaharNetherGrasp"]          = {Name = "Malzahar",     Spellslot = _R},
-    ["MissFortuneBulletTime"]       = {Name = "MissFortune",  Spellslot = _R},
-    ["AbsoluteZero"]                = {Name = "Nunu",         Spellslot = _R},                        
-    ["Pantheon_GrandSkyfall_Jump"]  = {Name = "Pantheon",     Spellslot = _R},
-    ["ShenStandUnited"]             = {Name = "Shen",         Spellslot = _R},
-    ["UrgotSwap2"]                  = {Name = "Urgot",        Spellslot = _R},
-    ["VarusQ"]                      = {Name = "Varus",        Spellslot = _Q},
-    ["InfiniteDuress"]              = {Name = "Warwick",      Spellslot = _R} 
-}
 
 GoS:DelayAction(function()
 
@@ -86,6 +66,15 @@ GoS:DelayAction(function()
 		
 end, 1)
   
+OnDraw(function(myHero)
+if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
+if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
+if mapID == SUMMONERS_RIFT and VayneMenu.Drawings.WT:Value() then
+DrawCircle(6962, 51, 8952,80,0,0,0xffffffff)
+DrawCircle(12060, 51, 4806,80,0,0,0xffffffff)
+end
+end)
+
 OnTick(function(myHero)
     if IOW:Mode() == "Combo" then
 	
@@ -208,21 +197,13 @@ if VayneMenu.Misc.Autolvl:Value() then
    end
 LevelSpell(leveltable[GetLevel(myHero)])
 end
-		
-if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
-if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
-if mapID == SUMMONERS_RIFT then
-if VayneMenu.Drawings.WT:Value() then
-DrawCircle(6962, 51, 8952,80,0,0,0xffffffff)
-DrawCircle(12060, 51, 4806,80,0,0,0xffffffff)
-end
-end
+
 end)
 
 OnProcessSpellComplete(function(unit, spell)
     if unit and spell and spell.name then
       if unit == myHero then
-        if spell.name:lower():find("attack") and CanUseSpell(myHero, _Q) == READY then 
+        if spell.name:lower():find("attack") and IsReady(_Q) then 
 	        GoS:DelayAction(function() 
 
 	        	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
