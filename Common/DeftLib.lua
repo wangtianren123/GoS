@@ -151,7 +151,7 @@ function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       range = range or  SpellData[GetObjectName(myHero)][spell].Range
       width = width or  SpellData[GetObjectName(myHero)][spell].Width
       coll = coll or  SpellData[GetObjectName(myHero)][spell].collision
-      local Predicted = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
+      local Predicted = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
       if Predicted.HitChance >= hitchance then
       CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
       end
@@ -391,7 +391,7 @@ function GetDistance2XYZ(x,z,x2,z2)
 	end	
 end
 
-OnProcessSpell(function(unit,spell)
+OnProcessSpellComplete(function(unit,spell)
 	if unit and spell and GetObjectType(unit) == Obj_AI_Hero then
 			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 				if GoS:ValidTarget(enemy,25000) then
