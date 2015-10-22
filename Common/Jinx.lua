@@ -1,5 +1,7 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
+require('Deftlib')
+
 local JinxMenu = Menu("Jinx", "Jinx")
 JinxMenu:SubMenu("Combo", "Combo")
 JinxMenu.Combo:Boolean("Q", "Use Q", true)
