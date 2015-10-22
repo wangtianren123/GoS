@@ -51,9 +51,9 @@ GoS:DelayAction(function()
 		
 end, 1)
 
-OnProcessSpell(function(unit, spell)
+OnProcessSpellComplete(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and CanUseSpell(myHero, _R) == READY then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
         Cast(_R,unit)
