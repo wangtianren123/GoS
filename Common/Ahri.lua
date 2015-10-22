@@ -77,7 +77,7 @@ OnProcessSpellComplete(function(unit, spell)
   end
 end)
 
-UltOn = false
+local UltOn = false
 
 OnDraw(function(myHero)
 if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),880,1,0,0xff00ff00) end
