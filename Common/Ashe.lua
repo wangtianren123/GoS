@@ -61,7 +61,7 @@ end, 1)
 
 OnProcessSpellComplete(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and IsReady(_R) then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
         Cast(_R,unit)
@@ -75,7 +75,7 @@ OnDraw(function(myHero)
 if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1200,1,0,0xff00ff00) end
 end)
 
-QReady = false
+local QReady = false
 
 OnTick(function(myHero)
 
