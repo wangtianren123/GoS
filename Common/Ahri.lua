@@ -66,11 +66,10 @@ end, 1)
 
 OnProcessSpellComplete(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and IsReady(_E) then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_E) then
       if CHANELLING_SPELLS[spell.name] then
-      	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),unit,0,1550,250,1000,60,true,true)
-        if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and EPred.HitChance == 1 then 
-        CastSkillShot(_E, GetOrigin(unit).x, GetOrigin(unit).y, GetOrigin(unit).z)
+        if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
+        Cast(_E,unit)
         end
       end
     end
