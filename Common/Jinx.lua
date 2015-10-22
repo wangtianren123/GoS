@@ -14,7 +14,6 @@ JinxMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
 JinxMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 JinxMenu.Combo:Boolean("QSS", "Use QSS", true)
 JinxMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
-JinxMenu.Combo:Boolean("Farm", "Switch Q in X/V", true)
 
 JinxMenu:SubMenu("Harass", "Harass")
 JinxMenu.Harass:Boolean("Q", "Use Q", true)
@@ -30,6 +29,12 @@ JinxMenu:SubMenu("Misc", "Misc")
 JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 JinxMenu.Misc:Boolean("Autolvl", "Auto level", true)
 JinxMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
+	
+JinxMenu:SubMenu("Lasthit", "Lasthit")
+JinxMenu.Lasthit:Boolean("Farm", "Always Switch To Minigun", true)
+
+JinxMenu:SubMenu("LaneClear", "LaneClear")
+JinxMenu.LaneClear:Boolean("Farm", "Always Switch To Minigun", true)
 
 JinxMenu:SubMenu("Drawings", "Drawings")
 JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
@@ -38,6 +43,20 @@ JinxMenu.Drawings:Boolean("E", "Draw E Range", true)
 OnDraw(function(myHero)
 if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1500,1,0,0xff00ff00) end
 if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),920,1,0,0xff00ff00) end
+end)
+
+local IsMinigun = true
+
+OnUpdateBuff(function(unit,buff)
+  if unit == myHero and buff.Name == "jinxqicon" then
+  IsMinigun = true
+  end
+end)
+
+OnRemoveBuff(function(unit,buff)
+  if unit == myHero and buff.Name == "jinxqicon" then
+  IsMinigun = false
+  end
 end)
 
 OnTick(function(myHero)
@@ -56,9 +75,9 @@ OnTick(function(myHero)
         end
 		
 	if IsReady(_Q) and JinxMenu.Combo.Q:Value() and GoS:ValidTarget(target, 700) then
-          if GoS:GetDistance(myHero, target) > 525 and GotBuff(myHero, "jinxqicon") > 0 then
+          if GoS:GetDistance(myHero, target) >= 570 and IsMinigun then
           CastSpell(_Q)
-          elseif GoS:GetDistance(myHero, target) < 570 and GotBuff(myHero, "JinxQ") > 0 then
+          elseif GoS:GetDistance(myHero, target) <= 525 and not IsMinigun then
           CastSpell(_Q)
           end
         end
@@ -85,9 +104,9 @@ OnTick(function(myHero)
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
 		
 	if IsReady(_Q) and JinxMenu.Harass.Q:Value() and GoS:ValidTarget(target, 700) then
-          if GoS:GetDistance(myHero, target) > 525 and GotBuff(myHero, "jinxqicon") > 0 then
+          if GoS:GetDistance(myHero, target) >= 570 and IsMinigun then
           CastSpell(_Q)
-          elseif GoS:GetDistance(myHero, target) < 570 and GotBuff(myHero, "JinxQ") > 0 then
+          elseif GoS:GetDistance(myHero, target) <= 525 and not IsMinigun then
           CastSpell(_Q)
           end
         end
@@ -114,13 +133,13 @@ local targetpos = GetOrigin(target)
 end]]
 
 if IOW:Mode() == "LastHit" then
-  if GotBuff(myHero, "JinxQ") > 0 and JinxMenu.Combo.Farm:Value() then
+  if not IsMinigun and JinxMenu.Lasthit.Farm:Value() then
   CastSpell(_Q)
   end
 end
   
 if IOW:Mode() == "LaneClear" then
-  if GotBuff(myHero, "JinxQ") > 0 and JinxMenu.Combo.Farm:Value() then
+  if not IsMinigun and JinxMenu.LaneClear.Farm:Value() then
   CastSpell(_Q)
   end
 end
