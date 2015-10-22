@@ -67,10 +67,10 @@ end, 1)
 
 OnProcessSpellComplete(function(unit, spell)
   if unit and spell and spell.name then
-    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) then
+    if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 975) and IsReady(_Q) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and InterruptMenu.SupportedSpells.Q:Value() then
-        Cast(_R,unit)
+        Cast(_Q,unit)
         elseif GoS:IsInDistance(unit, 600) and IsReady(_R) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and InterruptMenu.SupportedSpells.R:Value() then
         CastSpell(_R)
         end
@@ -83,8 +83,8 @@ OnProcessSpellComplete(function(unit, spell)
   end
 end)
 
-OnUpdateBuff(function(Object,buff)
-        if buff.Name == "rocketgrab2" and GetObjectType(Object) == Obj_AI_Hero and GetTeam(Object) ~= GetTeam(GetMyHero()) then
+OnUpdateBuff(function(unit,buff)
+        if buff.Name == "rocketgrab2" and GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) then
 	    SuccesfulGrabs = SuccesfulGrabs + 1
 	    MissedGrabs = MissedGrabs - 1
 		
@@ -124,8 +124,8 @@ OnDraw(function(myHero)
 TotalGrabs = MissedGrabs + SuccesfulGrabs
 Percentage = ((SuccesfulGrabs*100)/TotalGrabs)
 
-if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,975,1,128,0xff00ff00) end
-if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,600,1,128,0xff00ff00) end
+if BlitzcrankMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),975,1,0,0xff00ff00) end
+if BlitzcrankMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),600,1,0,0xff00ff00) end
 if BlitzcrankMenu.Drawings.Stats:Value() then 
 DrawText("Percentage Grab done : " .. tostring(math.ceil(Percentage)) .. "%",12,0,30,0xff00ff00)
 DrawText("Grab Done : "..tostring(SuccesfulGrabs),12,0,40,0xff00ff00)
@@ -133,20 +133,11 @@ DrawText("Grab Miss : "..tostring(MissedGrabs),12,0,50,0xff00ff00)
 DrawText("Total Grabs : "..tostring(TotalGrabs),12,0,60,0xff00ff00)
 end
 
-if BlitzcrankMenu.Drawings.Target:Value() then 
-  local target = GetCustomTarget()
-  if GoS:ValidTarget(target) then
-     local TargetPos = GetOrigin(target)
-     local drawpos = WorldToScreen(1,TargetPos.x, TargetPos.y, TargetPos.z)
-     DrawText("Current Target", 20, drawpos.x-100, drawpos.y, 0xffffff00)
-  end
-end
-
 if BlitzcrankMenu.Drawings.Circle:Value() then 
   local target = GetCustomTarget()
   if GoS:ValidTarget(target) then
      local TargetPos = GetOrigin(target)
-     DrawCircle(TargetPos.x, TargetPos.y, TargetPos.z,250,1,100,0xffff0000) 
+     DrawCircle(TargetPos,200,2,0,0xffff0000) 
   end
 end
 
@@ -226,7 +217,7 @@ end)
 
 function GetCustomTarget()
     local target = GetCurrentTarget()
-	if SelectedTarget ~= nil and GoS:ValidTarget(SelectedTarget, 2000) and GoS:GetDistance(SelectedTarget) < 1800 then
+	if SelectedTarget ~= nil and GoS:ValidTarget(SelectedTarget, 1800) then
 		return SelectedTarget
 	end
 	if target then 
