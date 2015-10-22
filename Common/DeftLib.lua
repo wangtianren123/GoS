@@ -157,10 +157,6 @@ function Cast(spell, target, hitchance, speed, delay, range, width, coll)
       end
 end
 
-function myHeroPos()
-    return GetOrigin(myHero) 
-end
-
 function mousePos()
     return GetMousePos()
 end
@@ -171,7 +167,6 @@ end
 
 IsRecalling = false
 IsCCed = false
-poisonTable = {}
 SpellShieldTable = {}
 ccbuffsTable = {5,9,21,22,28,29,30}
 ccnameTable = {"zedultexecute", "summonerexhaust"}
@@ -200,10 +195,6 @@ OnUpdateBuff(function(Object,buff)
   SpellShieldTable[GetNetworkID(Object)] = buff.Count
   end
 
-  if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
-  poisonTable[GetNetworkID(Object)] = buff.Count
-  end
-
 end)
 
 OnRemoveBuff(function(Object,buff)
@@ -229,18 +220,10 @@ OnRemoveBuff(function(Object,buff)
   SpellShieldTable[GetNetworkID(Object)] = 0
   end
 
-  if GetTeam(Object) ~= GetTeam(myHero) and buff.Name:find("Poison") then
-  poisonTable[GetNetworkID(Object)] = 0
-  end
-
 end)
 
 function IsSpellShielded(unit)
    return (SpellShieldTable[GetNetworkID(unit)] or 0) > 0
-end
-
-function IsPoisoned(unit)
-   return (poisonTable[GetNetworkID(unit)] or 0) > 0
 end
 
 function GetLineFarmPosition(range, width)
