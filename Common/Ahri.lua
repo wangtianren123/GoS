@@ -64,7 +64,7 @@ GoS:DelayAction(function()
 		
 end, 1)
 
-OnProcessSpell(function(unit, spell)
+OnProcessSpellComplete(function(unit, spell)
   if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(GetMyHero()) and IsReady(_E) then
       if CHANELLING_SPELLS[spell.name] then
@@ -224,13 +224,13 @@ LevelSpell(leveltable[GetLevel(myHero)])
 end
 end)
  
-OnUpdateBuff(function(Object,buff)
+OnUpdateBuff(function(unit,buff)
   if buff.Name == "ahritumble" then 
   UltOn = true
   end
 end)
 
-OnRemoveBuff(function(Object,buff)
+OnRemoveBuff(function(unit,buff)
   if buff.Name == "ahritumble" then 
   UltOn = false
   end
