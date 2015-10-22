@@ -57,19 +57,15 @@ end)
 local poisoned = {}
 
 OnUpdateBuff(function(unit,buff)
-
   if GetTeam(unit) ~= GetTeam(myHero) and buff.Name:find("Poison") then
   poisoned[GetNetworkID(unit)] = buff.Count
   end
-
 end)
 
 OnRemoveBuff(function(unit,buff)
-
   if GetTeam(unit) ~= GetTeam(myHero) and buff.Name:find("Poison") then
   poisoned[GetNetworkID(unit)] = 0
   end
-
 end)
 
 function IsPoisoned(unit)
