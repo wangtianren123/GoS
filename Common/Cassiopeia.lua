@@ -48,11 +48,33 @@ CassiopeiaMenu.Drawings:Boolean("E", "Draw E Range", false)
 CassiopeiaMenu.Drawings:Boolean("R", "Draw R Range", false)
 
 OnDraw(function(myHero)
-if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
-if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_W),1,128,0xff00ff00) end
-if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,700,1,128,0xff00ff00) end
-if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,GetCastRange(myHero,_R),1,128,0xff00ff00) end
+if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),850,1,0,0xff00ff00) end
+if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,0xff00ff00) end
+if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,0xff00ff00) end
+if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),825,1,0,0xff00ff00) end
 end)
+
+local poisoned = {}
+
+OnUpdateBuff(function(unit,buff)
+
+  if GetTeam(unit) ~= GetTeam(myHero) and buff.Name:find("Poison") then
+  poisoned[GetNetworkID(unit)] = buff.Count
+  end
+
+end)
+
+OnRemoveBuff(function(unit,buff)
+
+  if GetTeam(unit) ~= GetTeam(myHero) and buff.Name:find("Poison") then
+  poisoned[GetNetworkID(unit)] = 0
+  end
+
+end)
+
+function IsPoisoned(unit)
+   return (poisoned[GetNetworkID(unit)] or 0) > 0
+end
 
 OnTick(function(myHero)
 
