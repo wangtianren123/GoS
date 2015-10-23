@@ -173,12 +173,12 @@ if AzirMenu.Combo.Flee:Value() then
 	
 	MoveToXYZ(mousePos())
         if IsReady(_W) and table.getn(AzirSoldiers) < 1 then 
-        local movePos = myHeroPos() + (Vector(mousePos()) - myHeroPos()):normalized()*450
+        local movePos = GoS:myHeroPos() + (Vector(mousePos()) - GoS:myHeroPos()):normalized()*450
 	CastSkillShot(_W, movePos.x, movePos.y, movePos.z) 
 	end
 	
 	for _,Soldier in pairs(AzirSoldiers) do
-	  local movePos = myHeroPos() + (Vector(mousePos()) - myHeroPos()):normalized()*950
+	  local movePos = GoS:myHeroPos() + (Vector(mousePos()) - GoS:myHeroPos()):normalized()*950
 	  if movePos then
           CastTargetSpell(Soldier, _E)
           GoS:DelayAction(function() CastSkillShot(_Q, movePos.x, movePos.y, movePos.z) end, 150)
@@ -201,7 +201,7 @@ if AzirMenu.Combo.Insec:Value() then
      
       for _,Soldier in pairs(AzirSoldiers) do
       	
-        local movePos = myHeroPos() + (Vector(enemy) - myHeroPos()):normalized() * 950
+        local movePos = GoS:myHeroPos() + (Vector(enemy) - GoS:myHeroPos()):normalized() * 950
         if movePos then
         CastSkillShot(_Q, movePos.x, movePos.y, movePos.z)
         GoS:DelayAction(function() CastTargetSpell(Soldier, _E) end, 250)
