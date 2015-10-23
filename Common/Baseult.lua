@@ -25,7 +25,7 @@ local SpellData = {
         }
 }
 
-if not spellData[GetObjectName(myHero)] then return end
+if not SpellData[GetObjectName(myHero)] then return end
 PrintChat("Baseult for "..spellData[GetObjectName(myHero)].." loaded")
 	
 local BaseultMenu = Menu("Baseult", "Baseult")
@@ -58,9 +58,9 @@ local barWidth = 250
 local rowHeight = 18
 
 local Base = BasePositions[GetMapID()][GetTeam(myHero)]
-local Delay = spellData[GetObjectName(myHero)].Delay
-local MissileSpeed = spellData[GetObjectName(myHero)].MissileSpeed
-local Damage = spellData[GetObjectName(myHero)].Damage
+local Delay = SpellData[GetObjectName(myHero)].Delay
+local MissileSpeed = SpellData[GetObjectName(myHero)].MissileSpeed
+local Damage = SpellData[GetObjectName(myHero)].Damage
 
 OnTick(function(myHero)
 PrintChat("..BasePositions[GetMapID()][GetTeam(myHero)]..")
