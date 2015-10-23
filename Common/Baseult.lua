@@ -63,7 +63,7 @@ local Damage = SpellData[GetObjectName(myHero)].Damage
 
 OnProcessRecall(function(unit,recall)
 	if CanUseSpell(myHero, _R) == READY and BaseultMenu.Enabled:Value() and GetTeam(unit) ~= GetTeam(myHero) then
-		if damage(unit) > GetCurrentHP(unit)+GetDmgShield(unit)+GetHPRegen(unit)*8 then
+		if Damage > GetCurrentHP(unit)+GetDmgShield(unit)+GetHPRegen(unit)*8 then
 	                if recall.totalTime > Delay + (GoS:GetDistance(Base) * 1000 / MissileSpeed) then
 				GoS:DelayAction(function() CastSkillShot(_R, Base.x, Base.y, Base.z) end, recall.totalTime- (Delay + (GoS:GetDistance(Base) * 1000 / MissileSpeed)))
 			end
