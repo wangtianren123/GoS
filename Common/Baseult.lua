@@ -1,3 +1,22 @@
+local BasePositions = {
+     [SUMMONERS_RIFT] = {
+	[100] = Vector(14340, 171, 14390),
+	[200] = Vector(400, 200, 400)
+     },
+
+     [CRYSTAL_SCAR] = {
+	[100] = Vector(13321, -37, 4163),
+	[200] = Vector(527, -35, 4163)
+     },
+     
+     [TWISTED_TREELINE] = {
+	[100] = Vector(14320, 151, 7235),
+	[200] = Vector(1060, 150, 7297)
+     }
+}
+
+local Base = BasePositions[GetMapID()][GetTeam(myHero)]
+
 local SpellData = {
 	
         ["Ashe"] = {
@@ -32,39 +51,15 @@ local BaseultMenu = Menu("Baseult", "Baseult")
 BaseultMenu:Boolean("Enabled", "Enabled", true)
 BaseultMenu:Boolean("RT", "RecallTracker", true)
 
-local mapID = GetMapID()
-
-local BasePositions = {
-     [SUMMONERS_RIFT] = {
-	[100] = Vector(14340, 171, 14390),
-	[200] = Vector(400, 200, 400)
-     },
-
-     [CRYSTAL_SCAR] = {
-	[100] = Vector(13321, -37, 4163),
-	[200] = Vector(527, -35, 4163)
-     },
-     
-     [TWISTED_TREELINE] = {
-	[100] = Vector(14320, 151, 7235),
-	[200] = Vector(1060, 150, 7297)
-     }
-}
-
 local recalling = {}
 local x = 5
 local y = 500
 local barWidth = 250
 local rowHeight = 18
 
-local Base = BasePositions[GetMapID()][GetTeam(myHero)]
 local Delay = SpellData[GetObjectName(myHero)].Delay
 local MissileSpeed = SpellData[GetObjectName(myHero)].MissileSpeed
 local Damage = SpellData[GetObjectName(myHero)].Damage
-
-OnTick(function(myHero)
-PrintChat("..BasePositions[GetMapID()][GetTeam(myHero)]..")
-end)
 
 OnProcessRecall(function(unit,recall)
 	if CanUseSpell(myHero, _R) == READY and BaseultMenu.Enabled:Value() and GetTeam(unit) ~= GetTeam(myHero) then
