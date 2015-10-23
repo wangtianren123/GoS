@@ -102,7 +102,7 @@ OnTick(function(myHero)
         
           local MinionPos = GetOrigin(minion)
           local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
-          if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() and GetCurrentHP(minion) < GoS:GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
+          if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Combo.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
           CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
           end
            
@@ -134,7 +134,7 @@ OnTick(function(myHero)
         for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
            local MinionPos = GetOrigin(minion)
            local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(target), MinionPos)
-           if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() and GetCurrentHP(minion) < GoS:GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
+           if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) and isOnSegment and GoS:GetDistance(pointSegment,minion) < 50 then
            CastSkillShot(_Q, MinionPos.x, MinionPos.y, MinionPos.z)
            end
         end
@@ -206,9 +206,9 @@ OnTick(function(myHero)
 	   
            if IsReady(_E) and GoS:ValidTarget(enemy, 1000) and KalistaMenu.Killsteal.E:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)/8 < Edmg(enemy) then
 	   CastSpell(_E)
-	   elseif IsReady(_Q) and GoS:ValidTarget(enemy, 1150) and KalistaMenu.Killsteal.Q:Value() and QPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:GoS:CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
+	   elseif IsReady(_Q) and GoS:ValidTarget(enemy, 1150) and KalistaMenu.Killsteal.Q:Value() and QPred.HitChance == 1 and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then  
            CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
-           elseif IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy) < GoS:GoS:CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then
+           elseif IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy) < GoS:CalcDamage(myHero, enemy, 60*GetCastLevel(myHero,_Q) - 50 + GetBaseDamage(myHero)) then
              for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
                local MinionPos = GetOrigin(minion)
                local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(GetOrigin(myHero), GetOrigin(enemy), MinionPos)
