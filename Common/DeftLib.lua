@@ -229,7 +229,7 @@ end
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = GoS:GetAllMinions(MINION_ENEMY)
+    local objects = IOW.mobs
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
@@ -247,7 +247,7 @@ end
 function GetFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = minionManager.objects
+  local objects = IOW.mobs
   for i, object in pairs(objects) do
   	if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
 	  	local hit = CountObjectsNearPos(Vector(object), range, width, objects)
@@ -266,7 +266,7 @@ end
 function GetJLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = GoS:GetAllMinions(MINION_JUNGLE)
+    local objects = IOW.mobs
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
@@ -284,7 +284,7 @@ end
 function GetJFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = GoS:GetAllMinions(MINION_JUNGLE)
+  local objects = IOW.mobs
   for i, object in pairs(objects) do
     local hit = CountObjectsNearPos(Vector(object), range, width, objects)
     if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
@@ -394,7 +394,7 @@ end
 OnProcessSpellComplete(function(unit,spell)
 	if unit and spell and GetObjectType(unit) == Obj_AI_Hero then
 			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
-				if GoS:ValidTarget(enemy,25000) then
+				if GoS:ValidTarget(enemy,20000) then
 					local targetFaceXYZ=GetOrigin(enemy)
 					if (spell.name:find("Attack")) then 
 						if spell.startPos.x == targetFaceXYZ.x and spell.startPos.y == targetFaceXYZ.y and spell.startPos.z == targetFaceXYZ.z then 
