@@ -57,10 +57,14 @@ local y = 500
 local barWidth = 250
 local rowHeight = 18
 
-local Base = BasePositions[mapID[GetTeam(myHero)]]
+local Base = BasePositions[GetMapID()][GetTeam(myHero)]
 local Delay = spellData[GetObjectName(myHero)].Delay
 local MissileSpeed = spellData[GetObjectName(myHero)].MissileSpeed
 local Damage = spellData[GetObjectName(myHero)].Damage
+
+OnTick(function(myHero)
+PrintChat("..BasePositions[GetMapID()][GetTeam(myHero)]..")
+end)
 
 OnProcessRecall(function(unit,recall)
 	if CanUseSpell(myHero, _R) == READY and BaseultMenu.Enabled:Value() and GetTeam(unit) ~= GetTeam(myHero) then
