@@ -2,53 +2,56 @@ if GetObjectName(myHero) ~= "Ahri" then return end
 
 require('Deftlib')
 
-local AhriMenu = Menu("Ahri", "Ahri")
-AhriMenu:SubMenu("Combo", "Combo")
+local AhriMenu = MenuConfig("Ahri", "Ahri")
+AhriMenu:Menu("Combo", "Combo")
 AhriMenu.Combo:Boolean("Q", "Use Q", true)
 AhriMenu.Combo:Boolean("W", "Use W", true)
 AhriMenu.Combo:Boolean("E", "Use E", true)
 AhriMenu.Combo:Boolean("R", "Use R", true)
-AhriMenu.Combo:List("RMode", "R Mode", 1, {"Logic", "to mouse"})
+AhriMenu.Combo:DropDown("RMode", "R Mode", 1, {"Logic", "to mouse"})
 
-AhriMenu:SubMenu("Harass", "Harass")
+AhriMenu:Menu("Harass", "Harass")
 AhriMenu.Harass:Boolean("Q", "Use Q", true)
 AhriMenu.Harass:Boolean("W", "Use W", true)
 AhriMenu.Harass:Boolean("E", "Use E", true)
 AhriMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-AhriMenu:SubMenu("Killsteal", "Killsteal")
+AhriMenu:Menu("Killsteal", "Killsteal")
 AhriMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 AhriMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AhriMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
-AhriMenu:SubMenu("Misc", "Misc")
+AhriMenu:Menu("Misc", "Misc")
 AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
-AhriMenu:SubMenu("Lasthit", "Lasthit")
+AhriMenu:Menu("Lasthit", "Lasthit")
 AhriMenu.Lasthit:Boolean("Q", "Use Q", true)
 AhriMenu.Lasthit:Slider("Mana", "if Mana % >", 50, 0, 80, 1)
 
-AhriMenu:SubMenu("LaneClear", "LaneClear")
+AhriMenu:Menu("LaneClear", "LaneClear")
 AhriMenu.LaneClear:Boolean("Q", "Use Q", true)
 AhriMenu.LaneClear:Boolean("W", "Use W", false)
 AhriMenu.LaneClear:Boolean("E", "Use E", false)
 AhriMenu.LaneClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-AhriMenu:SubMenu("JungleClear", "JungleClear")
+AhriMenu:Menu("JungleClear", "JungleClear")
 AhriMenu.JungleClear:Boolean("Q", "Use Q", true)
 AhriMenu.JungleClear:Boolean("W", "Use W", true)
 AhriMenu.JungleClear:Boolean("E", "Use E", true)
 AhriMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-AhriMenu:SubMenu("Drawings", "Drawings")
+AhriMenu:Menu("Drawings", "Drawings")
 AhriMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AhriMenu.Drawings:Boolean("W", "Draw W Range", true)
 AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
 AhriMenu.Drawings:Boolean("R", "Draw R Range", true)
+AhriMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
 
-local InterruptMenu = Menu("Interrupt (E)", "Interrupt")
+AhriMenu:TargetSelector("ts", "Target Selector", DAMAGE_MAGICAL, 1000, TARGET_LESS_CAST)
+
+local InterruptMenu = MenuConfig("Interrupt (E)", "Interrupt")
 
 GoS:DelayAction(function()
 
@@ -79,23 +82,23 @@ end)
 local UltOn = false
 
 OnDraw(function(myHero)
-if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),880,1,0,0xff00ff00) end
-if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,0xff00ff00) end
-if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),975,1,0,0xff00ff00) end
-if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,0xff00ff00) end
+local col = AhriMenu.Drawings.color:Value()
+if AhriMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),880,1,0,col) end
+if AhriMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,col) end
+if AhriMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),975,1,0,col) end
+if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,col) end
 end)
 
 OnTick(function(myHero)
-    if IOW:Mode() == "Combo" then
-        
-	local target = GetCurrentTarget()
+    local target = AhriMenu.ts:GetTarget()
+    if target and IOW:Mode() == "Combo" then
 
-        if IsReady(_E) and GoS:ValidTarget(target, 1050) then
+        if IsReady(_E) and GoS:GetDistanceSqr(target) < 975*975 then
         Cast(_E,target)
         end
 	
         if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
-          if GoS:ValidTarget(target, 900) then
+          if GoS:GetDistanceSqr(target) < 900*900 then
             local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
 	    if UltOn and BestPos then
             CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
@@ -106,7 +109,7 @@ OnTick(function(myHero)
 	end
 
         if AhriMenu.Combo.RMode:Value() == 2 and AhriMenu.Combo.R:Value() then
-          if GoS:ValidTarget(target, 900) then
+          if GoS:GetDistanceSqr(target) < 900*900 then
             local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos()) - GetOrigin(myHero)):normalized() * 550
             local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
    	    if UltOn then
@@ -119,29 +122,27 @@ OnTick(function(myHero)
           end
 	end
 			
-	if IsReady(_W) and GoS:ValidTarget(target, 700) and AhriMenu.Combo.W:Value() then
+	if IsReady(_W) and GoS:GetDistanceSqr(target) < 700*700 and AhriMenu.Combo.W:Value() then
 	CastSpell(_W)
 	end
 		
-	if IsReady(_Q) and GoS:ValidTarget(target, 880) and AhriMenu.Combo.Q:Value() then
+	if IsReady(_Q) and GoS:GetDistanceSqr(target) < 880*880 and AhriMenu.Combo.Q:Value() then
         Cast(_Q,target)
         end
 					
     end
 	
-    if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
-	
-        local target = GetCurrentTarget()
+    if target and IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
 
-        if IsReady(_E) and GoS:ValidTarget(target, 1000) and AhriMenu.Harass.E:Value() then
+        if IsReady(_E) and GoS:GetDistanceSqr(target) < 975*975 and AhriMenu.Harass.E:Value() then
         Cast(_E,target)
         end
 				
-        if IsReady(_W) and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
+        if IsReady(_W) and GoS:GetDistanceSqr(target) < 700*700 and AhriMenu.Harass.W:Value() then
 	CastSpell(_W)
 	end
 		
-	if IsReady(_Q) and GoS:ValidTarget(target, 880) and AhriMenu.Harass.Q:Value() then
+	if IsReady(_Q) and GoS:GetDistanceSqr(target) < 880*880 and AhriMenu.Harass.Q:Value() then
         Cast(_Q,target)
         end
 		
@@ -165,7 +166,7 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 end
 
-for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+for _,minion in pairs(IOW.mobs) do
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 		  if IsReady(_Q) and AhriMenu.LaneClear.Q:Value() then
@@ -197,7 +198,7 @@ for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
 end
 
 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
-        for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+        for _,mob in pairs(IOW.mobs) do
 		local mobPos = GetOrigin(mob)
 		
 		if IsReady(_Q) and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
