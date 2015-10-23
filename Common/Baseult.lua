@@ -22,7 +22,7 @@ local SpellData = {
         ["Ashe"] = {
 	Delay = 250,
 	MissileSpeed = 1600,
-	Damage = function(target) return GoS:CalcDamage(myHero, unit, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
+	Damage = function(target) return GoS:CalcDamage(myHero, target, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
         },
         
         ["Draven"] = {
