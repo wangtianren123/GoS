@@ -70,16 +70,16 @@ GoS:DelayAction(function()
 end, 1)
 
 OnDraw(function(myHero)
-if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1150,1,128,0xff00ff00) end
-if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1000,1,128,0xff00ff00) end
-if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z,1450,1,128,0xff00ff00) end
+if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),1150,1,0,0xff00ff00) end
+if KalistaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1000,1,0,0xff00ff00) end
+if KalistaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),1450,1,0,0xff00ff00) end
 for _,spot in pairs(WallSpots) do
   if KalistaMenu.Combo.WallJump:Value() then 
-    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) > 125 then                
-    DrawCircle(spot.x,spot.y,spot.z,80,2,100,ARGB(255, 255, 255, 0))
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos()) > 125 then                
+    DrawCircle(spot.x,spot.y,spot.z,80,2,0,ARGB(255, 255, 255, 0))
     end
-    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos) <= 125 then 
-    DrawCircle(spot.x,spot.y,spot.z,80,2,100,ARGB(255, 0, 255, 0))
+    if GoS:GetDistance(spot) <= 7000 and GoS:GetDistance(spot, mousePos()) <= 125 then 
+    DrawCircle(spot.x,spot.y,spot.z,80,2,0,ARGB(255, 0, 255, 0))
     end
   end
 end
