@@ -90,15 +90,17 @@ if AhriMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,col) end
 end)
 
 OnTick(function(myHero)
-    local target = AhriMenu.ts:GetTarget()
-    if target and IOW:Mode() == "Combo" then
+  
+    if IOW:Mode() == "Combo" then
+        
+        local target = AhriMenu.ts:GetTarget()
 
-        if IsReady(_E) and GoS:GetDistanceSqr(target) < 975*975 then
+        if IsReady(_E) and GoS:ValidTarget(target,975) then
         Cast(_E,target)
         end
 	
         if AhriMenu.Combo.RMode:Value() == 1 and AhriMenu.Combo.R:Value() then
-          if GoS:GetDistanceSqr(target) < 900*900 then
+          if GoS:ValidTarget(target,900) then
             local BestPos = Vector(target) - (Vector(target) - Vector(myHero)):perpendicular():normalized() * 350
 	    if UltOn and BestPos then
             CastSkillShot(_R, BestPos.x, BestPos.y, BestPos.z)
@@ -109,7 +111,7 @@ OnTick(function(myHero)
 	end
 
         if AhriMenu.Combo.RMode:Value() == 2 and AhriMenu.Combo.R:Value() then
-          if GoS:GetDistanceSqr(target) < 900*900 then
+          if GoS:ValidTarget(target,900) then
             local AfterTumblePos = GetOrigin(myHero) + (Vector(mousePos()) - GetOrigin(myHero)):normalized() * 550
             local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
    	    if UltOn then
@@ -122,27 +124,29 @@ OnTick(function(myHero)
           end
 	end
 			
-	if IsReady(_W) and GoS:GetDistanceSqr(target) < 700*700 and AhriMenu.Combo.W:Value() then
+	if IsReady(_W) and GoS:ValidTarget(target,700) and AhriMenu.Combo.W:Value() then
 	CastSpell(_W)
 	end
 		
-	if IsReady(_Q) and GoS:GetDistanceSqr(target) < 880*880 and AhriMenu.Combo.Q:Value() then
+	if IsReady(_Q) and GoS:ValidTarget(target, 880) and AhriMenu.Combo.Q:Value() then
         Cast(_Q,target)
         end
 					
     end
 	
-    if target and IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
+    if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
+        
+        local target = AhriMenu.ts:GetTarget()
 
-        if IsReady(_E) and GoS:GetDistanceSqr(target) < 975*975 and AhriMenu.Harass.E:Value() then
+        if IsReady(_E) and GoS:ValidTarget(target, 975) and AhriMenu.Harass.E:Value() then
         Cast(_E,target)
         end
 				
-        if IsReady(_W) and GoS:GetDistanceSqr(target) < 700*700 and AhriMenu.Harass.W:Value() then
+        if IsReady(_W) and GoS:ValidTarget(target, 700) and AhriMenu.Harass.W:Value() then
 	CastSpell(_W)
 	end
 		
-	if IsReady(_Q) and GoS:GetDistanceSqr(target) < 880*880 and AhriMenu.Harass.Q:Value() then
+	if IsReady(_Q) and GoS:ValidTarget(target, 880) and AhriMenu.Harass.Q:Value() then
         Cast(_Q,target)
         end
 		
