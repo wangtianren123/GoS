@@ -20,7 +20,7 @@ local SpellData = {
         
         ["Jinx"] = {
 	Delay = 600,
-        MissileSpeed = (GoS:GetDistance(enemyBasePos) / (1 + (GoS:GetDistance(enemyBasePos)-1500)/2500)), -- thanks Noddy
+        MissileSpeed = (GoS:GetDistance(Base) / (1 + (GoS:GetDistance(Base)-1500)/2500)), -- thanks Noddy
 	Damage = function(unit) return GoS:CalcDamage(myHero, unit, (GetMaxHP(unit)-GetCurrentHP(unit))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
         }
 }
