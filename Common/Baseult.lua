@@ -22,25 +22,25 @@ local SpellData = {
         ["Ashe"] = {
 	Delay = 250,
 	MissileSpeed = 1600,
-	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
+	Damage = function(target) return GoS:CalcDamage(myHero, unit, 0, 75 + 175*GetCastLevel(myHero,_R) + GetBonusAP(myHero)) end
         },
         
         ["Draven"] = {
 	Delay = 400,
 	MissileSpeed = 2000,
-	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 75 + 100*GetCastLevel(myHero,_R) + 1.1*GetBonusDmg(myHero)) end
+	Damage = function(target) return GoS:CalcDamage(myHero, target, 75 + 100*GetCastLevel(myHero,_R) + 1.1*GetBonusDmg(myHero)) end
         },
         
         ["Ezreal"] = {
 	Delay = 1000,
 	MissileSpeed = 2000,
-	Damage = function(unit) return GoS:CalcDamage(myHero, unit, 0, 200 + 150*GetCastLevel(myHero,_R) + .9*GetBonusAP(myHero)+GetBonusDmg(myHero)) end
+	Damage = function(target) return GoS:CalcDamage(myHero, target, 0, 200 + 150*GetCastLevel(myHero,_R) + .9*GetBonusAP(myHero)+GetBonusDmg(myHero)) end
         },
         
         ["Jinx"] = {
 	Delay = 600,
         MissileSpeed = (GoS:GetDistance(Base) / (1 + (GoS:GetDistance(Base)-1500)/2500)), -- thanks Noddy
-	Damage = function(unit) return GoS:CalcDamage(myHero, unit, (GetMaxHP(unit)-GetCurrentHP(unit))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
+	Damage = function(target) return GoS:CalcDamage(myHero, targeg, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R)) + 150 + 100*GetCastLevel(myHero,_R) + GetBonusDmg(myHero)) end
         }
 }
 
@@ -63,7 +63,7 @@ local Damage = SpellData[GetObjectName(myHero)].Damage
 
 OnProcessRecall(function(unit,recall)
 	if CanUseSpell(myHero, _R) == READY and BaseultMenu.Enabled:Value() and GetTeam(unit) ~= GetTeam(myHero) then
-		if Damage > GetCurrentHP(unit)+GetDmgShield(unit)+GetHPRegen(unit)*8 then
+		if Damage(unit) > GetCurrentHP(unit)+GetDmgShield(unit)+GetHPRegen(unit)*8 then
 	                if recall.totalTime > Delay + (GoS:GetDistance(Base) * 1000 / MissileSpeed) then
 				GoS:DelayAction(function() CastSkillShot(_R, Base.x, Base.y, Base.z) end, recall.totalTime- (Delay + (GoS:GetDistance(Base) * 1000 / MissileSpeed)))
 			end
