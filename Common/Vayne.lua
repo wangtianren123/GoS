@@ -45,6 +45,7 @@ VayneMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 VayneMenu:Menu("Drawings", "Drawings")
 VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
+VayneMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
 
 if mapID == SUMMONERS_RIFT then
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
@@ -72,8 +73,9 @@ GoS:DelayAction(function()
 end, 1)
   
 OnDraw(function(myHero)
-if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_Q),1,128,0xff00ff00) end
-if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos().x,GoS:myHeroPos().y,GoS:myHeroPos().z,GetCastRange(myHero,_E),1,128,0xff00ff00) end
+local col = VayneMenu.Drawings.color:Value()
+if VayneMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),GetCastRange(myHero,_Q),1,0,col) end
+if VayneMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),GetCastRange(myHero,_E),1,0,col) end
 if mapID == SUMMONERS_RIFT and VayneMenu.Drawings.WT:Value() then
 DrawCircle(6962, 51, 8952,80,0,0,0xffffffff)
 DrawCircle(12060, 51, 4806,80,0,0,0xffffffff)
