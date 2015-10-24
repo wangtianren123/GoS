@@ -189,7 +189,6 @@ end
 for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 	
        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= CassiopeiaMenu.JungleClear.Mana:Value() then
-       	
 	        if IsReady(_E) and IsPoisoned(mob) and CassiopeiaMenu.JungleClear.E:Value() and GoS:IsInDistance(mob, 700) then
 		CastTargetSpell(mob, _E)
 		end
