@@ -268,6 +268,16 @@ function HaveManaForSpells(qMana, wMana, eMana, rMana, qCasts, wCasts, eCasts, r
 	return (GetCurrentMana(myHero) >= cost)
 end
 
+function HaveEnoughMana(percent, unit)
+	local unit = unit or myHero
+	return ((GetCurrentMana(unit) / GetMaxMana(unit)) >= (percent / 100))
+end
+
+function HPPercentUnder(percent, unit)
+	local unit = unit or myHero
+	return ((GetCurrentHP(unit) / GetMaxHP(unit)) <= (percent / 100))
+end
+
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
