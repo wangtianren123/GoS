@@ -246,6 +246,28 @@ function IsRecalling(unit)
    return (IsRecalling[GetNetworkID(unit)] or 0) > 0
 end
 
+function HaveManaForSpells(qMana, wMana, eMana, rMana, qCasts, wCasts, eCasts, rCasts)
+	local cost = 0
+        local qCasts = qCasts or 1
+        local wCasts = wCasts or 1
+        local eCasts = eCasts or 1
+        local rCasts = rCasts or 1
+
+	if qCasts > 0 then
+		cost = cost + (qMana * qCasts)
+	end
+	if wCasts > 0 then
+		cost = cost + (wMana * wCasts)
+	end
+	if eCasts > 0 then
+		cost = cost + (eMana * eCasts)
+	end
+	if rCasts > 0 then
+		cost = cost + (rMana * rCasts)
+	end
+	return (GetCurrentMana(myHero) >= cost)
+end
+
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
