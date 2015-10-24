@@ -165,10 +165,10 @@ function Ludens()
     return LudensStacks == 100 and 100+0.1*GetBonusAP(myHero) or 0
 end
 
-HasShield = {}
-IsRecalling = {}
-IsSlowed = {}
-IsImmobile = {}
+Shield = {}
+Recalling = {}
+Slowed = {}
+Immobile = {}
 toQSS = false
 ccstun = {5,29,30,24}
 ccslow = {9,21,22,28}
@@ -188,19 +188,19 @@ OnUpdateBuff(function(Object,buff)
   
     for i = 1, #RecallTable do
       if buff.Name == RecallTable[i] then 
-      IsRecalling[GetNetworkID(Object)] = buff.Count
+      Recalling[GetNetworkID(Object)] = buff.Count
       end
     end
 
     for i = 1, #ccstun do
       if buff.Type == ccstun[i] then
-      IsImmobile[GetNetworkID(Object)] = buff.Count
-      GoS:DelayAction(function() IsImmobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
+      Immobile[GetNetworkID(Object)] = buff.Count
+      GoS:DelayAction(function() Immobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
       end
     end
   
   if buff.Type == 15 then
-  HasShield[GetNetworkID(Object)] = buff.Count
+  Shield[GetNetworkID(Object)] = buff.Count
   end
 
 end)
@@ -220,30 +220,30 @@ OnRemoveBuff(function(Object,buff)
 
   for i = 1, #RecallTable do
     if buff.Name == RecallTable[i] then 
-    IsRecalling[GetNetworkID(Object)] = 0
+    Recalling[GetNetworkID(Object)] = 0
     end
   end
 
   if buff.Type == 15 then
-  HasShield[GetNetworkID(Object)] = 0
+  Shield[GetNetworkID(Object)] = 0
   end
 
 end)
 
 function HasShield(unit)
-   return (HasShield[GetNetworkID(unit)] or 0) > 0
+   return (Shield[GetNetworkID(unit)] or 0) > 0
 end
 
 function IsImmobile(unit)
-   return (IsImmobile[GetNetworkID(unit)] or 0) > 0
+   return (Immobile[GetNetworkID(unit)] or 0) > 0
 end
 
 function IsSlowed(unit)
-   return (IsSlowed[GetNetworkID(unit)] or 0) > 0
+   return (Slowed[GetNetworkID(unit)] or 0) > 0
 end
 
 function IsRecalling(unit)
-   return (IsRecalling[GetNetworkID(unit)] or 0) > 0
+   return (Recalling[GetNetworkID(unit)] or 0) > 0
 end
 
 function HaveManaForSpells(qMana, wMana, eMana, rMana, qCasts, wCasts, eCasts, rCasts)
