@@ -180,7 +180,7 @@ OnUpdateBuff(function(Object,buff)
     LudensStacks = buff.Count
     end
 
-    if buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+    if buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
     toQSS = true
     end
     
@@ -212,7 +212,7 @@ OnRemoveBuff(function(Object,buff)
     LudensStacks = 0
     end
     
-    if buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+    if buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
     toQSS = false
     end
 
