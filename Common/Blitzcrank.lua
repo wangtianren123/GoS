@@ -2,7 +2,7 @@ if GetObjectName(myHero) ~= "Blitzcrank" then return end
 
 require('Deftlib')
 
-local BlitzcrankMenu = Menu("Blitzcrank", "Blitzcrank")
+local BlitzcrankMenu = MenuConfig("Blitzcrank", "Blitzcrank")
 BlitzcrankMenu:TargetSelector("ts", "Target Selector", DAMAGE_MAGICAL, 1000, TARGET_LESS_CAST)
 
 BlitzcrankMenu:Menu("Combo", "Combo")
