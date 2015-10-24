@@ -2,8 +2,8 @@ if GetObjectName(myHero) ~= "Ashe" then return end
 
 require('Deftlib')
 
-local AsheMenu = Menu("Ashe", "Ashe")
-AsheMenu:SubMenu("Combo", "Combo")
+local AsheMenu = MenuConfig("Ashe", "Ashe")
+AsheMenu:Menu("Combo", "Combo")
 AsheMenu.Combo:Boolean("Q", "Use Q", true)
 AsheMenu.Combo:Boolean("W", "Use W", true)
 AsheMenu.Combo:Boolean("R", "Use R", true)
@@ -14,36 +14,36 @@ AsheMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 AsheMenu.Combo:Boolean("QSS", "Use QSS", true)
 AsheMenu.Combo:Slider("QSSHP", "if HP % <", 75, 0, 100, 1)
 
-AsheMenu:SubMenu("Harass", "Harass")
+AsheMenu:Menu("Harass", "Harass")
 AsheMenu.Harass:Boolean("Q", "Use Q", true)
 AsheMenu.Harass:Boolean("W", "Use W", true)
 AsheMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 AsheMenu.Harass:Boolean("AutoW", "Auto W", true)
 AsheMenu.Harass:Slider("WMana", "if Mana % >", 50, 0, 80, 1)
 
-AsheMenu:SubMenu("Killsteal", "Killsteal")
+AsheMenu:Menu("Killsteal", "Killsteal")
 AsheMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 
-AsheMenu:SubMenu("Misc", "Misc")
+AsheMenu:Menu("Misc", "Misc")
 AsheMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
 AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 
-AsheMenu:SubMenu("LaneClear", "LaneClear")
+AsheMenu:Menu("LaneClear", "LaneClear")
 AsheMenu.LaneClear:Boolean("Q", "Use Q", false)
 AsheMenu.LaneClear:Boolean("W", "Use W", false)
 AsheMenu.LaneClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-AsheMenu:SubMenu("JungleClear", "JungleClear")
+AsheMenu:Menu("JungleClear", "JungleClear")
 AsheMenu.JungleClear:Boolean("Q", "Use Q", true)
 AsheMenu.JungleClear:Boolean("W", "Use W", true)
 AsheMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-AsheMenu:SubMenu("Drawings", "Drawings")
+AsheMenu:Menu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
 
-local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
+local InterruptMenu = MenuConfig("Interrupt (R)", "Interrupt")
 
 GoS:DelayAction(function()
 
