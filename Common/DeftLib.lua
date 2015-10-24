@@ -187,8 +187,8 @@ OnUpdateBuff(function(Object,buff)
     
     for i = 1, #ccstun do
       if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
-      IsImmobile[GetNetworkID(unit)] = buff.Count
-     GoS:DelayAction(function() IsImmobile[GetNetworkID(unit)] = 0 end, buff.ExpireTime-buff.StartTime)
+      IsImmobile[GetNetworkID(Object)] = buff.Count
+     GoS:DelayAction(function() IsImmobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
       IsCCed = true
       end
     end
