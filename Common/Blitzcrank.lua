@@ -1,6 +1,10 @@
 if GetObjectName(myHero) ~= "Blitzcrank" then return end
 
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
 local BlitzcrankMenu = MenuConfig("Blitzcrank", "Blitzcrank")
 BlitzcrankMenu:TargetSelector("ts", "Target Selector", DAMAGE_MAGICAL, 1000, TARGET_LESS_CAST)
