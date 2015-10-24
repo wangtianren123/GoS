@@ -1,57 +1,63 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
-local CassiopeiaMenu = Menu("Cassiopeia", "Cassiopeia")
-CassiopeiaMenu:SubMenu("Combo", "Combo")
+local CassiopeiaMenu = MenuConfig("Cassiopeia", "Cassiopeia")
+CassiopeiaMenu:Menu("Combo", "Combo")
 CassiopeiaMenu.Combo:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.Combo:Boolean("W", "Use W", true)
 CassiopeiaMenu.Combo:Boolean("E", "Use E", true)
 CassiopeiaMenu.Combo:Boolean("R", "Use R", true)
 
-CassiopeiaMenu:SubMenu("Harass", "Harass")
+CassiopeiaMenu:Menu("Harass", "Harass")
 CassiopeiaMenu.Harass:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.Harass:Boolean("W", "Use W", true)
 CassiopeiaMenu.Harass:Boolean("E", "Use E", true)
 
-CassiopeiaMenu:SubMenu("Killsteal", "Killsteal")
+CassiopeiaMenu:Menu("Killsteal", "Killsteal")
 CassiopeiaMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 CassiopeiaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
-CassiopeiaMenu:SubMenu("Misc", "Misc")
+CassiopeiaMenu:Menu("Misc", "Misc")
 CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 CassiopeiaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
 
-CassiopeiaMenu:SubMenu("Farm", "Farm")
+CassiopeiaMenu:Menu("Farm", "Farm")
 CassiopeiaMenu.Misc:Boolean("AutoE", "Auto E if pois", true)
-CassiopeiaMenu.Farm:SubMenu("LastHit2", "LastHit with E")
+CassiopeiaMenu.Farm:Menu("LastHit2", "LastHit with E")
 CassiopeiaMenu.Farm.LastHit2:Boolean("EX", "Enabled", true)
 CassiopeiaMenu.Farm.LastHit2:Boolean("EXP", "Only if pois", true)
-CassiopeiaMenu.Farm:SubMenu("LaneClear", "LaneClear")
+CassiopeiaMenu.Farm:Menu("LaneClear", "LaneClear")
 CassiopeiaMenu.Farm.LaneClear:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.Farm.LaneClear:Boolean("W", "Use W", true)
 CassiopeiaMenu.Farm.LaneClear:Boolean("E", "Use E", true)
 CassiopeiaMenu.Farm.LaneClear:Slider("Mana", "Min Mana %", 30, 1, 100, 1)
 
-CassiopeiaMenu:SubMenu("JungleClear", "JungleClear")
+CassiopeiaMenu:Menu("JungleClear", "JungleClear")
 CassiopeiaMenu.JungleClear:Boolean("Q", "Use Q", true)
 CassiopeiaMenu.JungleClear:Boolean("W", "Use W", true)
 CassiopeiaMenu.JungleClear:Boolean("E", "Use E", true)
 CassiopeiaMenu.JungleClear:Slider("Mana", "Min Mana %", 30, 1, 100, 1)
 
-CassiopeiaMenu:SubMenu("Drawings", "Drawings")
+CassiopeiaMenu:Menu("Drawings", "Drawings")
 CassiopeiaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
-CassiopeiaMenu.Drawings:Boolean("W", "Draw W Range", false)
-CassiopeiaMenu.Drawings:Boolean("E", "Draw E Range", false)
-CassiopeiaMenu.Drawings:Boolean("R", "Draw R Range", false)
+CassiopeiaMenu.Drawings:Boolean("W", "Draw W Range", true)
+CassiopeiaMenu.Drawings:Boolean("E", "Draw E Range", true)
+CassiopeiaMenu.Drawings:Boolean("R", "Draw R Range", true)
+CassiopeiaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
 
 OnDraw(function(myHero)
-if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),850,1,0,0xff00ff00) end
-if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,0xff00ff00) end
-if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,0xff00ff00) end
-if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),825,1,0,0xff00ff00) end
+local col = CassiopeiaMenu.Drawings.color:Value()
+if CassiopeiaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),850,1,0,col) end
+if CassiopeiaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),925,1,0,col) end
+if CassiopeiaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,col) end
+if CassiopeiaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),825,1,0,col) end
 end)
 
 local poisoned = {}
@@ -137,7 +143,7 @@ if CassiopeiaMenu.Misc.Autolvl:Value() then
    elseif CassiopeiaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _E, _W, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
    elseif CassiopeiaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _E, _W, _W, _W, _R, _W, _E, _W, _E, _R, _E, _E, _Q, _Q, _R, _Q, _Q}
    end
-LevelSpell(leveltable[GetLevel(myHero)])
+GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
