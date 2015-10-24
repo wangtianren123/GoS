@@ -222,7 +222,7 @@ OnUpdateBuff(function(unit,buff)
   end
 end)
 
-OnDeleteBuff(function(unit,buff)
+OnRemoveBuff(function(unit,buff)
   if unit == myHero then
     if buff.Name == "vaynetumblefade" then 
     IsStealthed = false
