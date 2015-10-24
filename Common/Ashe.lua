@@ -119,13 +119,10 @@ OnTick(function(myHero)
     end
 
     if AsheMenu.Combo.FireKey:Value() then
-      
       local target = GetCurrentTarget()
-     
       if IsReady(_R) and GoS:ValidTarget(target, 3000) then 
       Cast(_R,target)
       end  
-
     end
 
       if AsheMenu.Harass.AutoW:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.WMana:Value() then 
