@@ -1,6 +1,10 @@
 if GetObjectName(myHero) ~= "Ashe" then return end
 
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
 local AsheMenu = MenuConfig("Ashe", "Ashe")
 AsheMenu:Menu("Combo", "Combo")
@@ -101,11 +105,11 @@ OnTick(function(myHero)
         Cast(_R,target)
 	end
 		
-	if GetItemSlot(myHero,3140) > 0 and AsheMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+	if GetItemSlot(myHero,3140) > 0 and AsheMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and AsheMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
+        if GetItemSlot(myHero,3139) > 0 and AsheMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
     end
