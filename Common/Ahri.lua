@@ -1,6 +1,10 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
 local AhriMenu = MenuConfig("Ahri", "Ahri")
 AhriMenu:Menu("Combo", "Combo")
