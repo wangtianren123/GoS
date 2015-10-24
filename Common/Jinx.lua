@@ -1,9 +1,13 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
-local JinxMenu = Menu("Jinx", "Jinx")
-JinxMenu:SubMenu("Combo", "Combo")
+local JinxMenu = MenuConfig("Jinx", "Jinx")
+JinxMenu:Menu("Combo", "Combo")
 JinxMenu.Combo:Boolean("Q", "Use Q", true)
 JinxMenu.Combo:Boolean("W", "Use W", true)
 JinxMenu.Combo:Boolean("E", "Use E", true)
@@ -15,34 +19,36 @@ JinxMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
 JinxMenu.Combo:Boolean("QSS", "Use QSS", true)
 JinxMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 
-JinxMenu:SubMenu("Harass", "Harass")
+JinxMenu:Menu("Harass", "Harass")
 JinxMenu.Harass:Boolean("Q", "Use Q", true)
 JinxMenu.Harass:Boolean("W", "Use W", true)
 JinxMenu.Harass:Boolean("E", "Use E", true)
 JinxMenu.Harass:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
-JinxMenu:SubMenu("Killsteal", "Killsteal")
+JinxMenu:Menu("Killsteal", "Killsteal")
 JinxMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 JinxMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
-JinxMenu:SubMenu("Misc", "Misc")
+JinxMenu:Menu("Misc", "Misc")
 JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 JinxMenu.Misc:Boolean("Autolvl", "Auto level", true)
 JinxMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 	
-JinxMenu:SubMenu("Lasthit", "Lasthit")
+JinxMenu:Menu("Lasthit", "Lasthit")
 JinxMenu.Lasthit:Boolean("Farm", "Always Switch To Minigun", true)
 
-JinxMenu:SubMenu("LaneClear", "LaneClear")
+JinxMenu:Menu("LaneClear", "LaneClear")
 JinxMenu.LaneClear:Boolean("Farm", "Always Switch To Minigun", true)
 
-JinxMenu:SubMenu("Drawings", "Drawings")
+JinxMenu:Menu("Drawings", "Drawings")
 JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
 JinxMenu.Drawings:Boolean("E", "Draw E Range", true)
+JinxMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
 
 OnDraw(function(myHero)
-if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1500,1,0,0xff00ff00) end
-if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),920,1,0,0xff00ff00) end
+local col = JinxMenu.Drawings.color:Value()
+if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1500,1,0,col) end
+if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),920,1,0,col) end
 end)
 
 local IsMinigun = true
@@ -66,11 +72,11 @@ OnTick(function(myHero)
 	local target = GetCurrentTarget()
 	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
 		
-	if GetItemSlot(myHero,3140) > 0 and JinxMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.QSSHP:Value() then
+	if GetItemSlot(myHero,3140) > 0 and JinxMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
         end
 
-        if GetItemSlot(myHero,3139) > 0 and JinxMenu.Combo.QSS:Value() and IsCCed and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.QSSHP:Value() then
+        if GetItemSlot(myHero,3139) > 0 and JinxMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
@@ -126,11 +132,11 @@ OnTick(function(myHero)
 local target = GetCurrentTarget()
 local targetpos = GetOrigin(target)
 
---[[if IsReady(_E) and GoS:ValidTarget(target, 920) then
-  if GotBuff(target, "snare") > 0 or GotBuff(target, "suppression") > 0 or GotBuff(target, "stun") > 0 then
+if IsReady(_E) and GoS:ValidTarget(target, 920) then
+  if IsImmobile(target) then
   CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
   end
-end]]
+end
 
 if IOW:Mode() == "LastHit" then
   if not IsMinigun and JinxMenu.Lasthit.Farm:Value() then
@@ -178,7 +184,7 @@ if JinxMenu.Misc.Autolvl:Value() then
     if JinxMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
     elseif JinxMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
     end
-LevelSpell(leveltable[GetLevel(myHero)])
+GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 end)
