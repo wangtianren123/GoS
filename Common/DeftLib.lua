@@ -101,22 +101,22 @@ GAPCLOSER2_SPELLS = {
 }
 
 Dashes = {
-    ["Vayne"]          = {Spellslot = _Q, Range = 300, Delay = 250},
-    ["Riven"]           = {Spellslot = _E, Range = 325, Delay = 250},
-    ["Ezreal"]          = {Spellslot = _E, Range = 450, Delay = 250},
-    ["Caitlyn"]         = {Spellslot = _E, Range = 400, Delay = 250},
-    ["Kassadin"]     = {Spellslot = _R, Range = 700, Delay = 250},
-    ["Graves"]         = {Spellslot = _E, Range = 425, Delay = 250},
-    ["Renekton"]     = {Spellslot = _E, Range = 450, Delay = 250},
-    ["Aatrox"]          = {Spellslot = _Q, Range = 650, Delay = 250},
-    ["Gragas"]         = {Spellslot = _E, Range = 600, delay = 250},
-    ["Khazix"]          = {Spellslot = _E, Range = 600, Delay = 250},
-    ["Lucian"]          = {Spellslot = _E, Range = 425, Delay = 250},
-    ["Sejuani"]        = {Spellslot = _Q, Range = 650, Delay = 250},
-    ["Shen"]             = {Spellslot = _E, Range = 575, Delay = 250},
+    ["Vayne"]      = {Spellslot = _Q, Range = 300, Delay = 250},
+    ["Riven"]      = {Spellslot = _E, Range = 325, Delay = 250},
+    ["Ezreal"]     = {Spellslot = _E, Range = 450, Delay = 250},
+    ["Caitlyn"]    = {Spellslot = _E, Range = 400, Delay = 250},
+    ["Kassadin"]   = {Spellslot = _R, Range = 700, Delay = 250},
+    ["Graves"]     = {Spellslot = _E, Range = 425, Delay = 250},
+    ["Renekton"]   = {Spellslot = _E, Range = 450, Delay = 250},
+    ["Aatrox"]     = {Spellslot = _Q, Range = 650, Delay = 250},
+    ["Gragas"]     = {Spellslot = _E, Range = 600, delay = 250},
+    ["Khazix"]     = {Spellslot = _E, Range = 600, Delay = 250},
+    ["Lucian"]     = {Spellslot = _E, Range = 425, Delay = 250},
+    ["Sejuani"]    = {Spellslot = _Q, Range = 650, Delay = 250},
+    ["Shen"]       = {Spellslot = _E, Range = 575, Delay = 250},
     ["Tryndamere"] = {Spellslot = _E, Range = 660, Delay = 250},
-    ["Tristana"]        = {Spellslot = _W, Range = 900, Delay = 250},
-    ["Corki"]              = {Spellslot = _W, Range = 800, Delay = 250},
+    ["Tristana"]   = {Spellslot = _W, Range = 900, Delay = 250},
+    ["Corki"]      = {Spellslot = _W, Range = 800, Delay = 250},
 }
 
 LudensStacks = 0
@@ -170,6 +170,7 @@ IsCCed = false
 SpellShieldTable = {}
 IsImmobile = {}
 ccstun = {5,9,21,22,28,29,30}
+ccslow = {}
 ccnameTable = {"zedultexecute", "summonerexhaust"}
 RecallTable = {"Recall", "RecallImproved", "OdinRecall"}
 
