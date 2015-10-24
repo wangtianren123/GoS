@@ -2,8 +2,8 @@ if GetObjectName(myHero) ~= "Azir" then return end
 
 require('Deftlib')
 
-local AzirMenu = Menu("Azir", "Azir")
-AzirMenu:SubMenu("Combo", "Combo")
+local AzirMenu = MenuConfig("Azir", "Azir")
+AzirMenu:Menu("Combo", "Combo")
 AzirMenu.Combo:Boolean("Q", "Use Q", true)
 AzirMenu.Combo:Boolean("W", "Use W", true)
 AzirMenu.Combo:Boolean("E", "Use E", true)
@@ -12,30 +12,31 @@ AzirMenu.Combo:Boolean("AA", "Use AA", true)
 AzirMenu.Combo:Key("Flee", "Flee", string.byte("G"))
 AzirMenu.Combo:Key("Insec", "Insec", string.byte("T"))
 
-AzirMenu:SubMenu("Harass", "Harass")
+AzirMenu:Menu("Harass", "Harass")
 AzirMenu.Harass:Boolean("Q", "Use Q", true)
 AzirMenu.Harass:Boolean("W", "Use W", true)
 AzirMenu.Harass:Boolean("AA", "Use AA", true)
 
-AzirMenu:SubMenu("Killsteal", "Killsteal")
+AzirMenu:Menu("Killsteal", "Killsteal")
 AzirMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 AzirMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
-AzirMenu:SubMenu("Misc", "Misc")
+AzirMenu:Menu("Misc", "Misc")
 AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 AzirMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
-AzirMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
+AzirMenu.Misc:Menu("AutoUlt", "Auto Ult")
 AzirMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
 AzirMenu.Misc.AutoUlt:Slider("Push", "if Can Push X Enemies", 3, 0, 5, 1)
 
-AzirMenu:SubMenu("Drawings", "Drawings")
+AzirMenu:Menu("Drawings", "Drawings")
 AzirMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AzirMenu.Drawings:Boolean("W", "Draw W Range", true)
 AzirMenu.Drawings:Boolean("E", "Draw E Range", true)
 AzirMenu.Drawings:Boolean("R", "Draw R Range", true)
+AzirMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
  
-local InterruptMenu = Menu("Interrupt (R)", "Interrupt")
+local InterruptMenu = MenuConfig("Interrupt (R)", "Interrupt")
 
 GoS:DelayAction(function()
 
@@ -43,8 +44,13 @@ GoS:DelayAction(function()
 
   for i, spell in pairs(CHANELLING_SPELLS) do
     for _,k in pairs(GoS:GetEnemyHeroes()) do
+    	local added = false
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
+        added = true
+        end
+        if not added then
+        InterruptMenu:Info("bullshit", "No Interruptable Spells Found")
         end
     end
   end
@@ -64,10 +70,11 @@ OnProcessSpellComplete(function(unit, spell)
 end)
 
 OnDraw(function(myHero)
-if AzirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,0xff00ff00) end
-if AzirMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),450,1,0,0xff00ff00) end
-if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1300,1,0,0xff00ff00) end
-if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,0xff00ff00) end
+local col = AzirMenu.Drawings.color:Value()
+if AzirMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,col) end
+if AzirMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),450,1,0,col) end
+if AzirMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1300,1,0,col) end
+if AzirMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),950,1,0,col) end
 end)
 
 local AzirSoldiers = {}
@@ -217,7 +224,7 @@ if AzirMenu.Misc.Autolvl:Value() then
   if AzirMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _Q, _Q , _R, _Q , _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
   elseif AzirMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
   end
-LevelSpell(leveltable[GetLevel(myHero)])
+GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 end)
