@@ -89,8 +89,8 @@ end)
 local IsStealthed = false
 
 OnTick(function(myHero)
-    local HeroPos = GetOrigin(myHero)
-    local mousePos = GetMousePos()
+    HeroPos = GetOrigin(myHero)
+    mousePos = GetMousePos()
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
