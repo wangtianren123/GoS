@@ -168,7 +168,8 @@ end
 IsRecalling = false
 IsCCed = false
 SpellShieldTable = {}
-ccbuffsTable = {5,9,21,22,28,29,30}
+IsImmobile = {}
+ccstun = {5,9,21,22,28,29,30}
 ccnameTable = {"zedultexecute", "summonerexhaust"}
 RecallTable = {"Recall", "RecallImproved", "OdinRecall"}
 
@@ -184,12 +185,17 @@ OnUpdateBuff(function(Object,buff)
       end
     end
     
-    for i = 1, #ccbuffsTable do
-      if buff.Type == ccbuffsTable[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
+    for i = 1, #ccstun do
+      if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+      IsImmobile[GetNetworkID(unit)] = buff.Count
+     GoS:DelayAction(function() IsImmobile[GetNetworkID(unit)] = 0 end, buff.ExpireTime-buff.StartTime)
       IsCCed = true
       end
     end
   end
+
+  IsImmobile[GetNetworkID(unit)] = buff.Count
+  GoS:DelayAction(function() IsImmobile[GetNetworkID(unit)] = 0 end, buff.ExpireTime-buff.StartTime
 
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
   SpellShieldTable[GetNetworkID(Object)] = buff.Count
@@ -203,8 +209,8 @@ OnRemoveBuff(function(Object,buff)
     LudensStacks = 0
     end
 
-    for i = 1, #ccbuffsTable do
-      if buff.Type == ccbuffsTable[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
+    for i = 1, #ccstun do
+      if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
       IsCCed = false
       end
     end
@@ -224,6 +230,10 @@ end)
 
 function IsSpellShielded(unit)
    return (SpellShieldTable[GetNetworkID(unit)] or 0) > 0
+end
+
+function IsImmobile(unit)
+   return (IsImmobile[GetNetworkID(unit)] or 0) > 0
 end
 
 function GetLineFarmPosition(range, width)
