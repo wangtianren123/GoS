@@ -49,8 +49,6 @@ AhriMenu.Drawings:Boolean("E", "Draw E Range", true)
 AhriMenu.Drawings:Boolean("R", "Draw R Range", true)
 AhriMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
 
-AhriMenu:TargetSelector("ts", "Target Selector", DAMAGE_MAGICAL, 1000, TARGET_LESS_CAST)
-
 local InterruptMenu = MenuConfig("Interrupt (E)", "Interrupt")
 
 GoS:DelayAction(function()
@@ -93,7 +91,7 @@ OnTick(function(myHero)
   
     if IOW:Mode() == "Combo" then
         
-        local target = AhriMenu.ts:GetTarget()
+        local target = GetCurrentTarget()
 
         if IsReady(_E) and GoS:ValidTarget(target,975) then
         Cast(_E,target)
@@ -136,7 +134,7 @@ OnTick(function(myHero)
 	
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.Harass.Mana:Value() then
         
-        local target = AhriMenu.ts:GetTarget()
+        local target = GetCurrentTarget()
 
         if IsReady(_E) and GoS:ValidTarget(target, 975) and AhriMenu.Harass.E:Value() then
         Cast(_E,target)
