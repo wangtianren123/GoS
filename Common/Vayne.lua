@@ -85,7 +85,6 @@ OnTick(function(myHero)
 	local target = GetCurrentTarget()
 	
 	if VayneMenu.Combo.Q.Mode:Value() == 2 and GoS:ValidTarget(target, 900) and VayneMenu.Combo.Q.Enabled:Value() then
-	         
           local AfterTumblePos = HeroPos + (Vector(mousePos) - HeroPos):normalized() * 300
           local DistanceAfterTumble = GoS:GetDistance(AfterTumblePos, target)
   
