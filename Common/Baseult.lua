@@ -18,7 +18,6 @@ local BasePositions = {
 local Base = BasePositions[GetMapID()][GetTeam(myHero)]
 
 local SpellData = {
-	
         ["Ashe"] = {
 	Delay = 250,
 	MissileSpeed = 1600,
