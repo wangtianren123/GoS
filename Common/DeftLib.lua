@@ -169,9 +169,9 @@ IsRecalling = false
 IsCCed = false
 SpellShieldTable = {}
 IsImmobile = {}
-ccstun = {5,9,21,22,28,29,30}
-ccslow = {}
-ccnameTable = {"zedultexecute", "summonerexhaust"}
+ccstun = {5,29,30,24}
+ccslow = {9,21,22,28}
+toQSS = {"zedultexecute", "summonerexhaust"}
 RecallTable = {"Recall", "RecallImproved", "OdinRecall"}
 
 OnUpdateBuff(function(Object,buff)
@@ -179,25 +179,22 @@ OnUpdateBuff(function(Object,buff)
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = buff.Count
     end
-    
+  end
+  
     for i = 1, #RecallTable do
       if buff.Name == RecallTable[i] then 
-      IsRecalling = true
+      IsRecalling[GetNetworkID(Object)] = buff.Count
       end
     end
     
     for i = 1, #ccstun do
       if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
       IsImmobile[GetNetworkID(Object)] = buff.Count
-     GoS:DelayAction(function() IsImmobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
+      GoS:DelayAction(function() IsImmobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
       IsCCed = true
       end
     end
-  end
-
-  IsImmobile[GetNetworkID(unit)] = buff.Count
-  GoS:DelayAction(function() IsImmobile[GetNetworkID(unit)] = 0 end, buff.ExpireTime-buff.StartTime
-
+  
   if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
   SpellShieldTable[GetNetworkID(Object)] = buff.Count
   end
@@ -235,6 +232,10 @@ end
 
 function IsImmobile(unit)
    return (IsImmobile[GetNetworkID(unit)] or 0) > 0
+end
+
+function IsSlowed(unit)
+   return (IsSlowed[GetNetworkID(unit)] or 0) > 0
 end
 
 function GetLineFarmPosition(range, width)
