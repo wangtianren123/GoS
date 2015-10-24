@@ -47,7 +47,7 @@ local SpellData = {
 if not SpellData[GetObjectName(myHero)] then return end
 PrintChat("Baseult for "..GetObjectName(myHero).." loaded")
 	
-local BaseultMenu = Menu("Baseult", "Baseult")
+local BaseultMenu = MenuConfig("Baseult", "Baseult")
 BaseultMenu:Boolean("Enabled", "Enabled", true)
 BaseultMenu:Boolean("RT", "RecallTracker", true)
 
