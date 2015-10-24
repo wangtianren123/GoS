@@ -1,7 +1,11 @@
 if GetObjectName(myHero) ~= "Vayne" then return end
 
 require('MapPositionGOS')
+if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
+else
+PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
+end
 
 local VayneMenu = MenuConfig("Vayne", "Vayne")
 VayneMenu:Menu("Combo", "General")
