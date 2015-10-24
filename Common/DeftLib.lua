@@ -165,13 +165,13 @@ function Ludens()
     return LudensStacks == 100 and 100+0.1*GetBonusAP(myHero) or 0
 end
 
-IsRecalling = false
-IsCCed = false
-SpellShieldTable = {}
+HasShield = {}
+IsRecalling = {}
+IsSlowed = {}
 IsImmobile = {}
+toQSS = false
 ccstun = {5,29,30,24}
 ccslow = {9,21,22,28}
-toQSS = {"zedultexecute", "summonerexhaust"}
 RecallTable = {"Recall", "RecallImproved", "OdinRecall"}
 
 OnUpdateBuff(function(Object,buff)
@@ -179,6 +179,11 @@ OnUpdateBuff(function(Object,buff)
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = buff.Count
     end
+
+    if buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+    toQSS = true
+    end
+    
   end
   
     for i = 1, #RecallTable do
@@ -186,48 +191,47 @@ OnUpdateBuff(function(Object,buff)
       IsRecalling[GetNetworkID(Object)] = buff.Count
       end
     end
-    
+
     for i = 1, #ccstun do
-      if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+      if buff.Type == ccstun[i] then
       IsImmobile[GetNetworkID(Object)] = buff.Count
       GoS:DelayAction(function() IsImmobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
-      IsCCed = true
       end
     end
   
-  if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
-  SpellShieldTable[GetNetworkID(Object)] = buff.Count
+  if buff.Type == 15 then
+  HasShield[GetNetworkID(Object)] = buff.Count
   end
 
 end)
 
 OnRemoveBuff(function(Object,buff)
   if Object == myHero then
+
     if buff.Name == "itemmagicshankcharge" then 
     LudensStacks = 0
     end
-
-    for i = 1, #ccstun do
-      if buff.Type == ccstun[i] or buff.Name == "zedultexecute" or buff.Name == "summonerexhaust"  then 
-      IsCCed = false
-      end
+    
+    if buff.Name == "zedultexecute" or buff.Name = "summonerexhaust"  then 
+    toQSS = false
     end
+
   end
 
   for i = 1, #RecallTable do
     if buff.Name == RecallTable[i] then 
-    IsRecalling = false
+    IsRecalling[GetNetworkID(Object)] = 0
     end
   end
 
-  if GetTeam(Object) ~= GetTeam(myHero) and buff.Type == 15 then
-  SpellShieldTable[GetNetworkID(Object)] = 0
+  if buff.Type == 15 then
+  HasShield[GetNetworkID(Object)] = 0
   end
 
 end)
 
-function IsSpellShielded(unit)
-   return (SpellShieldTable[GetNetworkID(unit)] or 0) > 0
+function HasShield(unit)
+   return (HasShield[GetNetworkID(unit)] or 0) > 0
 end
 
 function IsImmobile(unit)
@@ -236,6 +240,10 @@ end
 
 function IsSlowed(unit)
    return (IsSlowed[GetNetworkID(unit)] or 0) > 0
+end
+
+function IsRecalling(unit)
+   return (IsRecalling[GetNetworkID(unit)] or 0) > 0
 end
 
 function GetLineFarmPosition(range, width)
