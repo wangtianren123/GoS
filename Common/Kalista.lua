@@ -8,8 +8,7 @@ local Mobs = {"SRU_Baron", "SRU_Dragon", "SRU_Red", "SRU_Blue", "SRU_Krug", "SRU
 local KalistaMenu = MenuConfig("Kalista", "Kalista")
 
 KalistaMenu:Menu("Exploit", "Exploit")
-KalistaMenu.Exploit:Boolean("Enabled", "Enabled", true)
-
+KalistaMenu.Exploit:Boolean("Enabled", "DoubleJump Exploit", true)
 
 KalistaMenu:Menu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
@@ -37,7 +36,7 @@ KalistaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 KalistaMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then KalistaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 KalistaMenu.Misc:Boolean("Autolvl", "Auto level", true)
-KalistaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-Q-E", "W-E-Q"})
+KalistaMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-Q-E", "W-E-Q"})
 KalistaMenu.Misc:Boolean("Edie", "Cast E before die", true)
 KalistaMenu.Misc:Boolean("E", "E if Target Leave Range", true)
 KalistaMenu.Misc:Slider("Elvl", "E if my level <", 12, 1, 18, 1)
