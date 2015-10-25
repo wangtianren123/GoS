@@ -24,7 +24,7 @@ AzirMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 AzirMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 AzirMenu.Misc:Boolean("Autolvl", "Auto level", true)
-AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
+AzirMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 AzirMenu.Misc:Menu("AutoUlt", "Auto Ult")
 AzirMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
 AzirMenu.Misc.AutoUlt:Slider("Push", "if Can Push X Enemies", 3, 0, 5, 1)
