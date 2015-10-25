@@ -1,10 +1,6 @@
 if GetObjectName(myHero) ~= "Ahri" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local AhriMenu = MenuConfig("Ahri", "Ahri")
 AhriMenu:Menu("Combo", "Combo")
@@ -26,7 +22,7 @@ AhriMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 AhriMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 AhriMenu:Menu("Misc", "Misc")
-AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+if Ignite ~= nil then AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true) end
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
