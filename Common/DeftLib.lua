@@ -2,18 +2,11 @@ SpellData = {
   ["Aatrox"] = {
 		[_Q]  = { Name = "AatroxQ", ProjectileName = "AatroxQ.troy", Range = 650, Speed = 2000, Delay = 600, Width = 250, collision = false, type = "circular", IsDangerous = true},
 		[_E]  = { Name = "AatroxE", ProjectileName = "AatroxBladeofTorment_mis.troy" , Range = 1075, Speed = 1250, Delay = 250, Width = 35, collision = false, type = "linear", IsDangerous = false},
-	        [_R]  = { Name = "AatroxR", Range = 300}
 	},
   ["Ahri"] = {
 		[_Q]  = { Name = "AhriOrbofDeception", ProjectileName = "Ahri_Orb_mis.troy", Range = 1000, Speed = 2500, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
  	        --[_Q2] = { Name = "AhriOrbofDeceptionherpityderp", ProjectileName = "Ahri_Orb_mis_02.troy", Range = 1000, Speed = 900, Delay = 250, Width = 100, collision = false, aoe = false, type = "linear", IsDangerous = false},
-		[_W]  = { Name = "AhriFoxFire", Range = 700},
 		[_E]  = { Name = "AhriSeduce", ProjectileName = "Ahri_Charm_mis.troy", Range = 1000, Speed = 1550, Delay = 250,  Width = 60, collision = true, aoe = false, type = "linear", IsDangerous = true},
-		[_R]  = { Name = "AhriTumble", Range = 550}
-	},
-  ["Alistar"] = {
-		[_Q]  = { Name = "Pulverize", Range = 250, Delay = 250},
-		[_W]  = { Name = "Headbutt", Range = 650},
 	},
   ["Ashe"] = {
 		[_Q]  = { Name = "FrostShot", Range = 600},
@@ -29,13 +22,11 @@ SpellData = {
 	},
   ["Blitzcrank"] = {
 		[_Q] = { Name = "RocketGrabMissile", ProjectileName = "FistGrab_mis.troy", Range = 975, Speed = 1800, Width = 70, Delay = 250, collision = true, aoe = false, type = "linear", IsDangerous = true},
-		[_E] = { Name = "PowerFist", Range = 225},
 		[_R] = { Name = "StaticField", Range = 0, Speed = math.huge, Width = 600, Delay = 250, collision = false, aoe = false, type = "circular", IsDangerous = false}
 	},
   ["Cassiopeia"] = {
 		[_Q] = { Name = "CassiopeiaNoxiousBlast", ProjectileName = "CassNoxiousSnakePlane_green.troy", Range = 850, Speed = math.huge, Delay = 750, Width = 100, collision = false, aoe = true, type = "circular", IsDangerous = false},
 		[_W] = { Name = "CassiopeiaMiasma", ProjectileName = "", Range = 925, Speed = 2500, Delay = 500, Width = 90, collision = false, aoe = true, type = "circular", IsDangerous = false},
-		[_E] = { Name = "CassiopeiaTwinFang", Range = 700},
 		[_R] = { Name = "CassiopeiaPetrifyingGaze",  ProjectileName = "", Range = 825, Speed = math.huge, Delay = 600, Width = 80, collision = false, aoe = true, type = "cone", IsDangerous = true}
 	},
   ["Jinx"] = {
@@ -52,8 +43,8 @@ SpellData = {
   	        [_Q] = { Name = "SivirQ", ProjectileName = "Sivir_Base_Q_mis.troy", Range = 1075, Speed = 1350, Delay = 250, Width = 85, collision = false, aoe = false, type = "linear", IsDangerous = false}
         }
   ["Syndra"] = {
-  	        [_Q] = { Name = "SyndraQ", ProjectileName = "", Range =
-  	        [_W] = { Name = "SyndraW", ProjectileName = "", Range =
+  	        [_Q] = { Name = "SyndraQ", ProjectileName = "Syndra_Q_cas.troy", Range = 790, Speed = math.huge, Delay =
+  	        [_W] = { Name = "SyndraW", ProjectileName = "", Range = 925, Speed = math.huge, Delay =
 }
 
 CHANELLING_SPELLS = {
