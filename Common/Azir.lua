@@ -207,7 +207,7 @@ if AzirMenu.Combo.Insec:Value() then
     end
 
     if table.getn(AzirSoldiers) < 1 and IsReady(_W) then
-    CastSkillShot(_W, myHeroPos().x, myHeroPos().y, myHeroPos().z)
+    CastSkillShot(_W, GoS:myHeroPos().x, GoS:myHeroPos().y, GoS:myHeroPos().z)
     end
      
       for _,Soldier in pairs(AzirSoldiers) do
