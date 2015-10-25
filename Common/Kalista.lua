@@ -89,10 +89,10 @@ if KalistaMenu.Drawings.R:Value() then DrawCircle(myHeroPos(),1450,1,0,col) end
 for _,spot in pairs(WallSpots) do
   if KalistaMenu.Combo.WallJump:Value() then 
     if GetDistance(spot) <= 7000 and GetDistance(spot, mousePos()) > 125 then                
-    DrawCircle(spot,80,2,0,ARGB(255, 255, 255, 0))
+    DrawCircle(spot.x,spot.y,spot.z,80,2,0,ARGB(255, 255, 255, 0))
     end
     if GetDistance(spot) <= 7000 and GetDistance(spot, mousePos()) <= 125 then 
-    DrawCircle(spot,80,2,0,ARGB(255, 0, 255, 0))
+    DrawCircle(spot.x,spot.y,spot.z,80,2,0,ARGB(255, 0, 255, 0))
     end
   end
 end
@@ -108,7 +108,7 @@ for i,enemy in pairs(GetEnemyHeroes()) do
 	   end
 end
 for _,unit in pairs(GetAllMinions(MINION_JUNGLE)) do
-  if ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
+  if Gos:ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
 	local mobPos = GetOrigin(unit)
         local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
           if Edmg(unit) > GetCurrentHP(unit) then
@@ -139,7 +139,8 @@ OnTick(function(myHero)
         Cast(_Q,target)
         end
 
-        for _,minion in pairs(minionManager.objects) do
+        for i=1, IOW.mobs.maxObjects do
+          local minion = IOW.mobs.objects[i]
           if IsReady(_E) and ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GetDistance(target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) and Estacks(target) > 0 and GetCurrentHP(minion) < Edmg(minion) then
           CastSpell(_E)
           end
