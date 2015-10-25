@@ -289,7 +289,7 @@ end
 function MinionsAround(pos, range)
   local c = 0
   if pos == nil then return 0 end
-  for k,v minionManager.objects do
+  for k,v in pairs(minionManager.objects) do
     if v and GoS:ValidTarget(v) and GoS:GetDistanceSqr(pos,GetOrigin(v)) < range*range then
       c = c + 1
     end
