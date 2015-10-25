@@ -190,16 +190,19 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		end
 			
 		if IsReady(_Q) and CassiopeiaMenu.JungleClear.Q:Value() and GoS:IsInDistance(mob, 850) then
-		local BestPos, BestHit = GetJFarmPosition(850, 100)
-                if BestPos and BestHit > 0 then 
-                CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
+		  local BestPos, BestHit = GetJFarmPosition(850, 100)
+                  if BestPos and BestHit > 0 then 
+                  CastSkillShot(_Q, BestPos.x, BestPos.y, BestPos.z)
+		  end
 		end
-		
+
 		if IsReady(_W) and CassiopeiaMenu.JungleClear.W:Value() and GoS:IsInDistance(mob, 925) then
-		local BestPos, BestHit = GetJFarmPosition(925, 90)
-                if BestPos and BestHit > 0 then 
-                CastSkillShot(_W, BestPos.x, BestPos.y, BestPos.z)
-		end
-	end
+		  local BestPos, BestHit = GetJFarmPosition(925, 90)
+                  if BestPos and BestHit > 0 then 
+                  CastSkillShot(_W, BestPos.x, BestPos.y, BestPos.z)
+		  end
+                end
+       end
+end
 
 end)
