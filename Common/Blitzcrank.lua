@@ -1,14 +1,8 @@
 if GetObjectName(myHero) ~= "Blitzcrank" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local BlitzcrankMenu = MenuConfig("Blitzcrank", "Blitzcrank")
-BlitzcrankMenu:TargetSelector("ts", "Target Selector", DAMAGE_MAGICAL, 1000, TARGET_LESS_CAST)
-
 BlitzcrankMenu:Menu("Combo", "Combo")
 BlitzcrankMenu.Combo:Boolean("Q", "Use Q", true)
 BlitzcrankMenu.Combo:Boolean("W", "Use W", true)
@@ -31,7 +25,7 @@ BlitzcrankMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 BlitzcrankMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 BlitzcrankMenu:Menu("Misc", "Misc")
-BlitzcrankMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
+if Ignite ~= nil then BlitzcrankMenu.Misc:Boolean("Autoignite", "Auto Ignite", true) end
 BlitzcrankMenu.Misc:Boolean("Autolvl", "Auto level", true)
 BlitzcrankMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "W-Q-E"})
 
@@ -74,7 +68,7 @@ GoS:DelayAction(function()
 		
 end, 1)
 
-OnProcessSpellComplete(function(unit, spell)
+OnProcessSpell(function(unit, spell)
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 975) and IsReady(_Q) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() and InterruptMenu.SupportedSpells.Q:Value() then
@@ -121,13 +115,13 @@ OnTick(function(myHero)
 
     if IOW:Mode() == "Combo" then
 	
-		local target = BlitzcrankMenu.ts:GetTarget()
+		local target = GetCurrentTarget()
 		
                 if IsReady(_Q) and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Combo.Q:Value() then
                 Cast(_Q,target)
 	        end
                           
-                if target and GetCurrentMana(myHero) >= 200 and IsReady(_W) and IsReady(_Q) and GoS:GetDistance(target) <= 1275 and GoS:GetDistance(target) >= 975 and BlitzcrankMenu.Combo.W:Value() then
+                if GetCurrentMana(myHero) >= 200 and IsReady(_W) and IsReady(_Q) and GoS:GetDistance(target) <= 1275 and GoS:GetDistance(target) >= 975 and BlitzcrankMenu.Combo.W:Value() then
                 CastSpell(_W)
                 elseif target and IsReady(_W) and GoS:GetDistance(target) > 150 and GoS:GetDistance(target) <= 400 then
 		CastSpell(_W)
@@ -145,7 +139,7 @@ OnTick(function(myHero)
 	
 	if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= BlitzcrankMenu.Harass.Mana:Value() then
 	
-		local target = BlitzcrankMenu.ts:GetTarget()
+		local target = GetCurrentTarget()
 		
                 if IsReady(_Q) and GoS:ValidTarget(target, 975) and BlitzcrankMenu.Harass.Q:Value() then
                 Cast(_Q,target)
