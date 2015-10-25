@@ -36,14 +36,14 @@ VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 VayneMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then VayneMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 VayneMenu.Misc:Boolean("Autolvl", "Auto level", true)
-VayneMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
+VayneMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 VayneMenu.Misc:Key("WallTumble1", "WallTumble Mid", string.byte("T"))
 VayneMenu.Misc:Key("WallTumble2", "WallTumble Drake", string.byte("U"))
 
 VayneMenu:Menu("Drawings", "Drawings")
 VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 VayneMenu.Drawings:Boolean("E", "Draw E Range", true)
-VayneMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+VayneMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 if mapID == SUMMONERS_RIFT then
 VayneMenu.Drawings:Boolean("WT", "Draw WallTumble Pos", true)
