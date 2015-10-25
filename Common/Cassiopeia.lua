@@ -1,3 +1,9 @@
+--[[ TODO :
+-E Humanizer
+-more R logic
+-R Anti-Gapclose/Interrupt
+]]
+
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
 require('Deftlib')
@@ -22,7 +28,7 @@ CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 CassiopeiaMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", true)
-CassiopeiaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
+CassiopeiaMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
 
 CassiopeiaMenu:Menu("Farm", "Farm")
 CassiopeiaMenu.Misc:Boolean("AutoE", "Auto E if pois", true)
