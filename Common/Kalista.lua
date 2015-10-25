@@ -123,7 +123,6 @@ OnTick(function(myHero)
     if IOW:Mode() == "Combo" and not IOW.isWindingUp then
 	        
 	local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and GoS:GetDistance(target) > (GetRange(myHero)+GetHitBox(myHero)) and KalistaMenu.Combo.Q:Value() then
         Cast(_Q,target)
@@ -150,7 +149,6 @@ OnTick(function(myHero)
    if IOW:Mode() == "Harass" and not IOW.isWindingUp and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
 	
 	local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() then
         Cast(_Q,target)
