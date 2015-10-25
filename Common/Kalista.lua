@@ -108,7 +108,7 @@ for i,enemy in pairs(GetEnemyHeroes()) do
 	   end
 end
 for _,unit in pairs(GetAllMinions(MINION_JUNGLE)) do
-  if Gos:ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
+  if ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
 	local mobPos = GetOrigin(unit)
         local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
           if Edmg(unit) > GetCurrentHP(unit) then
