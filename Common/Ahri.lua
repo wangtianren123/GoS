@@ -199,7 +199,7 @@ for i=1, IOW.mobs.maxObjects do
 	        
 end
 
-for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(minionManager.objects) do
         if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 		
