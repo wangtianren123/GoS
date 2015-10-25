@@ -52,7 +52,7 @@ CassiopeiaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 CassiopeiaMenu.Drawings:Boolean("W", "Draw W Range", true)
 CassiopeiaMenu.Drawings:Boolean("E", "Draw E Range", true)
 CassiopeiaMenu.Drawings:Boolean("R", "Draw R Range", true)
-CassiopeiaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+CassiopeiaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 OnDraw(function(myHero)
 local col = CassiopeiaMenu.Drawings.color:Value()
