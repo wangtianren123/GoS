@@ -1,10 +1,6 @@
 if GetObjectName(myHero) ~= "Azir" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local AzirMenu = MenuConfig("Azir", "Azir")
 AzirMenu:Menu("Combo", "Combo")
@@ -26,7 +22,7 @@ AzirMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 AzirMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 AzirMenu:Menu("Misc", "Misc")
-AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
+if Ignite ~= nil then AzirMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 AzirMenu.Misc:Boolean("Autolvl", "Auto level", true)
 AzirMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 AzirMenu.Misc:Menu("AutoUlt", "Auto Ult")
@@ -61,7 +57,7 @@ GoS:DelayAction(function()
 		
 end, 1)
 
-OnProcessSpellComplete(function(unit, spell)
+OnProcessSpell(function(unit, spell)
   if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
