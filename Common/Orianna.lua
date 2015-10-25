@@ -1,3 +1,8 @@
+--[[ TODO:
+-Laneclear/JungleClear/Lasthit
+-Ult Flash Combo
+]]
+
 if GetObjectName(myHero) ~= "Orianna" then return end
 
 require('Deftlib')
@@ -9,7 +14,7 @@ OriannaMenu:Menu("Combo", "Combo")
 OriannaMenu.Combo:Boolean("Q", "Use Q", true)
 OriannaMenu.Combo:Boolean("W", "Use W", true)
 OriannaMenu.Combo:Boolean("E", "Use E", true)
-OriannaMenu.Combo:SubMenu("R", "Use R")
+OriannaMenu.Combo:Menu("R", "Use R")
 OriannaMenu.Combo.R:Boolean("REnabled", "Enabled", true)
 OriannaMenu.Combo.R:Boolean("Rkill", "if Can Kill", true)
 OriannaMenu.Combo.R:Slider("Rcatch", "if can catch X enemies", 2, 0, 5, 1)
@@ -27,12 +32,12 @@ OriannaMenu.Killsteal:Boolean("Q", "Killsteal with Q", false)
 OriannaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 OriannaMenu.Killsteal:Boolean("E", "Killsteal with E", false)
 
-OriannaMenu:SubMenu("Misc", "Misc")
+OriannaMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then OriannaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 OriannaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 OriannaMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
 OriannaMenu.Misc:Boolean("Interrupt", "Interrupt Dangerous Spells (R)", true)
-OriannaMenu.Misc:SubMenu("AutoUlt", "Auto Ult")
+OriannaMenu.Misc:Menu("AutoUlt", "Auto Ult")
 OriannaMenu.Misc.AutoUlt:Boolean("Enabled", "Enabled", true)
 OriannaMenu.Misc.AutoUlt:Slider("catchable", "if Can Catch X Enemies", 3, 0, 5, 1)
 OriannaMenu.Misc.AutoUlt:Slider("killable", "if Can Kill X Enemies", 2, 0, 5, 1)
@@ -78,7 +83,7 @@ OnTick(function(myHero)
           Cast(_Q,target,Ball)   
 	  end
 	elseif CanUseSpell(myHero, _R) ~= READY then
-          if IsReady(_Q) and QPred.HitChance == 1 and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
+          if IsReady(_Q) and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
           Cast(_Q,target,Ball)
 	  end
 	end
@@ -141,7 +146,7 @@ OnTick(function(myHero)
 		
 	    if IsReady(_W) and OriannaMenu.Killsteal.W:Value() and GoS:ValidTarget(enemy, 1200) and GoS:GetDistance(Ball, enemy) <= 250 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_W)+25+0.7*GetBonusAP(myHero) + Ludens()) then
 	    CastSpell(_W)
-	    elseif IsReady(_Q) and QPred.HitChance == 1 and GoS:ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + Ludens()) then 
+	    elseif IsReady(_Q) and GoS:ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + Ludens()) then 
             Cast(_Q,enemy,Ball)
             elseif Ball ~= myHero and IsReady(_E) and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() then
               local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(enemy), Vector(Ball))
