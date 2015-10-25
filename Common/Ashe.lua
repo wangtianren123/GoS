@@ -1,6 +1,7 @@
 if GetObjectName(myHero) ~= "Ashe" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local AsheMenu = MenuConfig("Ashe", "Ashe")
 AsheMenu:Menu("Combo", "Combo")
@@ -46,12 +47,12 @@ AsheMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 local InterruptMenu = MenuConfig("Interrupt (R)", "Interrupt")
 
-GoS:DelayAction(function()
+DelayAction(function()
 
   local str = {[_Q] = "Q", [_W] = "W", [_E] = "E", [_R] = "R"}
 
   for i, spell in pairs(CHANELLING_SPELLS) do
-    for _,k in pairs(GoS:GetEnemyHeroes()) do
+    for _,k in pairs(GetEnemyHeroes()) do
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
         end
@@ -63,7 +64,7 @@ end, 1)
 OnProcessSpell(function(unit, spell)
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
-        if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
+        if IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
         Cast(_R,unit)
         end
       end
@@ -71,7 +72,7 @@ OnProcessSpell(function(unit, spell)
 end)
 
 OnDraw(function(myHero)
-if AsheMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1200,1,0,AsheMenu.Drawings.color:Value()) end
+if AsheMenu.Drawings.W:Value() then DrawCircle(myHeroPos(),1200,1,0,AsheMenu.Drawings.color:Value()) end
 end)
 
 local QReady = false
@@ -82,15 +83,15 @@ OnTick(function(myHero)
 	
 	local target = GetCurrentTarget()
 
-	if IsReady(_Q) and QReady and GoS:ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
+	if IsReady(_Q) and QReady and ValidTarget(target, 700) and AsheMenu.Combo.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if IsReady(_W) and GoS:ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
+        if IsReady(_W) and ValidTarget(target, 1200) and AsheMenu.Combo.W:Value() then
         Cast(_W,target)
         end
 						
-        if IsReady(_R) and GoS:ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
+        if IsReady(_R) and ValidTarget(target, 2000) and 100*GetCurrentHP(target)/GetMaxHP(target) < 50 and AsheMenu.Combo.R:Value() then
         Cast(_R,target)
 	end
 		
@@ -107,11 +108,11 @@ OnTick(function(myHero)
     
         local target = GetCurrentTarget()
       
-	if IsReady(_Q) and QReady and GoS:ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
+	if IsReady(_Q) and QReady and ValidTarget(target, 700) and AsheMenu.Harass.Q:Value() then
         CastSpell(_Q)
         end
 						
-        if IsReady(_W) and GoS:ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
+        if IsReady(_W) and ValidTarget(target, 1200) and AsheMenu.Harass.W:Value() then
         Cast(_W,target)
 	end
 		
@@ -119,45 +120,45 @@ OnTick(function(myHero)
 
     if AsheMenu.Combo.FireKey:Value() then
       local target = GetCurrentTarget()
-      if IsReady(_R) and GoS:ValidTarget(target, 3000) then 
+      if IsReady(_R) and ValidTarget(target, 3000) then 
       Cast(_R,target)
       end  
     end
 
       if AsheMenu.Harass.AutoW:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.Harass.WMana:Value() then 
         local target = GetCurrentTarget()
-        if IsReady(_W) and GoS:ValidTarget(target, 1200) and not IsRecalling then
+        if IsReady(_W) and ValidTarget(target, 1200) and not IsRecalling then
         Cast(_W,target)
 	end
       end
 
-for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+for i,enemy in pairs(GetEnemyHeroes()) do
 	
       if IOW:Mode() == "Combo" then	
-	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > AsheMenu.Combo.targetHP:Value() then
+	if GetItemSlot(myHero,3153) > 0 and AsheMenu.Combo.Items:Value() and ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > AsheMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > AsheMenu.Combo.targetHP:Value() then
+        if GetItemSlot(myHero,3144) > 0 and AsheMenu.Combo.Items:Value() and ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < AsheMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > AsheMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3144))
         end
 
-        if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
+        if GetItemSlot(myHero,3142) > 0 and AsheMenu.Combo.Items:Value() and ValidTarget(enemy, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end	
       end
       
 	if Ignite and AsheMenu.Misc.AutoIgnite:Value() then
-          if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+          if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
 	end
 	
-	if IsReady(_W) and GoS:ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
+	if IsReady(_W) and ValidTarget(enemy, 1200) and AsheMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 15*GetCastLevel(myHero,_W)+5+GetBaseDamage(myHero), 0) then 
 	Cast(_W,enemy)
 	end
 		  
-	if IsReady(_R) and GoS:ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R)+75 + GetBonusAP(myHero)) then
+	if IsReady(_R) and ValidTarget(enemy, 3000) and AsheMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 175*GetCastLevel(myHero,_R)+75 + GetBonusAP(myHero)) then
         Cast(_R,enemy)
 	end
 		
@@ -168,7 +169,7 @@ for i=1, IOW.mobs.maxObjects do
 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.LaneClear.Mana:Value() then
 
-		  if IsReady(_Q) and AsheMenu.LaneClear.Q:Value() and QReady and GoS:ValidTarget(minion, 700) then
+		  if IsReady(_Q) and AsheMenu.LaneClear.Q:Value() and QReady and ValidTarget(minion, 700) then
                   CastSpell(_Q)
                   end
 
@@ -183,16 +184,16 @@ for i=1, IOW.mobs.maxObjects do
 	        
 end
 
-for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
 		
         if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 
-                if IsReady(_Q) and AsheMenu.JungleClear.Q:Value() and QReady and GoS:ValidTarget(mob, 700) then
+                if IsReady(_Q) and AsheMenu.JungleClear.Q:Value() and QReady and ValidTarget(mob, 700) then
                 CastSpell(_Q)
                 end		
 
-		if IsReady(_W) and AsheMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) then
+		if IsReady(_W) and AsheMenu.JungleClear.W:Value() and ValidTarget(mob, 1200) then
 		CastSkillShot(_W,mobPos.x, mobPos.y, mobPos.z)
 		end
 		
@@ -203,7 +204,7 @@ if AsheMenu.Misc.Autolvl:Value() then
     if AsheMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W , _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
     elseif AsheMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
     end
-GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
+DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 end)
@@ -221,15 +222,15 @@ OnRemoveBuff(function(unit,buff)
 end)
 
 OnCreateObj(function(Object) 
-  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
+  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GetDistance(Object) < 100 then
   QReady = true
   end
 end)
 
 OnDeleteObj(function(Object) 
-  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GoS:GetDistance(Object) < 100 then
+  if GetObjectBaseName(Object) == "Ashe_Base_Q_ready.troy" and GetDistance(Object) < 100 then
   QReady = false
   end
 end)
 
-GoS:AddGapcloseEvent(_R, 69, false)
+AddGapcloseEvent(_R, 69, false)
