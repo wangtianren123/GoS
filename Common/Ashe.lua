@@ -28,7 +28,7 @@ AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 AsheMenu:Menu("Misc", "Misc")
 AsheMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
 if Ignite ~= nil then AsheMenu.Misc:Boolean("Autolvl", "Auto level", false) end
-AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
+AsheMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 
 AsheMenu:Menu("LaneClear", "LaneClear")
 AsheMenu.LaneClear:Boolean("Q", "Use Q", false)
