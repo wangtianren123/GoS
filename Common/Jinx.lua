@@ -26,7 +26,7 @@ JinxMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 JinxMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 
 JinxMenu:Menu("Misc", "Misc")
-JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
+if Ignite ~= nil then JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 JinxMenu.Misc:Boolean("Autolvl", "Auto level", true)
 JinxMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 	
