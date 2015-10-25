@@ -281,15 +281,26 @@ function HaveEnoughMana(percent, unit)
 	return ((GetCurrentMana(unit) / GetMaxMana(unit)) >= (percent / 100))
 end
 
-function HPPercentUnder(percent, unit)
+function HPUnder(percent, unit)
 	local unit = unit or myHero
 	return ((GetCurrentHP(unit) / GetMaxHP(unit)) <= (percent / 100))
+end
+
+function MinionsAround(pos, range)
+  local c = 0
+  if pos == nil then return 0 end
+  for k,v minionManager.objects do
+    if v and GoS:ValidTarget(v) and GoS:GetDistanceSqr(pos,GetOrigin(v)) < range*range then
+      c = c + 1
+    end
+  end
+  return c
 end
 
 function GetLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = IOW.mobs
+    local objects = minionManager.objects
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
@@ -307,10 +318,10 @@ end
 function GetFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = IOW.mobs
+  local objects = minionManager.objects
   for i, object in pairs(objects) do
   	if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
-	  	local hit = CountObjectsNearPos(Vector(object), range, width, objects)
+	    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
 	    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
 	      BestHit = hit
 	      BestPos = Vector(object)
@@ -326,7 +337,7 @@ end
 function GetJLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
-    local objects = IOW.mobs
+    local objects = minionManager.objects
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
@@ -344,8 +355,8 @@ end
 function GetJFarmPosition(range, width)
   local BestPos 
   local BestHit = 0
-  local objects = IOW.mobs
-  for i, object in pairs(objects) do
+  local objects = minionManager.objects
+    for i, object in pairs(objects) do
     local hit = CountObjectsNearPos(Vector(object), range, width, objects)
     if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
       BestHit = hit
@@ -360,7 +371,7 @@ end
 
 function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
   local n = 0
-  for i, object in pairs(objects) do
+    for i, object in pairs(objects) do
     local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
     local w = width
     if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
