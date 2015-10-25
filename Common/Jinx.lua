@@ -1,10 +1,6 @@
 if GetObjectName(myHero) ~= "Jinx" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local JinxMenu = MenuConfig("Jinx", "Jinx")
 JinxMenu:Menu("Combo", "Combo")
