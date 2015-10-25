@@ -134,18 +134,16 @@ OnTick(function(myHero)
     if IOW:Mode() == "Combo" and not IOW.isWindingUp then
 	        
 	local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and GoS:GetDistance(target) > (GetRange(myHero)+GetHitBox(myHero)) and KalistaMenu.Combo.Q:Value() then
         Cast(_Q,target)
         end
 
-        for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
-           
+        for i=1, IOW.mobs.maxObjects do
+          local minion = IOW.mobs.objects[i]
           if IsReady(_E) and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GoS:GetDistance(target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) and Estacks(target) > 0 and GetCurrentHP(minion) < Edmg(minion) then
           CastSpell(_E)
           end
-  
         end
 	
 	if GetItemSlot(myHero,3140) > 0 and KalistaMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < KalistaMenu.Combo.QSSHP:Value() then
@@ -161,7 +159,6 @@ OnTick(function(myHero)
    if IOW:Mode() == "Harass" and not IOW.isWindingUp and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
 	
 	local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() then
         Cast(_Q,target)
@@ -201,7 +198,7 @@ OnTick(function(myHero)
               CastSpell(_R)
 	      PrintChat("Rescuing low health "..GetObjectName(soulboundhero).."")
 	      end
-		  end
+	    end
 	end
 	
 	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
@@ -256,7 +253,8 @@ OnTick(function(myHero)
 	end
 	
     local killableminions = 0
-    for _,unit in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+    for i=1, IOW.mobs.maxObjects do
+      local unit = IOW.mobs.objects[i]
    
       if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and (GetObjectName(unit):find("Siege"))  and GoS:ValidTarget(unit, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
       CastSpell(_E)
