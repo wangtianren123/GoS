@@ -142,7 +142,8 @@ if CassiopeiaMenu.Misc.Autolvl:Value() then
 GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
-for _,minion in pairs(IOW.mobs) do
+for i=1, IOW.mobs.maxObjects do
+               local minion = IOW.mobs.objects[i]
        
                if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= CassiopeiaMenu.Farm.LaneClear.Mana:Value() then
         	
