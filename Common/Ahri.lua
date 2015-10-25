@@ -70,8 +70,7 @@ GoS:DelayAction(function()
 		
 end, 1)
 
-OnProcessSpellComplete(function(unit, spell)
-  if unit and spell and spell.name then
+OnProcessSpell(function(unit, spell)
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_E) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 1000) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
@@ -79,7 +78,6 @@ OnProcessSpellComplete(function(unit, spell)
         end
       end
     end
-  end
 end)
 
 local UltOn = false
