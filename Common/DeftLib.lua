@@ -43,8 +43,9 @@ SpellData = {
   	        [_Q] = { Name = "SivirQ", ProjectileName = "Sivir_Base_Q_mis.troy", Range = 1075, Speed = 1350, Delay = 250, Width = 85, collision = false, aoe = false, type = "linear", IsDangerous = false}
         }
   ["Syndra"] = {
-  	        [_Q] = { Name = "SyndraQ", ProjectileName = "Syndra_Q_cas.troy", Range = 790, Speed = math.huge, Delay =
-  	        [_W] = { Name = "SyndraW", ProjectileName = "", Range = 925, Speed = math.huge, Delay =
+  	        [_Q] = { Name = "SyndraQ", ProjectileName = "Syndra_Q_cas.troy", Range = 790, Speed = math.huge, Delay = 250, Width = 125, collision = false, aoe = false, type = "circular", IsDangerous = false},
+  	        [_W] = { Name = "SyndraW", ProjectileName = "", Range = 925, Speed = math.huge, Delay = 250, Width = 190, collision = false, aoe = false, type = "circular", IsDangerous = false}
+       }
 }
 
 CHANELLING_SPELLS = {
