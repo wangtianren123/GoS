@@ -35,13 +35,13 @@ SpellData = {
 	},
   ["Kalista"] = {
 		[_Q] = { Name = "KalistaMysticShot", ProjectileName = "", Range = 1150, Speed = 1700, Delay = 250, Width = 50, collision = true, aoe = false, type = "linear", IsDangerous = false}
-	}
+	},
   ["Ryze"] = {
   	        [_Q] = { Name = "Overload", ProjectileName = "Overload_mis.troy", Range = 900, Speed = 1400, Delay = 250, Width = 55, collision = true, aoe = false, type = "linear", IsDangerous = false}
-        }
+        },
   ["Sivir"] = {
   	        [_Q] = { Name = "SivirQ", ProjectileName = "Sivir_Base_Q_mis.troy", Range = 1075, Speed = 1350, Delay = 250, Width = 85, collision = false, aoe = false, type = "linear", IsDangerous = false}
-        }
+        },
   ["Syndra"] = {
   	        [_Q] = { Name = "SyndraQ", ProjectileName = "Syndra_Q_cas.troy", Range = 790, Speed = math.huge, Delay = 250, Width = 125, collision = false, aoe = false, type = "circular", IsDangerous = false},
   	        [_W] = { Name = "SyndraW", ProjectileName = "", Range = 925, Speed = math.huge, Delay = 250, Width = 190, collision = false, aoe = false, type = "circular", IsDangerous = false}
