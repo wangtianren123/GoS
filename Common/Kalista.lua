@@ -1,6 +1,7 @@
 if GetObjectName(myHero) ~= "Kalista" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local Epics = {"SRU_Baron", "SRU_Dragon", "TT_Spiderboss"}
 local Mobs = {"SRU_Baron", "SRU_Dragon", "SRU_Red", "SRU_Blue", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Gromp", "Sru_Crab", "TT_Spiderboss"}
@@ -60,8 +61,8 @@ KalistaMenu.Drawings:Boolean("R", "Draw R Range", true)
 KalistaMenu.Drawings:Boolean("Edmg", "Draw E% Dmg", true)
 KalistaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
-GoS:DelayAction(function()
-  for _,k in pairs(GoS:GetAllyHeroes()) do
+DelayAction(function()
+  for _,k in pairs(GetAllyHeroes()) do
     if GetObjectName(k) == "Blitzcrank" then
     KalistaMenu.Ult:Boolean("Balista", "Balista Combo", true)
     end
