@@ -148,27 +148,6 @@ local function GetJumpTarget()
 	return nil
 end
 
-OnProcessSpell(function(unit,spell)
-	if unit == myHero and not spell.name:lower():find("katarina") then
-	spellObj = spell
-	wardpos = spellObj.endPos
-	end
-end)
-
-OnCreateObj(function(object)
-	local objType = GetObjectType(object)
-	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-	objectList[object] = object
-	end
-end)
-
-OnDeleteObj(function(object)
-	local objType = GetObjectType(object)
-	if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
-	objectList[object] = nil
-	end
-end)
-
 OnDraw(function(myHero)
 local col = KatarinaMenu.Drawings.color:Value()
 if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),675,1,0,col) end
@@ -371,6 +350,25 @@ OnProcessSpell(function(unit,spell)
   CastingR = true
   IOW.movementEnabled = false
   IOW.attacksEnabled = false
+  end
+
+  if unit == myHero and not spell.name:lower():find("katarina") then
+  spellObj = spell
+  wardpos = spellObj.endPos
+  end
+end)
+
+OnCreateObj(function(object)
+  local objType = GetObjectType(object)
+  if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
+  objectList[object] = object
+  end
+end)
+
+OnDeleteObj(function(object)
+  local objType = GetObjectType(object)
+  if objType == Obj_AI_Hero or objType == Obj_AI_Minion then
+  objectList[object] = nil
   end
 end)
 
