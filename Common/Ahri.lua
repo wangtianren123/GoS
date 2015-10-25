@@ -24,7 +24,7 @@ AhriMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 AhriMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then AhriMenu.Misc:Boolean("Autoignite", "Auto Ignite", true) end
 AhriMenu.Misc:Boolean("Autolvl", "Auto level", true)
-AhriMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
+AhriMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "E-Q-W"})
 
 AhriMenu:Menu("Lasthit", "Lasthit")
 AhriMenu.Lasthit:Boolean("Q", "Use Q", true)
