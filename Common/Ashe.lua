@@ -42,7 +42,7 @@ AsheMenu.JungleClear:Slider("Mana", "if Mana % >", 30, 0, 80, 1)
 
 AsheMenu:Menu("Drawings", "Drawings")
 AsheMenu.Drawings:Boolean("W", "Draw W Range", true)
-AsheMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+AsheMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 local InterruptMenu = MenuConfig("Interrupt (R)", "Interrupt")
 
@@ -52,13 +52,8 @@ GoS:DelayAction(function()
 
   for i, spell in pairs(CHANELLING_SPELLS) do
     for _,k in pairs(GoS:GetEnemyHeroes()) do
-    	local added = false
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        added = true
-        end
-        if not added then
-        InterruptMenu:Info("bullshit", "No Interruptable Spells Found")
         end
     end
   end
