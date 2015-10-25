@@ -203,7 +203,7 @@ OnUpdateBuff(function(Object,buff)
     for i = 1, #ccstun do
       if buff.Type == ccstun[i] then
       Immobile[GetNetworkID(Object)] = buff.Count
-      GoS:DelayAction(function() Immobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
+      DelayAction(function() Immobile[GetNetworkID(Object)] = 0 end, buff.ExpireTime-buff.StartTime)
       end
     end
   
