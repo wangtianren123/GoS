@@ -33,7 +33,7 @@ BlitzcrankMenu:Menu("Drawings", "Drawings")
 BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 BlitzcrankMenu.Drawings:Boolean("R", "Draw R Range", true)
 BlitzcrankMenu.Drawings:Boolean("Stats", "Draw Statistics", true)
-BlitzcrankMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+BlitzcrankMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 	
 local InterruptMenu = MenuConfig("Interrupt", "Interrupt")
 InterruptMenu:Menu("SupportedSpells", "Supported Spells")
@@ -51,13 +51,8 @@ GoS:DelayAction(function()
 
   for i, spell in pairs(CHANELLING_SPELLS) do
     for _,k in pairs(GoS:GetEnemyHeroes()) do
-    	local added = false
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        added = true
-        end
-        if not added then
-        InterruptMenu:Info("bullshit", "No Interruptable Spells Found")
         end
     end
   end
