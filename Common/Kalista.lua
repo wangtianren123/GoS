@@ -6,6 +6,11 @@ local Epics = {"SRU_Baron", "SRU_Dragon", "TT_Spiderboss"}
 local Mobs = {"SRU_Baron", "SRU_Dragon", "SRU_Red", "SRU_Blue", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Gromp", "Sru_Crab", "TT_Spiderboss"}
 
 local KalistaMenu = MenuConfig("Kalista", "Kalista")
+
+KalistaMenu:Menu("Exploit", "Exploit")
+KalistaMenu.Exploit:Boolean("Enabled", "Enabled", true)
+
+
 KalistaMenu:Menu("Combo", "Combo")
 KalistaMenu.Combo:Boolean("Q", "Use Q", true)
 KalistaMenu.Combo:Boolean("E", "E if reset + slow target", true)
@@ -70,6 +75,12 @@ GoS:DelayAction(function()
   end
 end, 1)
 
+IOW:AddCallback(ON_ATTACK, function()
+if KalistaMenu.Exploit.Enabled:Value() then
+IOW.isWindingDown = false
+end
+end)
+
 OnDraw(function(myHero)
 local col = KalistaMenu.Drawings.color:Value()
 if KalistaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),1150,1,0,col) end
@@ -123,14 +134,15 @@ OnTick(function(myHero)
     if IOW:Mode() == "Combo" and not IOW.isWindingUp then
 	        
 	local target = GetCurrentTarget()
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and GoS:GetDistance(target) > (GetRange(myHero)+GetHitBox(myHero)) and KalistaMenu.Combo.Q:Value() then
         Cast(_Q,target)
         end
 
-        for _,minion in pairs(IOW.mobs) do
+        for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
            
-          if IsReady(_E) and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GoS:GetDistance(target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) and Estacks(target) > 0 and IOW:PredictHealth(minion, 125) < Edmg(minion) then
+          if IsReady(_E) and GoS:ValidTarget(target, 1000) and KalistaMenu.Combo.E:Value() and GoS:GetDistance(target) > GetRange(myHero)+GetHitBox(myHero)+(target and GetHitBox(target) or GetHitBox(myHero)) and Estacks(target) > 0 and GetCurrentHP(minion) < Edmg(minion) then
           CastSpell(_E)
           end
   
@@ -149,6 +161,7 @@ OnTick(function(myHero)
    if IOW:Mode() == "Harass" and not IOW.isWindingUp and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= KalistaMenu.Harass.Mana:Value() then
 	
 	local target = GetCurrentTarget()
+	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1700,250,1150,50,false,true)
 		
         if IsReady(_Q) and GoS:ValidTarget(target, 1150) and KalistaMenu.Harass.Q:Value() then
         Cast(_Q,target)
