@@ -44,7 +44,7 @@ JinxMenu.LaneClear:Boolean("Farm", "Always Switch To Minigun", true)
 JinxMenu:Menu("Drawings", "Drawings")
 JinxMenu.Drawings:Boolean("W", "Draw W Range", true)
 JinxMenu.Drawings:Boolean("E", "Draw E Range", true)
-JinxMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+JinxMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 OnDraw(function(myHero)
 local col = JinxMenu.Drawings.color:Value()
