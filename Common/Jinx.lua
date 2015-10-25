@@ -1,3 +1,8 @@
+--[[ Todo :
+- Q logic : Combo/LaneClear/JungleClear/
+- E logic ??
+]]
+
 if GetObjectName(myHero) ~= "Jinx" then return end
 
 require('Deftlib')
