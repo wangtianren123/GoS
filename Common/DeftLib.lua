@@ -464,7 +464,7 @@ end
 
 OnProcessSpellComplete(function(unit,spell)
 	if unit and spell and GetObjectType(unit) == Obj_AI_Hero then
-			for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+			for i,enemy in pairs(GetEnemyHeroes()) do
 				if GoS:ValidTarget(enemy,20000) then
 					local targetFaceXYZ=GetOrigin(enemy)
 					if (spell.name:find("Attack")) then 
