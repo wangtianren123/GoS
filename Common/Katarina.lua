@@ -2,43 +2,45 @@ if GetObjectName(myHero) ~= "Katarina" then return end
 
 require('Deftlib')
 
-local KatarinaMenu = Menu("Katarina", "Katarina")
-KatarinaMenu:SubMenu("Combo", "Combo")
+local KatarinaMenu = MenuConfig("Katarina", "Katarina")
+KatarinaMenu:Menu("Combo", "Combo")
 KatarinaMenu.Combo:Boolean("Q", "Use Q", true)
 KatarinaMenu.Combo:Boolean("W", "Use W", true)
 KatarinaMenu.Combo:Boolean("E", "Use E", true)
 KatarinaMenu.Combo:Boolean("R", "Use R", true)
 KatarinaMenu.Combo:Key("WardJumpkey", "Ward Jump!", string.byte("G"))
 
-KatarinaMenu:SubMenu("Harass", "Harass")
+KatarinaMenu:Menu("Harass", "Harass")
 KatarinaMenu.Harass:Boolean("Q", "Use Q", true)
 KatarinaMenu.Harass:Boolean("W", "Use W", true)
 KatarinaMenu.Harass:Boolean("E", "Use E", true)
 KatarinaMenu.Harass:Boolean("AutoQ", "Auto Q", false)
 KatarinaMenu.Harass:Boolean("AutoW", "Auto W", true)
 
-KatarinaMenu:SubMenu("Killsteal", "Killsteal")
+KatarinaMenu:Menu("Killsteal", "Killsteal")
 KatarinaMenu.Killsteal:Boolean("SmartKS", "Smart KS", true)
 KatarinaMenu.Killsteal:Boolean("UseWards", "Use Wards", true)
 
-KatarinaMenu:SubMenu("Misc", "Misc")
+KatarinaMenu:Menu("Misc", "Misc")
 KatarinaMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 KatarinaMenu.Misc:Boolean("Autolvl", "Auto level", true)
-KatarinaMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
+KatarinaMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
 
-KatarinaMenu:SubMenu("JungleClear", "JungleClear")
+KatarinaMenu:Menu("JungleClear", "JungleClear")
 KatarinaMenu.JungleClear:Boolean("Q", "Use Q", true)
 KatarinaMenu.JungleClear:Boolean("W", "Use W", true)
 KatarinaMenu.JungleClear:Boolean("E", "Use E", true)
 
-KatarinaMenu:SubMenu("Drawings", "Drawings")
+KatarinaMenu:Menu("Drawings", "Drawings")
 KatarinaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 KatarinaMenu.Drawings:Boolean("W", "Draw W Range", true)
 KatarinaMenu.Drawings:Boolean("E", "Draw E Range", true)
 KatarinaMenu.Drawings:Boolean("R", "Draw R Range", true)
-KatarinaMenu.Drawings:Boolean("Text", "Draw Text", true)
+KatarinaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
+KatarinaMenu.Drawings:Boolean("Text", "Draw Damage Text", true)
 
-KatarinaMenu:SubMenu("Farm", "Farm")
+
+KatarinaMenu:Menu("Farm", "Farm")
 KatarinaMenu.Farm:Boolean("Q", "Lasthit with Q", false)
 KatarinaMenu.Farm:Boolean("W", "Lasthit with W", false)
 KatarinaMenu.Farm:Boolean("E", "Lasthit with E", false)
@@ -46,17 +48,6 @@ KatarinaMenu.Farm:Boolean("QLC", "Clear with Q", false)
 KatarinaMenu.Farm:Boolean("WLC", "Clear with W", false)
 KatarinaMenu.Farm:Boolean("ELC", "Clear with E", false)
 
-local spellList = { Katarina = _E }
-local myHero = GetMyHero()
-local spellSlot = spellList[ GetObjectName(myHero) ]
-
-if not spellSlot then return end
-
-local GetOrigin = GetOrigin
-local GetObjectName = GetObjectName
-local GetObjectType = GetObjectType
-
-local wardRange = 600
 local jumpTarget
 local wardLock
 local mousePos
@@ -101,21 +92,19 @@ local function calcMaxPos(pos)
 	local vectory = pos.y-origin.y
 	local vectorz = pos.z-origin.z
 	local dist= math.sqrt(vectorx^2+vectory^2+vectorz^2)
-	return {x = origin.x + wardRange * vectorx / dist ,y = origin.y + wardRange * vectory / dist, z = origin.z + wardRange * vectorz / dist}
+	return {x = origin.x + 600 * vectorx / dist ,y = origin.y + 600 * vectory / dist, z = origin.z + 600 * vectorz / dist}
 end
 
 local function ValidTarget( object )
 	local objType = GetObjectType(object)
-	if GetObjectName(myHero) == "Katarina" then
 	return (objType == Obj_AI_Hero or objType == Obj_AI_Minion) and IsVisible(object)
-	end
 end
 
 local findWardSlot = function ()
 	local slot = 0
 	for i,wardItem in pairs(wardItems) do
 	slot = GetItemSlot(myHero,wardItem.id)
-	if slot > 0 and CanUseSpell(myHero, slot) == READY then return slot end
+	if slot > 0 and IsReady(slot) then return slot end
 	end
 end
 
@@ -123,7 +112,7 @@ local function putWard(pos0)
 	local slot = findWardSlot()
 
 	local pos = pos0
-	if not IsInDistance(wardRange, pos) then
+	if not IsInDistance(600, pos) then
 	pos = calcMaxPos(pos)
 	end
 
@@ -135,9 +124,9 @@ end
 local spellLock = nil
 
 function wardJump( pos )
-	if not spellLock and CanUseSpell(myHero, spellSlot) == READY then
+	if not spellLock and IsReady(_E) then
 		if jumpTarget then
-		CastTargetSpell(jumpTarget, spellSlot)
+		CastTargetSpell(jumpTarget, _E)
 		spellLock = GetTickCount()
 		elseif not wardLock then
 		wardLock = GetTickCount()
@@ -148,7 +137,7 @@ end
 
 local function GetJumpTarget()
 	local pos = mousePos
-	if not IsInDistance(wardRange, mousePos, GetOrigin(myHero)) then
+	if not IsInDistance(600, mousePos, GetOrigin(myHero)) then
 	pos = maxPos
 	end
 	for _,object in pairs(objectList) do
@@ -160,8 +149,7 @@ local function GetJumpTarget()
 end
 
 OnProcessSpell(function(unit,spell)
-
-	if unit and unit == myHero and spell and not spell.name:lower():find("katarina") then
+	if unit == myHero and not spell.name:lower():find("katarina") then
 	spellObj = spell
 	wardpos = spellObj.endPos
 	end
@@ -182,10 +170,11 @@ OnDeleteObj(function(object)
 end)
 
 OnDraw(function(myHero)
-if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),675,1,0,0xff00ff00) end
-if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),375,1,0,0xff00ff00) end
-if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,0xff00ff00) end
-if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,0xff00ff00) end
+local col = KatarinaMenu.Drawings.color:Value()
+if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),675,1,0,col) end
+if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),375,1,0,col) end
+if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,col) end
+if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,col) end
   if KatarinaMenu.Drawings.Text:Value() then
 	for _, enemy in pairs(GoS:GetEnemyHeroes()) do
 		if GoS:ValidTarget(enemy) then
@@ -197,6 +186,8 @@ if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,0xff0
 	end
   end
 end)
+
+local CastingR = false
 
 OnTick(function(myHero)
 
@@ -226,30 +217,25 @@ OnTick(function(myHero)
 	jumpTarget = nil
 	spellObj = nil
 	wardpos = nil
-  
-  if GotBuff(myHero, "katarinarsound") > 0 then
-  IOW:DisableOrbwalking()
-  elseif GotBuff(myHero, "katarinarsound") < 1 then 
-  IOW:EnableOrbwalking() 
-  end
 
   if IOW:Mode() == "Combo" then
       local target = GetCurrentTarget()
 	  
-      if CanUseSpell(myHero, _Q) == READY and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
+      if IsReady(_Q) and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
       end
 	  
-      if CanUseSpell(myHero, _W) == READY and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, 375) then
+      if IsReady(_W) and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
       end
 	  
-      if CanUseSpell(myHero, _E) == READY and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) then
+      if IsReady(_E) and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
       end
 	  
       if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
-      IOW:DisableOrbwalking()
+      IOW.movementEnabled = false
+      IOW.attacksEnabled = false
       CastSpell(_R)
       end
   end
@@ -257,26 +243,26 @@ OnTick(function(myHero)
   if IOW:Mode() == "Harass" then
       local target = GetCurrentTarget()
 	  
-      if CanUseSpell(myHero, _Q) == READY and KatarinaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 675) then
+      if IsReady(_Q) and KatarinaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
       end
 	  
-      if CanUseSpell(myHero, _W) == READY and KatarinaMenu.Harass.W:Value() and GoS:ValidTarget(target, 375) then
+      if IsReady(_W) and KatarinaMenu.Harass.W:Value() and GoS:ValidTarget(target, 375) then
       CastSpell(_W)
       end
 	  
-      if CanUseSpell(myHero, _E) == READY and KatarinaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) then
+      if IsReady(_E) and KatarinaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
       end
   end
 
 local target = GetCurrentTarget()
 
-if KatarinaMenu.Harass.AutoQ:Value() and GoS:ValidTarget(target, 675) and GotBuff(myHero, "katarinarsound") < 1 then
+if KatarinaMenu.Harass.AutoQ:Value() and GoS:ValidTarget(target, 675) and not CastingR then
 CastTargetSpell(target, _Q)
 end
 
-if KatarinaMenu.Harass.AutoW:Value() and GoS:ValidTarget(target, 375) and GotBuff(myHero, "katarinarsound") < 1 then
+if KatarinaMenu.Harass.AutoW:Value() and GoS:ValidTarget(target, 375) and not CastingR then
 CastSpell(_W)
 end
 
@@ -284,35 +270,35 @@ end
        if KatarinaMenu.Killsteal.SmartKS:Value() then
 				
 		if Ignite and KatarinaMenu.Misc.Autoignite:Value() then
-                  if CanUseSpell(myHero,Ignite) == READY and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
                 end
 		
-                                if CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
+                                if IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
 				CastSpell(_W)
 				
-				elseif CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 675) then 
+				elseif IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 675) then 
 				CastTargetSpell(enemy, _Q)
 				
-				elseif CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
 				
-				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
+				elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
 				CastSpell(_W)
                                 GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 		
-				elseif CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_E) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
 				GoS:DelayAction(function() CastSpell(_W) end, 250)
 				
-				elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
 				GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 				GoS:DelayAction(function() CastSpell(_W) end, 250)
 				end
 				
-	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
+	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
 			        wardJump(GetOrigin(enemy))
 		                GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 	                        end
@@ -332,26 +318,26 @@ for i=1, IOW.mobs.maxObjects do
         local minion = IOW.mobs.objects[i]
 
         if IOW:Mode() == "LaneClear" then
-		if CanUseSpell(myHero, _Q) == READY and KatarinaMenu.Farm.QLC:Value() and GoS:ValidTarget(minion, 675) then
+		if IsReady(_Q) and KatarinaMenu.Farm.QLC:Value() and GoS:ValidTarget(minion, 675) then
 		CastTargetSpell(minion, _Q)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and KatarinaMenu.Farm.WLC:Value() and GoS:ValidTarget(minion, 375) then
+		if IsReady(_W) and KatarinaMenu.Farm.WLC:Value() and GoS:ValidTarget(minion, 375) then
 		CastSpell(_W)
 		end
 		
-		if CanUseSpell(myHero, _E) == READY and KatarinaMenu.Farm.ELC:Value() and GoS:ValidTarget(minion, 700) then
+		if IsReady(_E) and KatarinaMenu.Farm.ELC:Value() and GoS:ValidTarget(minion, 700) then
 		CastTargetSpell(minion, _E)
 		end
 	end
 	
 	if IOW:Mode() == "LastHit" then
 		
-	        if CanUseSpell(myHero, _W) == READY and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) then
+	        if IsReady(_W) and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) then
 		CastSpell(_W)
-		elseif CanUseSpell(myHero, _Q) == READY and KatarinaMenu.Farm.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
+		elseif IsReady(_Q) and KatarinaMenu.Farm.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
 		CastTargetSpell(minion, _Q)
-		elseif CanUseSpell(myHero, _E) == READY and KatarinaMenu.Farm.E:Value() and GoS:ValidTarget(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) then
+		elseif IsReady(_E) and KatarinaMenu.Farm.E:Value() and GoS:ValidTarget(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) then
 		CastTargetSpell(minion, _E)
 		end
 		
@@ -363,46 +349,70 @@ for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
 		
    if IOW:Mode() == "LaneClear" then
 		
-		if CanUseSpell(myHero, _Q) == READY and KatarinaMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 675) then
+		if IsReady(_Q) and KatarinaMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 675) then
 		CastTargetSpell(mob, _Q)
 		end
 		
-		if CanUseSpell(myHero, _W) == READY and KatarinaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 375) then
+		if IsReady(_W) and KatarinaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 375) then
 		CastSpell(_W)
 		end
 		
-	        if CanUseSpell(myHero, _E) == READY and KatarinaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 700) then
+	        if IsReady(_E) and KatarinaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 700) then
 		CastTargetSpell(mob, _E)
 		end
 		
 	end
 end
 
-end)	
+end)
+
+OnProcessSpell(function(unit,spell)
+  if unit == myHero and spell.name:lower():find("katarinar") then
+  CastingR = true
+  IOW.movementEnabled = false
+  IOW.attacksEnabled = false
+  end
+end)
+
+OnUpdateBuff(function(unit,buff)
+  if unit == myHero and buff.Name == "katarinarsound" then
+  CastingR = true
+  IOW.movementEnabled = false
+  IOW.attacksEnabled = false
+  end
+end)
+
+OnRemoveBuff(function(unit,buff)
+  if unit == myHero and buff.Name == "katarinarsound" then
+  CastingR = false
+  IOW.movementEnabled = true
+  IOW.attacksEnabled = true
+  end
+end)
 
 function GetDrawText(enemy)
-	local ExtraDmg = 0
-	if Ignite and CanUseSpell(myHero,Ignite) == READY then
-	ExtraDmg = ExtraDmg + 20*GetLevel(myHero)+50
+	local IgniteDmg = 0
+	if Ignite and IsReady(Ignite) then
+	IgniteDmg = IgniteDmg + 20*GetLevel(myHero)+50
 	end
 	
-	if CanUseSpell(myHero, _Q) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + Ludens()) then
+	if IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + Ludens()) then
 		return 'Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
+	elseif IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
 		return 'W = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'E = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
 		return 'W + Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'E + W = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return '(Q + Passive) + W +E = Kill!', ARGB(255, 200, 160, 0)
-	elseif ExtraDmg > 0 and CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IgniteDmg > 0 and IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return '(Q + Passive) + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
-	elseif CanUseSpell(myHero, _Q) == READY and CanUseSpell(myHero, _W) == READY and CanUseSpell(myHero, _E) == READY and CanUseSpell(myHero, _R) == READY and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (GoS:CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and IsReady(_R) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (GoS:CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + Ludens()) then
 		return 'Q + W + E + Ult ('.. string.format('%4.1f', ((GetCurrentHP(enemy) -  GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) - GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) - GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero))) / GoS:CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)))/4) .. ' Secs) = Kill!', ARGB(255, 255, 69, 0)
 	else
 		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
