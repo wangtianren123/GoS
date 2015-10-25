@@ -174,7 +174,8 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 		
 end
 
-for _,minion in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
+for i=1, IOW.mobs.maxObjects do
+                local minion = IOW.mobs.objects[i]
 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.LaneClear.Mana:Value() then
 
