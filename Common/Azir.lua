@@ -40,7 +40,7 @@ AzirMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 AzirMenu.Drawings:Boolean("W", "Draw W Range", true)
 AzirMenu.Drawings:Boolean("E", "Draw E Range", true)
 AzirMenu.Drawings:Boolean("R", "Draw R Range", true)
-AzirMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,255})
+AzirMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
  
 local InterruptMenu = MenuConfig("Interrupt (R)", "Interrupt")
 
@@ -50,13 +50,8 @@ GoS:DelayAction(function()
 
   for i, spell in pairs(CHANELLING_SPELLS) do
     for _,k in pairs(GoS:GetEnemyHeroes()) do
-    	local added = false
         if spell["Name"] == GetObjectName(k) then
         InterruptMenu:Boolean(GetObjectName(k).."Inter", "On "..GetObjectName(k).." "..(type(spell.Spellslot) == 'number' and str[spell.Spellslot]), true)
-        added = true
-        end
-        if not added then
-        InterruptMenu:Info("bullshit", "No Interruptable Spells Found")
         end
     end
   end
@@ -64,7 +59,6 @@ GoS:DelayAction(function()
 end, 1)
 
 OnProcessSpell(function(unit, spell)
-  if unit and spell and spell.name then
     if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_R) then
       if CHANELLING_SPELLS[spell.name] then
         if GoS:IsInDistance(unit, 450) and GetObjectName(unit) == CHANELLING_SPELLS[spell.name].Name and InterruptMenu[GetObjectName(unit).."Inter"]:Value() then 
@@ -72,7 +66,6 @@ OnProcessSpell(function(unit, spell)
         end
       end
     end
-  end
 end)
 
 OnDraw(function(myHero)
