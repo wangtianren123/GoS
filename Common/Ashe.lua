@@ -1,10 +1,6 @@
 if GetObjectName(myHero) ~= "Ashe" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local AsheMenu = MenuConfig("Ashe", "Ashe")
 AsheMenu:Menu("Combo", "Combo")
@@ -31,7 +27,7 @@ AsheMenu.Killsteal:Boolean("R", "Killsteal with R", false)
 
 AsheMenu:Menu("Misc", "Misc")
 AsheMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
-AsheMenu.Misc:Boolean("Autolvl", "Auto level", false)
+if Ignite ~= nil then AsheMenu.Misc:Boolean("Autolvl", "Auto level", false) end
 AsheMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
 
 AsheMenu:Menu("LaneClear", "LaneClear")
