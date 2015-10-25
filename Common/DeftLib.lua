@@ -41,6 +41,9 @@ SpellData = {
   ["Jinx"] = {
 		[_W] = { Name = "JinxW", ProjectileName = "", Range = 1500, Speed = 3300, Delay = 600, Width = 60, collision = true, aoe = true, type = "circular", IsDangerous = true},
 		[_R] = { Name = "JinxR",  ProjectileName = "", Range = 20000, Speed = 1700, Delay = 600, Width = 140, collision = false, aoe = true, type = "cone", IsDangerous = true}
+	},
+  ["Kalista"] = {
+		[_Q] = { Name = "KalistaMysticShot", ProjectileName = "", Range = 1150, Speed = 1700, Delay = 250, Width = 50, collision = true, aoe = false, type = "linear", IsDangerous = false}
 	}
 }
 
