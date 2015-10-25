@@ -184,9 +184,9 @@ for i=1, IOW.mobs.maxObjects do
 	        
 end
 
-for _,mob in pairs(GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(minionManager.objects) do
 		
-        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
+        if GetTeam(mob) == 300 and IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AsheMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 
                 if IsReady(_Q) and AsheMenu.JungleClear.Q:Value() and QReady and ValidTarget(mob, 700) then
