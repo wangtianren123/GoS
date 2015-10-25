@@ -1,3 +1,9 @@
+--[[ TODO :
+- LastHit/Laneclear/JungleClear
+- Better R logic
+- AntiGapcloser
+]]
+
 if GetObjectName(myHero) ~= "Azir" then return end
 
 require('Deftlib')
