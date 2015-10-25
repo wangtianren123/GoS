@@ -290,7 +290,7 @@ function MinionsAround(pos, range)
   local c = 0
   if pos == nil then return 0 end
   for k,v in pairs(minionManager.objects) do
-    if v and GoS:ValidTarget(v) and GoS:GetDistanceSqr(pos,GetOrigin(v)) < range*range then
+    if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
       c = c + 1
     end
   end
@@ -304,7 +304,7 @@ function GetLineFarmPosition(range, width)
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range^2 then
+      if hit > BestHit and GetDistanceSqr(GetOrigin(object)) < range^2 then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -322,7 +322,7 @@ function GetFarmPosition(range, width)
   for i, object in pairs(objects) do
   	if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
 	    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-	    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+	    if hit > BestHit and GetDistanceSqr(Vector(object)) < range * range then
 	      BestHit = hit
 	      BestPos = Vector(object)
 	      if BestHit == #objects then
@@ -341,7 +341,7 @@ function GetJLineFarmPosition(range, width)
     for i, object in pairs(objects) do
       local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
       local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GoS:GetDistanceSqr(GetOrigin(object)) < range * range then
+      if hit > BestHit and GetDistanceSqr(GetOrigin(object)) < range * range then
         BestHit = hit
         BestPos = Vector(object)
         if BestHit == #objects then
@@ -358,7 +358,7 @@ function GetJFarmPosition(range, width)
   local objects = minionManager.objects
     for i, object in pairs(objects) do
     local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-    if hit > BestHit and GoS:GetDistanceSqr(Vector(object)) < range * range then
+    if hit > BestHit and GetDistanceSqr(Vector(object)) < range * range then
       BestHit = hit
       BestPos = Vector(object)
       if BestHit == #objects then
@@ -374,7 +374,7 @@ function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
     for i, object in pairs(objects) do
     local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
     local w = width
-    if isOnSegment and GoS:GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GoS:GetDistanceSqr(StartPos, EndPos) > GoS:GetDistanceSqr(StartPos, GetOrigin(object)) then
+    if isOnSegment and GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, GetOrigin(object)) then
     n = n + 1
     end
   end
@@ -384,7 +384,7 @@ end
 function CountObjectsNearPos(pos, range, radius, objects)
   local n = 0
   for i, object in pairs(objects) do
-    if IsObjectAlive(object) and GoS:GetDistanceSqr(pos, Vector(object)) <= radius^2 then
+    if IsObjectAlive(object) and GetDistanceSqr(pos, Vector(object)) <= radius^2 then
       n = n + 1
     end
   end
@@ -392,10 +392,10 @@ function CountObjectsNearPos(pos, range, radius, objects)
 end
 
 function HeroCollision(target, spell, range, width) 
-    for i, enemy in ipairs(GoS:GetEnemyHeroes()) do
-        if GoS:ValidTarget(enemy) and GoS:GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
+    for i, enemy in ipairs(GetEnemyHeroes()) do
+        if ValidTarget(enemy) and GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
             local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), Vector(target), Vector(enemy))
-            if (GoS:GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 + width, 2)) then
+            if (GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 + width, 2)) then
                 return true
             end
         end
@@ -420,14 +420,14 @@ function IsFacing(targetFace,range,unit)
 
 		if lastwalkway.x~=nil then
 
-		local d1 = GoS:GetDistance(targetFace,unit)
+		local d1 = GetDistance(targetFace,unit)
     		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
     		return d2 < d1
 
 
     	elseif lastwalkway.x==nil then
     		if lastattackposition.x~=nil and lastattackposition.name==GetObjectName(targetFace) then
-			local d1 = GoS:GetDistance(targetFace,unit)
+			local d1 = GetDistance(targetFace,unit)
     			local d2 = GetDistance2XYZ(lastattackposition.x,lastattackposition.z,unitXYZ.x,unitXYZ.z)
     			return d2 < d1
     		end
@@ -436,7 +436,7 @@ function IsFacing(targetFace,range,unit)
     	lastwalkway={x=walkway.PredPos.x,y=walkway.PredPos.y,z=walkway.PredPos.z} 
 
     	if lastwalkway.x~=nil then
-		local d1 = GoS:GetDistance(targetFace,unit)
+		local d1 = GetDistance(targetFace,unit)
     		local d2 = GetDistance2XYZ(lastwalkway.x,lastwalkway.z,unitXYZ.x,unitXYZ.z)
     		return d2 < d1
     	end
@@ -465,7 +465,7 @@ end
 OnProcessSpellComplete(function(unit,spell)
 	if unit and spell and GetObjectType(unit) == Obj_AI_Hero then
 			for i,enemy in pairs(GetEnemyHeroes()) do
-				if GoS:ValidTarget(enemy,20000) then
+				if ValidTarget(enemy,20000) then
 					local targetFaceXYZ=GetOrigin(enemy)
 					if (spell.name:find("Attack")) then 
 						if spell.startPos.x == targetFaceXYZ.x and spell.startPos.y == targetFaceXYZ.y and spell.startPos.z == targetFaceXYZ.z then 
