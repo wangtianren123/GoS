@@ -148,14 +148,15 @@ function IsReady(spell)
 	return CanUseSpell(myHero,spell) == READY
 end
 
-function Cast(spell, target, hitchance, speed, delay, range, width, coll)
-      hitchance = hitchance or 1
-      speed = speed or  SpellData[GetObjectName(myHero)][spell].Speed or math.huge
-      delay = delay or  SpellData[GetObjectName(myHero)][spell].Delay or 0
-      range = range or  SpellData[GetObjectName(myHero)][spell].Range
-      width = width or  SpellData[GetObjectName(myHero)][spell].Width
-      coll = coll or  SpellData[GetObjectName(myHero)][spell].collision
-      local Predicted = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
+function Cast(spell, target, origin, hitchance, speed, delay, range, width, coll)
+      local hitchance = hitchance or 1
+      local origin = GetOrigin(origin) or GoS:myHeroPos()
+      local speed = speed or  SpellData[GetObjectName(myHero)][spell].Speed or math.huge
+      local delay = delay or  SpellData[GetObjectName(myHero)][spell].Delay or 0
+      local range = range or  SpellData[GetObjectName(myHero)][spell].Range
+      local width = width or  SpellData[GetObjectName(myHero)][spell].Width
+      local coll = coll or  SpellData[GetObjectName(myHero)][spell].collision
+      local Predicted = GetPredictionForPlayer(origin,target,GetMoveSpeed(target), speed, delay, range, width, coll, true)
       if Predicted.HitChance >= hitchance then
       CastSkillShot(spell, Predicted.PredPos.x, Predicted.PredPos.y, Predicted.PredPos.z)
       end
