@@ -1,7 +1,7 @@
-if GetObjectName(GetMyHero()) ~= "Kalista" then return end
-
 require('Inspired')
 require('Deftlib')
+
+if GetObjectName(myHero) ~= "Kalista" then return end
 
 local Epics = {"SRU_Baron", "SRU_Dragon", "TT_Spiderboss"}
 local Mobs = {"SRU_Baron", "SRU_Dragon", "SRU_Red", "SRU_Blue", "SRU_Krug", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Gromp", "Sru_Crab", "TT_Spiderboss"}
