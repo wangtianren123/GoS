@@ -4,7 +4,7 @@ require('MapPositionGOS')
 require('Deftlib')
 
 local VayneMenu = MenuConfig("Vayne", "Vayne")
-VayneMenu:Menu("Combo", "General")
+VayneMenu:Menu("Combo", "Combo")
 VayneMenu.Combo:Menu("Q", "Tumble (Q)")
 VayneMenu.Combo.Q:DropDown("Mode", "Mode", 1, {"Reset", "Normal"})
 VayneMenu.Combo.Q:Boolean("Enabled", "Enabled", true)
@@ -26,9 +26,6 @@ VayneMenu.Combo.R:Slider("Rminally", "Minimum Allies in Range", 2, 0, 4, 1)
 VayneMenu.Combo.R:Slider("Rallyrange", "Range", 1000, 1, 2000, 10)
 VayneMenu.Combo.R:Slider("Rminenemy", "Minimum Enemies in Range", 2, 1, 5, 1)
 VayneMenu.Combo.R:Slider("Renemyrange", "Range", 1000, 1, 2000, 10)
-
-VayneMenu.Combo:Key("WallTumble1", "WallTumble Mid", string.byte("T"))
-VayneMenu.Combo:Key("WallTumble2", "WallTumble Drake", string.byte("U"))
 VayneMenu.Combo:Boolean("Items", "Use Items", true)
 VayneMenu.Combo:Slider("myHP", "if HP % <", 50, 0, 100, 1)
 VayneMenu.Combo:Slider("targetHP", "if Target HP % >", 20, 0, 100, 1)
@@ -37,10 +34,11 @@ VayneMenu.Combo:Slider("QSSHP", "if My Health % <", 75, 0, 100, 1)
 
 
 VayneMenu:Menu("Misc", "Misc")
-VayneMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
+if Ignite ~= nil then VayneMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 VayneMenu.Misc:Boolean("Autolvl", "Auto level", true)
 VayneMenu.Misc:List("Autolvltable", "Priority", 1, {"W-Q-E", "Q-W-E"})
-
+VayneMenu.Misc:Key("WallTumble1", "WallTumble Mid", string.byte("T"))
+VayneMenu.Misc:Key("WallTumble2", "WallTumble Drake", string.byte("U"))
 
 VayneMenu:Menu("Drawings", "Drawings")
 VayneMenu.Drawings:Boolean("Q", "Draw Q Range", true)
@@ -156,15 +154,15 @@ OnTick(function(myHero)
         end
    end
 
-        if VayneMenu.Combo.WallTumble1:Value() and GoS:myHeroPos().x == 6962 and GoS:myHeroPos().z == 8952 then
+        if VayneMenu.Misc.WallTumble1:Value() and GoS:myHeroPos().x == 6962 and GoS:myHeroPos().z == 8952 then
         CastSkillShot(_Q,6667.3271484375, 51, 8794.64453125)
-        elseif VayneMenu.Combo.WallTumble1:Value() then
+        elseif VayneMenu.Misc.WallTumble1:Value() then
         MoveToXYZ(6962, 51, 8952)
         end
     
-        if VayneMenu.Combo.WallTumble2:Value() and GoS:myHeroPos().x == 12060 and GoS:myHeroPos().z == 4806 then
+        if VayneMenu.Misc.WallTumble2:Value() and GoS:myHeroPos().x == 12060 and GoS:myHeroPos().z == 4806 then
         CastSkillShot(_Q,11745.198242188, 51, 4625.4379882813)
-        elseif VayneMenu.Combo.WallTumble2:Value() then
+        elseif VayneMenu.Misc.WallTumble2:Value() then
         MoveToXYZ(12060, 51, 4806)
         end
 
