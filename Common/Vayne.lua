@@ -177,7 +177,7 @@ end
 
 end)
 
-OnProcessSpellComplete(function(unit, spell)
+OnProcessSpell(function(unit, spell)
         if unit == myHero and spell.name:lower():find("attack") and IOW:Mode() == "Combo" and IsReady(_Q) then 
 	        GoS:DelayAction(function() 
 	        	for i,enemy in pairs(GoS:GetEnemyHeroes()) do
@@ -203,7 +203,7 @@ OnProcessSpellComplete(function(unit, spell)
                                 end
                             end
                         end
-                end, spell.windUpTime*1000)	
+                end, GetWindUp(myHero)*1000)	
       end
   
       if GetObjectType(unit) == Obj_AI_Hero and GetTeam(unit) ~= GetTeam(myHero) and IsReady(_E) then
