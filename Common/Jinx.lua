@@ -33,7 +33,7 @@ JinxMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 JinxMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then JinxMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 JinxMenu.Misc:Boolean("Autolvl", "Auto level", true)
-JinxMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
+JinxMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E"})
 	
 JinxMenu:Menu("Lasthit", "Lasthit")
 JinxMenu.Lasthit:Boolean("Farm", "Always Switch To Minigun", true)
