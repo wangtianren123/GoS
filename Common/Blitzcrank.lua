@@ -27,7 +27,7 @@ BlitzcrankMenu.Killsteal:Boolean("R", "Killsteal with R", true)
 BlitzcrankMenu:Menu("Misc", "Misc")
 if Ignite ~= nil then BlitzcrankMenu.Misc:Boolean("Autoignite", "Auto Ignite", true) end
 BlitzcrankMenu.Misc:Boolean("Autolvl", "Auto level", true)
-BlitzcrankMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "W-Q-E"})
+BlitzcrankMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-E-W", "Q-W-E", "W-Q-E"})
 
 BlitzcrankMenu:Menu("Drawings", "Drawings")
 BlitzcrankMenu.Drawings:Boolean("Q", "Draw Q Range", true)
