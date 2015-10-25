@@ -153,7 +153,7 @@ end
 
 function Cast(spell, target, origin, hitchance, speed, delay, range, width, coll)
       local hitchance = hitchance or 1
-      local origin = GetOrigin(origin) or GoS:myHeroPos()
+      local origin = GetOrigin(origin) or myHeroPos()
       local speed = speed or  SpellData[GetObjectName(myHero)][spell].Speed or math.huge
       local delay = delay or  SpellData[GetObjectName(myHero)][spell].Delay or 0
       local range = range or  SpellData[GetObjectName(myHero)][spell].Range
@@ -410,7 +410,7 @@ function IsFacing(targetFace,range,unit)
 	range=range or 99999
 	unit=unit or myHero
 	targetFace=targetFace
-	if (targetFace and unit)~=nil and (GoS:ValidTarget(targetFace,range,unit)) and GoS:GetDistance(targetFace,unit)<=range then
+	if (targetFace and unit)~=nil and (ValidTarget(targetFace,range,unit)) and GetDistance(targetFace,unit)<=range then
 		local unitXYZ= GetOrigin(unit)
 		local targetFaceXYZ=GetOrigin(targetFace)
 		local lastwalkway={true,true,true}
