@@ -1,4 +1,4 @@
-if GetObjectName(myHero) ~= "Kalista" then return end
+if GetObjectName(GetMyHero()) ~= "Kalista" then return end
 
 if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
 if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
@@ -107,8 +107,8 @@ for i,enemy in pairs(GetEnemyHeroes()) do
              end
 	   end
 end
-for _,unit in pairs(GetAllMinions(MINION_JUNGLE)) do
-  if ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
+for _,unit in pairs(minionManager.objects) do
+  if GetTeam(unit) == 300 and ValidTarget(unit, 2000) and KalistaMenu.Drawings.Edmg:Value() then
 	local mobPos = GetOrigin(unit)
         local drawPos = WorldToScreen(1,mobPos.x,mobPos.y,mobPos.z)
           if Edmg(unit) > GetCurrentHP(unit) then
@@ -296,9 +296,9 @@ for _,spot in pairs(WallSpots) do
   end
 end
 	
-for _,unit in pairs(GetAllMinions(MINION_JUNGLE)) do
+for _,unit in pairs(minionManager.objects) do
    
-    if ValidTarget(unit, 1000) and IsReady(_E) and KalistaMenu.Farm.Jungle.je:Value() ~= 1 then
+    if GetTeam(unit) == 300 and ValidTarget(unit, 1000) and IsReady(_E) and KalistaMenu.Farm.Jungle.je:Value() ~= 1 then
       if KalistaMenu.Farm.Jungle.je:Value() == 2 then
         for i,Epic in pairs(Epics) do
           if GetObjectName(unit) == Epic and GetCurrentHP(unit) < Edmg(unit) then  
