@@ -1,10 +1,6 @@
 if GetObjectName(myHero) ~= "Cassiopeia" then return end
 
-if (FileExist(COMMON_PATH.."Deftlib.lua")) then
 require('Deftlib')
-else
-PrintChat("You need Deftlib to use this Script, please download it and reload the script!")
-end
 
 local CassiopeiaMenu = MenuConfig("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:Menu("Combo", "Combo")
@@ -24,7 +20,7 @@ CassiopeiaMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 CassiopeiaMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
 CassiopeiaMenu:Menu("Misc", "Misc")
-CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true)
+if Ignite ~= nil then CassiopeiaMenu.Misc:Boolean("AutoIgnite", "Auto Ignite", true) end
 CassiopeiaMenu.Misc:Boolean("Autolvl", "Auto level", true)
 CassiopeiaMenu.Misc:List("Autolvltable", "Priority", 1, {"E-Q-W", "Q-E-W", "W-E-Q"})
 
@@ -84,7 +80,7 @@ OnTick(function(myHero)
 
 		local target = GetCurrentTarget()
 	     
-		if IsReady(_R) IsFacing(target, 825) and GoS:ValidTarget(target, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
+		if IsReady(_R) and IsFacing(target, 825) and GoS:ValidTarget(target, 825) and CassiopeiaMenu.Combo.R:Value() and 100*GetCurrentHP(target)/GetMaxHP(target) <= 50 and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= 30 then
 		Cast(_R,target)
 		end
 
