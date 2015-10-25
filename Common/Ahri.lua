@@ -171,7 +171,8 @@ for i,enemy in pairs(GoS:GetEnemyHeroes()) do
 	
 end
 
-for _,minion in pairs(IOW.mobs) do
+for i=1, IOW.mobs.maxObjects do
+                local minion = IOW.mobs.objects[i]
                 
                 if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.LaneClear.Mana:Value() then
 		  if IsReady(_Q) and AhriMenu.LaneClear.Q:Value() then
@@ -202,8 +203,8 @@ for _,minion in pairs(IOW.mobs) do
 	        
 end
 
-if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
-        for _,mob in pairs(IOW.mobs) do
+for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+        if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= AhriMenu.JungleClear.Mana:Value() then
 		local mobPos = GetOrigin(mob)
 		
 		if IsReady(_Q) and AhriMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 880) then
