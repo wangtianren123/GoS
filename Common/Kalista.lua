@@ -245,15 +245,19 @@ OnTick(function(myHero)
 	end
 	
     local killableminions = 0
-    for _,unit in pairs(IOW.mobs) do
+    for _,unit in pairs(GoS:GetAllMinions(MINION_ENEMY)) do
    
-      --if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and (GetObjectName(unit) == "Siege" or GetObjectName(unit) == "super") and GoS:ValidTarget(unit, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
-      --CastSpell(_E)
-      --end
+      if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and (GetObjectName(unit):find("Siege"))  and GoS:ValidTarget(unit, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
+      CastSpell(_E)
+      end
+	  
+	  if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and (GetObjectName(unit):find("super"))  and GoS:ValidTarget(unit, 1000) and KalistaMenu.Farm.ECanon:Value() and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then 
+      CastSpell(_E)
+      end
 
-      --if Edmg(unit) > 0 and Edmg(unit) > GetCurrentHP(unit) and GoS:ValidTarget(unit, 1000) then 
-      --killableminions = killableminions + 1
-      --end
+      if Edmg(unit) > GetCurrentHP(unit) and GoS:ValidTarget(unit, 1000) then 
+      killableminions = killableminions + 1
+      end
 
       if IOW:Mode() == "LaneClear" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) > KalistaMenu.Farm.Mana:Value() then
       	 local target = GetCurrentTarget()
