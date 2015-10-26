@@ -1,5 +1,4 @@
-OnLoop(function
-
+Ontick(function()
 		x = mousePos.x
                 y = mousePos.y
 		z = mousePos.z
