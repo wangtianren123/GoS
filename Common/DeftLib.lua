@@ -1,3 +1,5 @@
+myHero = GetMyHero()
+
 SpellData = {
   ["Aatrox"] = {
 		[_Q]  = { Name = "AatroxQ", ProjectileName = "AatroxQ.troy", Range = 650, Speed = 2000, Delay = 600, Width = 250, collision = false, type = "circular", IsDangerous = true},
@@ -127,7 +129,6 @@ Dashes = {
 }
 
 LudensStacks = 0
-myHero = GetMyHero()
 mapID = GetMapID()
 
 function IsReady(spell)
