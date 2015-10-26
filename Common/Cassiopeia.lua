@@ -4,9 +4,10 @@
 -R Anti-Gapclose/Interrupt
 ]]
 
-if GetObjectName(myHero) ~= "Cassiopeia" then return end
+if GetObjectName(GetMyHero()) ~= "Cassiopeia" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local CassiopeiaMenu = MenuConfig("Cassiopeia", "Cassiopeia")
 CassiopeiaMenu:Menu("Combo", "Combo")
