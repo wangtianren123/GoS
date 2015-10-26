@@ -1,6 +1,7 @@
-if GetObjectName(myHero) ~= "Katarina" then return end
+if GetObjectName(GetMyHero()) ~= "Katarina" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local KatarinaMenu = MenuConfig("Katarina", "Katarina")
 KatarinaMenu:Menu("Combo", "Combo")
@@ -31,6 +32,16 @@ KatarinaMenu.JungleClear:Boolean("Q", "Use Q", true)
 KatarinaMenu.JungleClear:Boolean("W", "Use W", true)
 KatarinaMenu.JungleClear:Boolean("E", "Use E", true)
 
+KatarinaMenu:Menu("Lasthit", "Lasthit")
+KatarinaMenu.Lasthit:Boolean("Q", "Lasthit with Q", false)
+KatarinaMenu.Lasthit:Boolean("W", "Lasthit with W", false)
+KatarinaMenu.Lasthit:Boolean("E", "Lasthit with E", false)
+
+KatarinaMenu:Menu("Laneclear", "Laneclear")
+KatarinaMenu.Laneclear:Boolean("Q", "Use Q", false)
+KatarinaMenu.Laneclear:Boolean("W", "Use W", false)
+KatarinaMenu.Laneclear:Boolean("E", "Use E", false)
+
 KatarinaMenu:Menu("Drawings", "Drawings")
 KatarinaMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 KatarinaMenu.Drawings:Boolean("W", "Draw W Range", true)
@@ -39,14 +50,6 @@ KatarinaMenu.Drawings:Boolean("R", "Draw R Range", true)
 KatarinaMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 KatarinaMenu.Drawings:Boolean("Text", "Draw Damage Text", true)
 
-
-KatarinaMenu:Menu("Farm", "Farm")
-KatarinaMenu.Farm:Boolean("Q", "Lasthit with Q", false)
-KatarinaMenu.Farm:Boolean("W", "Lasthit with W", false)
-KatarinaMenu.Farm:Boolean("E", "Lasthit with E", false)
-KatarinaMenu.Farm:Boolean("QLC", "Clear with Q", false)
-KatarinaMenu.Farm:Boolean("WLC", "Clear with W", false)
-KatarinaMenu.Farm:Boolean("ELC", "Clear with E", false)
 
 local jumpTarget
 local wardLock
@@ -150,13 +153,13 @@ end
 
 OnDraw(function(myHero)
 local col = KatarinaMenu.Drawings.color:Value()
-if KatarinaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),675,1,0,col) end
-if KatarinaMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),375,1,0,col) end
-if KatarinaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),700,1,0,col) end
-if KatarinaMenu.Drawings.R:Value() then DrawCircle(GoS:myHeroPos(),550,1,0,col) end
+if KatarinaMenu.Drawings.Q:Value() then DrawCircle(myHeroPos(),675,1,0,col) end
+if KatarinaMenu.Drawings.W:Value() then DrawCircle(myHeroPos(),375,1,0,col) end
+if KatarinaMenu.Drawings.E:Value() then DrawCircle(myHeroPos(),700,1,0,col) end
+if KatarinaMenu.Drawings.R:Value() then DrawCircle(myHeroPos(),550,1,0,col) end
   if KatarinaMenu.Drawings.Text:Value() then
-	for _, enemy in pairs(GoS:GetEnemyHeroes()) do
-		if GoS:ValidTarget(enemy) then
+	for _, enemy in pairs(GetEnemyHeroes()) do
+		if ValidTarget(enemy) then
 		        local enemyPos = GetOrigin(enemy)
 			local drawpos = WorldToScreen(1,enemyPos.x, enemyPos.y, enemyPos.z)
 			local enemyText, color = GetDrawText(enemy)
@@ -200,19 +203,19 @@ OnTick(function(myHero)
   if IOW:Mode() == "Combo" then
       local target = GetCurrentTarget()
 	  
-      if IsReady(_Q) and KatarinaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 675) then
+      if IsReady(_Q) and KatarinaMenu.Combo.Q:Value() and ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
       end
 	  
-      if IsReady(_W) and KatarinaMenu.Combo.W:Value() and GoS:ValidTarget(target, 375) then
+      if IsReady(_W) and KatarinaMenu.Combo.W:Value() and ValidTarget(target, 375) then
       CastSpell(_W)
       end
 	  
-      if IsReady(_E) and KatarinaMenu.Combo.E:Value() and GoS:ValidTarget(target, 700) then
+      if IsReady(_E) and KatarinaMenu.Combo.E:Value() and ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
       end
 	  
-      if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and GoS:ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
+      if KatarinaMenu.Combo.R:Value() and CanUseSpell(myHero, _Q) ~= READY and CanUseSpell(myHero, _W) ~= READY and CanUseSpell(myHero, _E) ~= READY and CanUseSpell(myHero, _R)  ~= ONCOOLDOWN and ValidTarget(target, 550) and GetCastLevel(myHero,_R) > 0 then
       IOW.movementEnabled = false
       IOW.attacksEnabled = false
       CastSpell(_R)
@@ -222,64 +225,64 @@ OnTick(function(myHero)
   if IOW:Mode() == "Harass" then
       local target = GetCurrentTarget()
 	  
-      if IsReady(_Q) and KatarinaMenu.Harass.Q:Value() and GoS:ValidTarget(target, 675) then
+      if IsReady(_Q) and KatarinaMenu.Harass.Q:Value() and ValidTarget(target, 675) then
       CastTargetSpell(target, _Q)
       end
 	  
-      if IsReady(_W) and KatarinaMenu.Harass.W:Value() and GoS:ValidTarget(target, 375) then
+      if IsReady(_W) and KatarinaMenu.Harass.W:Value() and ValidTarget(target, 375) then
       CastSpell(_W)
       end
 	  
-      if IsReady(_E) and KatarinaMenu.Harass.E:Value() and GoS:ValidTarget(target, 700) then
+      if IsReady(_E) and KatarinaMenu.Harass.E:Value() and ValidTarget(target, 700) then
       CastTargetSpell(target, _E)
       end
   end
 
 local target = GetCurrentTarget()
 
-if KatarinaMenu.Harass.AutoQ:Value() and GoS:ValidTarget(target, 675) and not CastingR then
+if KatarinaMenu.Harass.AutoQ:Value() and ValidTarget(target, 675) and not CastingR then
 CastTargetSpell(target, _Q)
 end
 
-if KatarinaMenu.Harass.AutoW:Value() and GoS:ValidTarget(target, 375) and not CastingR then
+if KatarinaMenu.Harass.AutoW:Value() and ValidTarget(target, 375) and not CastingR then
 CastSpell(_W)
 end
 
-    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+    for i,enemy in pairs(GetEnemyHeroes()) do
        if KatarinaMenu.Killsteal.SmartKS:Value() then
 				
 		if Ignite and KatarinaMenu.Misc.Autoignite:Value() then
-                  if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+                  if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and ValidTarget(enemy, 600) then
                   CastTargetSpell(enemy, Ignite)
                   end
                 end
 		
-                                if IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
+                                if IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and ValidTarget(enemy, 375) then 
 				CastSpell(_W)
 				
-				elseif IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 675) then 
+				elseif IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) and ValidTarget(enemy, 675) then 
 				CastTargetSpell(enemy, _Q)
 				
-				elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
 				
-				elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 375) then 
+				elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and ValidTarget(enemy, 375) then 
 				CastSpell(_W)
-                                GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
+                                DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 		
-				elseif IsReady(_E) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_E) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) and ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
-				GoS:DelayAction(function() CastSpell(_W) end, 250)
+				DelayAction(function() CastSpell(_W) end, 250)
 				
-				elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and GoS:ValidTarget(enemy, 700) then 
+				elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) and ValidTarget(enemy, 700) then 
 				CastTargetSpell(enemy, _E)
-				GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
-				GoS:DelayAction(function() CastSpell(_W) end, 250)
+				DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
+				DelayAction(function() CastSpell(_W) end, 250)
 				end
 				
-	                        if KatarinaMenu.Killsteal.UseWards:Value() and GoS:ValidTarget(enemy, 1275) and GoS:GetDistance(enemy) > 700 and IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
+	                        if KatarinaMenu.Killsteal.UseWards:Value() and ValidTarget(enemy, 1275) and GetDistance(enemy) > 700 and IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
 			        wardJump(GetOrigin(enemy))
-		                GoS:DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
+		                DelayAction(function() CastTargetSpell(enemy, _Q) end, 250)
 	                        end
 				
 	end
@@ -290,33 +293,33 @@ if KatarinaMenu.Misc.Autolvl:Value() then
    elseif KatarinaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
    elseif KatarinaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W,}
    end
-GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
+DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 for i=1, IOW.mobs.maxObjects do
         local minion = IOW.mobs.objects[i]
 
         if IOW:Mode() == "LaneClear" then
-		if IsReady(_Q) and KatarinaMenu.Farm.QLC:Value() and GoS:ValidTarget(minion, 675) then
+		if IsReady(_Q) and KatarinaMenu.Laneclear.Q:Value() and ValidTarget(minion, 675) then
 		CastTargetSpell(minion, _Q)
 		end
 		
-		if IsReady(_W) and KatarinaMenu.Farm.WLC:Value() and GoS:ValidTarget(minion, 375) then
+		if IsReady(_W) and KatarinaMenu.Laneclear.W:Value() and ValidTarget(minion, 375) then
 		CastSpell(_W)
 		end
 		
-		if IsReady(_E) and KatarinaMenu.Farm.ELC:Value() and GoS:ValidTarget(minion, 700) then
+		if IsReady(_E) and KatarinaMenu.Laneclear.E:Value() and ValidTarget(minion, 700) then
 		CastTargetSpell(minion, _E)
 		end
 	end
 	
 	if IOW:Mode() == "LastHit" then
 		
-	        if IsReady(_W) and KatarinaMenu.Farm.W:Value() and GoS:ValidTarget(minion, 375) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) then
+	        if IsReady(_W) and KatarinaMenu.Lasthit.W:Value() and ValidTarget(minion, 375) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 5 + 35*GetCastLevel(myHero,_W) + 0.25*GetBonusAP(myHero) + 0.60*GetBonusDmg(myHero) + Ludens()) then
 		CastSpell(_W)
-		elseif IsReady(_Q) and KatarinaMenu.Farm.Q:Value() and GoS:ValidTarget(minion, 675) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
+		elseif IsReady(_Q) and KatarinaMenu.Lasthit.Q:Value() and ValidTarget(minion, 675) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 35 + 25*GetCastLevel(myHero,_Q) + 0.45*GetBonusAP(myHero) + Ludens()) then
 		CastTargetSpell(minion, _Q)
-		elseif IsReady(_E) and KatarinaMenu.Farm.E:Value() and GoS:ValidTarget(minion, 700) and GetCurrentHP(minion) < GoS:CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) then
+		elseif IsReady(_E) and KatarinaMenu.Lasthit.E:Value() and ValidTarget(minion, 700) and GetCurrentHP(minion) < CalcDamage(myHero, minion, 0, 10 + 30*GetCastLevel(myHero,_E) + 0.25*GetBonusAP(myHero) + Ludens()) then
 		CastTargetSpell(minion, _E)
 		end
 		
@@ -324,19 +327,19 @@ for i=1, IOW.mobs.maxObjects do
 
 end
 	
-for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+for _,mob in pairs(minionManager.objects) do
 		
-   if IOW:Mode() == "LaneClear" then
+   if GetTeam(mob) == 300 and hIOW:Mode() == "LaneClear" then
 		
-		if IsReady(_Q) and KatarinaMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 675) then
+		if IsReady(_Q) and KatarinaMenu.JungleClear.Q:Value() and ValidTarget(mob, 675) then
 		CastTargetSpell(mob, _Q)
 		end
 		
-		if IsReady(_W) and KatarinaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 375) then
+		if IsReady(_W) and KatarinaMenu.JungleClear.W:Value() and ValidTarget(mob, 375) then
 		CastSpell(_W)
 		end
 		
-	        if IsReady(_E) and KatarinaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 700) then
+	        if IsReady(_E) and KatarinaMenu.JungleClear.E:Value() and ValidTarget(mob, 700) then
 		CastTargetSpell(mob, _E)
 		end
 		
@@ -394,24 +397,24 @@ function GetDrawText(enemy)
 	IgniteDmg = IgniteDmg + 20*GetLevel(myHero)+50
 	end
 	
-	if IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + Ludens()) then
+	if IsReady(_Q) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + Ludens()) then
 		return 'Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
+	elseif IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
 		return 'W = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'E = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + Ludens()) then
 		return 'W + Q = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'E + W = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return 'Q + W + E = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return '(Q + Passive) + W +E = Kill!', ARGB(255, 200, 160, 0)
-	elseif IgniteDmg > 0 and IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
+	elseif IgniteDmg > 0 and IsReady(_Q) and IsReady(_W) and IsReady(_E) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < ExtraDmg + CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero) + 15*GetCastLevel(myHero,_Q)+0.15*GetBonusAP(myHero) + 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero) + 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero) + Ludens()) then
 		return '(Q + Passive) + W + E + Ignite = Kill!', ARGB(255, 200, 160, 0)
-	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and IsReady(_R) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (GoS:CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + Ludens()) then
-		return 'Q + W + E + Ult ('.. string.format('%4.1f', ((GetCurrentHP(enemy) -  GoS:CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) - GoS:CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) - GoS:CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero))) / GoS:CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)))/4) .. ' Secs) = Kill!', ARGB(255, 255, 69, 0)
+	elseif IsReady(_Q) and IsReady(_W) and IsReady(_E) and IsReady(_R) and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) + CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) + CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero)) + (CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)) *10 + Ludens()) then
+		return 'Q + W + E + Ult ('.. string.format('%4.1f', ((GetCurrentHP(enemy) -  CalcDamage(myHero, enemy, 0, 35+25*GetCastLevel(myHero,_Q)+0.45*GetBonusAP(myHero)) - CalcDamage(myHero, enemy, 0, 5+35*GetCastLevel(myHero,_W)+0.25*GetBonusAP(myHero)+0.6*GetBonusDmg(myHero)) - CalcDamage(myHero, enemy, 0, 10+30*GetCastLevel(myHero,_E)+0.25*GetBonusAP(myHero))) / CalcDamage(myHero, enemy, 0, 15+20*GetCastLevel(myHero,_R)+0.25*GetBonusAP(myHero)+0.375*GetBonusDmg(myHero)))/4) .. ' Secs) = Kill!', ARGB(255, 255, 69, 0)
 	else
 		return 'Cant Kill Yet', ARGB(255, 200, 160, 0)
 	end
