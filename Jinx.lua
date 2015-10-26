@@ -132,11 +132,10 @@ OnTick(function(myHero)
 	end
 
 local target = GetCurrentTarget()
-local targetpos = GetOrigin(target)
 
 if IsReady(_E) and ValidTarget(target, 920) then
   if IsImmobile(target) then
-  CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
+  CastSkillShot(_E, GetOrigin(target))
   end
 end
 
