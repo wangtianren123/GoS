@@ -1,3 +1,5 @@
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+
 local BasePositions = {
      [SUMMONERS_RIFT] = {
 	[100] = Vector(14340, 171, 14390),
