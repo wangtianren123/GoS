@@ -3,9 +3,10 @@
 - E logic ??
 ]]
 
-if GetObjectName(myHero) ~= "Jinx" then return end
+if GetObjectName(GetMyHero()) ~= "Jinx" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local JinxMenu = MenuConfig("Jinx", "Jinx")
 JinxMenu:Menu("Combo", "Combo")
@@ -48,8 +49,8 @@ JinxMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 
 OnDraw(function(myHero)
 local col = JinxMenu.Drawings.color:Value()
-if JinxMenu.Drawings.W:Value() then DrawCircle(GoS:myHeroPos(),1500,1,0,col) end
-if JinxMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),920,1,0,col) end
+if JinxMenu.Drawings.W:Value() then DrawCircle(myHeroPos(),1500,1,0,col) end
+if JinxMenu.Drawings.E:Value() then DrawCircle(myHeroPos(),920,1,0,col) end
 end)
 
 local IsMinigun = true
@@ -71,7 +72,7 @@ OnTick(function(myHero)
     if IOW:Mode() == "Combo" then
 	
 	local target = GetCurrentTarget()
-	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
+	local EPred = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
 		
 	if GetItemSlot(myHero,3140) > 0 and JinxMenu.Combo.QSS:Value() and IsImmobile(myHero) or IsSlowed(myHero) or toQSS and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.QSSHP:Value() then
         CastTargetSpell(myHero, GetItemSlot(myHero,3140))
@@ -81,25 +82,25 @@ OnTick(function(myHero)
         CastTargetSpell(myHero, GetItemSlot(myHero,3139))
         end
 		
-	if IsReady(_Q) and JinxMenu.Combo.Q:Value() and GoS:ValidTarget(target, 700) then
-          if GoS:GetDistance(myHero, target) >= 570 and IsMinigun then
+	if IsReady(_Q) and JinxMenu.Combo.Q:Value() and ValidTarget(target, 700) then
+          if GetDistance(myHero, target) >= 570 and IsMinigun then
           CastSpell(_Q)
-          elseif GoS:GetDistance(myHero, target) <= 525 and not IsMinigun then
+          elseif GetDistance(myHero, target) <= 525 and not IsMinigun then
           CastSpell(_Q)
           end
         end
 	
-	if IsReady(_W) and GoS:ValidTarget(target, 1500) and GoS:GetDistance(myHero, target) > 525 and JinxMenu.Combo.W:Value() then
+	if IsReady(_W) and ValidTarget(target, 1500) and GetDistance(myHero, target) > 525 and JinxMenu.Combo.W:Value() then
         Cast(_W,target)
         end
 	
-	if IsReady(_E) and EPred.HitChance == 1 and GoS:ValidTarget(target, 920) and IsFacing(target, 920) and JinxMenu.Combo.E:Value() then
+	if IsReady(_E) and EPred.HitChance == 1 and ValidTarget(target, 920) and IsFacing(target, 920) and JinxMenu.Combo.E:Value() then
         CastSkillShot(_E,EPred.PredPos.x-100,EPred.PredPos.y-100,EPred.PredPos.z-100)
-        elseif IsReady(_E) and EPred.HitChance == 1 and GoS:ValidTarget(target, 920) and JinxMenu.Combo.E:Value() then
+        elseif IsReady(_E) and EPred.HitChance == 1 and ValidTarget(target, 920) and JinxMenu.Combo.E:Value() then
         CastSkillShot(_E,EPred.PredPos.x+100,EPred.PredPos.y+100,EPred.PredPos.z+100)
         end
 	
-	if IsReady(_R) and GoS:ValidTarget(target, 3000) and JinxMenu.Combo.R:Value() and GetCurrentHP(target) < GoS:CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GoS:GetDistance(target)/1700))) then
+	if IsReady(_R) and ValidTarget(target, 3000) and JinxMenu.Combo.R:Value() and GetCurrentHP(target) < CalcDamage(myHero, target, (GetMaxHP(target)-GetCurrentHP(target))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GetDistance(target)/1700))) then
         Cast(_R,target)
         end
 
@@ -108,23 +109,23 @@ OnTick(function(myHero)
     if IOW:Mode() == "Harass" and 100*GetCurrentMana(myHero)/GetMaxMana(myHero) >= JinxMenu.Harass.Mana:Value() then
 	
 	local target = GetCurrentTarget()
-	local EPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
+	local EPred = GetPredictionForPlayer(myHeroPos(),target,GetMoveSpeed(target),1750,1200,920,60,false,true)
 		
-	if IsReady(_Q) and JinxMenu.Harass.Q:Value() and GoS:ValidTarget(target, 700) then
-          if GoS:GetDistance(myHero, target) >= 570 and IsMinigun then
+	if IsReady(_Q) and JinxMenu.Harass.Q:Value() and ValidTarget(target, 700) then
+          if GetDistance(myHero, target) >= 570 and IsMinigun then
           CastSpell(_Q)
-          elseif GoS:GetDistance(myHero, target) <= 525 and not IsMinigun then
+          elseif GetDistance(myHero, target) <= 525 and not IsMinigun then
           CastSpell(_Q)
           end
         end
 	
-	if IsReady(_W) and GoS:ValidTarget(target, 1500) and GoS:GetDistance(myHero, target) > 525 and JinxMenu.Harass.W:Value() then
+	if IsReady(_W) and ValidTarget(target, 1500) and GetDistance(myHero, target) > 525 and JinxMenu.Harass.W:Value() then
         Cast(_W,target)
         end
 	
-	if IsReady(_E) and EPred.HitChance == 1 and GoS:ValidTarget(target, 920) and IsFacing(target, 920) and JinxMenu.Harass.E:Value() then
+	if IsReady(_E) and EPred.HitChance == 1 and ValidTarget(target, 920) and IsFacing(target, 920) and JinxMenu.Harass.E:Value() then
         CastSkillShot(_E,EPred.PredPos.x-100,EPred.PredPos.y-100,EPred.PredPos.z-100)
-        elseif IsReady(_E) and EPred.HitChance == 1 and GoS:ValidTarget(target, 920) and JinxMenu.Harass.E:Value() then
+        elseif IsReady(_E) and EPred.HitChance == 1 and ValidTarget(target, 920) and JinxMenu.Harass.E:Value() then
         CastSkillShot(_E,EPred.PredPos.x+100,EPred.PredPos.y+100,EPred.PredPos.z+100)
         end
 		
@@ -133,7 +134,7 @@ OnTick(function(myHero)
 local target = GetCurrentTarget()
 local targetpos = GetOrigin(target)
 
-if IsReady(_E) and GoS:ValidTarget(target, 920) then
+if IsReady(_E) and ValidTarget(target, 920) then
   if IsImmobile(target) then
   CastSkillShot(_E, targetPos.x, targetPos.y, targetPos.z)
   end
@@ -152,31 +153,31 @@ if IOW:Mode() == "LaneClear" then
 end
   
 
-    for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+    for i,enemy in pairs(GetEnemyHeroes()) do
 	
 	if IOW:Mode() == "Combo" then	
-	if GetItemSlot(myHero,3153) > 0 and JinxMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > JinxMenu.Combo.targetHP:Value() then
+	if GetItemSlot(myHero,3153) > 0 and JinxMenu.Combo.Items:Value() and ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > JinxMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3153))
         end
 
-        if GetItemSlot(myHero,3144) > 0 and JinxMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > JinxMenu.Combo.targetHP:Value() then
+        if GetItemSlot(myHero,3144) > 0 and JinxMenu.Combo.Items:Value() and ValidTarget(enemy, 550) and 100*GetCurrentHP(myHero)/GetMaxHP(myHero) < JinxMenu.Combo.myHP:Value() and 100*GetCurrentHP(enemy)/GetMaxHP(enemy) > JinxMenu.Combo.targetHP:Value() then
         CastTargetSpell(enemy, GetItemSlot(myHero,3144))
         end
 
-        if GetItemSlot(myHero,3142) > 0 and JinxMenu.Combo.Items:Value() and GoS:ValidTarget(enemy, 600) then
+        if GetItemSlot(myHero,3142) > 0 and JinxMenu.Combo.Items:Value() and ValidTarget(enemy, 600) then
         CastTargetSpell(myHero, GetItemSlot(myHero,3142))
         end
         end
 		
 	if Ignite and JinxMenu.Misc.AutoIgnite:Value() then
-          if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+          if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and ValidTarget(enemy, 600) then
           CastTargetSpell(enemy, Ignite)
           end
         end
 		
-        if IsReady(_W) and GoS:ValidTarget(enemy, 1500) and JinxMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 50*GetCastLevel(myHero,_Q) - 40 + 1.4*GetBaseDamage(myHero)) then  
+        if IsReady(_W) and ValidTarget(enemy, 1500) and JinxMenu.Killsteal.W:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 50*GetCastLevel(myHero,_Q) - 40 + 1.4*GetBaseDamage(myHero)) then  
         Cast(_W,enemy)
-	elseif IsReady(_R) and GoS:ValidTarget(enemy, 3000) and GoS:GetDistance(myHero, enemy) > 400 and JinxMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, (GetMaxHP(enemy)-GetCurrentHP(enemy))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GoS:GetDistance(enemy)/1700))) then 
+	elseif IsReady(_R) and ValidTarget(enemy, 3000) and GetDistance(myHero, enemy) > 400 and JinxMenu.Killsteal.R:Value() and GetCurrentHP(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, (GetMaxHP(enemy)-GetCurrentHP(enemy))*(0.2+0.05*GetCastLevel(myHero, _R))+(150+100*GetCastLevel(myHero, _R)+GetBonusDmg(myHero))*math.max(0.1, math.min(1, GetDistance(enemy)/1700))) then 
         Cast(_R,enemy)
         end
     end
@@ -185,9 +186,9 @@ if JinxMenu.Misc.Autolvl:Value() then
     if JinxMenu.Misc.Autolvltable:Value() == 1 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _W, _Q, _W, _R, _W, _W, _E, _E, _R, _E, _E}
     elseif JinxMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_W, _Q, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
     end
-GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
+DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 end)
 
-GoS:AddGapcloseEvent(_E, 0, false)
+AddGapcloseEvent(_E, 0, false)
