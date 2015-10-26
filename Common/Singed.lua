@@ -1,12 +1,11 @@
-if GetObjectName(myHero) ~= "Singed" then return end
+if GetObjectName(GetMyHero()) ~= "Singed" then return end
 
-local SingedMenu = Menu("Singed", "Singed")
+local SingedMenu = MenuConfig("Singed", "Singed")
 SingedMenu:Key("Q", "Q Exploit", string.byte("T"))
 
-OnLoop(function(myHero)
-local mousePos = GetMousePos()
+OnTick(function(myHero)
 if SingedMenu.Q:Value() then
 CastSpell(_Q)
-MoveToXYZ(mousePos.x, mousePos.y, mousePos.z)
+MoveToXYZ(GetMousePos())
 end
 end)
