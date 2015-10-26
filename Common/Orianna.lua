@@ -3,9 +3,10 @@
 -Ult Flash Combo
 ]]
 
-if GetObjectName(myHero) ~= "Orianna" then return end
+if GetObjectName(GetMyHero()) ~= "Orianna" then return end
 
-require('Deftlib')
+if not pcall( require, "Inspired" ) then PrintChat("You are missing Inspired.lua - Go download it and save it Common!") return end
+if not pcall( require, "Deftlib" ) then PrintChat("You are missing Deftlib.lua - Go download it and save it in Common!") return end
 
 local Ball = myHero
 	
@@ -62,8 +63,8 @@ OnDraw(function(myHero)
 if OriannaMenu.Drawings.Ball:Value() then DrawCircle(GetOrigin(Ball),150,1,128,0xffffffff) end
 if OriannaMenu.Drawings.W:Value() then DrawCircle(GetOrigin(Ball),250,1,128,0xffffffff) end
 if OriannaMenu.Drawings.R:Value() then DrawCircle(GetOrigin(Ball),400,1,128,0xffffffff) end
-if OriannaMenu.Drawings.Q:Value() then DrawCircle(GoS:myHeroPos(),825,1,128,0xff00ff00) end
-if OriannaMenu.Drawings.E:Value() then DrawCircle(GoS:myHeroPos(),1000,1,128,0xff00ff00) end
+if OriannaMenu.Drawings.Q:Value() then DrawCircle(myHeroPos(),825,1,128,0xff00ff00) end
+if OriannaMenu.Drawings.E:Value() then DrawCircle(myHeroPos(),1000,1,128,0xff00ff00) end
 end)
 
 OnTick(function(myHero)
@@ -73,28 +74,28 @@ OnTick(function(myHero)
         local target = GetCurrentTarget()
 
 	if IsReady(_R) and OriannaMenu.Combo.R.REnabled:Value() then
-	  if GoS:EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Combo.R.Rcatch:Value() then
+	  if EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Combo.R.Rcatch:Value() then
 	  CastSpell(_R)
 	  end
 	end
 	
 	if IsReady(_R) then
-	  if IsReady(_Q) and OriannaMenu.Combo.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
+	  if IsReady(_Q) and OriannaMenu.Combo.Q:Value() and EnemiesAround(myHeroPos(), 825) < 2 and ValidTarget(target, 825) then
           Cast(_Q,target,Ball)   
 	  end
 	elseif CanUseSpell(myHero, _R) ~= READY then
-          if IsReady(_Q) and OriannaMenu.Combo.Q:Value() and GoS:ValidTarget(target, 825) then
+          if IsReady(_Q) and OriannaMenu.Combo.Q:Value() and ValidTarget(target, 825) then
           Cast(_Q,target,Ball)
 	  end
 	end
 		
-	if IsReady(_W) and OriannaMenu.Combo.W:Value() and GoS:ValidTarget(target, 1200) and GoS:GetDistance(Ball, target) <= 250 then
+	if IsReady(_W) and OriannaMenu.Combo.W:Value() and ValidTarget(target, 1200) and GetDistance(Ball, target) <= 250 then
 	CastSpell(_W)
         end
 
-        if Ball ~= myHero and IsReady(_E) and GoS:ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
-          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), Vector(Ball))
-          if pointLine and GoS:GetDistance(pointSegment, target) < 80 then
+        if Ball ~= myHero and IsReady(_E) and ValidTarget(target, 1000) and OriannaMenu.Combo.E:Value() then
+          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(myHeroPos(), GetOrigin(target), Vector(Ball))
+          if pointLine and GetDistance(pointSegment, target) < 80 then
           CastTargetSpell(myHero, _E)
           end
         end	
@@ -104,17 +105,17 @@ OnTick(function(myHero)
 	
         local target = GetCurrentTarget()
 
-	if IsReady(_Q) and OriannaMenu.Harass.Q:Value() and GoS:EnemiesAround(GoS:myHeroPos(), 825) < 2 and GoS:ValidTarget(target, 825) then
+	if IsReady(_Q) and OriannaMenu.Harass.Q:Value() and EnemiesAround(myHeroPos(), 825) < 2 and ValidTarget(target, 825) then
         Cast(_Q,target,Ball)   
 	end
 	
-	if IsReady(_W) and OriannaMenu.Harass.W:Value() and GoS:ValidTarget(target, 825) and GoS:GetDistance(Ball, target) <= 250 then
+	if IsReady(_W) and OriannaMenu.Harass.W:Value() and ValidTarget(target, 825) and GetDistance(Ball, target) <= 250 then
 	 CastSpell(_W)
          end
 
-        if Ball ~= myHero and IsReady(_E) and GoS:ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
-          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(target), Vector(Ball))
-          if pointLine and GoS:GetDistance(pointSegment, target) <= 80 then
+        if Ball ~= myHero and IsReady(_E) and ValidTarget(target, 1000) and OriannaMenu.Harass.E:Value() then
+          local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(myHeroPos(), GetOrigin(target), Vector(Ball))
+          if pointLine and GetDistance(pointSegment, target) <= 80 then
           CastTargetSpell(myHero, _E)
           end
         end	
@@ -122,20 +123,20 @@ OnTick(function(myHero)
     
 	local KillableEnemies = 0
 	
-        for i,enemy in pairs(GoS:GetEnemyHeroes()) do
+        for i,enemy in pairs(GetEnemyHeroes()) do
 		
 	    if Ignite and OriannaMenu.Misc.AutoIgnite:Value() then
-              if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and GoS:ValidTarget(enemy, 600) then
+              if IsReady(Ignite) and 20*GetLevel(myHero)+50 > GetCurrentHP(enemy)+GetDmgShield(enemy)+GetHPRegen(enemy)*2.5 and ValidTarget(enemy, 600) then
               CastTargetSpell(enemy, Ignite)
               end
             end
 						
-  	    if IOW:Mode() == "Combo" and GoS:ValidTarget(enemy, 1200) and OriannaMenu.Combo.R.Rkill:Value() and GoS:GetDistance(Ball, enemy) < 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + Ludens()) then 
+  	    if IOW:Mode() == "Combo" and ValidTarget(enemy, 1200) and OriannaMenu.Combo.R.Rkill:Value() and GetDistance(Ball, enemy) < 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + Ludens()) then 
             CastSpell(_R)
             end
 		
 	    if IsReady(_R) and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-              if GoS:ValidTarget(enemy, 1200) and GoS:GetDistance(Ball, enemy) <= 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + Ludens()) then 
+              if ValidTarget(enemy, 1200) and GetDistance(Ball, enemy) <= 400 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 75*GetCastLevel(myHero, _R)+75+0.7*GetBonusAP(myHero) + Ludens()) then 
               KillableEnemies = KillableEnemies + 1
               end
 		  
@@ -144,45 +145,45 @@ OnTick(function(myHero)
 	      end
 	    end
 		
-	    if IsReady(_W) and OriannaMenu.Killsteal.W:Value() and GoS:ValidTarget(enemy, 1200) and GoS:GetDistance(Ball, enemy) <= 250 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_W)+25+0.7*GetBonusAP(myHero) + Ludens()) then
+	    if IsReady(_W) and OriannaMenu.Killsteal.W:Value() and ValidTarget(enemy, 1200) and GetDistance(Ball, enemy) <= 250 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 45*GetCastLevel(myHero,_W)+25+0.7*GetBonusAP(myHero) + Ludens()) then
 	    CastSpell(_W)
-	    elseif IsReady(_Q) and GoS:ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + Ludens()) then 
+	    elseif IsReady(_Q) and ValidTarget(enemy, 825) and OriannaMenu.Killsteal.Q:Value() and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _Q)+30+0.5*GetBonusAP(myHero) + Ludens()) then 
             Cast(_Q,enemy,Ball)
-            elseif Ball ~= myHero and IsReady(_E) and GoS:ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() then
-              local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(enemy), Vector(Ball))
-              if pointLine and GoS:GetDistance(pointSegment, enemy) <= 80 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < GoS:CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _R)+30+0.3*GetBonusAP(myHero) + Ludens()) then
+            elseif Ball ~= myHero and IsReady(_E) and ValidTarget(enemy, 1000) and OriannaMenu.Killsteal.E:Value() then
+              local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(myHeroPos(), GetOrigin(enemy), Vector(Ball))
+              if pointLine and GetDistance(pointSegment, enemy) <= 80 and GetCurrentHP(enemy)+GetMagicShield(enemy)+GetDmgShield(enemy) < CalcDamage(myHero, enemy, 0, 30*GetCastLevel(myHero, _R)+30+0.3*GetBonusAP(myHero) + Ludens()) then
               CastTargetSpell(myHero, _E)
               end 
 	    end
 		
-		local QThrowPos = GetMEC(400,GoS:GetEnemyHeroes()) 
-		if IOW:Mode() == "Combo" and GoS:EnemiesAround(GoS:myHeroPos(), 825) >= 2 and GoS:ValidTarget(enemy, 825) and IsReady(_R) and OriannaMenu.Combo.Q:Value() then 
+		local QThrowPos = GetMEC(400,GetEnemyHeroes()) 
+		if IOW:Mode() == "Combo" and EnemiesAround(myHeroPos(), 825) >= 2 and ValidTarget(enemy, 825) and IsReady(_R) and OriannaMenu.Combo.Q:Value() then 
                 CastSkillShot(_Q, QThrowPos.x, QThrowPos.y, QThrowPos.z)
                 end
 		
 	end
 	
 	if IsReady(_R) and OriannaMenu.Misc.AutoUlt.Enabled:Value() then
-	  if GoS:EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
+	  if EnemiesAround(GetOrigin(Ball), 400) >= OriannaMenu.Misc.AutoUlt.catchable:Value() then
 	  CastSpell(_R)
 	  end
 	end
 	
-        for _,mob in pairs(GoS:GetAllMinions(MINION_JUNGLE)) do
+        for _,mob in pairs(minionManager.objects) do
 		
-            if IOW:Mode() == "LaneClear" then
+            if GetTeam(mob) == 300 and IOW:Mode() == "LaneClear" then
 	    
-		if IsReady(_W) and OriannaMenu.JungleClear.W:Value() and GoS:ValidTarget(mob, 1200) and GoS:GetDistance(Ball, mob) <= 250 then
+		if IsReady(_W) and OriannaMenu.JungleClear.W:Value() and ValidTarget(mob, 1200) and GetDistance(Ball, mob) <= 250 then
 		CastSpell(_W)
 		end
 		
-		if IsReady(_Q) and OriannaMenu.JungleClear.Q:Value() and GoS:ValidTarget(mob, 825) then
+		if IsReady(_Q) and OriannaMenu.JungleClear.Q:Value() and ValidTarget(mob, 825) then
 		CastSkillShot(_Q, GetOrigin(mob).x, GetOrigin(mob).y, GetOrigin(mob).z) 
 		end
 		
-		if Ball ~= myHero and IsReady(_E) and OriannaMenu.JungleClear.E:Value() and GoS:ValidTarget(mob, 1000) then
-		  local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(GoS:myHeroPos(), GetOrigin(mob), Vector(Ball))
-                  if pointLine and GoS:GetDistance(pointSegment, mob) <= 80 then
+		if Ball ~= myHero and IsReady(_E) and OriannaMenu.JungleClear.E:Value() and ValidTarget(mob, 1000) then
+		  local pointSegment,pointLine,isOnSegment  = VectorPointProjectionOnLineSegment(myHeroPos(), GetOrigin(mob), Vector(Ball))
+                  if pointLine and GetDistance(pointSegment, mob) <= 80 then
 		  CastTargetSpell(myHero, _E)
 		  end
 		end
@@ -195,7 +196,7 @@ if OriannaMenu.Misc.Autolvl:Value() then
     elseif OriannaMenu.Misc.Autolvltable:Value() == 2 then leveltable = {_Q, _W, _E, _W, _W, _R, _W, _Q, _W, _Q, _R, _Q, _Q, _E, _E, _R, _E, _E}
     elseif OriannaMenu.Misc.Autolvltable:Value() == 3 then leveltable = {_Q, _W, _E, _Q, _Q, _R, _Q, _E, _Q, _E, _R, _E, _E, _W, _W, _R, _W, _W}
     end
-GoS:DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
+DelayAction(function() LevelSpell(leveltable[GetLevel(myHero)]) end, math.random(1000,3000))
 end
 
 end)
@@ -219,7 +220,7 @@ OnUpdateBuff(function(Object,buffProc)
 end)
 
 --[[addInterrupterCallback(function(target, spellType)
-  if IsReady(_R) and GoS:GetDistance(Ball, enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
+  if IsReady(_R) and GetDistance(Ball, enemy) <= 400 and OriannaMenu.Misc.Interrupt:Value() and spellType == CHANELLING_SPELLS then
   CastSpell(_R)
   end
 end)]]
