@@ -259,64 +259,6 @@ function HaveManaForSpells(qMana, wMana, eMana, rMana, qCasts, wCasts, eCasts, r
 	return (GetCurrentMana(myHero) >= cost)
 end
 
-function HaveEnoughMana(percent, unit)
-	local unit = unit or myHero
-	return ((GetCurrentMana(unit) / GetMaxMana(unit)) >= (percent / 100))
-end
-
-function HPUnder(percent, unit)
-	local unit = unit or myHero
-	return ((GetCurrentHP(unit) / GetMaxHP(unit)) <= (percent / 100))
-end
-
-function MinionsAround(pos, range)
-  local c = 0
-  if pos == nil then return 0 end
-  for k,v in pairs(minionManager.objects) do
-    if v and ValidTarget(v) and GetDistanceSqr(pos,GetOrigin(v)) < range*range then
-      c = c + 1
-    end
-  end
-  return c
-end
-
-function GetLineFarmPosition(range, width)
-    local BestPos 
-    local BestHit = 0
-    local objects = minionManager.objects
-    for i, object in pairs(objects) do
-      local EndPos = Vector(myHero) + range * (Vector(object) - Vector(myHero)):normalized()
-      local hit = CountObjectsOnLineSegment(GetOrigin(myHero), EndPos, width, objects)
-      if hit > BestHit and GetDistanceSqr(GetOrigin(object)) < range^2 then
-        BestHit = hit
-        BestPos = Vector(object)
-        if BestHit == #objects then
-        break
-        end
-      end
-    end
-    return BestPos, BestHit
-end
-
-function GetFarmPosition(range, width)
-  local BestPos 
-  local BestHit = 0
-  local objects = minionManager.objects
-  for i, object in pairs(objects) do
-  	if GetOrigin(object) ~= nil and IsObjectAlive(object) and GetTeam(object) ~= GetTeam(myHero) then
-	    local hit = CountObjectsNearPos(Vector(object), range, width, objects)
-	    if hit > BestHit and GetDistanceSqr(Vector(object)) < range * range then
-	      BestHit = hit
-	      BestPos = Vector(object)
-	      if BestHit == #objects then
-	        break
-	      end
-	    end
-	end
-  end
-  return BestPos, BestHit
-end
-
 function GetJLineFarmPosition(range, width)
     local BestPos 
     local BestHit = 0
@@ -350,40 +292,6 @@ function GetJFarmPosition(range, width)
     end
   end
   return BestPos, BestHit
-end
-
-function CountObjectsOnLineSegment(StartPos, EndPos, width, objects)
-  local n = 0
-    for i, object in pairs(objects) do
-    local pointSegment, pointLine, isOnSegment = VectorPointProjectionOnLineSegment(StartPos, EndPos, GetOrigin(object))
-    local w = width
-    if isOnSegment and GetDistanceSqr(pointSegment, GetOrigin(object)) < w^2 and GetDistanceSqr(StartPos, EndPos) > GetDistanceSqr(StartPos, GetOrigin(object)) then
-    n = n + 1
-    end
-  end
-  return n
-end
-
-function CountObjectsNearPos(pos, range, radius, objects)
-  local n = 0
-  for i, object in pairs(objects) do
-    if IsObjectAlive(object) and GetDistanceSqr(pos, Vector(object)) <= radius^2 then
-      n = n + 1
-    end
-  end
-  return n
-end
-
-function HeroCollision(target, spell, range, width) 
-    for i, enemy in ipairs(GetEnemyHeroes()) do
-        if ValidTarget(enemy) and GetDistanceSqr(enemy) < math.pow(range * 1.5, 2) then
-            local pointSegment,pointLine,isOnSegment = VectorPointProjectionOnLineSegment(Vector(myHero), Vector(target), Vector(enemy))
-            if (GetDistanceSqr(enemy, pointSegment) <= math.pow(GetHitBox(enemy) * 2 + width, 2)) then
-                return true
-            end
-        end
-    end
-    return false
 end
 
 --Credits to Maxxxel For IsFacing
