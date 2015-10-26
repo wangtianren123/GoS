@@ -1,44 +1,44 @@
 if GetObjectName(myHero) ~= "Ryze" then return end
 
-local RyzeMenu = Menu("Ryze", "Ryze")
-RyzeMenu:SubMenu("Combo", "Combo")
+local RyzeMenu = MenuConfig("Ryze", "Ryze")
+RyzeMenu:Menu("Combo", "Combo")
 RyzeMenu.Combo:Boolean("Q", "Use Q", true)
 RyzeMenu.Combo:Boolean("W", "Use W", true)
 RyzeMenu.Combo:Boolean("E", "Use E", true)
 RyzeMenu.Combo:Boolean("R", "Use R", true)
 
-RyzeMenu:SubMenu("Harass", "Harass")
+RyzeMenu:Menu("Harass", "Harass")
 RyzeMenu.Harass:Boolean("Q", "Use Q", true)
 RyzeMenu.Harass:Boolean("W", "Use W", true)
 RyzeMenu.Harass:Boolean("E", "Use E", true)
 RyzeMenu.Harass:Slider("Mana", "if Mana % is More than", 30, 0, 80, 1)
 
-RyzeMenu:SubMenu("Killsteal", "Killsteal")
+RyzeMenu:Menu("Killsteal", "Killsteal")
 RyzeMenu.Killsteal:Boolean("Q", "Killsteal with Q", true)
 RyzeMenu.Killsteal:Boolean("W", "Killsteal with W", true)
 RyzeMenu.Killsteal:Boolean("E", "Killsteal with E", true)
 
-RyzeMenu:SubMenu("Misc", "Misc")
+RyzeMenu:Menu("Misc", "Misc")
 RyzeMenu.Misc:Boolean("Autoignite", "Auto Ignite", true)
 RyzeMenu.Misc:Boolean("Autolvl", "Auto level", true)
-RyzeMenu.Misc:List("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
+RyzeMenu.Misc:DropDown("Autolvltable", "Priority", 1, {"Q-W-E", "W-Q-E", "Q-E-W"})
 
-RyzeMenu:SubMenu("JungleClear", "JungleClear")
+RyzeMenu:Menu("JungleClear", "JungleClear")
 RyzeMenu.JungleClear:Boolean("Q", "Use Q", true)
 RyzeMenu.JungleClear:Boolean("W", "Use W", true)
 RyzeMenu.JungleClear:Boolean("E", "Use E", true)
 RyzeMenu.JungleClear:Boolean("R", "Use R", false)
 
-RyzeMenu:SubMenu("Drawings", "Drawings")
+RyzeMenu:Menu("Drawings", "Drawings")
 RyzeMenu.Drawings:Boolean("Q", "Draw Q Range", true)
 RyzeMenu.Drawings:Boolean("W", "Draw W Range", true)
 RyzeMenu.Drawings:Boolean("E", "Draw E Range", true)
+RyzeMenu.Drawings:ColorPick("color", "Color Picker", {255,255,255,0})
 	
-OnLoop(function(myHero)
+OnTick(function(myHero)
   if IOW:Mode() == "Combo" then
 	
         local target = GetCurrentTarget()
-	local QPred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,true,true)
 	local Q2Pred = GetPredictionForPlayer(GoS:myHeroPos(),target,GetMoveSpeed(target),1400,250,900,55,false,true)
 
 	if CanUseSpell(myHero, _R) == READY and GoS:ValidTarget(target, 700) and RyzeMenu.Combo.R:Value() and GotBuff(myHero, "ryzepassivestack") == 4 then
@@ -56,7 +56,7 @@ OnLoop(function(myHero)
 	if CanUseSpell(myHero, _Q) == READY and Q2Pred.HitChance == 1 and GotBuff(myHero, "ryzepassivestack") > 3 or GotBuff(myHero, "ryzepassivecharged") > 0 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, 900) then
 	CastSkillShot(_Q,Q2Pred.PredPos.x,Q2Pred.PredPos.y,Q2Pred.PredPos.z)
         elseif CanUseSpell(myHero, _Q) == READY and QPred.HitChance == 1 and RyzeMenu.Combo.Q:Value() and GoS:ValidTarget(target, 900) then
-        CastSkillShot(_Q,QPred.PredPos.x,QPred.PredPos.y,QPred.PredPos.z)
+        Cast(_Q,target)
 	end				
 		
   end
